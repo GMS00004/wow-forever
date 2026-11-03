@@ -1,0 +1,5 @@
+# Fixtures de teste do gerenciador: bytes exatos, sem conversão de fim de linha
+# (o teste de Set-CVarWtf confere que o CRLF do Config.wtf é preservado).
+modder/ferramentas/testes/fixture/** -text
+modder/ferramentas/testes/fontes-fixture/** -text
+modder/ferramentas/testes/respostas/** -text

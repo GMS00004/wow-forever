@@ -1,0 +1,4 @@
+## Interface: 16001
+## Title: Addon B
+## Version: 0.1
+AddonB.lua

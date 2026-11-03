@@ -1,0 +1,10 @@
+{
+  "agent": "wow-modder",
+  "permissions": {
+    "allow": [
+      "PowerShell(powershell -NoProfile -ExecutionPolicy Bypass -File ferramentas\\*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File ferramentas\\*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File ferramentas/*)"
+    ]
+  }
+}

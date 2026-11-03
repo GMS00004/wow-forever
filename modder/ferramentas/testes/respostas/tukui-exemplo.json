@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "slug": "exemplo",
+  "name": "Exemplo",
+  "version": "3.4.5",
+  "url": "https://api.tukui.org/v1/download/dailys/exemplo/exemplo-3.4.5.zip?token=abc123",
+  "last_update": "2026-10-25",
+  "patch": [ "1.60.1", "1.15.9" ]
+}

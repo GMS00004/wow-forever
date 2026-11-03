@@ -1,0 +1,1 @@
+ExemploDB = { ["a"] = 1 }

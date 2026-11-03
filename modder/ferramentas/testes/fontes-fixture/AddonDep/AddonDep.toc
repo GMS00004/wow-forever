@@ -1,0 +1,4 @@
+## Interface: 16001
+## Title: Addon Dep
+## Dependencies: AddonInexistente
+AddonDep.lua

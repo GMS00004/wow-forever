@@ -1,0 +1,6 @@
+{
+  "releases": [
+    { "name": "Exemplo", "version": "v1.2.3", "filename": "Exemplo-v1.2.3.zip", "nolib": false,
+      "metadata": [ { "flavor": "forever", "interface": 16001 } ] }
+  ]
+}

@@ -1,0 +1,4 @@
+# temporários dos testes do gerenciador de addons
+modder/ferramentas/testes/tmp/
+# zip baixado ou de backup nunca entra no repositório (os backups ficam em %LOCALAPPDATA%)
+*.zip

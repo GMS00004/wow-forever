@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: Modelo
+## Notes: Modelo de addon do dono
+## Author: Bruno
+## Version: 0.1.0
+# A Interface tem de bater com a do cliente (conferir com /dump select(4, GetBuildInfo())).
+Modelo.lua
