@@ -34,6 +34,23 @@ Cada fato leva a marca de como foi lido e a data. `[página]` é página aberta 
 | Com versão Forever (03/11): Questie (desde 12.0.1), Details!, DBM (desde 12.1.10), Leatrix Plus (arquivos `-forever`), Auctionator, TomTom, Bartender4; ElvUI 16.00 (13/10) pela Tukui | [página] | Endgame Tools, Forever Mastery |
 | Sem versão Forever (31/10 e 03/11): WeakAuras, OmniCC, TradeSkillMaster, AdiBags, Shadowed Unit Frames, Spy, Nova World Buffs, WoW-Pro Guides, Zygor (app próprio, pago) | [página] | Forever Mastery, Endgame Tools |
 
+## Instalação real (lido no Avell em 2026-11-03) `[local]`
+
+| Fato | Valor |
+|---|---|
+| Pasta do jogo | `C:\Program Files (x86)\World of Warcraft`, com o grupo Usuários em controle total (grava sem administrador) |
+| Pasta do Forever | `_forever_` (o executável é `_forever_\Wow.exe`) |
+| Código do produto (`.flavor.info` e `.build.info`) | `wowf` |
+| Versão do cliente antes do lançamento | 1.60.1.70755, Interface 16001 |
+| `Battle.net.config` | `DefaultInstallPath` vem como `C:\/Program Files (x86)` (barra escapada) |
+
+## Pacotes de addon (lido em 2026-11-03, noite) `[local]`
+
+- O DBM (12.1.19) e o BigWigs (v427.8) trazem no mesmo zip módulos do Midnight (Interface 120105 e 120107). Instale com `-SoCompativeis`.
+- Os módulos de chefe para o Forever estão em pacotes separados. O `DBM-Vanilla` (r835) e o `DBM-Dungeons` (270) têm build do Forever, e o segundo traz o `DBM-Party-Forever`. O `BigWigs_Classic` (v12.1.2) e o `LittleWigs` (v12.1.22) não têm.
+- O `release.json` do Questie não traz `version`; a versão vem do `tag_name` (`bundle/v12.5.0+v1.0.10`).
+- O TOC do BugSack declara o `!BugGrabber` como `OptionalDeps`.
+
 ## Fontes
 
 - Warcraft Wiki, Patch 1.60.1: https://warcraft.wiki.gg/wiki/Patch_1.60.1

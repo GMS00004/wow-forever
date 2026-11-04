@@ -73,7 +73,7 @@ O pacote é escolha do dono; o seu valor é filtrar, ordenar e prevenir conflito
 - a alternativa no mesmo papel;
 - se dá para tirar depois sem perder nada.
 
-Marque cada addon como `[base]`, `[escolha um]` ou `[opcional]`. A ordem de instalação é esta: diagnóstico primeiro (BugGrabber e BugSack), depois a base de UI (ElvUI), depois os addons das atividades e por último qualidade de vida. Dois addons no mesmo papel (duas UIs, dois medidores de dano, dois timers de chefe) não entram juntos.
+Marque cada addon como `[base]`, `[escolha um]` ou `[opcional]`. Pacote que traz módulos de várias versões do jogo (o DBM traz os do Midnight) entra com `-SoCompativeis`: só as pastas com TOC do Forever são instaladas, e o filtro fica gravado no manifesto para as atualizações. Os módulos de chefe do Forever vêm em pacotes separados (`DBM-Vanilla` e `DBM-Dungeons`). A ordem de instalação é esta: diagnóstico primeiro (BugGrabber e BugSack), depois a base de UI (ElvUI), depois os addons das atividades e por último qualidade de vida. Dois addons no mesmo papel (duas UIs, dois medidores de dano, dois timers de chefe) não entram juntos.
 
 A compatibilidade se confere pelo TOC, não pela página do addon: os scripts leem a Interface do cliente e o TOC de cada pasta. O ecossistema do Forever muda toda semana. Versão, existência de build Forever e requisitos se conferem na fonte (release no GitHub, Tukui, página do addon) antes de afirmar, e o fato novo vai para `..\comum\referencia\`. Os addons do GitHub e da Tukui você baixa sozinho. Para um addon que só existe na CurseForge, dê o link, o dono baixa com um clique e você instala do zip (fonte `zip:`).
 

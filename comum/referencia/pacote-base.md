@@ -8,6 +8,13 @@ Levantamento de 2026-11-03 (subagente de pesquisa T1, conferido pela sessão pri
 - **Automático (Tukui):** `https://api.tukui.org/v1/addon/<slug>` devolve `version`, `url`, `last_update` e `patch`. O campo `patch` do ElvUI lista `1.60.1`, e a `url` leva um token que muda, então ela é lida na hora de baixar. Conferido em 2026-11-03.
 - **Manual (só CurseForge):** o dono baixa o arquivo do flavor Forever na página, e o agente instala do zip (`zip:`). Esses addons não se atualizam sozinhos: a abertura da sessão lembra de conferir a página.
 
+## Decisão do dono (2026-11-03, noite)
+
+- **Instalado pelo agente:** BugSack, ElvUI, Questie e o DBM completo: o núcleo com `-SoCompativeis`, o `DBM-Vanilla` (raides Classic) e o `DBM-Dungeons` (dungeons, com `DBM-Party-Forever`). A auditoria fechou com 14 pastas e nenhuma diferença.
+- **A baixar na CurseForge pelo dono:** !BugGrabber, Auctionator, TomTom, Leatrix Plus e Forever Quests.
+- **Fora, por escolha:** Details! (o jogo tem medidor próprio) e Capping.
+- **Fora, por não ter versão Forever:** o BigWigs, cujos módulos de conteúdo ainda não têm build do Forever.
+
 ## Candidatos
 
 | Papel | Addon | Fonte | Evidência de Forever | Marca | Observação |

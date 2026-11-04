@@ -17,7 +17,8 @@ A biblioteca `wow-comum.ps1` já existe e passou em 256 verificações. Leia as 
 6. **`Backup-Wtf`:** o zip leva `WTF/` como pasta de topo, e o `info.txt` fica ao lado do zip, na pasta da sessão. Se já existir uma pasta com a mesma hora e minuto, o nome ganha o sufixo `-ss` (segundos).
 7. **`Get-WowContexto`** só completa os campos que faltarem a partir do `instalacao.json`.
 8. **Ajudantes que os CLIs podem usar:** `Write-Linha`, `Get-AgoraIso`, `Read-JsonUtf8`, `Write-JsonUtf8`, `Get-CarimboBackup` e `Backup-PastasDoAddon`.
-9. **Testes de uma tarefa da onda 3 não dependem dos CLIs de outra tarefa da mesma onda.** Prepare o estado pela biblioteca (dot-source de `wow-comum.ps1` e chamada das funções) ou escrevendo os arquivos à mão conforme o §6.
+9. **`-SoCompativeis`** (em `Install-AddonDeFonte` e no `addon-instalar.ps1`; acrescentado em 2026-11-03, depois da primeira instalação real) instala só as pastas cujo TOC tem a Interface do cliente. As outras aparecem na prévia como `PASTA nome=<n> acao=ignorar motivo=<m>`; se nenhuma pasta servir, `RECUSA`. A escolha fica no manifesto como `fonte.soCompativeis`, e as atualizações seguintes reaplicam o filtro sem o parâmetro. É o caso dos pacotes de várias versões do jogo, como o DBM, que traz módulos do Midnight. `-Forcar` continua instalando tudo, sem filtro.
+10. **Testes de uma tarefa da onda 3 não dependem dos CLIs de outra tarefa da mesma onda.** Prepare o estado pela biblioteca (dot-source de `wow-comum.ps1` e chamada das funções) ou escrevendo os arquivos à mão conforme o §6.
 
 ## 1. Convenções (Windows PowerShell 5.1)
 

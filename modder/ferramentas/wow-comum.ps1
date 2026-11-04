@@ -178,7 +178,8 @@ function Get-WowVersao {
     $achado = $null
     if ($produto) { $achado = @($rows | Where-Object { $_.Produto -eq $produto }) | Select-Object -First 1 }
     if (-not $achado) {
-        $achado = @($rows | Where-Object { $_.Ativo -and $_.Produto -match 'forever|camelot' }) | Select-Object -First 1
+        # "wowf" é o código real do produto do Forever (lido no Avell em 2026-11-03)
+        $achado = @($rows | Where-Object { $_.Ativo -and $_.Produto -match 'forever|camelot|^wowf$' }) | Select-Object -First 1
     }
     if (-not $achado) { return $null }
     return [pscustomobject]@{
@@ -190,6 +191,15 @@ function Get-WowVersao {
 
 function Get-InstalacaoPadrao {
     [IO.Path]::GetFullPath((Join-Path $script:WowFerramentas '..\..\comum\instalacao.json'))
+}
+
+function ConvertTo-CaminhoNormal {
+    # junta separadores repetidos ("C:\\Program Files", vindo do Battle.net.config) e tira a barra final
+    param([string]$Caminho)
+    $p = ([string]$Caminho).Trim()
+    if (-not $p) { return '' }
+    try { $p = [IO.Path]::GetFullPath($p) } catch { }
+    return $p.TrimEnd('\')
 }
 
 function Find-WowInstalacao {
@@ -228,7 +238,7 @@ function Find-WowInstalacao {
     $vistos = @{}
     $saida = New-Object System.Collections.ArrayList
     foreach ($c in $cands) {
-        $raiz = ([string]$c[0]).Trim().TrimEnd('\')
+        $raiz = ConvertTo-CaminhoNormal ([string]$c[0])
         if (-not $raiz) { continue }
         $k = $raiz.ToLowerInvariant()
         if ($vistos.ContainsKey($k)) { continue }
@@ -907,6 +917,7 @@ function Install-AddonDeFonte {
         [string]$Asset,
         [string]$Pagina,
         [switch]$Forcar,
+        [switch]$SoCompativeis,
         [switch]$Aplicar
     )
     if ($Slug -notmatch '^[a-z0-9-]+$') { Stop-Wow ERRO "slug inválido (use minúsculas, números e hífen): $Slug" }
@@ -964,14 +975,30 @@ function Install-AddonDeFonte {
         }
 
         # 5. compatibilidade de TOC
+        # -SoCompativeis (ou o mesmo filtro gravado no manifesto) deixa de fora as pastas sem TOC do Forever,
+        # como os módulos do Midnight que vêm no pacote do DBM e do BigWigs.
+        $filtrar = [bool]$SoCompativeis
+        if (-not $filtrar -and $antigo -and $antigo.fonte -and $antigo.fonte.PSObject.Properties['soCompativeis']) {
+            $filtrar = [bool]$antigo.fonte.soCompativeis
+        }
         $testes = @{}
         $incompat = @()
+        $ignoradas = @()
         foreach ($p in $pastas) {
             $r = Test-AddonForever -PastaAddon $p.Caminho -Interface $cli.Interface
             $testes[$p.Nome] = $r
-            if (-not $r.Compativel) { $incompat += ("{0}: {1}" -f $p.Nome, $r.Motivo) }
+            if (-not $r.Compativel) {
+                $incompat += ("{0}: {1}" -f $p.Nome, $r.Motivo)
+                $ignoradas += [pscustomobject]@{ Nome = $p.Nome; Motivo = $r.Motivo }
+            }
         }
-        if ($incompat.Count -gt 0 -and -not $Forcar) { Stop-Wow RECUSA ("TOC incompatível: " + ($incompat -join '; ')) }
+        if ($filtrar -and $incompat.Count -gt 0 -and -not $Forcar) {
+            $pastas = @($pastas | Where-Object { $testes[$_.Nome].Compativel })
+            if ($pastas.Count -eq 0) { Stop-Wow RECUSA ("nenhuma pasta compatível: " + ($incompat -join '; ')) }
+        } else {
+            $ignoradas = @()
+            if ($incompat.Count -gt 0 -and -not $Forcar) { Stop-Wow RECUSA ("TOC incompatível: " + ($incompat -join '; ')) }
+        }
 
         # 6. conflitos
         foreach ($p in $pastas) {
@@ -1000,6 +1027,7 @@ function Install-AddonDeFonte {
             $comp = 'nao'; if ($r.Compativel) { $comp = 'sim' }
             Write-Linha "PASTA nome=$($p.Nome) acao=$acaoP toc=$tocNome interfaces=$ints compativel=$comp"
         }
+        foreach ($i in $ignoradas) { Write-Linha "PASTA nome=$($i.Nome) acao=ignorar motivo=$($i.Motivo)" }
         foreach ($n in $removidas) { Write-Linha "PASTA nome=$n acao=remover" }
 
         $versaoAntes = $null
@@ -1042,7 +1070,7 @@ function Install-AddonDeFonte {
             slug             = $Slug
             nome             = $nomeLegivel
             versao           = $versao
-            fonte            = [ordered]@{ tipo = $tipoFonte; id = $idFonte; asset = $assetManifesto; pagina = $(if ($Pagina) { $Pagina } else { $null }) }
+            fonte            = [ordered]@{ tipo = $tipoFonte; id = $idFonte; asset = $assetManifesto; pagina = $(if ($Pagina) { $Pagina } else { $null }); soCompativeis = $filtrar }
             pastas           = $listaPastas
             aprovado         = $true
             estadoInstalacao = 'instalado'
