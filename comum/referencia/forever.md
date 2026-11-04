@@ -51,6 +51,17 @@ Cada fato leva a marca de como foi lido e a data. `[página]` é página aberta 
 - O `release.json` do Questie não traz `version`; a versão vem do `tag_name` (`bundle/v12.5.0+v1.0.10`).
 - O TOC do BugSack declara o `!BugGrabber` como `OptionalDeps`.
 
+## Classes e talentos (lido em 2026-11-04)
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| Dwarf Shaman é uma das seis combinações novas de raça e classe, e o Dwarf é a única raça da Aliança com xamã | [busca] | Icy Veins, Gamer-Guides e outros sites de guia |
+| O Forever mantém o formato do Classic (3 árvores, 51 pontos, 5 pontos por linha), mas reescreveu boa parte dos talentos: build do Classic Era não serve | [busca] | wowforevertalents.com, classicwowforever.com, metabot.gg |
+| Post da Blizzard de 2026-11-03 (Kaivax, "Beta Development Notes"), Shaman: Improved Ghost Wolf da linha 2 para a 4; Stormstrike com 150% de dano normalizado e recarga de 6 s; Flurry 6/12/18/24/30%; Mental Dexterity dá AP igual a 50/100/150% do Intellect; Maelstrom Weapon com o dobro de chance; Lava Burst removido e trocado por Call of Thunder; Elemental Mastery virou Lightning Mastery; Totemic Projection virou Totemic Call, com recarga de 30 s | [página] | fórum da Blizzard, tópico 2360696 |
+| O mesmo post, Hunter: Pathfinding da linha 2 para a 3; Hunter's Mark não acumula ranks diferentes; Aimed Shot, Arcane Shot e Serpent Sting mais fortes; Aspect of the Hawk com valores 20/35/50/70/90/110; todas as armadilhas com recarga compartilhada de 30 s | [página] | fórum da Blizzard, tópico 2360696 |
+| A build de leveling da Method fica no atributo `data-talent` da página: a parte depois do `;` tem uma letra (alfabeto base64) por ponto, do nível 10 ao 60, e cada letra indexa a lista de talentos da classe ordenada pelo id do nó, em `/dfc/ForeverTalentsData-1.60.1-custom.json`. Quando a Method remove um nó da tabela, as builds salvas antes ficam deslocadas | [página] | method.gg, lido bruto pela sessão |
+| O tooltip da Wowhead do Forever devolve o nome atual de uma magia: `https://nether.wowhead.com/forever/tooltip/spell/<id>` | [página] | Wowhead |
+
 ## Fontes
 
 - Warcraft Wiki, Patch 1.60.1: https://warcraft.wiki.gg/wiki/Patch_1.60.1

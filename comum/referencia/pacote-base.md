@@ -12,6 +12,7 @@ Levantamento de 2026-11-03 (subagente de pesquisa T1, conferido pela sessão pri
 
 - **Instalado pelo agente:** BugSack, ElvUI, Questie e o DBM completo: o núcleo com `-SoCompativeis`, o `DBM-Vanilla` (raides Classic) e o `DBM-Dungeons` (dungeons, com `DBM-Party-Forever`). A auditoria fechou com 14 pastas e nenhuma diferença.
 - **Baixados da CurseForge pelo dono e instalados pelo agente (2026-11-04, `zip:`):** !BugGrabber v12.1.1, Auctionator 341, Forever Quests 1.5.2, TomTom v4.4.0 e Leatrix Plus 1.60.25. Cada zip trouxe uma pasta só, todas com 16001 no TOC; a auditoria fechou com 19 pastas e nenhuma diferença.
+- **Rota de leveling (2026-11-04):** RestedXP Guides, pelo GitHub `RestedXP/RXPGuides`, com as rotas grátis do Forever até o 20; os guias de talento dele ficam desligados (são do Classic Era).
 - **Fora, por escolha:** Details! (o jogo tem medidor próprio) e Capping.
 - **Fora, por não ter versão Forever:** o BigWigs, cujos módulos de conteúdo ainda não têm build do Forever.
 
