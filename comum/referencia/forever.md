@@ -8,7 +8,7 @@ Cada fato leva a marca de como foi lido e a data. `[página]` é página aberta 
 |---|---|---|
 | Lançamento mundial em 2026-11-04 às 23:00 UTC (20h de Brasília) | [página] | Warcraft Wiki, Patch 1.60.1 |
 | Nível máximo 60, "indefinidamente" | [página] | Warcraft Wiki |
-| Raça nova Skyborne (Aliança: mago; Horda: xamã) | [página] | Warcraft Wiki |
+| Raça nova Skyborne. Corrigido em 2026-11-04: o anúncio da Blizzard dá ao Skyborne da Aliança (High Order) Druid, Hunter, Mage, Rogue e Warrior, e ao da Horda (Windshaper) Druid, Hunter, Rogue, Shaman e Warrior; a facção se escolhe na criação; zona inicial Zephras Isle, níveis 1 a 12; o druida tem formas próprias da raça. A linha antiga dizia "Aliança: mago; Horda: xamã", o que estava incompleto | [página] | Blizzard News, "WoW: Forever Meet the New Skyborne" (sem data na página); antes, Warcraft Wiki |
 | Especialização dupla no nível 40, no treinador, por 10 de ouro | [página] | Warcraft Wiki |
 | Raides abrem em 2026-12-09; Hardcore no inverno 2026/2027 | [página] | Warcraft Wiki (roadmap) |
 | Coleções da conta inteira; alternância de modelos SD/HD | [página] | Warcraft Wiki |
