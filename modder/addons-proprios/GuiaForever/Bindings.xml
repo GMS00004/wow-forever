@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="GUIAFOREVER_JANELA" header="GUIAFOREVER" category="ADDONS">
+		GuiaForever_AlternarJanela()
+	</Binding>
+</Bindings>

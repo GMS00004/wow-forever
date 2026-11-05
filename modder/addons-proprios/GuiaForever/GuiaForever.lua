@@ -1,15 +1,33 @@
--- GuiaForever: mostra o proximo talento do personagem. Logica; os dados ficam em Dados.lua.
+-- GuiaForever: talento e dicas por nivel, profissoes, perfil grafico e macros.
+-- Logica; os dados ficam em Dados.lua, Dicas.lua e Profissoes*.lua. A janela fica
+-- em Janela.lua e os treinadores em Treinadores.lua; os tres compartilham `ns`.
 
-local NOME = "GuiaForever"
+local NOME, ns = ...
+NOME = NOME or "GuiaForever"
+ns = ns or {}
 local MIN_NIVEL, MAX_NIVEL = 10, 60
 local COR = "|cff33ff99"
 local FIM = "|r"
+ns.MIN_NIVEL, ns.MAX_NIVEL, ns.COR, ns.FIM = MIN_NIVEL, MAX_NIVEL, COR, FIM
+-- Ganchos: Janela.lua e Treinadores.lua acrescentam funcoes a estas listas.
+ns.aoCarregar = ns.aoCarregar or {} -- no ADDON_LOADED do GuiaForever (depois do Questie)
+ns.aoEntrar = ns.aoEntrar or {}     -- 8 s depois do PLAYER_LOGIN
 
-local dados -- dados da classe do personagem
-local janela, texto
+local dados -- talentos da classe do personagem (GuiaForeverDados)
 
 local function msg(s)
   print(COR .. "GuiaForever:" .. FIM .. " " .. s)
+end
+ns.msg = msg
+
+local function classeJogador()
+  return select(2, UnitClass("player"))
+end
+ns.classe = classeJogador
+
+ns.dados = function() return dados end
+ns.dicas = function()
+  return GuiaForeverDicas and GuiaForeverDicas[classeJogador()]
 end
 
 local function pontosLivres()
@@ -19,6 +37,7 @@ local function pontosLivres()
   end
   return nil -- desconhecido
 end
+ns.pontosLivres = pontosLivres
 
 local function entrada(nivel)
   if not dados then return nil end
@@ -26,6 +45,20 @@ local function entrada(nivel)
   if nivel > MAX_NIVEL then return nil end
   return dados.ordem[nivel]
 end
+ns.entrada = entrada
+
+local function chavePersonagem()
+  local nome = UnitName and UnitName("player")
+  local reino = GetRealmName and GetRealmName()
+  if not nome or not reino then return nil end
+  return nome .. " - " .. reino
+end
+ns.chavePersonagem = chavePersonagem
+
+local function emCombate()
+  return InCombatLockdown and InCombatLockdown()
+end
+ns.emCombate = emCombate
 
 -- Profissoes -----------------------------------------------------------
 local ultimaFaixa = {} -- nome -> indice do ultimo passo mostrado
@@ -35,6 +68,7 @@ local function tabelaProf(nome)
   return (GuiaForeverProfissoesA and GuiaForeverProfissoesA[nome])
       or (GuiaForeverProfissoesB and GuiaForeverProfissoesB[nome])
 end
+ns.tabelaProf = tabelaProf
 
 -- devolve lista { {nome=, pericia=, tab=}, ... } das profissoes conhecidas com roteiro
 local function minhasProfissoes()
@@ -71,6 +105,7 @@ local function minhasProfissoes()
   end
   return achadas
 end
+ns.minhasProfissoes = minhasProfissoes
 
 local function indicePasso(tab, pericia)
   local p = tab.passos
@@ -79,11 +114,13 @@ local function indicePasso(tab, pericia)
   end
   return #p
 end
+ns.indicePasso = indicePasso
 
 local function linhaProf(pr, idx)
   local passo = pr.tab.passos[idx]
   return pr.nome .. " " .. pr.pericia .. "/" .. passo.ate .. ": " .. passo.texto
 end
+ns.linhaProf = linhaProf
 
 local function mostrarProfissoes(forcar)
   for _, pr in ipairs(minhasProfissoes()) do
@@ -110,126 +147,59 @@ local function listarProfissoes()
   end
 end
 
-local function anunciar(nivel)
-  if not dados then return end
-  if not (nivel >= MIN_NIVEL or nivel + 1 == MIN_NIVEL) then return end
+-- Dicas do nivel (Dicas.lua) ---------------------------------------------
+local function comFonte(e)
+  return e.texto .. " |cff999999(" .. tostring(e.fonte) .. ")|r"
+end
+ns.comFonte = comFonte
+
+-- O que comeca exatamente neste nivel: magias do nivel e faixas que abrem nele.
+local function dicasDoNivel(nivel)
+  local d = ns.dicas()
   local linhas = {}
-  local livres = pontosLivres()
-  if nivel >= MIN_NIVEL and nivel <= MAX_NIVEL and (livres == nil or livres > 0) then
-    linhas[#linhas + 1] = "Agora (nivel " .. nivel .. "): " .. entrada(nivel)
+  if not d then return linhas end
+  for _, e in ipairs(d.magias or {}) do
+    if e.nivel == nivel then linhas[#linhas + 1] = "Magia: " .. comFonte(e) end
   end
-  local prox = entrada(nivel + 1)
-  if prox then
-    linhas[#linhas + 1] = "Proximo (nivel " .. (nivel + 1) .. "): " .. prox
-  end
-  if #linhas == 0 then return end
-  for _, l in ipairs(linhas) do msg(l) end
-  local grande = table.concat(linhas, "\n")
-  if UIErrorsFrame and UIErrorsFrame.AddMessage then
-    UIErrorsFrame:AddMessage(grande, 0.2, 1, 0.6, 1, 6)
-  elseif RaidNotice_AddMessage and RaidWarningFrame and ChatTypeInfo then
-    RaidNotice_AddMessage(RaidWarningFrame, grande, ChatTypeInfo["RAID_WARNING"])
-  end
-end
-
-local function atualizarJanela()
-  if not janela or not dados then return end
-  local nivel = UnitLevel("player") or 1
-  local livres = pontosLivres()
-  local ini = nivel + 1
-  if nivel >= MIN_NIVEL and (livres == nil or livres > 0) then ini = nivel end
-  if ini < MIN_NIVEL then ini = MIN_NIVEL end
-  local t = {}
-  t[#t + 1] = COR .. (dados.personagem or NOME) .. " - proximos 5 pontos" .. FIM
-  local n = 0
-  for l = ini, MAX_NIVEL do
-    if n >= 5 then break end
-    t[#t + 1] = "Nivel " .. l .. ": " .. (dados.ordem[l] or "?")
-    n = n + 1
-  end
-  if n == 0 then t[#t + 1] = "Nada a mostrar (nivel maximo do guia)." end
-  if dados.lei then
-    t[#t + 1] = ""
-    t[#t + 1] = COR .. "Lei (entra com certeza)" .. FIM
-    for _, s in ipairs(dados.lei) do t[#t + 1] = "- " .. s end
-  end
-  if dados.aberto then
-    t[#t + 1] = ""
-    t[#t + 1] = COR .. "Aberto (o dono decide)" .. FIM
-    for _, a in ipairs(dados.aberto) do
-      t[#t + 1] = "|cffffd100" .. a.ponto .. FIM
-      for _, o in ipairs(a.opcoes) do t[#t + 1] = "   " .. o end
+  for _, par in ipairs({ { "armas", "Arma" }, { "pets", "Pet" }, { "rotacao", "Rotacao" } }) do
+    for _, e in ipairs(d[par[1]] or {}) do
+      if e.de == nivel then linhas[#linhas + 1] = par[2] .. ": " .. comFonte(e) end
     end
   end
-  local profs = minhasProfissoes()
-  if #profs > 0 then
-    t[#t + 1] = ""
-    t[#t + 1] = COR .. "Profissoes" .. FIM
-    for _, pr in ipairs(profs) do
-      local idx = indicePasso(pr.tab, pr.pericia)
-      t[#t + 1] = linhaProf(pr, idx)
-      local prox = pr.tab.passos[idx + 1]
-      if prox then t[#t + 1] = "   Proximo (" .. prox.de .. "-" .. prox.ate .. "): " .. prox.texto end
+  return linhas
+end
+ns.dicasDoNivel = dicasDoNivel
+
+local function anunciar(nivel, login)
+  local linhas = {}
+  if dados and (nivel >= MIN_NIVEL or nivel + 1 == MIN_NIVEL) then
+    local livres = pontosLivres()
+    if nivel >= MIN_NIVEL and nivel <= MAX_NIVEL and (livres == nil or livres > 0) then
+      linhas[#linhas + 1] = "Agora (nivel " .. nivel .. "): " .. (entrada(nivel) or "?")
+    end
+    local prox = entrada(nivel + 1)
+    if prox then
+      linhas[#linhas + 1] = "Proximo (nivel " .. (nivel + 1) .. "): " .. prox
     end
   end
-  texto:SetText(table.concat(t, "\n"))
-  local h = (texto:GetStringHeight() or 100) + 40
-  local max = UIParent and UIParent:GetHeight() or 700
-  if h > max - 60 then h = max - 60 end
-  janela:SetHeight(h)
-end
-
-local function salvarPosicao()
-  if not janela or not GuiaForeverDB then return end
-  local p, _, rp, x, y = janela:GetPoint()
-  GuiaForeverDB.pos = { p, rp, x, y }
-end
-
-local function criarJanela()
-  if janela then return end
-  janela = CreateFrame("Frame", "GuiaForeverJanela", UIParent, "BackdropTemplate")
-  janela:SetSize(380, 200)
-  janela:SetFrameStrata("MEDIUM")
-  janela:SetClampedToScreen(true)
-  janela:SetMovable(true)
-  janela:EnableMouse(true)
-  janela:RegisterForDrag("LeftButton")
-  janela:SetScript("OnDragStart", janela.StartMoving)
-  janela:SetScript("OnDragStop", function(self)
-    self:StopMovingOrSizing()
-    salvarPosicao()
-  end)
-  if janela.SetBackdrop then
-    janela:SetBackdrop({
-      bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-      edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-      tile = true, tileSize = 16, edgeSize = 14,
-      insets = { left = 4, right = 4, top = 4, bottom = 4 },
-    })
+  if #linhas > 0 then
+    for _, l in ipairs(linhas) do msg(l) end
+    local grande = table.concat(linhas, "\n")
+    if UIErrorsFrame and UIErrorsFrame.AddMessage then
+      UIErrorsFrame:AddMessage(grande, 0.2, 1, 0.6, 1, 6)
+    elseif RaidNotice_AddMessage and RaidWarningFrame and ChatTypeInfo then
+      RaidNotice_AddMessage(RaidWarningFrame, grande, ChatTypeInfo["RAID_WARNING"])
+    end
   end
-  texto = janela:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  texto:SetPoint("TOPLEFT", 12, -12)
-  texto:SetWidth(356)
-  texto:SetJustifyH("LEFT")
-  texto:SetJustifyV("TOP")
-  local pos = GuiaForeverDB and GuiaForeverDB.pos
-  janela:ClearAllPoints()
-  if pos and pos[1] then
-    janela:SetPoint(pos[1], UIParent, pos[2] or pos[1], pos[3] or 0, pos[4] or 0)
+  local extras = dicasDoNivel(nivel)
+  if login then
+    if #extras > 0 then
+      msg("nivel " .. nivel .. ": " .. #extras .. " dica(s) novas. J, o botao do livro ou /guia abrem o guia.")
+    elseif ns.dicas() then
+      msg("J, o botao do livro ou /guia abrem o guia.")
+    end
   else
-    janela:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-  end
-  janela:Hide()
-end
-
-local function alternarJanela()
-  if not dados then msg("sem dados para esta classe."); return end
-  criarJanela()
-  if janela:IsShown() then
-    janela:Hide()
-  else
-    atualizarJanela()
-    janela:Show()
+    for _, l in ipairs(extras) do msg(l) end
   end
 end
 
@@ -260,7 +230,7 @@ end
 local function aplicarGraficos(guardarAnterior)
   local alvos = GuiaForeverGraficos
   if not alvos then return end
-  if InCombatLockdown and InCombatLockdown() then
+  if emCombate() then
     msg("graficos: em combate, tente de novo fora dele.")
     return
   end
@@ -281,7 +251,7 @@ end
 local function desfazerGraficos()
   local g = GuiaForeverDB and GuiaForeverDB.graficos
   if not g or not g.anterior then msg("graficos: nada guardado para desfazer."); return end
-  if InCombatLockdown and InCombatLockdown() then
+  if emCombate() then
     msg("graficos: em combate, tente de novo fora dele.")
     return
   end
@@ -304,10 +274,9 @@ local function lembreteRestedXP()
   local chaves = RXPSettings.profileKeys
   local perfis = RXPSettings.profiles
   if type(chaves) ~= "table" or type(perfis) ~= "table" then return end
-  local nome = UnitName and UnitName("player")
-  local reino = GetRealmName and GetRealmName()
-  if not nome or not reino then return end
-  local perfil = chaves[nome .. " - " .. reino]
+  local chave = chavePersonagem()
+  if not chave then return end
+  local perfil = chaves[chave]
   local p = perfil and perfis[perfil]
   if type(p) ~= "table" then return end
   if p.enableTalentGuides ~= false then
@@ -319,17 +288,6 @@ end
 -- Cria as macros da classe como macros do personagem, sem sobrescrever macro
 -- com o mesmo nome, e liga as teclas no conjunto de teclas do personagem
 -- (os outros personagens da conta nao mudam). Guarda o que fez para desfazer.
-
-local function chavePersonagem()
-  local nome = UnitName and UnitName("player")
-  local reino = GetRealmName and GetRealmName()
-  if not nome or not reino then return nil end
-  return nome .. " - " .. reino
-end
-
-local function emCombate()
-  return InCombatLockdown and InCombatLockdown()
-end
 
 local function aparar(s)
   return (tostring(s or ""):gsub("%s+$", ""))
@@ -357,7 +315,7 @@ local function criarUmaMacro(m)
 end
 
 local function criarMacros(automatico)
-  local classe = select(2, UnitClass("player"))
+  local classe = classeJogador()
   local conj = GuiaForeverMacros and GuiaForeverMacros[classe]
   if not conj then
     if not automatico then msg("macros: nada definido para a classe " .. tostring(classe) .. ".") end
@@ -473,7 +431,7 @@ esperaCombate:SetScript("OnEvent", function(self)
 end)
 
 local function macrosNoLogin()
-  local classe = select(2, UnitClass("player"))
+  local classe = classeJogador()
   local conj = GuiaForeverMacros and GuiaForeverMacros[classe]
   if not conj then return end
   local chave = chavePersonagem()
@@ -485,6 +443,9 @@ local function macrosNoLogin()
     criarMacros(true)
   end
 end
+
+-- Comandos ---------------------------------------------------------------
+local ABAS = { nivel = true, talentos = true, armas = true, pets = true, rotacao = true, prof = false, treinos = true }
 
 SLASH_GUIAFOREVER1 = "/guia"
 SlashCmdList["GUIAFOREVER"] = function(arg)
@@ -503,8 +464,26 @@ SlashCmdList["GUIAFOREVER"] = function(arg)
     listarProfissoes()
   elseif arg == "tudo" then
     listarTudo()
+  elseif arg == "treinadores desfazer" then
+    if ns.desfazerTreinadores then ns.desfazerTreinadores() end
+  elseif arg == "tecla desfazer" then
+    if ns.desfazerTecla then ns.desfazerTecla() end
+  elseif arg:sub(1, 10) == "treinador " then
+    if ns.setaTreinador then ns.setaTreinador(strtrim and strtrim(arg:sub(11)) or arg:sub(11)) end
+  elseif ABAS[arg] then
+    if ns.abrirAba then ns.abrirAba(arg) end
+  elseif arg == "" then
+    if ns.alternarJanela then ns.alternarJanela() end
   else
-    alternarJanela()
+    msg("comandos: /guia (janela), /guia nivel|talentos|armas|pets|rotacao|treinos, /guia prof, /guia tudo, "
+      .. "/guia treinador classe|<profissao>, /guia macros, /guia graficos, e os desfazer: "
+      .. "/guia macros desfazer, /guia graficos desfazer, /guia treinadores desfazer, /guia tecla desfazer")
+  end
+end
+
+local function atualizarJanelaDepois()
+  if ns.atualizarJanela then
+    if C_Timer and C_Timer.After then C_Timer.After(1, ns.atualizarJanela) else ns.atualizarJanela() end
   end
 end
 
@@ -518,33 +497,38 @@ f:SetScript("OnEvent", function(_, evento, a1)
   if evento == "ADDON_LOADED" then
     if a1 == NOME then
       GuiaForeverDB = GuiaForeverDB or {}
+      for _, fn in ipairs(ns.aoCarregar) do xpcall(fn, geterrorhandler()) end
     end
   elseif evento == "PLAYER_LOGIN" then
     GuiaForeverDB = GuiaForeverDB or {}
     local g = GuiaForeverDB.graficos
-    if not (g and g.versao == 1) and not (InCombatLockdown and InCombatLockdown()) then
+    if not (g and g.versao == 1) and not emCombate() then
       aplicarGraficos(true)
     end
     lembreteRestedXP()
     -- Espera as macros e as teclas do personagem carregarem (inclusive as do servidor).
-    if C_Timer and C_Timer.After then C_Timer.After(8, macrosNoLogin) else macrosNoLogin() end
+    local function depois()
+      macrosNoLogin()
+      for _, fn in ipairs(ns.aoEntrar) do xpcall(fn, geterrorhandler()) end
+    end
+    if C_Timer and C_Timer.After then C_Timer.After(8, depois) else depois() end
     logado = true
     mostrarProfissoes(true)
-    local classe = select(2, UnitClass("player"))
+    local classe = classeJogador()
     dados = GuiaForeverDados and GuiaForeverDados[classe]
-    if not dados then
-      msg("sem guia para a classe " .. tostring(classe) .. ".")
+    if not dados and not ns.dicas() then
+      msg("sem guia de talentos para a classe " .. tostring(classe) .. "; a aba Treinos funciona (J ou /guia).")
       return
     end
-    anunciar(UnitLevel("player") or 1)
+    anunciar(UnitLevel("player") or 1, true)
   elseif evento == "SKILL_LINES_CHANGED" or evento == "TRADE_SKILL_LIST_UPDATE" then
     if logado then
       mostrarProfissoes(false)
-      if janela and janela:IsShown() then atualizarJanela() end
+      atualizarJanelaDepois()
     end
   elseif evento == "PLAYER_LEVEL_UP" then
     local nivel = tonumber(a1) or UnitLevel("player") or 1
-    anunciar(nivel)
-    if janela and janela:IsShown() then atualizarJanela() end
+    anunciar(nivel, false)
+    atualizarJanelaDepois()
   end
 end)

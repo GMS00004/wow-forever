@@ -43,8 +43,35 @@ Desatualizado depois de 03/11: o Pathfinding passou da linha 2 para a 3, então 
 |---|---|
 | Raça (00:15) | Para solar, Night Elf na Aliança (crit no racial, Shadowmeld, corrida mais rápida) e Troll na Horda; Dwarf ganhou busca de tesouro em baú e 1% de acerto; para dano, Orc ou Night Elf; Skyborn tem 2% de haste, que o pet BM não herda. |
 | Pet | Carrion bird pela sobrevivência; o pet herda 100% do crit do caçador, 30% da armadura e o attack power (o maior entre corpo a corpo e distância). |
-| Armas (02:40 a 19:10) | Progressão por raça e nível. Night Elf 1-10: arco branco da cadeia Crown of the Earth. Aliança 10-20: Calibrated Blunderbuss (missão da dungeon Hall of Thanes, a partir do 13), Daryl's Hunting Bow ou Rifle (Loch Modan, a partir do 11), Deadly Blunderbuss (Engineering 105) ou Owl Sight Rifle (escolta em Darkshore, 17). Depois: Venom Strike (Wailing Caverns), Master Hunter's Rifle (Nesingwary), Truth Seeker's Bow (25 livros, no 40), Blackcrow no fim. |
+| Armas (02:40 a 19:10) | Progressão por raça e nível; a lista da Aliança, com o tempo do vídeo, está na tabela abaixo. |
 | Scorpid Sting | No Forever reduz a chance de acerto do mob (não mais Strength e Agility); com Improved Aspect of the Monkey e Screech, o mob quase não acerta o pet. |
 | Truques de solo (28:40 a 32:45) | Freezing Trap e Scare Beast em ciclo infinito num beast para esperar a mana e reviver o pet; Feign Death reseta o chefe e deixa matar os adds separados antes de ele voltar. Cenas do beta. |
 | Profissões (33:00 a 42:20) | Engineering é obrigatório para solar (armas, munição e bombas), com Leatherworking de segunda; rota de 1 a 200 e de 1 a 210 com lista de compras na tela. |
 | Fishing (42:20) | Pescar até o 20 pelo fish bowl, um buff de 8% em atributos, que o pet também herda. |
+
+## Armas para Night Elf e Aliança (02:40 a 18:37)
+
+Relidas da transcrição em 2026-11-05 para o GuiaForever (`modder\addons-proprios\GuiaForever\Dicas.lua`); as da Horda e as iniciais de outras raças ficaram de fora. Onde o vídeo não dá o nível de início, a faixa segue a ordem em que ele fala.
+
+| Nível | Arma e como conseguir | Tempo |
+|---|---|---|
+| 1-10 | Night Elf: arco branco (3.81 DPS) da cadeia Crown of the Earth, 7 missões, começando em Tenaron's Summons (Teldrassil) | 03:47 |
+| 11 | Daryl's Hunting Bow (5.87 DPS, 1 agi) ou Rifle (6.4 DPS): missão de Daryl the Youngling em Loch Modan, 15 min de tempo, ideal perto do 14 | 06:29 |
+| 13 | Calibrated Blunderbuss (9.57 DPS, 3 sta): missão Old Ironforge Incursion (Earthseer Pharsone, leste de Dun Morogh), na dungeon Hall of Thanes; antes, o Dark Iron Map dos Dark Iron scouts e spies | 05:56 |
+| 16 | Deadly Blunderbuss (8.27 DPS, 2 agi): Engineering 105 ou leilão | 07:03 |
+| 17 | Owl Sight Rifle (7.88 DPS, 2 agi): escolta The Sleeper Has Awakened (Kerlonian Evershade), de Darkshore a Ashenvale | 07:36 |
+| 17 | Impaling Harpoon (9 agi, 5 int): Captain Greenskin, Deadmines | 10:23 |
+| até 22 | Venom Strike (12.08 DPS, veneno): Lord Serpentis, Wailing Caverns | 10:55 |
+| 22-29 | Raptor's End (12.07 DPS): cadeia de 3 missões de Oromar, Wetlands | 11:26 |
+| 22 | Naga Heartpiercer (13.33 DPS): Lady Sarevess, Blackfathom Deeps | 11:59 |
+| 20-30 | Concealed Hand Crossbow (15.25 DPS, +12 RAP): Bazil Thredd, The Stockades; Golem Site Long Gun (16.6 DPS, 6 agi): Relic Guardian, Wetlands Excavation | 12:31 |
+| 28-43 | Master Hunter's Rifle (19.42 DPS) ou arco (19.38 DPS): missão elite de Hemet Nesingwary; solável perto do 41 | 13:36 |
+| 29 | Quillboar Blaster (18.57 DPS): missão Crown of the Kraul, Razorfen Kraul (diário de Henry Gloombrow, base do Great Lift) | 13:04 |
+| 30-40 | Fel Sever Crossbow (20.83 DPS): Arcanist Doan, Scarlet Monastery | 14:09 |
+| 40 | Truth Seeker's Bow (23.75 DPS, 7 agi): 25 livros e documentos entregues na Magus Tower de Stormwind | 14:44 |
+| 42 | Galgan's Fire Blaster (24.62 DPS): Galgan Firehammer, Uldaman | 15:18 |
+| 45 | Verdant Keeper's Aim (27.32 DPS): missão Corruption of Earth and Seed (Keeper Marandis, norte de Desolace), em Maraudon | 15:51 |
+| 47 | Thorium Rifle (BoE): Engineering 260 ou leilão | 16:57 |
+| 48 | Mega Shot Rifle (27.4 DPS, +19 RAP): Tinker Gizlock, Maraudon | 15:51 |
+| até 60 | Blackcrow (30.31 DPS, +0.9% crit): Shadow Hunter Vosh'gajin, Blackrock Spire | 16:24 |
+| 56 | Flawless Arcanite Rifle (31.17 DPS; BoE): Engineering 300 ou leilão | 18:04 |

@@ -169,3 +169,13 @@ GuiaForeverGraficos = {
   { cvar = "groundEffectDensity", valor = "64" },
   { cvar = "bloomUserMult", valor = "0.6" },
 }
+
+-- Profissoes de cada personagem, por classe, para a aba Treinos (onde aprender
+-- antes de ter a profissao). Fonte: decisoes do dono em 2026-11-04
+-- (comum\jogador.md): nos principais, Cooking e First Aid como secundarias.
+GuiaForeverProfissoesPlanejadas = {
+  HUNTER = { "Leatherworking", "Skinning", "Cooking", "First Aid" },  -- Hexumlite Bull
+  SHAMAN = { "Herbalism", "Enchanting", "Cooking", "First Aid" },     -- Rurik Thunderfist
+  DRUID = { "Alchemy", "Tailoring" },                                -- Fingolfin Ironjaw (alt)
+  PALADIN = { "Mining", "Blacksmithing" },                           -- alt sem nome
+}
