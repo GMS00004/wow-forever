@@ -1,5 +1,6 @@
 -- UIForever: aplica no login o layout do ElvUI, as teclas, o conteudo das
--- barras por classe e o minimapa grande, tudo vindo de Config.lua.
+-- barras por classe, as opcoes do menu (CVars) e o minimapa grande, tudo
+-- vindo de Config.lua.
 -- So API oficial, nada em combate. Diario das acoes em UIForeverDB.log
 -- (o modder le no arquivo de SavedVariables com o jogo fechado).
 
@@ -389,6 +390,53 @@ local function criarAlca(painel, chaveAltura)
 end
 
 ---------------------------------------------------------------------------
+-- 6. Opcoes do menu do jogo (CVars), uma vez por personagem
+---------------------------------------------------------------------------
+
+local cvarsPendentes = false
+
+local function lerCVar(nome)
+  local ok, v
+  if C_CVar and C_CVar.GetCVar then ok, v = pcall(C_CVar.GetCVar, nome)
+  elseif GetCVar then ok, v = pcall(GetCVar, nome) end
+  if ok then return v end
+end
+
+local function aplicarCVars()
+  if not cfg.cvars then return end
+  if emCombate() then cvarsPendentes = true; return end
+  cvarsPendentes = false
+  local gravar = (C_CVar and C_CVar.SetCVar) or SetCVar
+  if not gravar then
+    registrar("API de CVar indisponivel")
+    return
+  end
+  UIForeverCharDB.cvars = UIForeverCharDB.cvars or {}
+  local reg = UIForeverCharDB.cvars
+  local feitas, falhas = {}, {}
+  for _, par in ipairs(cfg.cvars) do
+    local nome, valor = par[1], tostring(par[2])
+    if reg[nome] ~= valor then
+      local antes = lerCVar(nome)
+      pcall(gravar, nome, valor)
+      if lerCVar(nome) == valor then
+        reg[nome] = valor
+        feitas[#feitas + 1] = nome .. " " .. tostring(antes) .. "->" .. valor
+      else
+        falhas[#falhas + 1] = nome
+      end
+    end
+  end
+  if #feitas > 0 then
+    registrar("cvars: " .. table.concat(feitas, ", "))
+    msg("opcoes do jogo ajustadas: " .. table.concat(feitas, ", "))
+  end
+  if #falhas > 0 then
+    registrar("cvars que falharam: " .. table.concat(falhas, ", "))
+  end
+end
+
+---------------------------------------------------------------------------
 -- Eventos
 ---------------------------------------------------------------------------
 
@@ -434,6 +482,7 @@ f:SetScript("OnEvent", function(_, evento, arg1)
         end
       end
       aplicarTeclas()
+      aplicarCVars()
       aplicarBarras()
       if (UIForeverCharDB.resumo or 0) > 0 then
         msg("layout do ElvUI aplicado (" .. UIForeverCharDB.resumo .. " ajustes).")
@@ -443,6 +492,7 @@ f:SetScript("OnEvent", function(_, evento, arg1)
 
   elseif evento == "PLAYER_REGEN_ENABLED" then
     if teclasPendentes then aplicarTeclas() end
+    if cvarsPendentes then aplicarCVars() end
     if barrasPendentes then agendarBarras() end
 
   elseif evento == "PLAYER_LOGOUT" then

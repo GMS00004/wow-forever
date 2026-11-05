@@ -99,7 +99,8 @@ GuiaForeverDicas = {
       { de = 30, ate = 30, texto = "Intimidation.", fonte = "Kargoz (beta)" },  -- origem: kargoz-hunter-bm.md:25
     },
     atributos = {
-      { texto = "Intellect e Spirit: o Careful Aim converte Intellect em attack power.", fonte = "MetaGoblin (beta)" },  -- origem: metagoblin-hunter.md:22
+      { texto = "Ate o 45: Agility (pecas azuis de Leatherworking desde o 10). Spirit vale pouco para cacador.", fonte = "Method" },  -- origem: hexumlite-bull.md:80 (decisao do dono 2026-11-05)
+      { texto = "Do 46 em diante, com o Careful Aim: Intellect e Spirit (o talento converte Intellect em attack power).", fonte = "MetaGoblin (beta)" },  -- origem: metagoblin-hunter.md:22
     },
     notas = {
       { texto = "Subir de rank sempre que puder.", fonte = "Method" },  -- origem: hexumlite-bull.md:85

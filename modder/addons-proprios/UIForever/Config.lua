@@ -99,6 +99,10 @@ UIForeverConfig.teclas = {
   { "CTRL-X", "SITORSTAND" }, -- sentar e descer na agua (era o X); pedido do dono em 2026-11-05
 
   { "SHIFT-M", "UIFOREVER_MINIMAPA" },
+
+  -- J abre o GuiaForever (dono, 2026-11-05, noite); tira a J da janela de guilda,
+  -- que continua no menu do jogo.
+  { "J", "GUIAFOREVER_JANELA" },
 }
 
 -- 4. O que fica em cada botao, por classe. Slot = numero da acao:
@@ -116,7 +120,7 @@ UIForeverConfig.barras = {
   -- 03/11 (ficha do personagem). Macros: GuiaForever (Gladius e leak).
   HUNTER = {
     -- barra 1: 1 2 3 4 5 6 Q E R F T G
-    [1] = { magia = "Serpent Sting" },
+    [1] = { macro = "sting_Auto", magia = "Serpent Sting" },  -- macro do GuiaForever (dono, 2026-11-05)
     [2] = { magia = "Arcane Shot" },
     [3] = { magia = "Multi-Shot" },
     [4] = { magia = "Aimed Shot" },
@@ -159,4 +163,21 @@ UIForeverConfig.barras = {
     [65] = { magia = "Beast Lore" },
     [66] = { macro = "Attack_Speed" },
   },
+}
+
+-- 5. Opcoes do menu do jogo (CVars), gravadas pela API oficial (SetCVar).
+-- Cada linha e gravada uma vez por personagem, quando o valor daqui muda; o que
+-- o dono mudar depois no menu fica ate este arquivo mudar aquela linha.
+-- Pedido do dono em 2026-11-05.
+UIForeverConfig.cvars = {
+  -- Options > Controls > Auto Loot
+  { "autoLootDefault", "1" },
+  -- Options > Nameplates > NPC Names = All NPCs: nome em todo NPC, de qualquer
+  -- cor (escolha do dono). Sao os cinco CVars que o proprio menu grava nessa
+  -- opcao (Blizzard_SettingsDefinitions_Frame/Nameplates.lua do Forever).
+  { "UnitNameNPC", "1" },
+  { "UnitNameHostleNPC", "0" },
+  { "UnitNameInteractiveNPC", "0" },
+  { "UnitNameFriendlySpecialNPCName", "0" },
+  { "ShowQuestUnitCircles", "1" },
 }
