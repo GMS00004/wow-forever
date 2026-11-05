@@ -115,6 +115,34 @@ GuiaForeverDados = {
   },
 }
 
+-- Macros do personagem, criadas uma vez no primeiro login de cada personagem da
+-- classe (depois, /guia macros recria as que faltarem; /guia macros desfazer apaga).
+-- Fonte: Gladius Gaming, video de 2026-11-02 (comum\fontes\builds\gladius-hunter.md),
+-- texto transcrito dos prints do dono. Teclas escolhidas pelo dono em 2026-11-05.
+GuiaForeverMacros = {
+  HUNTER = {
+    fonte = "Gladius Gaming (video de 02/11)",
+    lista = {
+      { nome = "send_Pet", icone = "Ability_GhoulFrenzy", tecla = "SHIFT-MOUSEWHEELUP",
+        corpo = "/petattack" },
+      { nome = "pet_Return", icone = "INV_MISC_QUESTIONMARK", tecla = "SHIFT-MOUSEWHEELDOWN",
+        corpo = "#showtooltip Dismiss Pet\n/petfollow" },
+      { nome = "move_Here", icone = "Ability_Hunter_Pet_Goto", tecla = "BUTTON3",
+        corpo = "/petmoveto" },
+      { nome = "Hunter's Mark", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Hunter's Mark\n/petpassive\n/petfollow\n/cast [@mouseover, harm][] Hunter's Mark" },
+      { nome = "Taunt", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Growl\n/cast Growl" },
+      { nome = "Freezing Trap", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Freezing Trap\n/petpassive\n/cast Freezing Trap" },
+      { nome = "eagle_Eye", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip eagle eye\n/cast !eagle eye" },
+      { nome = "Attack_Speed", icone = "Ability_Hunter_BeastTaming",
+        corpo = '/run mainSpeed, offSpeed = UnitAttackSpeed("target") print(format("%s: attack speed = %.2f", GetUnitName("target"), mainSpeed))' },
+    },
+  },
+}
+
 -- Perfil grafico (aplicado uma vez no login). Fonte: video da Bellular
 -- "We Tested Every WoW Forever Graphics Setting" (28/10/2026); nomes e escalas
 -- conferidos no codigo da interface do Forever (Blizzard_SettingsDefinitions_Shared/Graphics.lua).

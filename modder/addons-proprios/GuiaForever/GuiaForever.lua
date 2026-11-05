@@ -315,10 +315,182 @@ local function lembreteRestedXP()
   end
 end
 
+-- Macros -----------------------------------------------------------------
+-- Cria as macros da classe como macros do personagem, sem sobrescrever macro
+-- com o mesmo nome, e liga as teclas no conjunto de teclas do personagem
+-- (os outros personagens da conta nao mudam). Guarda o que fez para desfazer.
+
+local function chavePersonagem()
+  local nome = UnitName and UnitName("player")
+  local reino = GetRealmName and GetRealmName()
+  if not nome or not reino then return nil end
+  return nome .. " - " .. reino
+end
+
+local function emCombate()
+  return InCombatLockdown and InCombatLockdown()
+end
+
+local function aparar(s)
+  return (tostring(s or ""):gsub("%s+$", ""))
+end
+
+local function maxMacrosPersonagem()
+  if Constants and Constants.MacroConsts and Constants.MacroConsts.MAX_CHARACTER_MACROS then
+    return Constants.MacroConsts.MAX_CHARACTER_MACROS
+  end
+  return 18
+end
+
+local function conjuntoTeclasPersonagem()
+  return (Enum and Enum.BindingSet and Enum.BindingSet.Character) or 2
+end
+
+local function criarUmaMacro(m)
+  for _, icone in ipairs({ m.icone, "INV_MISC_QUESTIONMARK", 134400 }) do
+    if icone then
+      local ok, idx = pcall(CreateMacro, m.nome, icone, m.corpo, true)
+      if ok and type(idx) == "number" and idx > 0 then return idx end
+    end
+  end
+  return nil
+end
+
+local function criarMacros(automatico)
+  local classe = select(2, UnitClass("player"))
+  local conj = GuiaForeverMacros and GuiaForeverMacros[classe]
+  if not conj then
+    if not automatico then msg("macros: nada definido para a classe " .. tostring(classe) .. ".") end
+    return
+  end
+  if emCombate() then msg("macros: em combate, tente de novo fora dele."); return end
+  if not (CreateMacro and GetMacroIndexByName and GetNumMacros) then
+    msg("macros: API de macro indisponivel neste cliente.")
+    return
+  end
+  local chave = chavePersonagem()
+  if not chave then return end
+  GuiaForeverDB.macros = GuiaForeverDB.macros or {}
+  local reg = GuiaForeverDB.macros[chave] or {}
+  reg.criadas = reg.criadas or {}
+  reg.teclas = reg.teclas or {}
+
+  local _, nPersonagem = GetNumMacros()
+  nPersonagem = tonumber(nPersonagem) or 0
+  local max = maxMacrosPersonagem()
+  local criadas, jaTinha, falhas = {}, {}, {}
+  for _, m in ipairs(conj.lista) do
+    if (GetMacroIndexByName(m.nome) or 0) > 0 then
+      jaTinha[#jaTinha + 1] = m.nome
+    elseif nPersonagem >= max then
+      falhas[#falhas + 1] = m.nome .. " (sem espaco nas macros do personagem)"
+    elseif criarUmaMacro(m) then
+      criadas[#criadas + 1] = m.nome
+      reg.criadas[m.nome] = m.corpo
+      nPersonagem = nPersonagem + 1
+    else
+      falhas[#falhas + 1] = m.nome
+    end
+  end
+
+  local teclas = {}
+  if SetBindingMacro and GetBindingAction then
+    for _, m in ipairs(conj.lista) do
+      if m.tecla and (GetMacroIndexByName(m.nome) or 0) > 0 then
+        local atual = GetBindingAction(m.tecla) or ""
+        local alvo = "MACRO " .. m.nome
+        if atual ~= alvo then
+          if reg.teclas[m.tecla] == nil then reg.teclas[m.tecla] = atual end
+          if pcall(SetBindingMacro, m.tecla, m.nome) then
+            teclas[#teclas + 1] = m.tecla .. " = " .. m.nome
+                .. (atual ~= "" and (" (antes: " .. atual .. ")") or "")
+          end
+        end
+      end
+    end
+    if #teclas > 0 and SaveBindings then pcall(SaveBindings, conjuntoTeclasPersonagem()) end
+  end
+
+  reg.versao = 1
+  reg.desfeito = nil
+  GuiaForeverDB.macros[chave] = reg
+
+  if #criadas > 0 then msg("macros criadas (" .. conj.fonte .. "): " .. table.concat(criadas, ", ")) end
+  if #teclas > 0 then msg("teclas deste personagem: " .. table.concat(teclas, "; ")) end
+  if #falhas > 0 then msg("macros que falharam: " .. table.concat(falhas, ", ")) end
+  if #criadas > 0 or #teclas > 0 then
+    msg("arraste as outras para a barra pelo /macro (aba do personagem). Desfazer: /guia macros desfazer")
+  elseif not automatico then
+    msg("macros: todas ja existem (" .. table.concat(jaTinha, ", ") .. ").")
+  end
+end
+
+local function desfazerMacros()
+  if emCombate() then msg("macros: em combate, tente de novo fora dele."); return end
+  local chave = chavePersonagem()
+  local reg = chave and GuiaForeverDB.macros and GuiaForeverDB.macros[chave]
+  if not reg or (not next(reg.criadas or {}) and not next(reg.teclas or {})) then
+    msg("macros: nada guardado para desfazer neste personagem.")
+    return
+  end
+  local apagadas, mantidas = {}, {}
+  for nome, corpo in pairs(reg.criadas or {}) do
+    local idx = GetMacroIndexByName(nome)
+    if idx and idx > 0 then
+      local _, _, corpoAtual = GetMacroInfo(idx)
+      if aparar(corpoAtual) == aparar(corpo) then
+        DeleteMacro(idx)
+        apagadas[#apagadas + 1] = nome
+      else
+        mantidas[#mantidas + 1] = nome
+      end
+    end
+  end
+  local voltaram = 0
+  for tecla, anterior in pairs(reg.teclas or {}) do
+    local ok
+    if anterior == "" then
+      ok = pcall(SetBinding, tecla)
+    elseif anterior:sub(1, 6) == "MACRO " then
+      ok = pcall(SetBindingMacro, tecla, anterior:sub(7))
+    else
+      ok = pcall(SetBinding, tecla, anterior)
+    end
+    if ok then voltaram = voltaram + 1 end
+  end
+  if voltaram > 0 and SaveBindings then pcall(SaveBindings, conjuntoTeclasPersonagem()) end
+  -- versao fica 1 e desfeito marcado: o login nao recria sozinho.
+  GuiaForeverDB.macros[chave] = { versao = 1, desfeito = true, criadas = {}, teclas = {} }
+  msg("macros apagadas: " .. (#apagadas > 0 and table.concat(apagadas, ", ") or "nenhuma")
+      .. "; teclas devolvidas: " .. voltaram)
+  if #mantidas > 0 then msg("mantidas porque voce editou: " .. table.concat(mantidas, ", ")) end
+end
+
+local esperaCombate = CreateFrame("Frame")
+esperaCombate:SetScript("OnEvent", function(self)
+  self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+  criarMacros(true)
+end)
+
+local function macrosNoLogin()
+  local chave = chavePersonagem()
+  local reg = chave and GuiaForeverDB.macros and GuiaForeverDB.macros[chave]
+  if reg and reg.versao == 1 then return end
+  if emCombate() then
+    esperaCombate:RegisterEvent("PLAYER_REGEN_ENABLED")
+  else
+    criarMacros(true)
+  end
+end
+
 SLASH_GUIAFOREVER1 = "/guia"
 SlashCmdList["GUIAFOREVER"] = function(arg)
   arg = string.lower(strtrim and strtrim(arg or "") or (arg or ""))
-  if arg == "graficos" then
+  if arg == "macros" then
+    criarMacros(false)
+  elseif arg == "macros desfazer" then
+    desfazerMacros()
+  elseif arg == "graficos" then
     listarGraficos()
   elseif arg == "graficos desfazer" then
     desfazerGraficos()
@@ -351,6 +523,8 @@ f:SetScript("OnEvent", function(_, evento, a1)
       aplicarGraficos(true)
     end
     lembreteRestedXP()
+    -- Espera as macros e as teclas do personagem carregarem (inclusive as do servidor).
+    if C_Timer and C_Timer.After then C_Timer.After(8, macrosNoLogin) else macrosNoLogin() end
     logado = true
     mostrarProfissoes(true)
     local classe = select(2, UnitClass("player"))
