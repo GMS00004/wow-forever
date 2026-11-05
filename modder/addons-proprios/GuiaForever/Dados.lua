@@ -115,13 +115,17 @@ GuiaForeverDados = {
   },
 }
 
--- Macros do personagem, criadas uma vez no primeiro login de cada personagem da
--- classe (depois, /guia macros recria as que faltarem; /guia macros desfazer apaga).
--- Fonte: Gladius Gaming, video de 2026-11-02 (comum\fontes\builds\gladius-hunter.md),
--- texto transcrito dos prints do dono. Teclas escolhidas pelo dono em 2026-11-05.
+-- Macros do personagem, criadas no login de cada personagem da classe quando a
+-- versao do conjunto sobe (depois, /guia macros recria as que faltarem;
+-- /guia macros desfazer apaga e o login nao recria mais).
+-- Fontes: Gladius Gaming, video de 2026-11-02 (comum\fontes\builds\gladius-hunter.md),
+-- texto transcrito dos prints do dono; leak, documento publico no HackMD
+-- (comum\fontes\builds\leak-hunter-macros.md), texto conferido em 2026-11-05.
+-- Teclas e escolha das macros do leak: dono, em 2026-11-05.
 GuiaForeverMacros = {
   HUNTER = {
-    fonte = "Gladius Gaming (video de 02/11)",
+    versao = 1,
+    fonte = "Gladius Gaming e leak",
     lista = {
       { nome = "send_Pet", icone = "Ability_GhoulFrenzy", tecla = "SHIFT-MOUSEWHEELUP",
         corpo = "/petattack" },
@@ -139,6 +143,17 @@ GuiaForeverMacros = {
         corpo = "#showtooltip eagle eye\n/cast !eagle eye" },
       { nome = "Attack_Speed", icone = "Ability_Hunter_BeastTaming",
         corpo = '/run mainSpeed, offSpeed = UnitAttackSpeed("target") print(format("%s: attack speed = %.2f", GetUnitName("target"), mainSpeed))' },
+      -- leak: as escolhidas pelo dono
+      { nome = "pet_AllInOne", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip\n/cast [@pet,dead] Revive Pet; [nopet] Call Pet; Mend Pet" },
+      { nome = "Burst", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Rapid Fire\n/cast Rapid Fire\n/cast Elune's Light\n/cast Blood Fury\n/cast Berserking\n/cast Bestial Wrath\n/use 13" },
+      { nome = "aspect_Hawk", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip\n/cast [mod:alt] Aspect of the Beast; Aspect of the Hawk" },
+      { nome = "aspect_Cheetah", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip\n/cast [mod:alt] Aspect of the Pack; Aspect of the Cheetah" },
+      { nome = "cancel_Cheetah", icone = "Ability_Mount_JungleTiger",
+        corpo = "/cancelaura Aspect of the Cheetah\n/cancelaura Aspect of the Pack" },
     },
   },
 }

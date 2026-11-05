@@ -411,7 +411,7 @@ local function criarMacros(automatico)
     if #teclas > 0 and SaveBindings then pcall(SaveBindings, conjuntoTeclasPersonagem()) end
   end
 
-  reg.versao = 1
+  reg.versao = conj.versao or 1
   reg.desfeito = nil
   GuiaForeverDB.macros[chave] = reg
 
@@ -459,8 +459,8 @@ local function desfazerMacros()
     if ok then voltaram = voltaram + 1 end
   end
   if voltaram > 0 and SaveBindings then pcall(SaveBindings, conjuntoTeclasPersonagem()) end
-  -- versao fica 1 e desfeito marcado: o login nao recria sozinho.
-  GuiaForeverDB.macros[chave] = { versao = 1, desfeito = true, criadas = {}, teclas = {} }
+  -- desfeito marcado: o login nao recria sozinho (so o /guia macros).
+  GuiaForeverDB.macros[chave] = { desfeito = true, criadas = {}, teclas = {} }
   msg("macros apagadas: " .. (#apagadas > 0 and table.concat(apagadas, ", ") or "nenhuma")
       .. "; teclas devolvidas: " .. voltaram)
   if #mantidas > 0 then msg("mantidas porque voce editou: " .. table.concat(mantidas, ", ")) end
@@ -473,9 +473,12 @@ esperaCombate:SetScript("OnEvent", function(self)
 end)
 
 local function macrosNoLogin()
+  local classe = select(2, UnitClass("player"))
+  local conj = GuiaForeverMacros and GuiaForeverMacros[classe]
+  if not conj then return end
   local chave = chavePersonagem()
   local reg = chave and GuiaForeverDB.macros and GuiaForeverDB.macros[chave]
-  if reg and reg.versao == 1 then return end
+  if reg and (reg.desfeito or (reg.versao or 0) >= (conj.versao or 1)) then return end
   if emCombate() then
     esperaCombate:RegisterEvent("PLAYER_REGEN_ENABLED")
   else
