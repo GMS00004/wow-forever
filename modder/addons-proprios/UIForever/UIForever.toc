@@ -1,0 +1,10 @@
+## Interface: 16001
+## Title: UIForever
+## Notes: Layout do ElvUI, teclas, barras por classe e minimapa grande (Shift+M), definidos pelo modder.
+## Author: Bruno
+## Version: 0.1.0
+## Dependencies: ElvUI
+## SavedVariables: UIForeverDB
+## SavedVariablesPerCharacter: UIForeverCharDB
+Config.lua
+UIForever.lua

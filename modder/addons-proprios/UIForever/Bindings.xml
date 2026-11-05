@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="UIFOREVER_MINIMAPA" header="UIFOREVER" category="ADDONS">
+		UIForever_AlternarMinimapa()
+	</Binding>
+</Bindings>
