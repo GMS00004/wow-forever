@@ -30,3 +30,12 @@ Os dois se ligam pelo nome das macros: o GuiaForever cria, o UIForever põe nos 
 `ferramentas\dev-link.ps1 -Pasta "addons-proprios\<Nome>" -Remover` (prévia), e depois com `-Aplicar`. Só a junction é removida; a pasta em `addons-proprios` fica intacta.
 
 A Interface do `.toc` tem de bater com a do cliente (`/dump select(4, GetBuildInfo())`).
+
+## Addons que existem
+
+| Pasta | O que é | Onde ler |
+|---|---|---|
+| `GuiaForever` | guia de jogo: talento e dicas por nível, profissões, treinadores, macros do caçador, perfil gráfico | `GuiaForever\LEIA-ME.md` |
+| `UIForever` | layout do ElvUI, teclas, barras por classe e minimapa grande, definidos no `Config.lua` | comentários do `UIForever\Config.lua` |
+
+Checagens sem interpretador Lua (sintaxe, ASCII, globais e os dados do GuiaForever): `..\ferramentas\guia\` (rodar `npm install` uma vez ali; os comandos estão no LEIA-ME do GuiaForever).

@@ -1,0 +1,8 @@
+{
+  "name": "guiaforever-ferramentas",
+  "private": true,
+  "description": "Checagens do addon GuiaForever: dados das dicas e sintaxe do Lua (rodar npm install uma vez nesta pasta)",
+  "dependencies": {
+    "luaparse": "0.3.1"
+  }
+}
