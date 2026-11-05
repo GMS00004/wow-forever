@@ -49,6 +49,7 @@ modder\
     wtf-backup.ps1         zip do WTF                                 T6
     wtf-restaurar.ps1      restaura um backup do WTF                  T6
     wtf-cvar.ps1           muda CVars no Config.wtf                   T6
+    wtf-sv.ps1             muda valores em SavedVariables             T4b
     dev-link.ps1           junction de addon próprio                  T8
     addon-fontes.ps1       consulta a fonte de um addon (só leitura)  T7
     addon-atualizar.ps1    atualiza os aprovados                      T7
@@ -56,7 +57,7 @@ modder\
     testes\
       _assert.ps1  _preparar.ps1                                      T4
       fixture\  fontes-fixture\  respostas\                          T4
-      t-comum.ps1 (T4)  t-instalar.ps1 (T5)  t-auditar.ps1 t-wtf.ps1 (T6)
+      t-comum.ps1 (T4)  t-instalar.ps1 (T5)  t-auditar.ps1 t-wtf.ps1 (T6) t-wtf-sv.ps1 (T4b)
       t-devlink.ps1 (T8)  t-atualizar.ps1 t-sessao.ps1 (T7)
       tmp\                 (gitignored) cópias de trabalho dos testes
   estado\  addons\<slug>.json  registro.md  sessao.json
@@ -95,7 +96,7 @@ Pastas derivadas: `PastaFlavor = <Raiz>\<Flavor>`, `AddOns = <PastaFlavor>\Inter
 
 Toda linha que o agente lê começa com um prefixo em maiúsculas seguido de espaço, e os dados vão em `chave=valor` quando couber. O texto livre para gente vem depois, em linhas sem prefixo.
 
-`PREVIA` `PASTA` `OK` `RECUSA` `ERRO` `PREREQ` `FONTE` `ATUALIZAR` `ATUALIZADO` `FALHOU` `MANUAL` `INSTALACAO` `JOGO` `BACKUP` `AUDITORIA` `DESCONHECIDA` `FALTANDO` `ALTERADA` `INCOMPATIVEL` `DEPENDENCIA` `JUNCTION` `CVAR` `DEV`
+`PREVIA` `PASTA` `OK` `RECUSA` `ERRO` `PREREQ` `FONTE` `ATUALIZAR` `ATUALIZADO` `FALHOU` `MANUAL` `INSTALACAO` `JOGO` `BACKUP` `AUDITORIA` `DESCONHECIDA` `FALTANDO` `ALTERADA` `INCOMPATIVEL` `DEPENDENCIA` `JUNCTION` `CVAR` `SV` `DEV`
 
 ## 6. Manifesto (`estado\addons\<slug>.json`)
 
@@ -130,7 +131,7 @@ Toda linha que o agente lê começa com um prefixo em maiúsculas seguido de esp
 
 ## 7. Outros arquivos de estado
 
-- `estado\registro.md`: append-only, `- yyyy-MM-dd HH:mm | <acao> | <slug> | <detalhe>`. Ações: `instalar`, `atualizar`, `remover`, `backup-wtf`, `restaurar-wtf`, `cvar`, `dev-link`, `dev-unlink`.
+- `estado\registro.md`: append-only, `- yyyy-MM-dd HH:mm | <acao> | <slug> | <detalhe>`. Ações: `instalar`, `atualizar`, `remover`, `backup-wtf`, `restaurar-wtf`, `cvar`, `sv`, `dev-link`, `dev-unlink`.
 - `estado\sessao.json`: `{ "v": 1, "ultimaInterface": 16001, "ultimaVersao": "1.60.1.12345", "ultimaAbertura": "<iso>" }`.
 - `comum\instalacao.json`: `{ "v": 1, "raiz": "C:\\...\\World of Warcraft", "flavor": "_forever_", "maquina": "<COMPUTERNAME>", "confirmadoEm": "<iso>" }`.
 
@@ -271,7 +272,13 @@ No fim, a linha `AUDITORIA addons=<n> desconhecidas=<n> faltando=<n> alteradas=<
   - prévia: uma linha `CVAR nome=<n> atual=<a> novo=<b>` por CVar (`atual=(ausente)` quando não existe);
   - com `-Aplicar`: `Assert-JogoFechado`, copia o `Config.wtf` para `<Backups>\cvars\<carimbo>-Config.wtf` (`Limit-Itens` 20), chama `Set-CVarWtf` e grava `Add-Registro cvar`.
   - Sem `Config.wtf`: `PREREQ`.
-
+- `wtf-sv.ps1 -Arquivo <nome.lua> -Valores '<caminho>=<valor>;<caminho>=<valor>' [-Aplicar]` (liberado em 2026-11-05, §12):
+  - `-Arquivo` é só o nome de um arquivo em `<WTF>\Account\<a única conta>\SavedVariables\`; mais de uma conta, nenhuma conta ou arquivo inexistente: `PREREQ`.
+  - Caminho: nomes separados por ponto, começando pela tabela global (`LeaPlusDB.AutoSellJunk`, `RXPSettings.profiles.*.enableTalentGuides`); `*` vale para todas as chaves existentes naquele nível (nome de chave com ponto não é alcançável). Valor: `"texto"` ou `'texto'` vira string Lua (o conteúdo vai como está: escape `\"` e `\` você mesmo), `true`/`false` viram booleano, número vira número; `;` dentro de aspas não separa. Valor fora disso: `ERRO`.
+  - O leitor não usa interpretador Lua: acompanha a profundidade das chaves `{}` ignorando strings (com escapes) e comentários, troca só o valor da linha `["chave"] = valor,` no nível certo ou, se a chave não existe, insere `["chave"] = valor,` na linha antes do `}` que fecha a tabela (com a indentação da linha anterior). O resto do arquivo não é reformatado (codificação, BOM e quebras de linha preservados, byte a byte).
+  - Recusa (`RECUSA`, código 1, nada gravado, vale também na prévia): `*` ou caminho que não casa com nada, tabela intermediária ausente, tabela global ausente, valor atual que é tabela. Qualquer par recusado cancela todos.
+  - prévia: uma linha `SV arquivo=<a> caminho=<c resolvido> atual=<v|(ausente)> novo=<v>` por alteração (`atual` e `novo` como literais Lua);
+  - com `-Aplicar`: `Assert-JogoFechado`, roda o `wtf-backup.ps1 -Rotulo antes-de-sv` como processo filho (repassa a linha `BACKUP ...`; falha do backup é `ERRO` e nada é gravado), grava o arquivo, `Add-Registro sv` e imprime `OK sv arquivo=<a> alteradas=<n>`.
 ### 9.5 `dev-link.ps1 -Pasta <dir do addon em addons-proprios> [-Remover] [-Aplicar]`
 
 - **Ligar:** o nome é o da pasta; o destino é `<AddOns>\<nome>`.
@@ -377,8 +384,8 @@ Cada addon tem um `.lua` de uma linha.
 
 ## 12. Fora do escopo
 
-- Download automático da CurseForge (sem chave; o dono clica).
-- Edição de SavedVariables por script.
+- Download automático pela API da CurseForge (pede chave). Revogada em 2026-11-05 a regra de o dono clicar: o agente baixa de fonte pública (Wago, GitHub) e só cai no clique do dono quando a CurseForge é a única fonte, porque ela recusa cliente automático.
+- Edição de SavedVariables por script: **liberada em 2026-11-05 pelo dono**, só com o jogo fechado e backup do WTF antes, pelo `wtf-sv.ps1` (§9.4). Nenhum outro script edita SavedVariables.
 - Escrita de `macros-cache.txt` e `bindings-cache.wtf` (depende da sincronização com o servidor; o agente decide caso a caso).
 - Agendamento no Windows.
 - Qualquer escrita fora de `Interface\AddOns`, `WTF`, `estado\`, `comum\instalacao.json`, dos backups e do temp.

@@ -1,0 +1,10 @@
+## Interface: 16001
+## Title: GuiaForever
+## Notes: Proximo talento, perfil grafico e roteiros de profissao (Hexumlite e Rurik).
+## Author: Bruno
+## Version: 0.3.0
+## SavedVariables: GuiaForeverDB
+Dados.lua
+ProfissoesA.lua
+ProfissoesB.lua
+GuiaForever.lua

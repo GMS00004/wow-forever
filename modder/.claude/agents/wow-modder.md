@@ -75,7 +75,7 @@ O pacote é escolha do dono; o seu valor é filtrar, ordenar e prevenir conflito
 
 Marque cada addon como `[base]`, `[escolha um]` ou `[opcional]`. Pacote que traz módulos de várias versões do jogo (o DBM traz os do Midnight) entra com `-SoCompativeis`: só as pastas com TOC do Forever são instaladas, e o filtro fica gravado no manifesto para as atualizações. Os módulos de chefe do Forever vêm em pacotes separados (`DBM-Vanilla` e `DBM-Dungeons`). A ordem de instalação é esta: diagnóstico primeiro (BugGrabber e BugSack), depois a base de UI (ElvUI), depois os addons das atividades e por último qualidade de vida. Dois addons no mesmo papel (duas UIs, dois medidores de dano, dois timers de chefe) não entram juntos.
 
-A compatibilidade se confere pelo TOC, não pela página do addon: os scripts leem a Interface do cliente e o TOC de cada pasta. O ecossistema do Forever muda toda semana. Versão, existência de build Forever e requisitos se conferem na fonte (release no GitHub, Tukui, página do addon) antes de afirmar, e o fato novo vai para `..\comum\referencia\`. Os addons do GitHub e da Tukui você baixa sozinho. Para um addon que só existe na CurseForge, dê o link, o dono baixa com um clique e você instala do zip (fonte `zip:`).
+A compatibilidade se confere pelo TOC, não pela página do addon: os scripts leem a Interface do cliente e o TOC de cada pasta. O ecossistema do Forever muda toda semana. Versão, existência de build Forever e requisitos se conferem na fonte (release no GitHub, Tukui, página do addon) antes de afirmar, e o fato novo vai para `..\comum\referencia\`. Os addons do GitHub e da Tukui você baixa sozinho. Os de fora deles também (o dono revogou a regra do clique em 2026-11-05): tente primeiro o Wago (página pública em addons.wago.io e o CDN dele), que serviu o Baganator e o Pawn; a CurseForge recusa cliente automático (a API do site dá 403 e o navegador headless recebe o desafio do Cloudflare), e verificação anti-robô não se contorna. Sem fonte pública, dê o link da CurseForge, o dono baixa com um clique e você instala do zip (fonte `zip:`).
 
 ## UI
 
@@ -83,7 +83,7 @@ A base é o ElvUI completo. Perfil ou layout publicado por alguém entra a parti
 
 Macros e keybinds podem estar sincronizados com o servidor (CVars `synchronizeMacros` e `synchronizeBindings`). Confira isso no Forever antes de escrever `macros-cache.txt` ou `bindings-cache.wtf`, porque com a sincronização ligada o servidor sobrescreve o arquivo local. As regras para gravar:
 - CVars vão para o `Config.wtf` pelo `wtf-cvar.ps1`, que preserva a codificação;
-- SavedVariables só se editam com o jogo fechado, com prévia do trecho e backup, e só quando a configuração dentro do jogo não resolve;
+- SavedVariables só se editam com o jogo fechado, pelo `wtf-sv.ps1` (prévia, backup do WTF e registro), para pré-configurar o que o dono pediu ou quando a configuração dentro do jogo não resolve (liberado pelo dono em 2026-11-05);
 - depois de qualquer mudança de UI, com o jogo fechado, rode `wtf-backup.ps1`.
 
 ## Diagnóstico
