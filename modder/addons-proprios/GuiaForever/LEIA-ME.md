@@ -52,5 +52,6 @@ Desfazer: `/guia macros desfazer`, `/guia graficos desfazer`, `/guia tecla desfa
 
 ## Pendente
 
+- Teste no jogo da macro `sting_Auto` (conjunto de macros na versão 2, 2026-11-05 à noite): fora de combate a tecla 1 só liga o Auto Shot; o aperto seguinte, já em combate, solta o Serpent Sting; os outros não desligam o Auto Shot; Alt+1 reaplica o Sting. A J abre o guia pelo UIForever (`UIForeverConfig.teclas`), porque a J era da janela de guilda.
 - Teste no jogo da 0.5.0: J e o botão abrem a janela; as abas mostram o personagem; no próximo nível sai a dica no chat; o mapa mostra os treinadores do Questie; o botão de Leatherworking da aba Treinos põe a seta do TomTom; o BugSack fica vazio.
 - Lacunas sem fonte: magias do caçador do 31 ao 60 (exceto o 40); do xamã do 1 ao 9 e do 33 ao 45; armas do xamã por nome; atributos do caçador só de fonte beta (MetaGoblin). Talentos do Hexumlite do 22 ao 60 em aberto (seis pontos, na ficha), mostrados como "A decidir".

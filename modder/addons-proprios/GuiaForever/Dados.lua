@@ -124,7 +124,7 @@ GuiaForeverDados = {
 -- Teclas e escolha das macros do leak: dono, em 2026-11-05.
 GuiaForeverMacros = {
   HUNTER = {
-    versao = 1,
+    versao = 2,  -- 2: sting_Auto (2026-11-05, noite)
     fonte = "Gladius Gaming e leak",
     lista = {
       { nome = "send_Pet", icone = "Ability_GhoulFrenzy", tecla = "SHIFT-MOUSEWHEELUP",
@@ -154,6 +154,14 @@ GuiaForeverMacros = {
         corpo = "#showtooltip\n/cast [mod:alt] Aspect of the Pack; Aspect of the Cheetah" },
       { nome = "cancel_Cheetah", icone = "Ability_Mount_JungleTiger",
         corpo = "/cancelaura Aspect of the Cheetah\n/cancelaura Aspect of the Pack" },
+      -- pedido do dono (2026-11-05, noite): Auto Shot primeiro, Serpent Sting no
+      -- aperto seguinte, depois so Auto Shot. Fora de combate o [combat] pula a
+      -- sequencia e so o Auto Shot sai; em combate sai o Sting uma vez por alvo.
+      -- O "!" nunca desliga o Auto Shot. Recomeca: novo alvo, fim do combate, Alt.
+      -- Mecanica conferida em Blizzard_ChatFrameBase/Shared/CastSequenceManager.lua
+      -- (espelho Ketho/wow-ui-source-forever); "!" e "null" so o teste no jogo confirma.
+      { nome = "sting_Auto", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip\n/castsequence [combat] reset=target/combat/alt Serpent Sting, null\n/cast !Auto Shot" },
     },
   },
 }

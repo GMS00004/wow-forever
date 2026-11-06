@@ -1,13 +1,13 @@
 # UIForever
 
-Addon próprio criado em 2026-11-05 a partir do feedback do dono sobre o print da UI. Ele aplica a UI inteira no login, para o dono não configurar nada dentro do jogo. Versão 0.1.0. Até a tarde de 2026-11-05 ainda não tinha rodado no jogo, porque não existia `UIForever.lua` nas SavedVariables; a conferência do primeiro login está nas pendências de `..\..\estado\estado.md`.
+Addon próprio criado em 2026-11-05 a partir do feedback do dono sobre o print da UI. Ele aplica a UI inteira no login, para o dono não configurar nada dentro do jogo. Versão 0.2.0 (feita em duas sessões paralelas na noite de 2026-11-05, no Avell e no Acer, e juntada depois: acrescentou as opções do menu do jogo, os CVars, e passou a respeitar o que o dono põe nos botões). O primeiro login com ele foi em 2026-11-05 às 19h29, com o diário limpo: 41 ajustes no ElvUI, 30 teclas e 13 botões do caçador, sem falha.
 
 ## Arquivos
 
 | Arquivo | O que tem |
 |---|---|
 | `UIForever.toc` | Interface 16001, depende do ElvUI, SavedVariables `UIForeverDB` (conta) e `UIForeverCharDB` (personagem) |
-| `Config.lua` | tudo o que se muda: layout do ElvUI, teclas, conteúdo dos botões por classe, escala do minimapa grande e a barra de experiência (`barraXP`) |
+| `Config.lua` | tudo o que se muda: layout do ElvUI, teclas, conteúdo dos botões por classe, escala do minimapa grande, opções do menu do jogo (CVars) e a barra de experiência (`barraXP`) |
 | `UIForever.lua` | o motor; não precisa ser mexido para trocar a configuração |
 | `Bindings.xml` | a tecla do minimapa grande (aparece em Keybindings, em AddOns); o cliente lê sozinho, fora do TOC |
 
@@ -21,8 +21,9 @@ Addon próprio criado em 2026-11-05 a partir do feedback do dono sobre o print d
    - **Desde a 0.2.0 (2026-11-05), o botão é do dono.** O UIForever lembra, por personagem, o que ele mesmo pôs em cada slot (`UIForeverCharDB.slots`). Ele só troca ou esvazia um slot enquanto o conteúdo for o que ele pôs. O que o dono arrastar para um slot gerenciado, ou tirar dele, fica. Slot vazio que o UIForever nunca preencheu recebe a ação do plano quando ela existir (magia aprendida ou macro criada).
    - Por que mudou: na 0.1.0, ele devolvia cada slot ao plano e esvaziava os slots de magias ainda não aprendidas a cada `SPELLS_CHANGED`. Isso fazia sumir o que o dono arrastava (relato do dono em 2026-11-05).
    - Para o UIForever voltar a preencher um slot que o dono esvaziou, apague a entrada do slot em `UIForeverCharDB.slots`, com o jogo fechado, e entre de novo.
-6. Shift+M (`UIForever_AlternarMinimapa`) multiplica a escala do minimapa por `minimapaEscala` (2,2) no mesmo canto e volta no segundo toque; se o dono sair do jogo com ele grande, o próximo login volta ao normal.
-7. **Barra de experiência da Blizzard (desde a 0.3.0, 2026-11-05).** Dois segundos depois de entrar no mundo, junto com as teclas e os botões, o UIForever cria a barra de experiência com o próprio modelo da Blizzard. A barra de XP do ElvUI fica desligada pelo par `databars.experience.enable = false` do `Config.lua`.
+6. As opções do menu de `UIForeverConfig.cvars` (hoje: auto loot ligado e "NPC Names" em "All NPCs", pedido do dono em 2026-11-05) são gravadas pela API oficial (`C_CVar.SetCVar` ou `SetCVar`), fora de combate, uma vez por personagem: o controle fica em `UIForeverCharDB.cvars`, e só uma linha que mudar no `Config.lua` é gravada de novo. O que o dono mudar no menu depois fica naquele personagem, mas como essas opções costumam valer para a conta, o primeiro login de outro personagem pode religar; para desligar de vez, tire a linha do `Config.lua`. O diário registra o valor de antes de cada uma (`cvars: nome antes->depois`).
+7. Shift+M (`UIForever_AlternarMinimapa`) multiplica a escala do minimapa por `minimapaEscala` (2,2) no mesmo canto e volta no segundo toque; se o dono sair do jogo com ele grande, o próximo login volta ao normal.
+8. **Barra de experiência da Blizzard (desde a 0.3.0, 2026-11-05).** Dois segundos depois de entrar no mundo, junto com as teclas e os botões, o UIForever cria a barra de experiência com o próprio modelo da Blizzard. A barra de XP do ElvUI fica desligada pelo par `databars.experience.enable = false` do `Config.lua`.
    - Por que não a barra original: o ElvUI 16.01 apaga o `StatusTrackingBarManager` da Blizzard quando as barras de ação dele estão ligadas (`AB:DisableBlizzard` chama `Kill()`). Esse quadro é do Edit Mode, onde já houve avisos de taint, por isso o UIForever não o ressuscita.
    - O que é igual à Blizzard: a barra (`ExpStatusBarTemplate`, com o código, as animações, o marcador e a previsão do descanso e o tooltip dela) e o container, recriado à mão com o atlas `UI-HUD-ExperienceBar-Frame` e os 20 segmentos de `StatusBarDividerTemplate`. O tamanho é 1192 × 17 e a barra fica 3 menor, em (1, 2), como no `InitializeBars` do Forever (constantes `STATUS_BAR_CONTAINER_*` do `Camelot`). Fonte: espelho `Ketho/wow-ui-source-forever`, pasta `Blizzard_StatusTrackingBar`.
    - Inferência a conferir no print: no XML da Blizzard, a moldura (`BarFrameTexture`) não tem âncora. O UIForever a estica no container (`SetAllPoints`).
@@ -34,7 +35,7 @@ Addon próprio criado em 2026-11-05 a partir do feedback do dono sobre o print d
 
 ## Ligação com o GuiaForever
 
-As macros do caçador são criadas pelo GuiaForever (`..\GuiaForever\Dados.lua`, `GuiaForeverMacros.HUNTER`), e o UIForever só as põe nos botões, pelo nome. Se uma macro mudar de nome lá, troque o nome também em `barras.HUNTER` do `Config.lua`, senão o botão cai na magia de reserva ou fica vazio. As teclas do pet (Shift+roda e clique do meio) são do GuiaForever e não estão no `UIForever`.
+As macros do caçador são criadas pelo GuiaForever (`..\GuiaForever\Dados.lua`, `GuiaForeverMacros.HUNTER`), e o UIForever só as põe nos botões, pelo nome. Se uma macro mudar de nome lá, troque o nome também em `barras.HUNTER` do `Config.lua`, senão o botão cai na magia de reserva ou fica vazio. As teclas do pet (Shift+roda e clique do meio) são do GuiaForever e não estão no `UIForever`. A J, que abre o guia do GuiaForever, está no `UIForever` desde 2026-11-05 à noite (escolha do dono), porque a J era da janela de guilda e o GuiaForever só a pega quando está livre. A tecla 1 do caçador usa a macro `sting_Auto` do GuiaForever, com o Serpent Sting de reserva.
 
 Até 2026-11-05 só o caçador tem barras. O Rurik (Shaman) entra quando a build dele fechar.
 
@@ -48,6 +49,6 @@ O diário do addon fica em `UIForeverDB.log` (últimas 60 linhas), em `WTF\Accou
 
 ## Desfazer
 
-`ferramentas\dev-link.ps1 -Pasta addons-proprios\UIForever -Remover -Aplicar` tira o addon, e `ferramentas\wtf-restaurar.ps1 -De <backups>\sessoes\2026-11-05_1212 -Aplicar` devolve o perfil do ElvUI e as teclas de antes. As duas coisas são necessárias, porque o addon grava no perfil do ElvUI e no `bindings-cache.wtf`.
+`ferramentas\dev-link.ps1 -Pasta addons-proprios\UIForever -Remover -Aplicar` tira o addon, e `ferramentas\wtf-restaurar.ps1 -De <backups>\sessoes\2026-11-05_1212 -Aplicar` devolve o perfil do ElvUI e as teclas de antes. As duas coisas são necessárias, porque o addon grava no perfil do ElvUI e no `bindings-cache.wtf`. As opções do menu (CVars) não voltam com o backup do WTF de forma garantida (ficam também no servidor): desfaça pelo menu do jogo (Options > Controls > Auto Loot; Options > Nameplates > NPC Names; o valor de antes fica no diário, e o padrão do Forever é a opção 3, hostis e interativos, fora do preset Classic) e tire as linhas do `Config.lua`.
 
 Só a barra de experiência: no `Config.lua`, `barraXP.ligada = false` e `true` no par `databars.experience.enable`, e depois `/reload`. A barra do ElvUI volta com as quests dela, que vêm ligadas por padrão (`showQuestXP`).
