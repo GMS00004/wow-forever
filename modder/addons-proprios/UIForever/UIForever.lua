@@ -133,6 +133,53 @@ local function prepararPerfilElvUI()
 end
 
 ---------------------------------------------------------------------------
+-- 1b. Fontes de numero da Blizzard (Config.lua, fonteNumeros)
+---------------------------------------------------------------------------
+-- O ElvUI 16.01 poe estas fontes na fonte geral em E:UpdateBlizzardFonts
+-- (General\Fonts.lua, "number fonts"). Aqui so a fonte muda; tamanho e
+-- contorno ficam os que o ElvUI deu. Roda depois de cada chamada dele.
+
+local FONTES_NUMERO = {
+  "Number11Font", "Number12Font", "Number12Font_o1", "Number13Font",
+  "Number13FontGray", "Number13FontWhite", "Number13FontYellow",
+  "Number14FontGray", "Number14FontWhite", "Number15Font", "Number18Font",
+  "Number18FontWhite", "NumberFontNormal", "NumberFontNormalSmall",
+  "NumberFont_OutlineThick_Mono_Small", "NumberFont_Outline_Huge",
+  "NumberFont_Outline_Large", "NumberFont_Outline_Med", "NumberFont_Shadow_Med",
+  "NumberFont_Shadow_Small", "NumberFont_Small", "UserScaledFontNumberNormalRight",
+  "UserScaledFontNumberNormalRightGray", "UserScaledFontNumberNormalRightGreen",
+  "UserScaledFontNumberNormalRightRed", "UserScaledFontNumberNormalRightYellow",
+}
+
+local fonteNumerosAvisada = false
+
+local function aplicarFonteNumeros()
+  local c = cfg.fonteNumeros
+  if not (c and c.ligado and c.fonte) then return end
+  local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
+  local caminho = LSM and LSM:Fetch("font", c.fonte, true)
+  if not caminho then
+    registrar("fonte dos numeros: " .. tostring(c.fonte) .. " nao registrada no LibSharedMedia")
+    return
+  end
+  local n = 0
+  for _, nome in ipairs(FONTES_NUMERO) do
+    local obj = _G[nome]
+    if obj and obj.GetFont and obj.SetFont then
+      local _, tamanho, contorno = obj:GetFont()
+      if tamanho and tamanho > 0 then
+        obj:SetFont(caminho, tamanho, contorno or "")
+        n = n + 1
+      end
+    end
+  end
+  if not fonteNumerosAvisada then
+    registrar("fonte dos numeros da Blizzard: " .. c.fonte .. " em " .. n .. " fontes")
+    fonteNumerosAvisada = true
+  end
+end
+
+---------------------------------------------------------------------------
 -- 2. Teclas
 ---------------------------------------------------------------------------
 
@@ -656,6 +703,12 @@ f:SetScript("OnEvent", function(_, evento, arg1)
     if E then
       local ok, erro = pcall(prepararPerfilElvUI)
       if not ok then registrar("erro no perfil do ElvUI: " .. tostring(erro)) end
+      if cfg.fonteNumeros and cfg.fonteNumeros.ligado and type(E.UpdateBlizzardFonts) == "function" then
+        hooksecurefunc(E, "UpdateBlizzardFonts", function()
+          local okF, erroF = pcall(aplicarFonteNumeros)
+          if not okF then registrar("erro na fonte dos numeros: " .. tostring(erroF)) end
+        end)
+      end
     else
       registrar("ElvUI ausente")
     end

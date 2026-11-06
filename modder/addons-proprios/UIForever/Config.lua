@@ -46,13 +46,7 @@ UIForeverConfig.elvui = {
   { "unitframe.units.target.portrait.style", "3D" },
   { "unitframe.units.target.portrait.overlay", false },
   { "unitframe.units.target.portrait.width", 82 },
-  -- vida em pontos, atual / maxima, no lugar do percentual (pedido do dono em
-  -- 2026-11-06). Tags do ElvUI 16.01 no modo moderno (Tags\Modern.lua): o
-  -- numero sai inteiro (longvalue) e o ElvUI passa o valor da Blizzard direto
-  -- para a abreviacao, sem ler o valor secreto. Padrao do ElvUI no Forever,
-  -- para voltar: "||cFF29CC00[perhp<%]||r"
-  { "unitframe.units.player.health.text_format", "||cFF29CC00[health:current:longvalue] / [health:max:longvalue]||r" },
-  { "unitframe.units.target.health.text_format", "||cFF29CC00[health:current:longvalue] / [health:max:longvalue]||r" },
+  -- a vida do jogador e do alvo (atual / maxima) esta na secao 1b, Numeros
   -- chats semitransparentes e com metade da altura (eram 236)
   { "chat.panelColor", { r = 0.06, g = 0.06, b = 0.06, a = 0.3 } },
   { "chat.separateSizes", true },
@@ -67,6 +61,95 @@ UIForeverConfig.elvui = {
   -- para voltar a do ElvUI, true aqui e ligada = false la
   { "databars.experience.enable", false },
 }
+
+-- 1b. Numeros em Expressway (pedido do dono em 2026-11-06: o 5 parecia 6 e o 6
+-- parecia 8). No padrao do ElvUI 16.01 os quadros e as barras usam a Homespun,
+-- fonte de pixel, e o resto a PT Sans Narrow. So o que e numero muda; nomes,
+-- chat, tooltip e menus ficam como estao ("so nos numeros, por enquanto").
+-- No ElvUI o nome e a vida do quadro dividem a fonte do modulo, por isso a vida
+-- e o recurso do jogador e do alvo saem do texto padrao e viram textos proprios
+-- (customTexts), cada um com a sua fonte, no mesmo lugar do texto padrao.
+-- Para desfazer: ligado = false e /reload (volta cada item ao padrao do ElvUI).
+local NUMEROS = {
+  ligado = true,
+  fonte = "Expressway", -- ja vem no ElvUI (a dos numeros de recarga)
+  contorno = "OUTLINE",
+  tamanhoQuadro = 13,   -- vida e recurso do jogador e do alvo
+  tamanhoBotao = 12,    -- tecla e contagem nos botoes, contagem das auras
+}
+
+-- Vida em pontos, atual / maxima (pedido do dono em 2026-11-06). Tags do ElvUI
+-- 16.01 no modo moderno (Tags\Modern.lua): o numero sai inteiro (longvalue) e
+-- o ElvUI passa o valor da Blizzard direto, sem ler o valor secreto.
+local VIDA = "||cFF29CC00[health:current:longvalue] / [health:max:longvalue]||r"
+local RECURSO = "||cFF007ACC[perpp<%]||r" -- o padrao do ElvUI no Forever
+
+local function numero(caminho, novo, padrao)
+  local valor = padrao
+  if NUMEROS.ligado then valor = novo end
+  table.insert(UIForeverConfig.elvui, { caminho, valor })
+end
+
+local function textoProprio(formato, lado, x)
+  return {
+    enable = NUMEROS.ligado, text_format = formato, attachTextTo = "Health",
+    justifyH = lado, xOffset = x, yOffset = 0,
+    font = NUMEROS.fonte, size = NUMEROS.tamanhoQuadro, fontOutline = NUMEROS.contorno,
+  }
+end
+
+-- quadros do jogador e do alvo: lado e deslocamento iguais aos do texto padrao
+-- (jogador: vida a esquerda e recurso a direita; alvo: o contrario)
+for unidade, lados in pairs({ player = { "LEFT", 2, "RIGHT", -2 }, target = { "RIGHT", -2, "LEFT", 2 } }) do
+  local base = "unitframe.units." .. unidade
+  numero(base .. ".health.text_format", "", VIDA)
+  numero(base .. ".power.text_format", "", RECURSO)
+  table.insert(UIForeverConfig.elvui, { base .. ".customTexts.UIForeverVida", textoProprio(VIDA, lados[1], lados[2]) })
+  table.insert(UIForeverConfig.elvui, { base .. ".customTexts.UIForeverRecurso", textoProprio(RECURSO, lados[3], lados[4]) })
+  numero(base .. ".castbar.customTimeFont.enable", true, false) -- tempo da barra de lancamento
+  numero(base .. ".castbar.customTimeFont.font", NUMEROS.fonte, "PT Sans Narrow")
+end
+
+-- contagem das auras nos quadros (pilhas)
+for _, unidade in ipairs({ "player", "target", "pet", "targettarget", "focus" }) do
+  for _, grupo in ipairs({ "buffs", "debuffs", "auras" }) do
+    numero("unitframe.units." .. unidade .. "." .. grupo .. ".countFont", NUMEROS.fonte, "PT Sans Narrow")
+  end
+end
+
+-- botoes: a tecla (1 a 6, S1, C1...) e a contagem (municao, cargas, reagentes);
+-- o nome da macro e texto e fica de fora
+for _, barra in ipairs({ "bar1", "bar2", "bar3", "bar4", "bar5", "bar6", "barPet", "stanceBar" }) do
+  local base = "actionbar." .. barra
+  numero(base .. ".hotkeyFont", NUMEROS.fonte, "Homespun")
+  numero(base .. ".hotkeyFontOutline", NUMEROS.contorno, "MONOCHROMEOUTLINE")
+  numero(base .. ".hotkeyFontSize", NUMEROS.tamanhoBotao, 10)
+  numero(base .. ".countFont", NUMEROS.fonte, "Homespun")
+  numero(base .. ".countFontOutline", NUMEROS.contorno, "MONOCHROMEOUTLINE")
+  numero(base .. ".countFontSize", NUMEROS.tamanhoBotao, 10)
+end
+
+-- auras perto do minimapa: a contagem (o tempo ja sai em Expressway)
+for _, grupo in ipairs({ "buffs", "debuffs" }) do
+  numero("auras." .. grupo .. ".countFont", NUMEROS.fonte, "Homespun")
+  numero("auras." .. grupo .. ".countFontOutline", NUMEROS.contorno, "MONOCHROMEOUTLINE")
+  numero("auras." .. grupo .. ".countFontSize", NUMEROS.tamanhoBotao, 10)
+end
+
+-- placas de nome: o percentual de vida e o nivel (o nome fica)
+for _, placa in ipairs({ "FRIENDLY_PLAYER", "FRIENDLY_NPC", "ENEMY_PLAYER", "ENEMY_NPC" }) do
+  numero("nameplates.units." .. placa .. ".health.text.font", NUMEROS.fonte, "PT Sans Narrow")
+  numero("nameplates.units." .. placa .. ".level.font", NUMEROS.fonte, "PT Sans Narrow")
+end
+
+-- barra de vida do tooltip
+numero("tooltip.healthBar.font", NUMEROS.fonte, "PT Sans Narrow")
+
+-- Fontes de numero da propria Blizzard (contagem de itens nas bolsas do
+-- Baganator e nas janelas do jogo, NumberFontNormal e afins): o ElvUI as poe na
+-- fonte geral; o UIForever troca so a fonte, mantendo tamanho e contorno, logo
+-- depois de cada E:UpdateBlizzardFonts (UIForever.lua, secao 1b).
+UIForeverConfig.fonteNumeros = { ligado = NUMEROS.ligado, fonte = NUMEROS.fonte }
 
 -- Altura minima e maxima ao arrastar a borda de cima de um chat.
 UIForeverConfig.chatAlturaMin = 60

@@ -41,7 +41,7 @@ ns.pontosLivres = pontosLivres
 
 local function entrada(nivel)
   if not dados then return nil end
-  if nivel < MIN_NIVEL then return "Sem talento ainda (o primeiro vem no nivel " .. MIN_NIVEL .. ")" end
+  if nivel < MIN_NIVEL then return "No talent yet (the first one comes at level " .. MIN_NIVEL .. ")" end
   if nivel > MAX_NIVEL then return nil end
   return dados.ordem[nivel]
 end
@@ -148,16 +148,16 @@ end
 
 local function listarProfissoes()
   local lista = minhasProfissoes()
-  if #lista == 0 then msg("nenhuma profissao com roteiro encontrada."); return end
+  if #lista == 0 then msg("no profession with a leveling route found."); return end
   for _, pr in ipairs(lista) do
     local idx = indicePasso(pr.tab, pr.pericia)
     msg(linhaProf(pr, idx))
     local prox = pr.tab.passos[idx + 1]
-    if prox then print("   Proximo (" .. prox.de .. "-" .. prox.ate .. "): " .. prox.texto) end
+    if prox then print("   Next (" .. prox.de .. "-" .. prox.ate .. "): " .. prox.texto) end
     if pr.tab.treino then
-      for _, t in ipairs(pr.tab.treino) do print("   Treino: " .. t) end
+      for _, t in ipairs(pr.tab.treino) do print("   Training: " .. t) end
     end
-    if pr.tab.fonte then print("   Fonte: " .. pr.tab.fonte .. " (" .. tostring(pr.tab.data) .. ")") end
+    if pr.tab.fonte then print("   Source: " .. pr.tab.fonte .. " (" .. tostring(pr.tab.data) .. ")") end
   end
 end
 
@@ -173,9 +173,9 @@ local function dicasDoNivel(nivel)
   local linhas = {}
   if not d then return linhas end
   for _, e in ipairs(d.magias or {}) do
-    if e.nivel == nivel then linhas[#linhas + 1] = "Magia: " .. comFonte(e) end
+    if e.nivel == nivel then linhas[#linhas + 1] = "Spell: " .. comFonte(e) end
   end
-  for _, par in ipairs({ { "armas", "Arma" }, { "pets", "Pet" }, { "rotacao", "Rotacao" } }) do
+  for _, par in ipairs({ { "armas", "Weapon" }, { "pets", "Pet" }, { "rotacao", "Rotation" } }) do
     for _, e in ipairs(d[par[1]] or {}) do
       if e.de == nivel then linhas[#linhas + 1] = par[2] .. ": " .. comFonte(e) end
     end
@@ -189,11 +189,11 @@ local function anunciar(nivel, login)
   if dados and (nivel >= MIN_NIVEL or nivel + 1 == MIN_NIVEL) then
     local livres = pontosLivres()
     if nivel >= MIN_NIVEL and nivel <= MAX_NIVEL and (livres == nil or livres > 0) then
-      linhas[#linhas + 1] = "Agora (nivel " .. nivel .. "): " .. (entrada(nivel) or "?")
+      linhas[#linhas + 1] = "Now (level " .. nivel .. "): " .. (entrada(nivel) or "?")
     end
     local prox = entrada(nivel + 1)
     if prox then
-      linhas[#linhas + 1] = "Proximo (nivel " .. (nivel + 1) .. "): " .. prox
+      linhas[#linhas + 1] = "Next (level " .. (nivel + 1) .. "): " .. prox
     end
   end
   if #linhas > 0 then
@@ -208,9 +208,9 @@ local function anunciar(nivel, login)
   local extras = dicasDoNivel(nivel)
   if login then
     if #extras > 0 then
-      msg("nivel " .. nivel .. ": " .. #extras .. " dica(s) novas. J, o botao do livro ou /guia abrem o guia.")
+      msg("level " .. nivel .. ": " .. #extras .. " new tip(s). J, the book button or /guia opens the guide.")
     elseif ns.dicas() then
-      msg("J, o botao do livro ou /guia abrem o guia.")
+      msg("J, the book button or /guia opens the guide.")
     end
   else
     for _, l in ipairs(extras) do msg(l) end
@@ -218,8 +218,8 @@ local function anunciar(nivel, login)
 end
 
 local function listarTudo()
-  if not dados then msg("sem dados para esta classe."); return end
-  msg((dados.personagem or "") .. " - ordem completa")
+  if not dados then msg("no data for this class."); return end
+  msg((dados.personagem or "") .. " - full order")
   for l = MIN_NIVEL, MAX_NIVEL do
     print(COR .. l .. FIM .. ": " .. (dados.ordem[l] or "?"))
   end
@@ -245,7 +245,7 @@ local function aplicarGraficos(guardarAnterior)
   local alvos = GuiaForeverGraficos
   if not alvos then return end
   if emCombate() then
-    msg("graficos: em combate, tente de novo fora dele.")
+    msg("graphics: in combat, try again out of combat.")
     return
   end
   GuiaForeverDB.graficos = GuiaForeverDB.graficos or {}
@@ -257,29 +257,29 @@ local function aplicarGraficos(guardarAnterior)
   for _, a in ipairs(alvos) do
     local antes = lerCVar(a.cvar)
     local ok = gravarCVar(a.cvar, a.valor)
-    msg(a.cvar .. ": " .. tostring(antes) .. " -> " .. (ok and a.valor or "falhou"))
+    msg(a.cvar .. ": " .. tostring(antes) .. " -> " .. (ok and a.valor or "failed"))
   end
   g.versao = 1
 end
 
 local function desfazerGraficos()
   local g = GuiaForeverDB and GuiaForeverDB.graficos
-  if not g or not g.anterior then msg("graficos: nada guardado para desfazer."); return end
+  if not g or not g.anterior then msg("graphics: nothing saved to undo."); return end
   if emCombate() then
-    msg("graficos: em combate, tente de novo fora dele.")
+    msg("graphics: in combat, try again out of combat.")
     return
   end
   for cvar, v in pairs(g.anterior) do
     local atual = lerCVar(cvar)
     local ok = gravarCVar(cvar, v)
-    msg(cvar .. ": " .. tostring(atual) .. " -> " .. (ok and tostring(v) or "falhou"))
+    msg(cvar .. ": " .. tostring(atual) .. " -> " .. (ok and tostring(v) or "failed"))
   end
 end
 
 local function listarGraficos()
-  msg("graficos: alvo e valor atual")
+  msg("graphics: target and current value")
   for _, a in ipairs(GuiaForeverGraficos or {}) do
-    print("  " .. a.cvar .. ": alvo " .. a.valor .. ", atual " .. tostring(lerCVar(a.cvar)))
+    print("  " .. a.cvar .. ": target " .. a.valor .. ", current " .. tostring(lerCVar(a.cvar)))
   end
 end
 
@@ -294,7 +294,7 @@ local function lembreteRestedXP()
   local p = perfil and perfis[perfil]
   if type(p) ~= "table" then return end
   if p.enableTalentGuides ~= false then
-    msg("RestedXP: desligue os guias de talento do Classic: /rxp, aba General, secao Talents, desmarque Enable Talents Guides e de /reload.")
+    msg("RestedXP: turn off the Classic talent guides: /rxp, General tab, Talents section, untick Enable Talents Guides and /reload.")
   end
 end
 
@@ -332,12 +332,12 @@ local function criarMacros(automatico)
   local classe = classeJogador()
   local conj = GuiaForeverMacros and GuiaForeverMacros[classe]
   if not conj then
-    if not automatico then msg("macros: nada definido para a classe " .. tostring(classe) .. ".") end
+    if not automatico then msg("macros: nothing defined for class " .. tostring(classe) .. ".") end
     return
   end
-  if emCombate() then msg("macros: em combate, tente de novo fora dele."); return end
+  if emCombate() then msg("macros: in combat, try again out of combat."); return end
   if not (CreateMacro and GetMacroIndexByName and GetNumMacros) then
-    msg("macros: API de macro indisponivel neste cliente.")
+    msg("macros: macro API unavailable on this client.")
     return
   end
   local chave = chavePersonagem()
@@ -355,7 +355,7 @@ local function criarMacros(automatico)
     if (GetMacroIndexByName(m.nome) or 0) > 0 then
       jaTinha[#jaTinha + 1] = m.nome
     elseif nPersonagem >= max then
-      falhas[#falhas + 1] = m.nome .. " (sem espaco nas macros do personagem)"
+      falhas[#falhas + 1] = m.nome .. " (no room in the character macros)"
     elseif criarUmaMacro(m) then
       criadas[#criadas + 1] = m.nome
       reg.criadas[m.nome] = m.corpo
@@ -375,7 +375,7 @@ local function criarMacros(automatico)
           if reg.teclas[m.tecla] == nil then reg.teclas[m.tecla] = atual end
           if pcall(SetBindingMacro, m.tecla, m.nome) then
             teclas[#teclas + 1] = m.tecla .. " = " .. m.nome
-                .. (atual ~= "" and (" (antes: " .. atual .. ")") or "")
+                .. (atual ~= "" and (" (was: " .. atual .. ")") or "")
           end
         end
       end
@@ -387,22 +387,22 @@ local function criarMacros(automatico)
   reg.desfeito = nil
   GuiaForeverDB.macros[chave] = reg
 
-  if #criadas > 0 then msg("macros criadas (" .. conj.fonte .. "): " .. table.concat(criadas, ", ")) end
-  if #teclas > 0 then msg("teclas deste personagem: " .. table.concat(teclas, "; ")) end
-  if #falhas > 0 then msg("macros que falharam: " .. table.concat(falhas, ", ")) end
+  if #criadas > 0 then msg("macros created (" .. conj.fonte .. "): " .. table.concat(criadas, ", ")) end
+  if #teclas > 0 then msg("keys for this character: " .. table.concat(teclas, "; ")) end
+  if #falhas > 0 then msg("macros that failed: " .. table.concat(falhas, ", ")) end
   if #criadas > 0 or #teclas > 0 then
-    msg("arraste as outras para a barra pelo /macro (aba do personagem). Desfazer: /guia macros desfazer")
+    msg("drag the others to your bars from /macro (character tab). Undo: /guia macros undo")
   elseif not automatico then
-    msg("macros: todas ja existem (" .. table.concat(jaTinha, ", ") .. ").")
+    msg("macros: all already exist (" .. table.concat(jaTinha, ", ") .. ").")
   end
 end
 
 local function desfazerMacros()
-  if emCombate() then msg("macros: em combate, tente de novo fora dele."); return end
+  if emCombate() then msg("macros: in combat, try again out of combat."); return end
   local chave = chavePersonagem()
   local reg = chave and GuiaForeverDB.macros and GuiaForeverDB.macros[chave]
   if not reg or (not next(reg.criadas or {}) and not next(reg.teclas or {})) then
-    msg("macros: nada guardado para desfazer neste personagem.")
+    msg("macros: nothing saved to undo for this character.")
     return
   end
   local apagadas, mantidas = {}, {}
@@ -433,9 +433,9 @@ local function desfazerMacros()
   if voltaram > 0 and SaveBindings then pcall(SaveBindings, conjuntoTeclasPersonagem()) end
   -- desfeito marcado: o login nao recria sozinho (so o /guia macros).
   GuiaForeverDB.macros[chave] = { desfeito = true, criadas = {}, teclas = {} }
-  msg("macros apagadas: " .. (#apagadas > 0 and table.concat(apagadas, ", ") or "nenhuma")
-      .. "; teclas devolvidas: " .. voltaram)
-  if #mantidas > 0 then msg("mantidas porque voce editou: " .. table.concat(mantidas, ", ")) end
+  msg("macros deleted: " .. (#apagadas > 0 and table.concat(apagadas, ", ") or "none")
+      .. "; keys restored: " .. voltaram)
+  if #mantidas > 0 then msg("kept because you edited them: " .. table.concat(mantidas, ", ")) end
 end
 
 local esperaCombate = CreateFrame("Frame")
@@ -461,9 +461,33 @@ end
 -- Comandos ---------------------------------------------------------------
 local ABAS = { nivel = true, talentos = true, armas = true, pets = true, rotacao = true, prof = false, treinos = true }
 
+-- Apelidos em ingles: cada subcomando em portugues continua valendo.
+local APELIDO_1 = {
+  level = "nivel", talents = "talentos", weapons = "armas", rotation = "rotacao",
+  trainers = "treinos", training = "treinos", all = "tudo", professions = "prof",
+  tracker = "rastreador", graphics = "graficos", key = "tecla", trainer = "treinador",
+}
+local APELIDO_2 = { undo = "desfazer", apply = "aplicar", class = "classe" }
+
+local function normalizarArg(arg)
+  local a, b = arg:match("^(%S+)%s*(.-)$")
+  if not a then return "" end
+  a = APELIDO_1[a] or a
+  if a == "treinador" then
+    -- "trainer class|<profession>": o resto e o nome da profissao (nao traduzir)
+    if b == "class" then b = "classe" end
+  else
+    b = APELIDO_2[b] or b
+  end
+  if a == "treinos" and b == "desfazer" then a = "treinadores" end -- "trainers undo"
+  if b ~= "" then return a .. " " .. b end
+  return a
+end
+
 SLASH_GUIAFOREVER1 = "/guia"
 SlashCmdList["GUIAFOREVER"] = function(arg)
   arg = string.lower(strtrim and strtrim(arg or "") or (arg or ""))
+  arg = normalizarArg(arg)
   if arg == "macros" then
     criarMacros(false)
   elseif arg == "macros desfazer" then
@@ -484,17 +508,17 @@ SlashCmdList["GUIAFOREVER"] = function(arg)
     if ns.desfazerTecla then ns.desfazerTecla() end
   elseif arg == "rastreador" then
     if ns.alternarRastreador then ns.alternarRastreador() end
-  elseif arg:sub(1, 10) == "treinador " then
+  elseif arg == "treinador" or arg:sub(1, 10) == "treinador " then
     if ns.setaTreinador then ns.setaTreinador(strtrim and strtrim(arg:sub(11)) or arg:sub(11)) end
   elseif ABAS[arg] then
     if ns.abrirAba then ns.abrirAba(arg) end
   elseif arg == "" then
     if ns.alternarJanela then ns.alternarJanela() end
   else
-    msg("comandos: /guia (janela), /guia nivel|talentos|armas|pets|rotacao|treinos, /guia prof, /guia tudo, "
-      .. "/guia treinador classe|<profissao>, /guia rastreador (mostra ou esconde as metas de profissao), "
-      .. "/guia macros, /guia graficos, e os desfazer: "
-      .. "/guia macros desfazer, /guia graficos desfazer, /guia treinadores desfazer, /guia tecla desfazer")
+    msg("commands: /guia (window), /guia level|talents|weapons|pets|rotation|trainers, /guia prof, /guia all, "
+      .. "/guia trainer class|<profession>, /guia tracker (shows or hides the profession goals), "
+      .. "/guia macros, /guia graphics, and the undo ones: "
+      .. "/guia macros undo, /guia graphics undo, /guia trainers undo, /guia key undo")
   end
 end
 
@@ -534,7 +558,7 @@ f:SetScript("OnEvent", function(_, evento, a1)
     local classe = classeJogador()
     dados = GuiaForeverDados and GuiaForeverDados[classe]
     if not dados and not ns.dicas() then
-      msg("sem guia de talentos para a classe " .. tostring(classe) .. "; a aba Treinos funciona (J ou /guia).")
+      msg("no talent guide for class " .. tostring(classe) .. "; the Trainers tab works (J or /guia).")
       return
     end
     anunciar(UnitLevel("player") or 1, true)

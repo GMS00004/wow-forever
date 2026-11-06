@@ -6,13 +6,13 @@ local _, ns = ...
 
 local LARGURA, ALTURA = 470, 460
 local ABAS = {
-  { id = "nivel", rotulo = "Nivel" },
-  { id = "talentos", rotulo = "Talentos" },
-  { id = "armas", rotulo = "Armas" },
+  { id = "nivel", rotulo = "Level" },
+  { id = "talentos", rotulo = "Talents" },
+  { id = "armas", rotulo = "Weapons" },
   { id = "pets", rotulo = "Pets" },
-  { id = "rotacao", rotulo = "Rotacao" },
+  { id = "rotacao", rotulo = "Rotation" },
   { id = "prof", rotulo = "Prof." },
-  { id = "treinos", rotulo = "Treinos" },
+  { id = "treinos", rotulo = "Trainers" },
 }
 local CINZA, AMARELO = "|cff999999", "|cffffd100"
 
@@ -30,12 +30,12 @@ ns.blocoBotao = function(b, s, f) b[#b + 1] = { t = "botao", s = s, f = f } end
 local function nivelJogador() return UnitLevel("player") or 1 end
 local function noIntervalo(e, n) return e.de <= n and n <= e.ate end
 local function faixaTxt(e)
-  if e.de == e.ate then return "Nivel " .. e.de end
-  return "Niveis " .. e.de .. "-" .. e.ate
+  if e.de == e.ate then return "Level " .. e.de end
+  return "Levels " .. e.de .. "-" .. e.ate
 end
 
 local function listaFaixas(b, lista, n, vazio)
-  if not lista or #lista == 0 then T(b, vazio or "Sem fonte."); return end
+  if not lista or #lista == 0 then T(b, vazio or "No source."); return end
   for _, e in ipairs(lista) do
     local linha = faixaTxt(e) .. ": " .. ns.comFonte(e)
     if noIntervalo(e, n) then linha = ns.COR .. "> " .. ns.FIM .. linha end
@@ -49,25 +49,25 @@ local construtores = {}
 construtores.nivel = function(b)
   local n = nivelJogador()
   local d, dados = ns.dicas(), ns.dados()
-  T(b, ns.COR .. "Nivel " .. n .. (d and d.personagem and (" - " .. d.personagem) or "") .. ns.FIM)
+  T(b, ns.COR .. "Level " .. n .. (d and d.personagem and (" - " .. d.personagem) or "") .. ns.FIM)
   if dados then
     local livres = ns.pontosLivres()
     if n >= ns.MIN_NIVEL and (livres == nil or livres > 0) then
-      T(b, "Talento agora: " .. (ns.entrada(n) or "?"))
+      T(b, "Talent now: " .. (ns.entrada(n) or "?"))
     end
     local prox = ns.entrada(n + 1)
-    if prox then T(b, "Talento no " .. (n + 1) .. ": " .. prox) end
+    if prox then T(b, "Talent at " .. (n + 1) .. ": " .. prox) end
   end
-  if not d then T(b, "Sem dicas para esta classe. Treinadores: aba Treinos."); return end
-  cab(b, "Magias (este nivel e os 2 proximos)")
+  if not d then T(b, "No tips for this class. Trainers: Trainers tab."); return end
+  cab(b, "Spells (this level and the next 2)")
   local achou = false
   for _, e in ipairs(d.magias or {}) do
     if e.nivel >= n and e.nivel <= n + 2 then
-      T(b, "Nivel " .. e.nivel .. ": " .. ns.comFonte(e)); achou = true
+      T(b, "Level " .. e.nivel .. ": " .. ns.comFonte(e)); achou = true
     end
   end
-  if not achou then T(b, "Nada novo de magia nas fontes para estes niveis.") end
-  for _, par in ipairs({ { "armas", "Armas desta faixa" }, { "pets", "Pets desta faixa" }, { "rotacao", "Rotacao desta faixa" } }) do
+  if not achou then T(b, "Nothing new in spells from the sources for these levels.") end
+  for _, par in ipairs({ { "armas", "Weapons for this range" }, { "pets", "Pets for this range" }, { "rotacao", "Rotation for this range" } }) do
     local lista = d[par[1]] or {}
     if #lista > 0 then
       cab(b, par[2])
@@ -75,68 +75,68 @@ construtores.nivel = function(b)
       for _, e in ipairs(lista) do
         if noIntervalo(e, n) then T(b, ns.comFonte(e)); ach = true end
       end
-      if not ach then T(b, "Sem fonte para esta faixa.") end
+      if not ach then T(b, "No source for this range.") end
     end
   end
   if d.atributos and #d.atributos > 0 then
-    cab(b, "Atributos")
+    cab(b, "Stats")
     for _, e in ipairs(d.atributos) do T(b, ns.comFonte(e)) end
   end
 end
 
 construtores.talentos = function(b)
   local dados = ns.dados()
-  if not dados then T(b, "Sem guia de talentos para esta classe."); return end
+  if not dados then T(b, "No talent guide for this class."); return end
   local n = nivelJogador()
   local livres = ns.pontosLivres()
   local ini = n + 1
   if n >= ns.MIN_NIVEL and (livres == nil or livres > 0) then ini = n end
   if ini < ns.MIN_NIVEL then ini = ns.MIN_NIVEL end
-  T(b, ns.COR .. (dados.personagem or "") .. " - proximos 5 pontos" .. ns.FIM)
+  T(b, ns.COR .. (dados.personagem or "") .. " - next 5 points" .. ns.FIM)
   local k = 0
   for l = ini, ns.MAX_NIVEL do
     if k >= 5 then break end
-    T(b, "Nivel " .. l .. ": " .. (dados.ordem[l] or "?"))
+    T(b, "Level " .. l .. ": " .. (dados.ordem[l] or "?"))
     k = k + 1
   end
-  if k == 0 then T(b, "Nada a mostrar (nivel maximo do guia).") end
+  if k == 0 then T(b, "Nothing to show (guide max level).") end
   if dados.lei then
-    cab(b, "Lei (entra com certeza)")
+    cab(b, "Core (definitely in)")
     for _, s in ipairs(dados.lei) do T(b, "- " .. s) end
   end
   if dados.aberto then
-    cab(b, "Aberto (o dono decide)")
+    cab(b, "Open (owner decides)")
     for _, a in ipairs(dados.aberto) do
       T(b, AMARELO .. a.ponto .. ns.FIM)
       for _, o in ipairs(a.opcoes) do T(b, "   " .. o) end
     end
   end
   T(b, " ")
-  T(b, CINZA .. "Ordem completa no chat: /guia tudo" .. ns.FIM)
+  T(b, CINZA .. "Full order in chat: /guia all" .. ns.FIM)
 end
 
 local function abaDeFaixas(chave, nomeAba, vazio)
   return function(b)
     local d = ns.dicas()
-    if not d then T(b, "Sem dicas para esta classe."); return end
-    T(b, ns.COR .. nomeAba .. ns.FIM .. CINZA .. "  (> = sua faixa)" .. ns.FIM)
+    if not d then T(b, "No tips for this class."); return end
+    T(b, ns.COR .. nomeAba .. ns.FIM .. CINZA .. "  (> = your range)" .. ns.FIM)
     listaFaixas(b, d[chave], nivelJogador(), vazio)
   end
 end
-construtores.armas = abaDeFaixas("armas", "Armas por faixa de nivel")
-construtores.pets = abaDeFaixas("pets", "Pets: o que domar e onde", "Esta classe nao tem pet.")
+construtores.armas = abaDeFaixas("armas", "Weapons by level range")
+construtores.pets = abaDeFaixas("pets", "Pets: what to tame and where", "This class has no pet.")
 
 construtores.rotacao = function(b)
   local d = ns.dicas()
-  if not d then T(b, "Sem dicas para esta classe."); return end
-  T(b, ns.COR .. "Rotacao por faixa" .. ns.FIM .. CINZA .. "  (> = sua faixa)" .. ns.FIM)
+  if not d then T(b, "No tips for this class."); return end
+  T(b, ns.COR .. "Rotation by range" .. ns.FIM .. CINZA .. "  (> = your range)" .. ns.FIM)
   listaFaixas(b, d.rotacao, nivelJogador())
   if d.atributos and #d.atributos > 0 then
-    cab(b, "Prioridade de atributos")
+    cab(b, "Stat priority")
     for _, e in ipairs(d.atributos) do T(b, ns.comFonte(e)) end
   end
   if d.notas and #d.notas > 0 then
-    cab(b, "Notas")
+    cab(b, "Notes")
     for _, e in ipairs(d.notas) do T(b, ns.comFonte(e)) end
   end
 end
@@ -144,16 +144,16 @@ end
 construtores.prof = function(b)
   local lista = ns.minhasProfissoes()
   if #lista == 0 then
-    T(b, "Nenhuma profissao com roteiro aprendida ainda.")
-    T(b, "Onde aprender: aba Treinos.")
+    T(b, "No profession with a leveling route learned yet.")
+    T(b, "Where to learn: Trainers tab.")
     return
   end
   for _, pr in ipairs(lista) do
     local idx = ns.indicePasso(pr.tab, pr.pericia)
     T(b, ns.COR .. ns.linhaProf(pr, idx) .. ns.FIM)
     local prox = pr.tab.passos[idx + 1]
-    if prox then T(b, "   Proximo (" .. prox.de .. "-" .. prox.ate .. "): " .. prox.texto) end
-    if pr.tab.fonte then T(b, CINZA .. "   Fonte: " .. pr.tab.fonte .. ns.FIM) end
+    if prox then T(b, "   Next (" .. prox.de .. "-" .. prox.ate .. "): " .. prox.texto) end
+    if pr.tab.fonte then T(b, CINZA .. "   Source: " .. pr.tab.fonte .. ns.FIM) end
   end
 end
 
@@ -161,7 +161,7 @@ construtores.treinos = function(b)
   if ns.blocosTreinos then
     ns.blocosTreinos(b)
   else
-    T(b, "Treinadores indisponiveis.")
+    T(b, "Trainers unavailable.")
   end
 end
 
@@ -310,7 +310,7 @@ end
 
 -- Atalho de tecla (Bindings.xml) e nomes no menu de teclas.
 BINDING_HEADER_GUIAFOREVER = "GuiaForever"
-_G["BINDING_NAME_GUIAFOREVER_JANELA"] = "Abrir e fechar o guia"
+_G["BINDING_NAME_GUIAFOREVER_JANELA"] = "Open/close the guide"
 function GuiaForever_AlternarJanela() ns.alternarJanela() end
 
 -- Botao do livro -------------------------------------------------------
@@ -338,8 +338,8 @@ local function criarBotao()
   bt:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT")
     GameTooltip:AddLine("GuiaForever")
-    GameTooltip:AddLine("Clique: abre e fecha o guia (tecla J)", 1, 1, 1)
-    GameTooltip:AddLine("Arraste para mover", 1, 1, 1)
+    GameTooltip:AddLine("Click: open/close the guide (J key)", 1, 1, 1)
+    GameTooltip:AddLine("Drag to move", 1, 1, 1)
     GameTooltip:Show()
   end)
   bt:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -371,26 +371,26 @@ local function ligarTecla()
     if pcall(SetBinding, "J", "GUIAFOREVER_JANELA") then
       pcall(SaveBindings, (GetCurrentBindingSet and GetCurrentBindingSet()) or 1)
       GuiaForeverDB.tecla[chave] = { ligada = "J" }
-      ns.msg("a tecla J abre e fecha o guia (desfazer: /guia tecla desfazer).")
+      ns.msg("the J key opens/closes the guide (undo: /guia key undo).")
     end
   else
     GuiaForeverDB.tecla[chave] = { ocupada = atual }
-    ns.msg("a tecla J ja faz " .. atual .. "; abra o guia pelo botao do livro ou /guia, "
-      .. "ou escolha uma tecla em Opcoes > Teclas > AddOns > GuiaForever.")
+    ns.msg("the J key is already bound to " .. atual .. "; open the guide with the book button or /guia, "
+      .. "or pick a key in Options > Key Bindings > AddOns > GuiaForever.")
   end
 end
 
 function ns.desfazerTecla()
   local chave = ns.chavePersonagem()
   local r = chave and GuiaForeverDB.tecla and GuiaForeverDB.tecla[chave]
-  if not r or not r.ligada then ns.msg("tecla: nada para desfazer neste personagem."); return end
-  if ns.emCombate() then ns.msg("tecla: em combate, tente de novo fora dele."); return end
+  if not r or not r.ligada then ns.msg("key: nothing to undo for this character."); return end
+  if ns.emCombate() then ns.msg("key: in combat, try again out of combat."); return end
   if GetBindingAction(r.ligada) == "GUIAFOREVER_JANELA" then
     pcall(SetBinding, r.ligada)
     pcall(SaveBindings, (GetCurrentBindingSet and GetCurrentBindingSet()) or 1)
   end
   GuiaForeverDB.tecla[chave] = { desfeito = true }
-  ns.msg("tecla " .. r.ligada .. " devolvida (o botao do livro e o /guia continuam).")
+  ns.msg("key " .. r.ligada .. " released (the book button and /guia still work).")
 end
 
 table.insert(ns.aoEntrar, ligarTecla)

@@ -28,7 +28,7 @@ local function faixaAtual()
     for i, fx in ipairs(cfg.faixas) do
       if nivel >= fx.nivelDe and nivel <= fx.nivelAte then id = i; break end
     end
-    origem = (zona ~= "" and (zona .. ", ") or "") .. "pelo nivel " .. nivel
+    origem = (zona ~= "" and (zona .. ", ") or "") .. "by level " .. nivel
   end
   return id and cfg.faixas[id], origem
 end
@@ -50,10 +50,10 @@ local function criarQuadro()
   else quadro:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -20, -230) end
   quadro:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-    GameTooltip:AddLine("Metas de profissao desta area")
+    GameTooltip:AddLine("Profession goals for this area")
     GameTooltip:AddLine(CINZA .. "Area: " .. tostring(estado.origem) .. FIM)
     if estado.faixa then
-      GameTooltip:AddLine(CINZA .. "Faixa de nivel: " .. estado.faixa.nome .. FIM)
+      GameTooltip:AddLine(CINZA .. "Level range: " .. estado.faixa.nome .. FIM)
     end
     for _, l in ipairs(estado.linhas or {}) do
       GameTooltip:AddLine(" ")
@@ -61,7 +61,7 @@ local function criarQuadro()
       for _, d in ipairs(l.detalhes) do GameTooltip:AddLine(d, 0.85, 0.85, 0.85, true) end
     end
     GameTooltip:AddLine(" ")
-    GameTooltip:AddLine(CINZA .. "Fontes: wow-professions (Skinning), Gfinity (Leatherworking). /guia rastreador esconde." .. FIM, 1, 1, 1, true)
+    GameTooltip:AddLine(CINZA .. "Sources: wow-professions (Skinning), Gfinity (Leatherworking). /guia tracker hides it." .. FIM, 1, 1, 1, true)
     GameTooltip:Show()
   end)
   quadro:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -104,23 +104,23 @@ local function atualizar()
         local pr = conhecidas[nome]
         local linha, det = nil, {}
         if not pr then
-          linha = CINZA .. nome .. ": aprender (/guia treinos)" .. FIM
-          det[#det + 1] = "Ainda nao aprendida. Meta desta area: " .. meta .. "."
+          linha = CINZA .. nome .. ": learn (/guia trainers)" .. FIM
+          det[#det + 1] = "Not learned yet. Goal for this area: " .. meta .. "."
         else
           local cor = (pr.pericia >= meta) and VERDE or ""
           linha = cor .. nome .. " " .. pr.pericia .. " / " .. meta .. (cor ~= "" and FIM or "")
           if pr.maximo and pr.maximo > 0 and pr.maximo < meta then
-            linha = linha .. AMARELO .. "  teto " .. pr.maximo .. FIM
-            det[#det + 1] = "O teto do seu treino e " .. pr.maximo .. ": treine o proximo nivel para chegar a " .. meta .. "."
+            linha = linha .. AMARELO .. "  cap " .. pr.maximo .. FIM
+            det[#det + 1] = "Your current training caps at " .. pr.maximo .. ": train the next rank to reach " .. meta .. "."
           end
           if pr.pericia >= meta then
-            det[#det + 1] = "Meta desta area batida."
+            det[#det + 1] = "Goal for this area reached."
           else
-            det[#det + 1] = "Faltam " .. (meta - pr.pericia) .. " pontos para a meta desta area."
+            det[#det + 1] = (meta - pr.pericia) .. " points to go for this area's goal."
           end
           if ns.indicePasso and pr.tab and pr.tab.passos then
             local passo = pr.tab.passos[ns.indicePasso(pr.tab, pr.pericia)]
-            if passo then det[#det + 1] = "Roteiro " .. passo.de .. "-" .. passo.ate .. ": " .. passo.texto end
+            if passo then det[#det + 1] = "Route " .. passo.de .. "-" .. passo.ate .. ": " .. passo.texto end
           end
         end
         texto(n):SetText(linha)
@@ -147,7 +147,7 @@ end
 function ns.alternarRastreador()
   GuiaForeverDB = GuiaForeverDB or {}
   GuiaForeverDB.rastreadorOculto = not GuiaForeverDB.rastreadorOculto
-  print("|cff66ccffGuiaForever|r: rastreador de profissoes " .. (GuiaForeverDB.rastreadorOculto and "escondido." or "visivel."))
+  print("|cff66ccffGuiaForever|r: profession tracker " .. (GuiaForeverDB.rastreadorOculto and "hidden." or "shown."))
   atualizar()
 end
 

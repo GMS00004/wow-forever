@@ -2,6 +2,8 @@
 
 Addon próprio do dono, versão 0.5.0 (2026-11-05). Leva para dentro do jogo o que as fontes do dono dizem: talento por nível, dicas por nível (magias, armas, pets, rotação, atributos), roteiro das profissões, treinadores, macros do caçador e o perfil gráfico. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
 
+Versão 0.7.0 (2026-11-06): todo o texto do jogo foi traduzido para inglês a pedido do dono, com apelidos de subcomando em inglês (`/guia level`, `talents`, `weapons`, `rotation`, `trainers`, `all`, `tracker`, `graphics`, `trainer class|<profession>`, e `undo` no lugar de `desfazer`); os subcomandos em português continuam valendo.
+
 ## Regra do conteúdo
 
 Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\..\comum\fontes\` ou de uma ficha em `..\..\..\comum\personagens\`, com a fonte no campo `fonte` e a origem (arquivo e linha) num comentário. Onde as fontes divergem, o dono escolhe; as escolhas estão na tabela "Decisões do dono" da ficha de cada personagem. Fonte anterior a 03/11 entra marcada "(beta)". Lacuna fica como "sem fonte" no jogo.

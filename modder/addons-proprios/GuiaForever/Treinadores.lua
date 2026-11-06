@@ -84,7 +84,7 @@ end
 local function aoEntrar()
   local t = registro()
   if t.avisarQuestie then
-    ns.msg("Questie: icones do treinador de classe e das profissoes conhecidas ligados no mapa (desfazer: /guia treinadores desfazer).")
+    ns.msg("Questie: class trainer and known-profession trainer icons turned on in the map (undo: /guia trainers undo).")
     t.avisarQuestie = nil
   end
   local chave = ns.chavePersonagem()
@@ -95,7 +95,7 @@ local function aoEntrar()
   if not alvos then return end
   local mudados = ajustarRastreio(true, alvos)
   t.rastreio[chave] = { ligados = mudados }
-  if #mudados > 0 then ns.msg("minimapa: rastreamento de treinadores de classe e de profissao ligado.") end
+  if #mudados > 0 then ns.msg("minimap: class and profession trainer tracking turned on.") end
 end
 table.insert(ns.aoEntrar, aoEntrar)
 
@@ -105,19 +105,19 @@ local cache, uidAtual
 local function montarCache()
   if cache then return cache end
   if not (LibQuestieDB and LibQuestieDB.Npc and LibQuestieDB.RequireContract) then
-    return nil, "o QuestieDB nao esta carregado"
+    return nil, "QuestieDB is not loaded"
   end
   local ok, motivo = LibQuestieDB.RequireContract(CONTRATO)
   if not ok then return nil, tostring(motivo) end
   if not (Questie and Questie.API and Questie.API.isReady) then
-    return nil, "o Questie ainda esta carregando; tente de novo em alguns segundos"
+    return nil, "Questie is still loading; try again in a few seconds"
   end
   local ZoneDB = QuestieLoader and QuestieLoader.ImportModule and QuestieLoader:ImportModule("ZoneDB")
   if not (ZoneDB and ZoneDB.GetUiMapIdByAreaId) then
-    return nil, "o mapa de zonas do Questie nao esta disponivel"
+    return nil, "Questie zone map is not available"
   end
   local band = bit and bit.band
-  if not band then return nil, "biblioteca bit indisponivel" end
+  if not band then return nil, "bit library unavailable" end
   local letra = (UnitFactionGroup("player") == "Horde") and "H" or "A"
   local Npc = LibQuestieDB.Npc
   local lista = {}
@@ -179,22 +179,22 @@ local function listaProfissoes()
 end
 
 function ns.setaTreinador(arg)
-  if ns.emCombate() then ns.msg("treinador: em combate, tente de novo fora dele."); return end
+  if ns.emCombate() then ns.msg("trainer: in combat, try again out of combat."); return end
   arg = string.lower(arg or "")
   local alvo, rotulo
-  if arg == "" or arg == "classe" then
+  if arg == "" or arg == "classe" or arg == "class" then
     local nomeClasse = UnitClass("player")
-    alvo, rotulo = { classe = nomeClasse }, "treinador de " .. tostring(nomeClasse)
+    alvo, rotulo = { classe = nomeClasse }, tostring(nomeClasse) .. " trainer"
   else
     local prof = NOMES[arg]
     if not prof then
-      ns.msg("treinador: nao conheco '" .. arg .. "'. Use classe ou uma destas: " .. listaProfissoes() .. ".")
+      ns.msg("trainer: I don't know '" .. arg .. "'. Use class or one of: " .. listaProfissoes() .. ".")
       return
     end
-    alvo, rotulo = { raizes = RAIZES[prof] }, "treinador de " .. prof
+    alvo, rotulo = { raizes = RAIZES[prof] }, prof .. " trainer"
   end
   local lista, motivo = montarCache()
-  if not lista then ns.msg("treinador: " .. tostring(motivo) .. "."); return end
+  if not lista then ns.msg("trainer: " .. tostring(motivo) .. "."); return end
 
   local temPos, cont, w = pcall(posJogador)
   if not temPos then cont, w = nil, nil end
@@ -214,12 +214,12 @@ function ns.setaTreinador(arg)
     end
   end
   local e = melhor or primeiro
-  if not e then ns.msg("treinador: nenhum " .. rotulo .. " da sua faccao no banco do Questie."); return end
+  if not e then ns.msg("trainer: no " .. rotulo .. " of your faction in the Questie database."); return end
 
   local info = C_Map.GetMapInfo and C_Map.GetMapInfo(e.mapa)
-  local zona = (info and info.name) or ("mapa " .. e.mapa)
+  local zona = (info and info.name) or ("map " .. e.mapa)
   local onde = string.format("%s (%s), %s %.1f %.1f", e.nome, e.sub, zona, e.x * 100, e.y * 100)
-  local aviso = melhor and "" or " (nao achei um no seu continente)"
+  local aviso = melhor and "" or " (none found on your continent)"
   if TomTom and TomTom.AddWaypoint then
     if uidAtual and TomTom.RemoveWaypoint then pcall(TomTom.RemoveWaypoint, TomTom, uidAtual) end
     local ok, uid = pcall(TomTom.AddWaypoint, TomTom, e.mapa, e.x, e.y, {
@@ -227,20 +227,20 @@ function ns.setaTreinador(arg)
     })
     if ok then
       uidAtual = uid
-      ns.msg("seta para " .. onde .. aviso)
+      ns.msg("arrow to " .. onde .. aviso)
       return
     end
   end
-  ns.msg(onde .. aviso .. ". Sem TomTom: /way #" .. e.mapa .. string.format(" %.1f %.1f", e.x * 100, e.y * 100))
+  ns.msg(onde .. aviso .. ". No TomTom: /way #" .. e.mapa .. string.format(" %.1f %.1f", e.x * 100, e.y * 100))
 end
 
 -- Aba Treinos --------------------------------------------------------------
 function ns.blocosTreinos(b)
   local T, cab, B = ns.blocoTexto, ns.blocoCabecalho, ns.blocoBotao
   local nomeClasse = UnitClass("player")
-  T(b, ns.COR .. "Treinadores" .. ns.FIM)
-  T(b, "Cada botao poe a seta do TomTom no treinador mais perto, da sua faccao.")
-  B(b, "Seta: treinador de " .. tostring(nomeClasse), function() ns.setaTreinador("classe") end)
+  T(b, ns.COR .. "Trainers" .. ns.FIM)
+  T(b, "Each button points the TomTom arrow at the nearest trainer of your faction.")
+  B(b, "Arrow: " .. tostring(nomeClasse) .. " trainer", function() ns.setaTreinador("classe") end)
   local planejadas = (GuiaForeverProfissoesPlanejadas and GuiaForeverProfissoesPlanejadas[ns.classe()]) or {}
   local lista, vistas = {}, {}
   for _, p in ipairs(planejadas) do
@@ -251,22 +251,22 @@ function ns.blocosTreinos(b)
   end
   for _, prof in ipairs(lista) do
     cab(b, prof)
-    B(b, "Seta: treinador de " .. prof, function() ns.setaTreinador(prof) end)
+    B(b, "Arrow: " .. prof .. " trainer", function() ns.setaTreinador(prof) end)
     local tab = ns.tabelaProf(prof)
     if tab and tab.treino then
       for _, s in ipairs(tab.treino) do T(b, "  " .. s) end
     end
   end
-  cab(b, "No mapa e no minimapa")
-  T(b, "Questie: icones do treinador de classe e das profissoes que voce ja tem (botao direito no icone do Questie muda isso).")
-  T(b, "Minimapa: rastreamento de treinadores de classe e de profissao (botao direito no minimapa).")
-  T(b, "Ctrl+clique num icone do Questie tambem poe a seta do TomTom.")
-  T(b, "|cff999999Desfazer: /guia treinadores desfazer|r")
+  cab(b, "On the map and minimap")
+  T(b, "Questie: class trainer and your known-profession trainer icons (right-click the Questie icon to change this).")
+  T(b, "Minimap: class and profession trainer tracking (right-click the minimap).")
+  T(b, "Ctrl+click a Questie icon also sets the TomTom arrow.")
+  T(b, "|cff999999Undo: /guia trainers undo|r")
 end
 
 -- Desfazer -----------------------------------------------------------------
 function ns.desfazerTreinadores()
-  if ns.emCombate() then ns.msg("treinadores: em combate, tente de novo fora dele."); return end
+  if ns.emCombate() then ns.msg("trainers: in combat, try again out of combat."); return end
   local t = registro()
   local partes = {}
   if t.questie and not t.questie.desfeito then
@@ -275,7 +275,7 @@ function ns.desfazerTreinadores()
       p.townsfolkConfig["Class Trainer"] = t.questie.classe
       p.townsfolkKnownProfessions = t.questie.conhecidas
       t.questie = { desfeito = true }
-      partes[#partes + 1] = "Questie devolvido (vale depois de /reload)"
+      partes[#partes + 1] = "Questie restored (takes effect after /reload)"
     end
   end
   local chave = ns.chavePersonagem()
@@ -285,11 +285,11 @@ function ns.desfazerTreinadores()
     for _, fid in ipairs(r.ligados) do quais[fid] = true end
     ajustarRastreio(false, quais)
     t.rastreio[chave] = { ligados = {}, desfeito = true }
-    partes[#partes + 1] = "rastreamento do minimapa desligado"
+    partes[#partes + 1] = "minimap tracking turned off"
   end
   if uidAtual and TomTom and TomTom.RemoveWaypoint then
     pcall(TomTom.RemoveWaypoint, TomTom, uidAtual)
     uidAtual = nil
   end
-  ns.msg(#partes > 0 and ("treinadores: " .. table.concat(partes, "; ") .. ".") or "treinadores: nada para desfazer.")
+  ns.msg(#partes > 0 and ("trainers: " .. table.concat(partes, "; ") .. ".") or "trainers: nothing to undo.")
 end
