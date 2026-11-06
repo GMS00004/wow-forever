@@ -70,15 +70,29 @@ local function tabelaProf(nome)
 end
 ns.tabelaProf = tabelaProf
 
--- devolve lista { {nome=, pericia=, tab=}, ... } das profissoes conhecidas com roteiro
+-- devolve lista { {nome=, pericia=, maximo=, tab=}, ... } das profissoes conhecidas
+-- com roteiro; maximo e o teto do treino atual (75, 150, ...), quando a API o da
 local function minhasProfissoes()
   local achadas, vistas = {}, {}
-  local function add(nome, pericia)
+  local function add(nome, pericia, maximo)
     if type(nome) ~= "string" or vistas[nome] then return end
     local tab = tabelaProf(nome)
     if tab and tab.passos then
       vistas[nome] = true
-      achadas[#achadas + 1] = { nome = nome, pericia = tonumber(pericia) or 0, tab = tab }
+      achadas[#achadas + 1] = { nome = nome, pericia = tonumber(pericia) or 0, maximo = tonumber(maximo), tab = tab }
+    end
+  end
+  -- API do Forever: C_SkillInfo (a janela de pericias do camelot usa esta,
+  -- Blizzard_UIPanels_Game/Camelot/SkillsFrame.lua). As globais antigas abaixo
+  -- ficam de reserva; nao foi conferido se existem no cliente (2026-11-06).
+  local SI = C_SkillInfo
+  if SI and SI.GetNumSkillLines and SI.GetSkillLineInfo then
+    local ok, n = pcall(SI.GetNumSkillLines)
+    if ok and type(n) == "number" then
+      for i = 1, n do
+        local ok2, info = pcall(SI.GetSkillLineInfo, i)
+        if ok2 and type(info) == "table" and not info.isHeader then add(info.name, info.rank, info.maxRank) end
+      end
     end
   end
   if GetProfessions and GetProfessionInfo then
@@ -87,8 +101,8 @@ local function minhasProfissoes()
       for i = 1, 6 do
         local idx = lista[i]
         if idx then
-          local ok2, nome, _, nivel = pcall(GetProfessionInfo, idx)
-          if ok2 then add(nome, nivel) end
+          local ok2, nome, _, nivel, teto = pcall(GetProfessionInfo, idx)
+          if ok2 then add(nome, nivel, teto) end
         end
       end
     end
@@ -98,8 +112,8 @@ local function minhasProfissoes()
     local ok, n = pcall(GetNumSkillLines)
     if ok and type(n) == "number" then
       for i = 1, n do
-        local ok2, nome, cabecalho, _, rank = pcall(GetSkillLineInfo, i)
-        if ok2 and not cabecalho then add(nome, rank) end
+        local ok2, nome, cabecalho, _, rank, _, _, teto = pcall(GetSkillLineInfo, i)
+        if ok2 and not cabecalho then add(nome, rank, teto) end
       end
     end
   end
@@ -468,6 +482,8 @@ SlashCmdList["GUIAFOREVER"] = function(arg)
     if ns.desfazerTreinadores then ns.desfazerTreinadores() end
   elseif arg == "tecla desfazer" then
     if ns.desfazerTecla then ns.desfazerTecla() end
+  elseif arg == "rastreador" then
+    if ns.alternarRastreador then ns.alternarRastreador() end
   elseif arg:sub(1, 10) == "treinador " then
     if ns.setaTreinador then ns.setaTreinador(strtrim and strtrim(arg:sub(11)) or arg:sub(11)) end
   elseif ABAS[arg] then
@@ -476,7 +492,8 @@ SlashCmdList["GUIAFOREVER"] = function(arg)
     if ns.alternarJanela then ns.alternarJanela() end
   else
     msg("comandos: /guia (janela), /guia nivel|talentos|armas|pets|rotacao|treinos, /guia prof, /guia tudo, "
-      .. "/guia treinador classe|<profissao>, /guia macros, /guia graficos, e os desfazer: "
+      .. "/guia treinador classe|<profissao>, /guia rastreador (mostra ou esconde as metas de profissao), "
+      .. "/guia macros, /guia graficos, e os desfazer: "
       .. "/guia macros desfazer, /guia graficos desfazer, /guia treinadores desfazer, /guia tecla desfazer")
   end
 end

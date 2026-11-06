@@ -1,8 +1,8 @@
 ## Interface: 16001
 ## Title: GuiaForever
-## Notes: Talento e dicas por nivel (magias, armas, pets, rotacao), profissoes, treinadores, macros e perfil grafico.
+## Notes: Talento e dicas por nivel (magias, armas, pets, rotacao), profissoes com rastreador de metas por area, treinadores, macros e perfil grafico.
 ## Author: Bruno
-## Version: 0.5.0
+## Version: 0.6.0
 ## SavedVariables: GuiaForeverDB
 ## OptionalDeps: Questie, QuestieDB, TomTom
 Dados.lua
@@ -12,3 +12,4 @@ ProfissoesB.lua
 GuiaForever.lua
 Janela.lua
 Treinadores.lua
+Rastreador.lua

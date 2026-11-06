@@ -187,3 +187,31 @@ GuiaForeverProfissoesPlanejadas = {
   DRUID = { "Alchemy", "Tailoring" },                                -- Fingolfin Ironjaw (alt)
   PALADIN = { "Mining", "Blacksmithing" },                           -- alt sem nome
 }
+
+-- Rastreador de profissoes (Rastreador.lua), embaixo do minimapa: a pericia de
+-- cada profissao e a meta da area de quest atual. Pedido do dono em 2026-11-06,
+-- que escolheu "meta pelo nivel da area, a partir das fontes dele":
+--   Skinning: faixas por nivel de bicho do wow-professions (bichos de nivel
+--   1-2 ate 75; 10-20 de 75 a 125; 25-27 de 125 a 150);
+--   Leatherworking: couro de cada faixa no roteiro do Gfinity (Light Leather ate
+--   100; Medium Leather de 100 a 150).
+--   75 tambem e o teto do Apprentice (o Journeyman pede nivel 10).
+-- Os numeros por faixa foram aprovados pelo dono; a ligacao de cada zona a uma
+-- faixa (pelo nivel tipico dos bichos da zona) e do agente, a conferir.
+GuiaForeverRastreador = {
+  ligado = true,
+  esconderEmCombate = true,
+  faixas = {
+    { nome = "1-10", nivelDe = 1, nivelAte = 9, metas = { Skinning = 75, Leatherworking = 75 } },
+    { nome = "10-20", nivelDe = 10, nivelAte = 19, metas = { Skinning = 125, Leatherworking = 100 } },
+    { nome = "20-30", nivelDe = 20, nivelAte = 29, metas = { Skinning = 150, Leatherworking = 150 } },
+  },
+  -- zona (nome do cliente enUS, GetRealZoneText) -> faixa. Fora desta lista
+  -- (cidade, zona nova do Forever), vale a faixa do nivel do personagem.
+  zonas = {
+    ["Teldrassil"] = 1, ["Elwynn Forest"] = 1, ["Dun Morogh"] = 1,
+    ["Darkshore"] = 2, ["Westfall"] = 2, ["Loch Modan"] = 2, ["Redridge Mountains"] = 2,
+    ["Ashenvale"] = 3, ["Wetlands"] = 3, ["Duskwood"] = 3, ["Stonetalon Mountains"] = 3,
+    ["Hillsbrad Foothills"] = 3,
+  },
+}

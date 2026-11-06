@@ -28,3 +28,15 @@ Os guias foram escritos no beta; nenhum tem data posterior ao lançamento (04/11
 - Mining: a página dá os níveis de treino de dois jeitos (75/150/225 na introdução, 50/125/200 nas seções).
 - Leatherworking: "Embossed Leather Pants" aparece em duas faixas seguidas; pode ser erro da fonte.
 - Alternativas com "ou" ficaram com a primeira receita.
+
+## Metas por área de quest (rastreador do GuiaForever, 2026-11-06)
+
+Escolha do dono em 2026-11-06: o rastreador de profissões mostra a meta de cada área "pelo nível da área, a partir das fontes dele". Os números por faixa saem destas fontes e foram aprovados por ele; a ligação de cada zona a uma faixa é do agente, pelo nível típico dos bichos da zona, e está a conferir.
+
+| Faixa de nível da área | Skinning (wow-professions, por nível de bicho) | Leatherworking (Gfinity, pelo couro da faixa) |
+|---|---|---|
+| 1–10 | 75 (bichos de nível 1–2 até 75; também o teto do Apprentice) | 75 (teto do Apprentice; o Journeyman pede nível 10) |
+| 10–20 | 125 (bichos de nível 10–20, de 75 a 125) | 100 (Light Leather até 100) |
+| 20–30 | 150 (bichos de nível 25–27, de 125 a 150) | 150 (Medium Leather de 100 a 150) |
+
+Os números estão em `..\..\modder\addons-proprios\GuiaForever\Dados.lua` (`GuiaForeverRastreador`).
