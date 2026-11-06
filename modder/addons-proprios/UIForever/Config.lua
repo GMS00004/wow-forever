@@ -106,8 +106,9 @@ UIForeverConfig.teclas = {
 -- barra 6 (acima do chat da direita, so clique) = 61 a 66.
 -- { macro = "nome" } usa a macro se ela existir; { magia = "nome" } usa a magia
 -- se o personagem ja a conhece (nome em ingles, cliente enUS). Os dois juntos:
--- a macro vence. Slot de barra gerenciada fora da lista fica vazio.
--- Magia aprendida depois entra sozinha no slot dela.
+-- a macro vence. Magia aprendida depois entra sozinha no slot dela, se o slot
+-- estiver vazio. Desde a 0.2.0 o que o dono pos ou tirou de um slot fica: o
+-- UIForever so mexe no slot enquanto ele tiver o que o proprio UIForever pos.
 UIForeverConfig.gerenciados = { { 1, 12 }, { 13, 21 }, { 25, 36 }, { 61, 66 } }
 
 UIForeverConfig.barras = {

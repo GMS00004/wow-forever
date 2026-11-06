@@ -237,8 +237,29 @@ local function aplicarBarras()
     return
   end
 
+  -- Dono do botao (0.2.0, pedido do dono em 2026-11-05: o que ele arrastava
+  -- sumia). O UIForever so mexe num slot enquanto o conteudo dele for o que o
+  -- proprio UIForever pos (UIForeverCharDB.slots[slot]). O que o dono arrastar
+  -- para o slot, ou tirar dele, fica; slot vazio que o UIForever nunca preencheu
+  -- recebe a acao do plano quando ela existir.
+  UIForeverCharDB.slots = UIForeverCharDB.slots or {}
+  local meus = UIForeverCharDB.slots
   local magias = magiasConhecidas()
   local colocados, limpos, falhas = 0, 0, {}
+
+  local function colocar(slot, querTipo, querNome, querId)
+    ClearCursor()
+    if querTipo == "macro" then PickupMacro(querId) else pegarMagia(querId) end
+    if GetCursorInfo and GetCursorInfo() then
+      PlaceAction(slot)
+      ClearCursor()
+      colocados = colocados + 1
+      return true
+    end
+    falhas[#falhas + 1] = querNome
+    return false
+  end
+
   for _, faixa in ipairs(cfg.gerenciados) do
     for slot = faixa[1], faixa[2] do
       local entrada = plano[slot]
@@ -251,19 +272,31 @@ local function aplicarBarras()
           querTipo, querNome, querId = "magia", entrada.magia, magias[entrada.magia]
         end
       end
+      local quer = querTipo and (querTipo .. ":" .. querNome)
       local tipo, nome, id = acaoNoSlot(slot)
-      if not querTipo then
-        if tipo then limparSlot(slot); limpos = limpos + 1 end
-      elseif not (tipo == querTipo and nome == querNome and (querTipo == "macro" or id == querId)) then
-        ClearCursor()
-        if querTipo == "macro" then PickupMacro(querId) else pegarMagia(querId) end
-        if GetCursorInfo and GetCursorInfo() then
-          PlaceAction(slot)
-          ClearCursor()
-          colocados = colocados + 1
-        else
-          falhas[#falhas + 1] = querNome
+      local atual = tipo and (tostring(tipo) .. ":" .. tostring(nome))
+      local meu = meus[slot]
+
+      if atual and atual == quer then
+        -- ja e a acao do plano; troca so o rank, e so se o slot ja era do UIForever
+        if querTipo == "magia" and id ~= querId and meu == quer then
+          colocar(slot, querTipo, querNome, querId)
         end
+        meus[slot] = quer
+      elseif atual and atual ~= meu then
+        -- o dono pos outra coisa aqui: nao mexe
+      elseif atual then
+        -- conteudo do UIForever, e o plano mudou
+        if quer then
+          if colocar(slot, querTipo, querNome, querId) then meus[slot] = quer end
+        else
+          limparSlot(slot); limpos = limpos + 1
+          meus[slot] = nil
+        end
+      elseif meu then
+        -- vazio, mas o UIForever ja preencheu antes: o dono tirou, fica vazio
+      elseif quer then
+        if colocar(slot, querTipo, querNome, querId) then meus[slot] = quer end
       end
     end
   end
