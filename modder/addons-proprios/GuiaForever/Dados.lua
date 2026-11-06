@@ -124,7 +124,7 @@ GuiaForeverDados = {
 -- Teclas e escolha das macros do leak: dono, em 2026-11-05.
 GuiaForeverMacros = {
   HUNTER = {
-    versao = 2,  -- 2: sting_Auto (2026-11-05, noite)
+    versao = 3,  -- 2: sting_Auto (2026-11-05, noite); 3: mark_Pet (2026-11-06)
     fonte = "Gladius Gaming e leak",
     lista = {
       { nome = "send_Pet", icone = "Ability_GhoulFrenzy", tecla = "SHIFT-MOUSEWHEELUP",
@@ -162,6 +162,12 @@ GuiaForeverMacros = {
       -- (espelho Ketho/wow-ui-source-forever); "!" e "null" so o teste no jogo confirma.
       { nome = "sting_Auto", icone = "INV_MISC_QUESTIONMARK",
         corpo = "#showtooltip\n/castsequence [combat] reset=target/combat/alt Serpent Sting, null\n/cast !Auto Shot" },
+      -- "Hunter's Mark Leveling" do leak (11:05 do video): marca e manda o pet.
+      -- Escolha do dono em 2026-11-06, no nivel 10 e com pet, no lugar da do
+      -- Gladius no 5 (que poe o pet em passivo e o chama de volta). O leak avisa:
+      -- so sozinho no mundo aberto, em grupo puxa o mob antes da hora.
+      { nome = "mark_Pet", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Hunter's Mark\n/petattack\n/cast Hunter's Mark" },
     },
   },
 }

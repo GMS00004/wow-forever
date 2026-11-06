@@ -46,6 +46,13 @@ UIForeverConfig.elvui = {
   { "unitframe.units.target.portrait.style", "3D" },
   { "unitframe.units.target.portrait.overlay", false },
   { "unitframe.units.target.portrait.width", 82 },
+  -- vida em pontos, atual / maxima, no lugar do percentual (pedido do dono em
+  -- 2026-11-06). Tags do ElvUI 16.01 no modo moderno (Tags\Modern.lua): o
+  -- numero sai inteiro (longvalue) e o ElvUI passa o valor da Blizzard direto
+  -- para a abreviacao, sem ler o valor secreto. Padrao do ElvUI no Forever,
+  -- para voltar: "||cFF29CC00[perhp<%]||r"
+  { "unitframe.units.player.health.text_format", "||cFF29CC00[health:current:longvalue] / [health:max:longvalue]||r" },
+  { "unitframe.units.target.health.text_format", "||cFF29CC00[health:current:longvalue] / [health:max:longvalue]||r" },
   -- chats semitransparentes e com metade da altura (eram 236)
   { "chat.panelColor", { r = 0.06, g = 0.06, b = 0.06, a = 0.3 } },
   { "chat.separateSizes", true },
@@ -127,7 +134,7 @@ UIForeverConfig.barras = {
     [2] = { magia = "Arcane Shot" },
     [3] = { magia = "Multi-Shot" },
     [4] = { magia = "Aimed Shot" },
-    [5] = { macro = "Hunter's Mark", magia = "Hunter's Mark" },
+    [5] = { macro = "mark_Pet", magia = "Hunter's Mark" },  -- marca e manda o pet (leak; dono, 2026-11-06); era a do Gladius
     [6] = { macro = "Burst", magia = "Rapid Fire" },
     [7] = { magia = "Raptor Strike" },
     [8] = { magia = "Wing Clip" },
