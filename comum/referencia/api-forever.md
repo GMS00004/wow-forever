@@ -38,6 +38,16 @@ Tudo `[local]`, lido no código instalado em `Interface\AddOns\ElvUI` em 2026-11
 - **Nomes das configurações:** `chat.panelColor` (cor e alfa do fundo dos chats), `chat.separateSizes` com `panelHeight` e `panelHeightRight`, aplicados por `CH:PositionChats()`; `LeftChatPanelFaded` e `RightChatPanelFaded` escondem os chats; `datatexts.panels.<painel>.backdrop`; `unitframe.units.<unidade>.portrait` com `enable`, `style = '3D'`, `width` e `overlay`; `general.minimap.scale`, aplicado por `M:UpdateSettings()` via `MinimapCluster:SetScale`. O `E:SetupChat(true)` roda o passo de chat do assistente. O ElvUI não tem alça para mudar a altura do chat.
 - **Teclas das barras:** barra 1 = `ACTIONBUTTON`, barra 2 = `ELVUIBAR2BUTTON`, barra 3 = `MULTIACTIONBAR3BUTTON`, barra 6 = `MULTIACTIONBAR1BUTTON`, barra do pet = `BONUSACTIONBUTTON`. Slots de ação: barra 1 = 1 a 12, barra 2 = 13 a 24, barra 3 = 25 a 36, barra 6 = 61 a 72.
 
+- **Barra de experiência** (`[página]`, código da tag `v16.01` do `github.com/tukui-org/ElvUI`, lido pelo `gh` em 2026-11-05; a versão bate com a instalada): a barra de XP do ElvUI já mostra a XP das quests do log, ligada por padrão (`databars.experience.showQuestXP = true`, com `questTrackedOnly`, `questCompletedOnly` e `questCurrentZoneOnly` desligados). Ela aparece como um trecho na cor `databars.colors.quest` (verde a 40%) e no tooltip como "Quest Log XP" e "Remaining". A barra fica no quadro `ElvUI_ExperienceBarHolder` (mover `ExperienceBarMover`, padrão `BOTTOM,ElvUIParent,BOTTOM,0,44`), que continua posicionado com a barra desligada (`E:DisableMover` só tira o mover da lista). O `AB:DisableBlizzard`, das barras de ação, chama `StatusTrackingBarManager:Kill()`, que tira os eventos do quadro e o põe num pai escondido. Por isso, com as barras de ação do ElvUI ligadas, a barra de experiência da Blizzard some.
+
+## 3b. Barra de experiência e quests no Forever
+
+`[página]`: espelho `Ketho/wow-ui-source-forever`, branch `forever`, lido pelo `gh` em 2026-11-05. O espelho é do build 70009, mais velho que o cliente, então os fatos abaixo são do espelho.
+
+- **A barra é a moderna, não a roxa do Classic.** O TOC do `Blizzard_StatusTrackingBar` carrega, no Forever (`camelot`), os arquivos `[Family]`, que são os do `Mainline`: `ExpStatusBarTemplate`, o atlas `UI-HUD-ExperienceBar-*`, o marcador e a previsão do descanso. O container é o `MainStatusTrackingBarContainer`, do Edit Mode. As constantes do `Camelot` dão o tamanho: container de 1192 × 17, 20 segmentos e barra 3 menor, em (1, 2).
+- **Quests:** o Forever usa a API moderna do diário. Existem `C_QuestLog.GetNumQuestLogEntries`, `C_QuestLog.GetInfo(i)` (com `isHeader`, `isHidden` e `questID`), `C_QuestLog.ReadyForTurnIn(questID)` e `GetQuestLogRewardXP(questID)`, que devolve a XP total e a base, como no `QuestUtils.lua` do `Mainline`. O `QuestInfo.lua` que carrega é o `[Family]` (`mainline`), e não o `Vanilla`.
+- **Atlas como textura de barra:** a Blizzard passa nome de atlas direto ao `StatusBar:SetStatusBarTexture` (`GradualAnimatedStatusBarMixin:SetBarTexture`).
+
 ## 4. Fluxo de desenvolvimento
 
 1. Editar em `addons-proprios\<Nome>` (modelo em `addons-proprios\_modelo\Modelo`; instruções em `addons-proprios\LEIA-ME.md`).

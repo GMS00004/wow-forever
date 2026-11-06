@@ -389,6 +389,197 @@ local function criarAlca(painel, chaveAltura)
 end
 
 ---------------------------------------------------------------------------
+-- 6. Barra de experiencia da Blizzard, com a XP das quests do log
+---------------------------------------------------------------------------
+-- Pedido do dono em 2026-11-05: a barra com a cara original do jogo, mais a
+-- XP das quests do log e o que falta para o proximo nivel.
+-- O ElvUI 16.01 apaga o StatusTrackingBarManager da Blizzard quando as barras
+-- de acao dele estao ligadas (AB:DisableBlizzard). Em vez de ressuscitar
+-- aquele quadro (que e do Edit Mode), o UIForever cria uma barra nova com o
+-- proprio modelo da Blizzard (ExpStatusBarTemplate, o mesmo que a barra
+-- original usa no Forever) dentro de uma moldura igual a do container
+-- original (atlas UI-HUD-ExperienceBar-Frame e 20 segmentos). O trecho das
+-- quests usa o desenho da previsao do descanso, em outra cor. A barra de XP
+-- do ElvUI fica desligada pelo Config.lua.
+
+local barraXP -- a barra (ExpStatusBarTemplate)
+local trechoQuests
+local questsXP = { total = 0, prontas = 0, n = 0 }
+local fXP = CreateFrame("Frame")
+local xpAgendado = false
+
+local function numero(v)
+  if BreakUpLargeNumbers then return BreakUpLargeNumbers(v) end
+  return tostring(v)
+end
+
+local function podeMostrarXP()
+  if GameRulesUtil and GameRulesUtil.CanShowExperienceBar then
+    return GameRulesUtil.CanShowExperienceBar()
+  end
+  local maximo = GetMaxPlayerLevel and GetMaxPlayerLevel() or 60
+  return UnitLevel("player") < maximo and not (IsXPUserDisabled and IsXPUserDisabled())
+end
+
+local function somarQuests()
+  local total, prontas, n = 0, 0, 0
+  local Q = C_QuestLog
+  if Q and Q.GetNumQuestLogEntries and Q.GetInfo and GetQuestLogRewardXP then
+    for i = 1, Q.GetNumQuestLogEntries() do
+      local info = Q.GetInfo(i)
+      if info and not info.isHeader and not info.isHidden and info.questID then
+        local xp = GetQuestLogRewardXP(info.questID) or 0
+        if xp > 0 then
+          total = total + xp
+          n = n + 1
+          if Q.ReadyForTurnIn and Q.ReadyForTurnIn(info.questID) then prontas = prontas + xp end
+        end
+      end
+    end
+  end
+  questsXP.total, questsXP.prontas, questsXP.n = total, prontas, n
+end
+
+local function atualizarTrecho()
+  if not (barraXP and trechoQuests) then return end
+  local atual, maximo = UnitXP("player"), UnitXPMax("player")
+  if not maximo or maximo <= 0 or questsXP.total <= 0 or not podeMostrarXP() then
+    trechoQuests:Hide()
+    return
+  end
+  local razao = math.min((atual + questsXP.total) / maximo, 1)
+  trechoQuests:SetWidth(razao * barraXP:GetWidth())
+  trechoQuests:SetTexCoord(0, razao, 0, 1) -- como a Blizzard faz na previsao do descanso
+  trechoQuests:Show()
+  -- o trecho mais curto (quests ou descanso) fica por cima, para os dois aparecerem
+  local descanso = GetXPExhaustion and GetXPExhaustion() or 0
+  local questsPorCima = questsXP.total <= descanso
+  trechoQuests:SetDrawLayer("ARTWORK", questsPorCima and -1 or -2)
+  if barraXP.ExhaustionLevelFillBar then
+    barraXP.ExhaustionLevelFillBar:SetDrawLayer("ARTWORK", questsPorCima and -2 or -1)
+  end
+end
+
+-- Linhas a mais no tooltip que a propria barra da Blizzard abre (XP e descanso).
+local function linhasDoTooltip()
+  if not (barraXP and podeMostrarXP()) then return end
+  local tt = (GetAppropriateTooltip and GetAppropriateTooltip()) or GameTooltip
+  if not tt then return end
+  local atual, maximo = UnitXP("player"), UnitXPMax("player")
+  if not maximo or maximo <= 0 then return end
+  if not tt:IsShown() then
+    if GameTooltip_SetDefaultAnchor then GameTooltip_SetDefaultAnchor(tt, UIParent)
+    else tt:SetOwner(barraXP, "ANCHOR_TOP") end
+    tt:AddLine("XP: " .. numero(atual) .. " / " .. numero(maximo), 1, 1, 1)
+  end
+  local falta = maximo - atual
+  tt:AddLine(" ")
+  tt:AddDoubleLine("Falta para o nivel " .. (UnitLevel("player") + 1) .. ":",
+    numero(falta) .. string.format(" (%.1f%%)", falta / maximo * 100), 1, 0.82, 0, 1, 1, 1)
+  if questsXP.total > 0 then
+    tt:AddDoubleLine("XP das quests do log (" .. questsXP.n .. "):", numero(questsXP.total), 1, 0.82, 0, 1, 1, 1)
+    if questsXP.prontas > 0 then
+      tt:AddDoubleLine("   prontas para entregar:", numero(questsXP.prontas), 0.8, 0.8, 0.8, 1, 1, 1)
+    end
+    local resto = falta - questsXP.total
+    if resto > 0 then
+      tt:AddDoubleLine("Falta depois de entregar todas:", numero(resto), 1, 0.82, 0, 1, 1, 1)
+    else
+      tt:AddLine("As quests do log ja fecham o nivel (sobram " .. numero(-resto) .. ").", 0.25, 1, 0.25)
+    end
+  else
+    tt:AddLine("Nenhuma quest do log da XP (ou os dados ainda nao chegaram).", 0.6, 0.6, 0.6)
+  end
+  tt:Show()
+end
+
+local function agendarXP()
+  if xpAgendado then return end
+  xpAgendado = true
+  depois(0.3, function()
+    xpAgendado = false
+    if not barraXP then return end
+    barraXP:GetParent():SetShown(podeMostrarXP())
+    somarQuests()
+    atualizarTrecho()
+  end)
+end
+
+local function criarBarraXP()
+  local c = cfg.barraXP
+  if barraXP or not (c and c.ligada) then return end
+  local largura, altura = c.largura or 1192, c.altura or 17
+
+  local cont = CreateFrame("Frame", "UIForeverBarraXP", UIParent)
+  cont:SetFrameStrata("MEDIUM") -- como o container da Blizzard: moldura por cima da barra (LOW)
+  cont:SetSize(largura, altura)
+  local ancora = _G.ElvUI_ExperienceBarHolder
+  if c.ponto then
+    cont:SetPoint(c.ponto[1], c.ponto[2], c.ponto[3], c.ponto[4], c.ponto[5])
+  elseif ancora then
+    cont:SetPoint("BOTTOM", ancora, "BOTTOM", 0, 0) -- onde estava a barra do ElvUI
+  else
+    cont:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 44)
+  end
+
+  local ok, barra = pcall(CreateFrame, "Frame", "UIForeverBarraXPBarra", cont, "ExpStatusBarTemplate")
+  if not ok or not barra or not barra.StatusBar then
+    cont:Hide()
+    registrar("barra de XP: modelo ExpStatusBarTemplate indisponivel (" .. tostring(barra) .. ")")
+    msg("nao consegui criar a barra de experiencia da Blizzard; avise o modder.")
+    return
+  end
+
+  local moldura = cont:CreateTexture(nil, "OVERLAY")
+  moldura:SetAtlas("UI-HUD-ExperienceBar-Frame")
+  moldura:SetAllPoints(cont)
+  local segmentos = c.segmentos or 20
+  for i = 1, segmentos - 1 do
+    local okD, d = pcall(CreateFrame, "Frame", nil, cont, "StatusBarDividerTemplate")
+    if okD and d then d:SetPoint("LEFT", cont, "LEFT", largura / segmentos * i, 0) end
+  end
+
+  local ajuste = STATUS_BAR_SIZE_ADJUSTMENT or 3
+  local w, h = largura - ajuste, altura - ajuste
+  barra:ClearAllPoints()
+  barra:SetPoint("BOTTOMLEFT", cont, "BOTTOMLEFT", 1, ajuste - 1)
+  barra:SetSize(w, h)
+  barra.StatusBar:SetSize(w, h)
+
+  local cor = c.corQuests or { r = 1, g = 0.82, b = 0, a = 0.7 }
+  trechoQuests = barra:CreateTexture(nil, "ARTWORK", nil, -2)
+  trechoQuests:SetAtlas("UI-HUD-ExperienceBar-Fill-Prediction")
+  trechoQuests:SetDesaturated(true)
+  trechoQuests:SetVertexColor(cor.r, cor.g, cor.b)
+  trechoQuests:SetAlpha(cor.a or 1)
+  trechoQuests:SetPoint("BOTTOMLEFT", barra, "BOTTOMLEFT", 0, 0)
+  local hPrev = barra.ExhaustionLevelFillBar and barra.ExhaustionLevelFillBar:GetHeight()
+  trechoQuests:SetHeight((hPrev and hPrev > 0) and hPrev or h)
+  trechoQuests:Hide()
+
+  barra:HookScript("OnEnter", linhasDoTooltip)
+  if barra.ExhaustionTick then barra.ExhaustionTick:HookScript("OnEnter", linhasDoTooltip) end
+
+  barraXP = barra
+  barra:Show()
+  if barra.UpdateStatusBarTextures then
+    pcall(barra.UpdateStatusBarTextures, barra, (GetRestState and GetRestState()) == 1)
+  end
+  if barra.UpdateAll then pcall(barra.UpdateAll, barra) end
+  cont:SetShown(podeMostrarXP())
+  somarQuests()
+  atualizarTrecho()
+
+  fXP:SetScript("OnEvent", agendarXP)
+  for _, evento in ipairs({ "QUEST_LOG_UPDATE", "QUEST_TURNED_IN", "PLAYER_XP_UPDATE", "PLAYER_LEVEL_UP",
+      "UPDATE_EXHAUSTION", "ENABLE_XP_GAIN", "DISABLE_XP_GAIN", "PLAYER_MAX_LEVEL_UPDATE" }) do
+    pcall(fXP.RegisterEvent, fXP, evento)
+  end
+  registrar("barra de XP da Blizzard criada (" .. largura .. "x" .. altura .. ", "
+    .. (c.ponto and "ponto do Config" or (ancora and "lugar da barra do ElvUI" or "ponto padrao")) .. ")")
+end
+
+---------------------------------------------------------------------------
 -- Eventos
 ---------------------------------------------------------------------------
 
@@ -435,6 +626,8 @@ f:SetScript("OnEvent", function(_, evento, arg1)
       end
       aplicarTeclas()
       aplicarBarras()
+      local okXP, erroXP = pcall(criarBarraXP)
+      if not okXP then registrar("erro na barra de XP: " .. tostring(erroXP)) end
       if (UIForeverCharDB.resumo or 0) > 0 then
         msg("layout do ElvUI aplicado (" .. UIForeverCharDB.resumo .. " ajustes).")
         UIForeverCharDB.resumo = 0

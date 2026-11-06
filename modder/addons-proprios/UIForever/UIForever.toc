@@ -1,8 +1,8 @@
 ## Interface: 16001
 ## Title: UIForever
-## Notes: Layout do ElvUI, teclas, barras por classe e minimapa grande (Shift+M), definidos pelo modder.
+## Notes: Layout do ElvUI, teclas, barras por classe, barra de experiencia da Blizzard com a XP das quests e minimapa grande (Shift+M), definidos pelo modder.
 ## Author: Bruno
-## Version: 0.2.0
+## Version: 0.3.0
 ## Dependencies: ElvUI
 ## SavedVariables: UIForeverDB
 ## SavedVariablesPerCharacter: UIForeverCharDB

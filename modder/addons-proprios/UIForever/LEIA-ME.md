@@ -7,7 +7,7 @@ Addon próprio criado em 2026-11-05 a partir do feedback do dono sobre o print d
 | Arquivo | O que tem |
 |---|---|
 | `UIForever.toc` | Interface 16001, depende do ElvUI, SavedVariables `UIForeverDB` (conta) e `UIForeverCharDB` (personagem) |
-| `Config.lua` | tudo o que se muda: layout do ElvUI, teclas, conteúdo dos botões por classe e escala do minimapa grande |
+| `Config.lua` | tudo o que se muda: layout do ElvUI, teclas, conteúdo dos botões por classe, escala do minimapa grande e a barra de experiência (`barraXP`) |
 | `UIForever.lua` | o motor; não precisa ser mexido para trocar a configuração |
 | `Bindings.xml` | a tecla do minimapa grande (aparece em Keybindings, em AddOns); o cliente lê sozinho, fora do TOC |
 
@@ -22,6 +22,15 @@ Addon próprio criado em 2026-11-05 a partir do feedback do dono sobre o print d
    - Por que mudou: na 0.1.0, ele devolvia cada slot ao plano e esvaziava os slots de magias ainda não aprendidas a cada `SPELLS_CHANGED`. Isso fazia sumir o que o dono arrastava (relato do dono em 2026-11-05).
    - Para o UIForever voltar a preencher um slot que o dono esvaziou, apague a entrada do slot em `UIForeverCharDB.slots`, com o jogo fechado, e entre de novo.
 6. Shift+M (`UIForever_AlternarMinimapa`) multiplica a escala do minimapa por `minimapaEscala` (2,2) no mesmo canto e volta no segundo toque; se o dono sair do jogo com ele grande, o próximo login volta ao normal.
+7. **Barra de experiência da Blizzard (desde a 0.3.0, 2026-11-05).** Dois segundos depois de entrar no mundo, junto com as teclas e os botões, o UIForever cria a barra de experiência com o próprio modelo da Blizzard. A barra de XP do ElvUI fica desligada pelo par `databars.experience.enable = false` do `Config.lua`.
+   - Por que não a barra original: o ElvUI 16.01 apaga o `StatusTrackingBarManager` da Blizzard quando as barras de ação dele estão ligadas (`AB:DisableBlizzard` chama `Kill()`). Esse quadro é do Edit Mode, onde já houve avisos de taint, por isso o UIForever não o ressuscita.
+   - O que é igual à Blizzard: a barra (`ExpStatusBarTemplate`, com o código, as animações, o marcador e a previsão do descanso e o tooltip dela) e o container, recriado à mão com o atlas `UI-HUD-ExperienceBar-Frame` e os 20 segmentos de `StatusBarDividerTemplate`. O tamanho é 1192 × 17 e a barra fica 3 menor, em (1, 2), como no `InitializeBars` do Forever (constantes `STATUS_BAR_CONTAINER_*` do `Camelot`). Fonte: espelho `Ketho/wow-ui-source-forever`, pasta `Blizzard_StatusTrackingBar`.
+   - Inferência a conferir no print: no XML da Blizzard, a moldura (`BarFrameTexture`) não tem âncora. O UIForever a estica no container (`SetAllPoints`).
+   - Lugar: onde estava a barra do ElvUI, com a base presa ao `ElvUI_ExperienceBarHolder`, que o ElvUI continua posicionando com a barra desligada. `barraXP.ponto` no `Config.lua` troca o lugar.
+   - Quests: soma `GetQuestLogRewardXP(questID)` de cada quest do log (`C_QuestLog.GetInfo`, sem cabeçalhos nem quests escondidas). O trecho começa na XP atual e vai até atual + quests, com o desenho da previsão do descanso, sem saturação e em amarelo (`corQuests`). O trecho mais curto (quests ou descanso) fica por cima. Recalcula, com 0,3 s de folga, em `QUEST_LOG_UPDATE`, `QUEST_TURNED_IN`, `PLAYER_XP_UPDATE`, `PLAYER_LEVEL_UP` e `UPDATE_EXHAUSTION`.
+   - Tooltip: o da Blizzard (XP e descanso), mais o que falta para o próximo nível, a XP das quests do log e quantas são, a parte das prontas para entregar e o que falta depois de entregar todas (ou quanto sobra).
+   - O texto da barra é o da Blizzard (`XP: atual/máximo`) e segue a opção do jogo: aparece ao passar o mouse, ou sempre, com a CVar `xpBarText`.
+   - Se o modelo da Blizzard faltar, o UIForever avisa no chat e no diário, e o dono fica sem barra de XP até religar a do ElvUI no `Config.lua`.
 
 ## Ligação com o GuiaForever
 
@@ -40,3 +49,5 @@ O diário do addon fica em `UIForeverDB.log` (últimas 60 linhas), em `WTF\Accou
 ## Desfazer
 
 `ferramentas\dev-link.ps1 -Pasta addons-proprios\UIForever -Remover -Aplicar` tira o addon, e `ferramentas\wtf-restaurar.ps1 -De <backups>\sessoes\2026-11-05_1212 -Aplicar` devolve o perfil do ElvUI e as teclas de antes. As duas coisas são necessárias, porque o addon grava no perfil do ElvUI e no `bindings-cache.wtf`.
+
+Só a barra de experiência: no `Config.lua`, `barraXP.ligada = false` e `true` no par `databars.experience.enable`, e depois `/reload`. A barra do ElvUI volta com as quests dela, que vêm ligadas por padrão (`showQuestXP`).

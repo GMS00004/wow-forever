@@ -56,6 +56,9 @@ UIForeverConfig.elvui = {
   { "RightChatPanelFaded", false },
   { "datatexts.panels.LeftChatDataPanel.backdrop", false },
   { "datatexts.panels.RightChatDataPanel.backdrop", false },
+  -- a barra de XP da Blizzard (secao 5, barraXP) substitui a do ElvUI;
+  -- para voltar a do ElvUI, true aqui e ligada = false la
+  { "databars.experience.enable", false },
 }
 
 -- Altura minima e maxima ao arrastar a borda de cima de um chat.
@@ -159,4 +162,20 @@ UIForeverConfig.barras = {
     [65] = { magia = "Beast Lore" },
     [66] = { macro = "Attack_Speed" },
   },
+}
+
+-- 5. Barra de experiencia com a cara original da Blizzard (pedido do dono em
+-- 2026-11-05), no lugar da barra de XP do ElvUI: o proprio modelo da barra do
+-- Forever (ExpStatusBarTemplate), a moldura e os 20 segmentos do container da
+-- Blizzard, mais um trecho com a XP das quests do log e, no tooltip, o que
+-- falta para o proximo nivel. O texto da barra segue a opcao do jogo (aparece
+-- ao passar o mouse, ou sempre, se o "status text" estiver ligado).
+UIForeverConfig.barraXP = {
+  ligada = true,
+  largura = 1192, -- tamanho do container da Blizzard no Forever (STATUS_BAR_CONTAINER_WIDTH)
+  altura = 17,    -- STATUS_BAR_CONTAINER_HEIGHT
+  segmentos = 20, -- STATUS_BAR_NUM_SEGMENTS
+  -- sem "ponto", a barra fica onde estava a barra de XP do ElvUI; para mudar:
+  -- ponto = { "BOTTOM", "UIParent", "BOTTOM", 0, 44 },
+  corQuests = { r = 1, g = 0.82, b = 0, a = 0.7 }, -- trecho das quests (amarelo de quest)
 }
