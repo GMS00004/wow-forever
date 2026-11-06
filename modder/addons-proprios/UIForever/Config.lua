@@ -183,6 +183,16 @@ UIForeverConfig.cvars = {
   { "UnitNameInteractiveNPC", "0" },
   { "UnitNameFriendlySpecialNPCName", "0" },
   { "ShowQuestUnitCircles", "1" },
+  -- Timers nativos do Forever (pedido do dono em 2026-11-05, noite: "timer de
+  -- auto attack e outros timers uteis"). Os dois sao da Blizzard e lidam com
+  -- os valores secretos de combate por dentro, o que addon nao consegue.
+  -- Swing Timer (Options > Advanced): barras de mao principal (melee weave) e a
+  -- distancia (Auto Shot), addon Blizzard_SwingTimer, so no Forever. Lugar,
+  -- tamanho e "sempre / em combate" ficam no Edit Mode.
+  { "showSwingTimer", "1" },
+  -- Cooldown Manager (Options > Advanced > Enable Cooldown Manager): recargas e
+  -- buffs escolhidos no painel dele, dentro do jogo.
+  { "cooldownViewerEnabled", "1" },
 }
 
 -- 6. Barra de experiencia com a cara original da Blizzard (pedido do dono em
