@@ -96,6 +96,7 @@ UIForeverConfig.teclas = {
   -- o que as teclas acima tiraram do lugar
   { "CTRL-R", "REPLY" },
   { "CTRL-V", "NAMEPLATES" },
+  { "CTRL-X", "SITORSTAND" }, -- sentar e descer na agua (era o X); pedido do dono em 2026-11-05
 
   { "SHIFT-M", "UIFOREVER_MINIMAPA" },
 }
