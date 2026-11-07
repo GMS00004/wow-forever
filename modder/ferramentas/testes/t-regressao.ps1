@@ -73,6 +73,38 @@ try {
     $linhas2 = @(& { Install-AddonDeFonte -Contexto $ctx2 -Fonte "zip:$zip2" -Slug 'misto' -Aplicar } 6>&1 | & $paraTexto)
     Assert-Verdade (@($linhas2 | Where-Object { $_ -like 'OK atualizado slug=misto*' }).Count -eq 1) 'atualizacao sem o parametro reaplica o filtro'
     Assert-Verdade (-not (Test-Path -LiteralPath (Join-Path $ctx2.AddOns 'AddonClassic'))) 'atualizacao: AddonClassic continua fora'
+
+    # 5. -SoPastas: pacote de muitos modulos (como o Naowh Forever) instala so as pastas da lista
+    $amb3 = New-AmbienteTeste -Nome 'regressao-sopastas'
+    $ctx3 = Get-WowContexto -Raiz $amb3.Raiz -Flavor $amb3.Flavor -Estado $amb3.Estado -Backups $amb3.Backups
+    $zipMods = @(New-ZipDeFixture -Ambiente $amb3 -Addons @('AddonMulti', 'AddonMulti_Options', 'AddonClassic') -Nome 'mods.zip')[-1]
+    $linhas3 = @(& { Install-AddonDeFonte -Contexto $ctx3 -Fonte "zip:$zipMods" -Slug 'mods' -SoPastas @('addonmulti') -Aplicar } 6>&1 | & $paraTexto)
+    Assert-Verdade (@($linhas3 | Where-Object { $_ -like 'PASTA nome=AddonMulti_Options acao=ignorar motivo=fora-da-lista' }).Count -eq 1) 'com -SoPastas: modulo fora da lista aparece como ignorar'
+    Assert-Verdade (@($linhas3 | Where-Object { $_ -like 'PASTA nome=AddonClassic acao=ignorar motivo=fora-da-lista' }).Count -eq 1) 'com -SoPastas: pasta incompativel fora da lista nao gera recusa'
+    Assert-Verdade (Test-Path -LiteralPath (Join-Path $ctx3.AddOns 'AddonMulti')) 'com -SoPastas: pasta da lista instalada (nome sem diferenciar maiusculas)'
+    Assert-Verdade (-not (Test-Path -LiteralPath (Join-Path $ctx3.AddOns 'AddonMulti_Options'))) 'com -SoPastas: modulo fora da lista fica fora'
+    $m3 = Get-Manifesto -Contexto $ctx3 -Slug 'mods'
+    Assert-Igual 1 @($m3.pastas).Count 'com -SoPastas: o manifesto lista so a pasta pedida'
+    Assert-Igual 'addonmulti' ([string]@($m3.fonte.soPastas)[0]) 'o manifesto grava soPastas'
+    $soPastasJson = [System.IO.File]::ReadAllText((Join-Path $ctx3.Manifestos 'mods.json'))
+    Assert-Verdade ($soPastasJson -match '"soPastas":\s*\[') 'soPastas com um nome so fica como lista no JSON'
+
+    # atualizacao sem o parametro reaplica a lista; CLI aceita "A,B" numa string so
+    $src3 = Join-Path $amb3.Base 'src-v2'
+    [void](New-Item -ItemType Directory -Path $src3 -Force)
+    foreach ($n in @('AddonMulti', 'AddonMulti_Options', 'AddonClassic')) { Copy-Item -LiteralPath (Join-Path $Aqui "fontes-fixture\$n") -Destination $src3 -Recurse }
+    Add-Content -LiteralPath (Join-Path $src3 'AddonMulti\AddonMulti.lua') -Value '-- v2'
+    $zip3 = Join-Path $amb3.Base 'mods-v2.zip'
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($src3, $zip3)
+    $linhas4 = @(& { Install-AddonDeFonte -Contexto $ctx3 -Fonte "zip:$zip3" -Slug 'mods' -Forcar -Aplicar } 6>&1 | & $paraTexto)
+    Assert-Verdade (@($linhas4 | Where-Object { $_ -like 'OK atualizado slug=mods*' }).Count -eq 1) 'atualizacao sem -SoPastas reaplica a lista'
+    Assert-Verdade (-not (Test-Path -LiteralPath (Join-Path $ctx3.AddOns 'AddonMulti_Options'))) 'atualizacao: modulo fora da lista continua fora'
+    Assert-Igual 2 @(ConvertTo-ListaPastas -Valor 'A, B').Count 'CLI: "A, B" vira dois nomes'
+
+    # nome da lista que nao esta no pacote: recusa
+    $msg3 = ''
+    try { $null = & { Install-AddonDeFonte -Contexto $ctx3 -Fonte "zip:$zip3" -Slug 'mods' -SoPastas 'AddonMulti,Sumiu' -Forcar } 6>&1 } catch { $msg3 = $_.Exception.Message }
+    Assert-Verdade ($msg3 -like 'RECUSA: pasta da lista ausente no pacote: Sumiu*') 'nome da lista ausente no pacote: RECUSA'
 } finally {
     if (-not $Manter) { Remove-AmbientesTeste }
 }

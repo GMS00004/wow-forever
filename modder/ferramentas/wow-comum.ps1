@@ -908,6 +908,17 @@ function Backup-PastasDoAddon {
     return $zip
 }
 
+# Lista de nomes de pasta a partir de -SoPastas ("A,B;C" ou um array), sem vazios. Devolve a lista desenrolada.
+function ConvertTo-ListaPastas {
+    param([object[]]$Valor)
+    $saida = @()
+    foreach ($v in @($Valor)) {
+        if ($null -eq $v) { continue }
+        foreach ($p in ([string]$v -split '[,;]')) { $t = $p.Trim(); if ($t) { $saida += $t } }
+    }
+    return $saida
+}
+
 function Install-AddonDeFonte {
     param(
         [Parameter(Mandatory)]$Contexto,
@@ -918,6 +929,7 @@ function Install-AddonDeFonte {
         [string]$Pagina,
         [switch]$Forcar,
         [switch]$SoCompativeis,
+        [string[]]$SoPastas,
         [switch]$Aplicar
     )
     if ($Slug -notmatch '^[a-z0-9-]+$') { Stop-Wow ERRO "slug inválido (use minúsculas, números e hífen): $Slug" }
@@ -974,6 +986,21 @@ function Install-AddonDeFonte {
             }
         }
 
+        # 4b. lista de pastas: -SoPastas (ou a lista gravada no manifesto) instala só as pastas pedidas de um
+        # pacote com muitos módulos (o Naowh Forever traz 13). As outras saem na prévia como ignorar.
+        $soPastasLista = @(ConvertTo-ListaPastas -Valor $SoPastas)
+        if ($soPastasLista.Count -eq 0 -and $antigo -and $antigo.fonte -and $antigo.fonte.PSObject.Properties['soPastas'] -and $antigo.fonte.soPastas) {
+            $soPastasLista = @(ConvertTo-ListaPastas -Valor @($antigo.fonte.soPastas))
+        }
+        $foraDaLista = @()
+        if ($soPastasLista.Count -gt 0) {
+            $nomesPacote = @($pastas | ForEach-Object { $_.Nome })
+            $faltamNaLista = @($soPastasLista | Where-Object { $nomesPacote -notcontains $_ })
+            if ($faltamNaLista.Count -gt 0) { Stop-Wow RECUSA ("pasta da lista ausente no pacote: " + ($faltamNaLista -join ', ')) }
+            $foraDaLista = @($pastas | Where-Object { $soPastasLista -notcontains $_.Nome } | ForEach-Object { $_.Nome })
+            $pastas = @($pastas | Where-Object { $soPastasLista -contains $_.Nome })
+        }
+
         # 5. compatibilidade de TOC
         # -SoCompativeis (ou o mesmo filtro gravado no manifesto) deixa de fora as pastas sem TOC do Forever,
         # como os módulos do Midnight que vêm no pacote do DBM e do BigWigs.
@@ -1028,6 +1055,7 @@ function Install-AddonDeFonte {
             Write-Linha "PASTA nome=$($p.Nome) acao=$acaoP toc=$tocNome interfaces=$ints compativel=$comp"
         }
         foreach ($i in $ignoradas) { Write-Linha "PASTA nome=$($i.Nome) acao=ignorar motivo=$($i.Motivo)" }
+        foreach ($n in $foraDaLista) { Write-Linha "PASTA nome=$n acao=ignorar motivo=fora-da-lista" }
         foreach ($n in $removidas) { Write-Linha "PASTA nome=$n acao=remover" }
 
         $versaoAntes = $null
@@ -1070,7 +1098,7 @@ function Install-AddonDeFonte {
             slug             = $Slug
             nome             = $nomeLegivel
             versao           = $versao
-            fonte            = [ordered]@{ tipo = $tipoFonte; id = $idFonte; asset = $assetManifesto; pagina = $(if ($Pagina) { $Pagina } else { $null }); soCompativeis = $filtrar }
+            fonte            = [ordered]@{ tipo = $tipoFonte; id = $idFonte; asset = $assetManifesto; pagina = $(if ($Pagina) { $Pagina } else { $null }); soCompativeis = $filtrar; soPastas = $(if ($soPastasLista.Count -gt 0) { ,@($soPastasLista) } else { $null }) }
             pastas           = $listaPastas
             aprovado         = $true
             estadoInstalacao = 'instalado'

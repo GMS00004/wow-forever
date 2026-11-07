@@ -1,6 +1,7 @@
 ﻿# CLI de Install-AddonDeFonte (contrato §9.1). Sem -Aplicar, so imprime a previa.
-# Uso: addon-instalar.ps1 -Fonte <github:..|tukui:..|zip:<caminho>> -Slug <slug> [-Nome] [-Asset] [-Pagina] [-Forcar] [-SoCompativeis] [-Aplicar]
+# Uso: addon-instalar.ps1 -Fonte <github:..|tukui:..|zip:<caminho>> -Slug <slug> [-Nome] [-Asset] [-Pagina] [-Forcar] [-SoCompativeis] [-SoPastas 'A,B'] [-Aplicar]
 #      -SoCompativeis: instala só as pastas com TOC do Forever (pacotes como DBM e BigWigs trazem módulos do Midnight).
+#      -SoPastas: instala só as pastas listadas (separadas por vírgula), num pacote de muitos módulos (Naowh Forever).
 #      mais -Raiz -Flavor -Instalacao -Estado -Backups (ver CONTRATO.md §3).
 param(
     [string]$Fonte,
@@ -10,6 +11,7 @@ param(
     [string]$Pagina,
     [switch]$Forcar,
     [switch]$SoCompativeis,
+    [string]$SoPastas,
     [switch]$Aplicar,
     [string]$Raiz,
     [string]$Flavor,
@@ -25,6 +27,6 @@ exit (Invoke-ScriptWow {
     if (-not $Fonte) { Stop-Wow ERRO 'falta -Fonte' }
     if (-not $Slug) { Stop-Wow ERRO 'falta -Slug' }
     $ctx = Get-WowContexto -Raiz $Raiz -Flavor $Flavor -Instalacao $Instalacao -Estado $Estado -Backups $Backups
-    $null = Install-AddonDeFonte -Contexto $ctx -Fonte $Fonte -Slug $Slug -Nome $Nome -Asset $Asset -Pagina $Pagina -Forcar:$Forcar -SoCompativeis:$SoCompativeis -Aplicar:$Aplicar
+    $null = Install-AddonDeFonte -Contexto $ctx -Fonte $Fonte -Slug $Slug -Nome $Nome -Asset $Asset -Pagina $Pagina -Forcar:$Forcar -SoCompativeis:$SoCompativeis -SoPastas $SoPastas -Aplicar:$Aplicar
     0
 })

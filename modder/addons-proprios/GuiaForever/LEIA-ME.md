@@ -16,8 +16,11 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 | `Dicas.lua` | `GuiaForeverDicas[CLASSE] = { personagem, magias = {{nivel, texto, fonte}}, armas/pets/rotacao = {{de, ate, texto, fonte}}, atributos, notas = {{texto, fonte}} }`; só ASCII, texto até 160 caracteres, fontes da lista do checador |
 | `ProfissoesA.lua`, `ProfissoesB.lua` | roteiros das 10 profissões (`passos` por faixa de perícia e `treino` com nomes e lugares de treinadores) |
 | `GuiaForever.lua` | núcleo: anúncio a cada nível, dicas do nível no chat, profissões, gráficos, macros, comandos `/guia`; compartilha funções com os outros arquivos pela tabela `ns` (listas de ganchos `ns.aoCarregar` e `ns.aoEntrar`) |
-| `Janela.lua` | janela com abas (Nível, Talentos, Armas, Pets, Rotação, Prof., Treinos) e rolagem, botão do livro perto do minimapa, tecla J |
+| `Janela.lua` | janela com abas (Level, Talents, Weapons, Pets, Rotation, Keys, Prof., Zone, Trainers; 580 de largura desde a 0.8.0) e rolagem, botão do livro perto do minimapa, tecla J |
 | `Treinadores.lua` | liga no Questie os ícones de treinador (classe e profissões conhecidas), liga o rastreamento de treinadores do minimapa, seta do TomTom para o treinador mais perto (NPCs pela API pública do QuestieDB, contrato 4) |
+| `SkinDB.lua` | `GuiaForeverSkinDB[idDoNPC] = { nome, nivelMin, nivelMax, tipo }`: as 924 criaturas com loot de Skinning do cmangos/classic-db (0.8.0) |
+| `Zona.lua` | aba Zone, linha de Skinning no tooltip dos bichos e diário de calibração (0.8.0; ver a seção abaixo) |
+| `Teclas.lua` | `GuiaForeverTeclas[CLASSE]` e a aba Keys (0.8.0): o que cada tecla faz e a partir de que nível (ver a seção abaixo) |
 | `Rastreador.lua` | rastreador discreto de profissões embaixo do minimapa (0.6.0): perícia / meta da área de quest atual, por `GuiaForeverRastreador` do `Dados.lua`; mouse em cima mostra área, faixa, teto e o passo do roteiro |
 | `Bindings.xml` | a ação `GUIAFOREVER_JANELA` (abre e fecha a janela) |
 
@@ -54,6 +57,23 @@ Pedido do dono: ver de forma discreta até que perícia subir cada profissão an
 - **Perícia e teto:** `ns.minhasProfissoes()` lê primeiro `C_SkillInfo.GetNumSkillLines` e `C_SkillInfo.GetSkillLineInfo(i)` (tabela com `name`, `isHeader`, `rank` e `maxRank`; é a API que a janela de perícias do Forever usa, `Blizzard_UIPanels_Game/Camelot/SkillsFrame.lua`). As globais antigas (`GetProfessions` com `GetProfessionInfo`, e `GetSkillLineInfo`) ficam de reserva, e não foi conferido se existem no cliente. Até a 0.5.0, a leitura usava só as globais antigas: se elas não existirem no Forever, o `/guia prof` e a aba Prof. nunca acharam profissão.
 - **Lugar:** `TOP` do quadro preso ao `BOTTOM` do painel de dados do minimapa do ElvUI (`MinimapPanel`), se estiver visível, senão ao `Minimap`.
 
+## Aba Zone (0.8.0)
+
+Na zona onde o jogador está, lista cada bicho esfolável com a perícia de Skinning que ele pede e até onde dá ponto, com um botão de seta do TomTom para os até 6 mais úteis, e põe uma linha "Skinning: needs N" no tooltip dos bichos (`/guia zone`). Sem Skinning, mostra a lista com perícia 0.
+
+- **Dados:** `SkinDB.lua` (924 criaturas com loot de Skinning, do banco aberto cmangos/classic-db, GPL-3.0); locais e níveis vêm do QuestieDB e do ZoneDB do Questie, lidos só depois de `Questie.API.isReady`. A perícia mínima segue wow.gg/professions/forever/skinning (04/11/2026): até o nível 10 pede 1, de 11 a 20 pede (nível - 10) x 10, do 21 em diante nível x 5.
+- **Estimativa:** as faixas de cor (laranja até mínima+25, amarelo até +50, verde até +100, cinza depois) são a regra dos nós de coleta, a confirmar; ficam na tabela `FAIXAS` no topo de `Zona.lua` e aparecem marcadas "estimated". Os níveis de personagem dos treinos (10, 20, 35) vêm do addon Naowh (inferência).
+- **Diário de calibração** (`GuiaForeverDB`): `skinCores` (cor da linha "Skinnable" do cadáver, com nível e perícia, até 400), `skinLog` (nível do alvo e perícia antes e depois de cada esfolada, até 400) e `skinAprendidos` (bichos esfoláveis que não estão no SkinDB). Nada disso roda em combate; se a API negar o dado, o addon fica sem ele.
+
+Correções da sessão principal no gate: o diário de cores grava uma vez por cadáver e perícia (o tooltip de unidade se refaz várias vezes com o mouse em cima), e o nível do cadáver esfolado vem primeiro do `mouseover`, depois do `softinteract` e só então do alvo (quem esfola clicando nem sempre está com ele no alvo).
+
+## Aba Keys (0.8.0)
+
+Pedido do dono em 2026-11-06: "um guia de cada nível, qual macro eu vou usar a partir de cada nível, e das minhas hotkeys". A aba mostra, no nível do personagem, o que é novo neste nível, o que cada tecla já faz (por grupo: barra principal, barra do Shift, barra 2 e mouse, pet, outras teclas, só clique), o que chega nos próximos 6 níveis e o resto depois (`/guia keys`).
+
+- **Dados:** `Teclas.lua`, montado a partir do cruzamento das fontes de 2026-11-06 (UIForever `Config.lua`, macros do `Dados.lua`, `Dicas.lua`, fontes de `comum\fontes\builds\`). Nível de cada magia: das fontes do dono; onde elas não dão, dos dados do Training Planner do Naowh Forever (`NaowhForever_Training\Data\TrainingData.lua`, gerado do cliente 1.60.1.70790), marcados `f = "Naowh"`.
+- **Manutenção:** ao mudar uma tecla ou um botão no UIForever, mude a linha correspondente aqui. A tabela não lê os botões do jogo; é um mapa escrito.
+
 ## Como mudar e validar
 
 1. Edite os dados (`Dicas.lua`, `Dados.lua`) com a fonte e a origem de cada linha. Macro nova: acrescente na lista e suba a `versao` do conjunto, senão o login não a cria.
@@ -65,6 +85,8 @@ Pedido do dono: ver de forma discreta até que perícia subir cada profissão an
 4. Mudou só `.lua` que já existia: `/reload`. Arquivo novo ou `.toc` mudado: reiniciar o jogo.
 
 ## Pendente
+
+- Teste no jogo da 0.8.0 (arquivos novos no `.toc`: reiniciar o jogo, não basta `/reload`): abas Keys e Zone abrem e cabem na janela; a Zone lista os bichos de Teldrassil ou Darkshore com cores e o botão de seta funciona; o tooltip de um bicho mostra "Skinning: needs N"; depois de esfolar alguns, com o jogo fechado, conferir `skinCores` e `skinLog` no `GuiaForever.lua` das SavedVariables (se a cor da linha "Skinnable" varia com a perícia, dá para trocar a estimativa das `FAIXAS` pelos números reais). A macro `mark_Conc` no 5 (conjunto de macros na versão 4): 1o aperto marca e manda o pet, os seguintes soltam o Concussive Shot.
 
 - Teste no jogo da 0.6.0 (precisa reiniciar o jogo: arquivo novo no `.toc`): o rastreador aparece embaixo do minimapa, mostra Skinning e Leatherworking com a meta de Teldrassil, some em combate, e o `/guia prof` passa a achar as profissões; conferir a ligação de cada zona a uma faixa.
 - Teste no jogo da macro `sting_Auto` (conjunto de macros na versão 2, 2026-11-05 à noite): fora de combate a tecla 1 só liga o Auto Shot; o aperto seguinte, já em combate, solta o Serpent Sting; os outros não desligam o Auto Shot; Alt+1 reaplica o Sting. A J abre o guia pelo UIForever (`UIForeverConfig.teclas`), porque a J era da janela de guilda.

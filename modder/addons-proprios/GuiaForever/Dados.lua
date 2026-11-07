@@ -124,7 +124,7 @@ GuiaForeverDados = {
 -- Teclas e escolha das macros do leak: dono, em 2026-11-05.
 GuiaForeverMacros = {
   HUNTER = {
-    versao = 3,  -- 2: sting_Auto (2026-11-05, noite); 3: mark_Pet (2026-11-06)
+    versao = 4,  -- 2: sting_Auto (2026-11-05, noite); 3: mark_Pet (2026-11-06); 4: mark_Conc (2026-11-06, noite)
     fonte = "Gladius Gaming and leak",
     lista = {
       { nome = "send_Pet", icone = "Ability_GhoulFrenzy", tecla = "SHIFT-MOUSEWHEELUP",
@@ -168,6 +168,14 @@ GuiaForeverMacros = {
       -- so sozinho no mundo aberto, em grupo puxa o mob antes da hora.
       { nome = "mark_Pet", icone = "INV_MISC_QUESTIONMARK",
         corpo = "#showtooltip Hunter's Mark\n/petattack\n/cast Hunter's Mark" },
+      -- pedido do dono (2026-11-06, noite): "um macro que usa Hunter's Mark e
+      -- Concussive Shot", no 5 no lugar da mark_Pet. 1o aperto num alvo novo:
+      -- /petattack e Hunter's Mark; depois a sequencia para no "null" e a linha de
+      -- baixo solta o Concussive Shot sempre que estiver pronto. No aperto da marca
+      -- o Concussive falha pela recarga global (pode aparecer o aviso vermelho).
+      -- Recomeca so com alvo novo. Mesmo truque do "null" da sting_Auto.
+      { nome = "mark_Conc", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip\n/petattack\n/castsequence reset=target Hunter's Mark, null\n/cast Concussive Shot" },
     },
   },
 }

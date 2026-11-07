@@ -459,12 +459,12 @@ local function macrosNoLogin()
 end
 
 -- Comandos ---------------------------------------------------------------
-local ABAS = { nivel = true, talentos = true, armas = true, pets = true, rotacao = true, prof = false, treinos = true }
+local ABAS = { nivel = true, talentos = true, armas = true, pets = true, rotacao = true, prof = false, treinos = true, zona = true, teclas = true }
 
 -- Apelidos em ingles: cada subcomando em portugues continua valendo.
 local APELIDO_1 = {
   level = "nivel", talents = "talentos", weapons = "armas", rotation = "rotacao",
-  trainers = "treinos", training = "treinos", all = "tudo", professions = "prof",
+  trainers = "treinos", zone = "zona", keys = "teclas", training = "treinos", all = "tudo", professions = "prof",
   tracker = "rastreador", graphics = "graficos", key = "tecla", trainer = "treinador",
 }
 local APELIDO_2 = { undo = "desfazer", apply = "aplicar", class = "classe" }
@@ -515,7 +515,7 @@ SlashCmdList["GUIAFOREVER"] = function(arg)
   elseif arg == "" then
     if ns.alternarJanela then ns.alternarJanela() end
   else
-    msg("commands: /guia (window), /guia level|talents|weapons|pets|rotation|trainers, /guia prof, /guia all, "
+    msg("commands: /guia (window), /guia level|talents|weapons|pets|rotation|keys|trainers|zone, /guia prof, /guia all, "
       .. "/guia trainer class|<profession>, /guia tracker (shows or hides the profession goals), "
       .. "/guia macros, /guia graphics, and the undo ones: "
       .. "/guia macros undo, /guia graphics undo, /guia trainers undo, /guia key undo")

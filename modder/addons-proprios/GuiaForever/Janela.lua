@@ -4,14 +4,16 @@
 
 local _, ns = ...
 
-local LARGURA, ALTURA = 470, 460
+local LARGURA, ALTURA = 580, 460
 local ABAS = {
   { id = "nivel", rotulo = "Level" },
   { id = "talentos", rotulo = "Talents" },
   { id = "armas", rotulo = "Weapons" },
   { id = "pets", rotulo = "Pets" },
   { id = "rotacao", rotulo = "Rotation" },
+  { id = "teclas", rotulo = "Keys" },
   { id = "prof", rotulo = "Prof." },
+  { id = "zona", rotulo = "Zone" },
   { id = "treinos", rotulo = "Trainers" },
 }
 local CINZA, AMARELO = "|cff999999", "|cffffd100"
@@ -165,6 +167,9 @@ construtores.treinos = function(b)
   end
 end
 
+construtores.zona = function(b) if ns.blocosZona then ns.blocosZona(b) else T(b, "Zone tab unavailable.") end end
+construtores.teclas = function(b) if ns.blocosTeclas then ns.blocosTeclas(b) else T(b, "Keys tab unavailable.") end end
+
 -- Desenho ------------------------------------------------------------
 local function desenhar(blocos)
   local y = -4
@@ -260,7 +265,7 @@ local function criarJanela()
   local x = 10
   for _, aba in ipairs(ABAS) do
     local bt = CreateFrame("Button", nil, janela, "UIPanelButtonTemplate")
-    bt:SetSize(62, 20)
+    bt:SetSize(60, 20)
     bt:SetPoint("TOPLEFT", janela, "TOPLEFT", x, -30)
     bt:SetText(aba.rotulo)
     local id = aba.id
@@ -271,7 +276,7 @@ local function criarJanela()
       atualizar()
     end)
     botoesAba[id] = bt
-    x = x + 64
+    x = x + 62
   end
 
   rolagem = CreateFrame("ScrollFrame", "GuiaForeverRolagem", janela, "UIPanelScrollFrameTemplate")

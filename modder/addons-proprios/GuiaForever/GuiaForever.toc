@@ -1,8 +1,8 @@
 ## Interface: 16001
 ## Title: GuiaForever
-## Notes: Talents and tips by level (spells, weapons, pets, rotation), professions with a per-area goal tracker, trainers, macros and graphics profile.
+## Notes: Talents and tips by level (spells, weapons, pets, rotation), professions with a per-area goal tracker, trainers, per-zone skinning targets, macros and graphics profile.
 ## Author: Bruno
-## Version: 0.7.0
+## Version: 0.8.0
 ## SavedVariables: GuiaForeverDB
 ## OptionalDeps: Questie, QuestieDB, TomTom
 Dados.lua
@@ -12,4 +12,7 @@ ProfissoesB.lua
 GuiaForever.lua
 Janela.lua
 Treinadores.lua
+SkinDB.lua
+Zona.lua
+Teclas.lua
 Rastreador.lua

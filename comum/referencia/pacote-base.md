@@ -33,6 +33,7 @@ Levantamento de 2026-11-03 (subagente de pesquisa T1, conferido pela sessão pri
 | PvP | Capping | GitHub `BigWigsMods/Capping` | TOC e `release.json` com 16001, segundo a T1 | [opcional] | risco: os módulos não têm a marca camelot; testar no cliente antes de confiar |
 | PvP | Peralex BG | só CurseForge | página lista o flavor Forever | [opcional] | alternativa ao Capping |
 | Qualidade de vida | Leatrix Plus | só CurseForge | conferido `[local]` 2026-11-04: o arquivo `-forever` (1.60.25) traz `Leatrix_Plus.toc` só com 16001 | [opcional] | |
+| Treino e profissões | Naowh Forever (núcleo, Training e Professions) | GitHub `naowh-gaming/NaowhForever` (também na CurseForge, `naowhforever`) | conferido `[página]` e `[local]` 2026-11-06: 1.2.11 de 06/11, `release.json` com forever 16001, os 13 TOCs com 16001; licença "todos os direitos reservados" (não copiar código) | [opcional] | 13 módulos num zip, um por pasta, cada um dependente só do núcleo. Instalados com `-SoPastas` só o núcleo, o Training (o Training Planner: magias por nível, custo e rota até o 60, aba Builds com as builds do Naowh) e o Professions (janela de receitas com as que faltam, cor de cada receita, lista de compras, ícone e aviso de nó de erva e minério). De fora por repetirem papel: QoL (Leatrix), Combat (Swing Timer nativo), Utilities (barras e macros, choca com o UIForever), BiS (Pawn), DamageMeter, DungeonJournal (150 MB), Discovery |
 
 Fora do Forever (sem evidência): BattleGroundEnemies (TOC só 110200), GladiusEx (fork sem release, TOC só 11.x).
 
