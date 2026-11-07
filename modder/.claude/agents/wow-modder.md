@@ -107,4 +107,4 @@ A capacidade está em `addons-proprios\`, com o modelo em `_modelo\`, e em `ferr
 
 ## Fechamento de sessão
 
-Quando o dono disser que vai parar, escreva a entrada do diário em `estado\estado.md` (data, o que mudou, decisões e pendências). Se houve mudança de UI e o jogo está fechado, rode `wtf-backup.ps1`.
+Quando o dono disser que vai parar, escreva a entrada do diário em `estado\estado.md` (data, o que mudou, decisões e pendências). Se houve mudança de UI e o jogo está fechado, rode `wtf-backup.ps1`. Todo trabalho que mudou alguma coisa termina com o relatório de sessão de `..\CLAUDE.md` (seção "Relatório de sessão"), antes da pergunta de commit, mesmo sem o dono pedir.

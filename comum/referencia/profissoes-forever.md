@@ -65,3 +65,18 @@ Níveis de profissão (Warcraft Tavern, sem data): Apprentice nível 1 (gatherin
 | As poções de cura (Superior Healing Potion 3928, Major Healing Potion 13446) também não têm vínculo; desde a mudança do beta, quem as fabrica é o First Aid | [página] | mesmo tooltip |
 | O Polished Driftwood Icon (249398) é BoP, só de Shaman, item level 25, pede nível 20, slot de relíquia; efeito: "Allows 8% of your Mana regeneration to continue while casting". Só serve ao xamã que tem Enchanting | [página] | mesmo tooltip; busca da Wowhead do Forever |
 | Não há pergaminho de encantamento (vellum) no lançamento: o encantador não encanta item já vinculado de outro personagem da própria conta nem vende encantamento no AH; só dá para encantar item BoE antes de mandá-lo pelo correio | [busca] | timesaver.gg (datamine até 2026-11-01), wowsod.pro, tópicos do fórum da Blizzard |
+
+## Skinning: perícia por bicho, cores e dados (conferido em 2026-11-06)
+
+Levantamento de um subagente (WebFetch, que devolve resumo de modelo) e da sessão principal; relatório completo só na sessão. Usado pela aba Zone do GuiaForever 0.8.0.
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| Perícia mínima para esfolar, no Forever: bicho até o nível 10 pede só a perícia inicial; do 11 ao 20, (nível − 10) × 10 (11 pede 10, 20 pede 100); do 21 em diante, nível × 5 (21 pede 105) | [página] | https://wow.gg/professions/forever/skinning, "Last updated November 4, 2026"; o guia do wow-professions (sem data) dá o mesmo |
+| No Classic, a única regra publicada é "nível acima de 20, nível × 5"; a faixa de 11 a 20 só aparece nas fontes do Forever | [página] | https://warcraft.wiki.gg/wiki/Skinnable, editado em 02/06/2018 |
+| Cores de Skinning (Classic): vermelho não esfola; laranja dá ponto sempre; amarelo 50%; verde 50% ou menos; cinza nunca. Nenhuma fonte aberta, do Classic ou do Forever, dá até quantos pontos acima da mínima cada cor vai | [página] | warcraft.wiki.gg/wiki/Skinnable; wowisclassic.com (05/06/2019) |
+| O Naowh Forever usa laranja +25, amarelo +50 e verde +100 sobre a mínima ("gathering skill-up steps"), mas só para nós de erva e minério (Glimmer), sem fonte citada; nada no repositório aplica isso a Skinning | [página] | github.com/naowh-gaming/NaowhForever, `NaowhForever_Professions/Constants.lua` linha 26 e `UI/NodeIcons.lua` |
+| Treino de Skinning: Journeyman pede 50 e vai a 150; Expert pede 125 e vai a 225; Artisan pede 200 e vai a 300. Nível de personagem 10, 20 e 35 só no Naowh, que copia os do Mining (inferência do autor) | [página] | wow.gg; gfinityesports.com (02/11/2026); README do NaowhForever_Professions, linhas 427 a 429 |
+| Materiais novos: Pristine Leather, Pristine Hide e Pristine Scale existem; nível e chance não estão em fonte aberta | [página] | warcrafttavern.com/forever/guides/skinning/; wow-professions |
+| Bichos esfoláveis: o banco aberto cmangos/classic-db (`Full_DB/ClassicDB_1_12_1_z2815.sql.gz`, commit 37eeeeb de 03/11/2026, GPL-3.0) tem 924 criaturas com `SkinningLootId` maior que zero; o vmangos (release `db_latest`, 28/09/2026) tem 896. Young Nightsaber (2031), Webwood Spider (1986) e Strigid Owl (1995) não são esfoláveis nesse banco. São dados do Classic 1.12; bicho novo do Forever não está neles | [local] | dump baixado e lido em 2026-11-06; lista em `modder\addons-proprios\GuiaForever\SkinDB.lua` |
+| O Wowhead recusa cliente automático: `curl` em `wowhead.com/classic/npc=<id>` volta com corpo vazio, e o WebFetch não mostra as abas (Skinning, loot), que são montadas por JavaScript. Wowpedia e classic-wow (Fandom) dão 402; Icy Veins dá 403 | [local] | tentativas de 2026-11-06 |
