@@ -33,6 +33,16 @@ local function faixaAtual()
   return id and cfg.faixas[id], origem
 end
 
+local function sabeSkinning()
+  if not ns.minhasProfissoes then return false end
+  local ok, lista = pcall(ns.minhasProfissoes)
+  if not (ok and type(lista) == "table") then return false end
+  for _, pr in ipairs(lista) do
+    if pr.nome == "Skinning" then return true end
+  end
+  return false
+end
+
 local agendar -- definida mais abaixo; os ganchos do criarQuadro a chamam
 
 -- Quadros que o ElvUI pode empilhar embaixo do minimapa: o painel Guild/Friends
@@ -107,6 +117,12 @@ local function criarQuadro()
       GameTooltip:AddLine(l.titulo, 1, 1, 1)
       for _, d in ipairs(l.detalhes) do GameTooltip:AddLine(d, 0.85, 0.85, 0.85, true) end
     end
+    if sabeSkinning() and ns.bichosDaZona and ns.colorirBicho then
+      local partes = {}
+      for _, b in ipairs(ns.bichosDaZona(3)) do partes[#partes + 1] = ns.colorirBicho(b.cor, b.nome) end
+      GameTooltip:AddLine(" ")
+      GameTooltip:AddLine("Skin here: " .. (#partes > 0 and table.concat(partes, ", ") or "no skinnable creature known here"), 1, 1, 1, true)
+    end
     GameTooltip:AddLine(" ")
     GameTooltip:AddLine(CINZA .. "Sources: wow-professions (Skinning), Gfinity (Leatherworking). /guia tracker hides it." .. FIM, 1, 1, 1, true)
     GameTooltip:Show()
@@ -114,10 +130,30 @@ local function criarQuadro()
   quadro:SetScript("OnLeave", function() GameTooltip:Hide() end)
 end
 
+-- Fonte das linhas do rastreador: GameFontHighlightSmall com tamanho 13, criada uma vez.
+-- Sem CreateFont (ou se falhar), volta para a fonte da Blizzard.
+local nomeFonte
+local function fonteRastreador()
+  if nomeFonte then return nomeFonte end
+  nomeFonte = "GameFontHighlightSmall"
+  if CreateFont and GameFontHighlightSmall then
+    pcall(function()
+      local f = _G.GuiaForeverFonteRastreador or CreateFont("GuiaForeverFonteRastreador")
+      f:SetFontObject(GameFontHighlightSmall)
+      local arq, _, flags = f:GetFont()
+      if arq then f:SetFont(arq, 13, flags) end
+      if _G.GuiaForeverFonteRastreador then nomeFonte = "GuiaForeverFonteRastreador" end
+    end)
+  end
+  return nomeFonte
+end
+
+local ALTURA_LINHA = 17 -- 13 de fonte com folga
+
 local function texto(i)
   if not textos[i] then
-    local t = quadro:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    t:SetPoint("TOP", quadro, "TOP", 0, -(i - 1) * 13)
+    local t = quadro:CreateFontString(nil, "OVERLAY", fonteRastreador())
+    t:SetPoint("TOP", quadro, "TOP", 0, -(i - 1) * ALTURA_LINHA)
     t:SetJustifyH("CENTER")
     textos[i] = t
   end
@@ -180,7 +216,7 @@ local function atualizar()
   if n == 0 then
     quadro:Hide()
   else
-    quadro:SetHeight(n * 13 + 2)
+    quadro:SetHeight(n * ALTURA_LINHA + 2)
     posicionar()
     quadro:Show()
   end
@@ -198,6 +234,61 @@ function ns.alternarRastreador()
   print("|cff66ccffGuiaForever|r: profession tracker " .. (GuiaForeverDB.rastreadorOculto and "hidden." or "shown."))
   atualizar()
 end
+
+-- Provedor "profissao" do painel Agora: profissao no teto do treino e abaixo da meta da area.
+-- Zona.lua e Agora.lua carregam depois deste arquivo no .toc (Agora nao existe aqui), entao o
+-- registro so acontece em PLAYER_LOGIN.
+local function itensTeto(ctx)
+  local faixa = faixaAtual()
+  if not faixa then return {} end
+  local planejadas = (GuiaForeverProfissoesPlanejadas and ns.classe and GuiaForeverProfissoesPlanejadas[ns.classe()]) or {}
+  local nivel = (ctx and ctx.nivel) or (UnitLevel and UnitLevel("player")) or 1
+  local conhecidas = {}
+  for _, pr in ipairs(ns.minhasProfissoes and ns.minhasProfissoes() or {}) do conhecidas[pr.nome] = pr end
+  local treinos = ns.TREINOS or {}
+  local r = {}
+  for _, nome in ipairs(planejadas) do
+    local meta = faixa.metas[nome]
+    local pr = conhecidas[nome]
+    if meta and pr and pr.maximo and pr.maximo > 0 and pr.pericia >= pr.maximo and pr.maximo < meta then
+      local prox
+      for _, tr in ipairs(treinos) do
+        if tr.vai > pr.maximo then prox = tr; break end
+      end
+      if prox then
+        local texto, botao
+        if nivel >= prox.nivel then
+          texto = nome .. " capped at " .. pr.maximo .. ": train " .. prox.nome
+          botao = { rotulo = "Arrow", acao = function() if ns.setaTreinador then ns.setaTreinador(nome) end end }
+        else
+          texto = nome .. " capped at " .. pr.maximo .. ": " .. prox.nome .. " at level " .. prox.nivel
+        end
+        r[#r + 1] = {
+          chave = "prof:teto:" .. nome, prio = 70, cor = "laranja", texto = texto,
+          dica = { "Goal for this area: " .. meta .. ", current cap " .. pr.maximo .. ".",
+            "Next training: " .. prox.nome .. " (character level " .. prox.nivel .. ")." },
+          fonte = "GuiaForever profession goals", aba = "prof", botao = botao,
+        }
+      end
+    end
+  end
+  return r
+end
+
+local function registrarProvedor()
+  if not (ns.agora and ns.agora.provedor) then return end
+  ns.agora.provedor({
+    id = "profissao",
+    eventos = { "SKILL_LINES_CHANGED", "ZONE_CHANGED_NEW_AREA", "PLAYER_LEVEL_UP", "CHAT_MSG_SKILL" },
+    itens = itensTeto,
+  })
+end
+local evProvedor = CreateFrame("Frame")
+evProvedor:RegisterEvent("PLAYER_LOGIN")
+evProvedor:SetScript("OnEvent", function(self)
+  self:UnregisterEvent("PLAYER_LOGIN")
+  pcall(registrarProvedor)
+end)
 
 local ev = CreateFrame("Frame")
 for _, e in ipairs({ "PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA", "SKILL_LINES_CHANGED", "CHAT_MSG_SKILL",

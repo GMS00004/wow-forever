@@ -229,3 +229,30 @@ GuiaForeverRastreador = {
     ["Hillsbrad Foothills"] = 3,
   },
 }
+
+-- GuiaForeverPet: dados do pet do cacador para a 1.0 (ARQUITETURA.md secao 7).
+-- Conferidos em 2026-11-06 nos arquivos instalados (so leitura), em
+-- "C:\Program Files (x86)\World of Warcraft\_forever_\Interface\AddOns\":
+--   magias (ids de magia do cliente 1.60.1.70790): NaowhForever_Training\Data\TrainingData.lua,
+--     classe 3 (HUNTER), linhas 267-276 (883 call, 2641 dismiss, 6991 feed, 982 revive, 1515 tame, 136 mend).
+--   missao 6103 "Training the Beast", entregue a Jocaste: RXPGuides\Guides\forever\Alliance-1-10_NightElf.lua, linha 2231.
+--   treinadores, Jocaste e Jaeana (coordenadas = Towns.lua / 100): NaowhForever\Shared\Game\Towns.lua,
+--     Keldas linha 675 (mapa 1438), Jocaste linha 1443, Jaeana linha 1451, Silvaria linha 1500 (mapa 1457).
+GuiaForeverPet = {
+  HUNTER = {
+    magias = { feed = 6991, call = 883, revive = 982, tame = 1515, dismiss = 2641, mend = 136 },
+    missoes = {
+      { id = 6103, nome = "Training the Beast", npc = "Jocaste", raca = "NightElf", mapa = 1457, x = 0.404, y = 0.086, fonte = "RestedXP" },
+    },
+    treinadores = {
+      { npc = "Keldas", mapa = 1438, x = 0.568, y = 0.598, fonte = "Naowh" },   -- Towns.lua:675
+      { npc = "Silvaria", mapa = 1457, x = 0.425, y = 0.092, fonte = "Naowh" }, -- Towns.lua:1500
+    },
+    comida = {
+      reservados = {},
+      vendedores = {
+        { npc = "Jaeana", dieta = "Meat", mapa = 1457, x = 0.645, y = 0.717, fonte = "Naowh" },  -- Towns.lua:1451
+      },
+    },
+  },
+}

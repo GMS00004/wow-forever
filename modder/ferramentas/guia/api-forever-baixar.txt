@@ -1,0 +1,9 @@
+Listas da API do Forever usadas pelo checar-combate.mjs (funcoes, eventos, templates, CVars, enums).
+Fonte: GitHub Ketho/BlizzardInterfaceResources, branch "forever" (gerado do cliente; em 2026-11-06 o
+ultimo commit era o build 1.60.1.70532, de 2026-10-21; o cliente instalado e o 1.60.1.70840).
+Para baixar de novo (Git Bash, a partir desta pasta):
+
+mkdir -p api-forever && for f in GlobalAPI.lua FrameXML.lua Events.lua Templates.lua CVars.lua LuaEnum.lua WidgetAPI.lua ScriptObjectAPI.lua Mixins.lua Frames.lua AtlasInfo.lua; do gh api "repos/Ketho/BlizzardInterfaceResources/contents/Resources/$f?ref=forever" -H "Accept: application/vnd.github.raw" > "api-forever/$f"; done
+
+Achado de 2026-11-06 pela lista: no Forever nao existem IsPlayerSpell nem UnitCharacterPoints
+(use C_SpellBook.IsSpellKnown e C_Traits.GetTreeCurrencyInfo).

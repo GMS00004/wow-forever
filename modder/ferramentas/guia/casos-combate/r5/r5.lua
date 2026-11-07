@@ -1,0 +1,3 @@
+local _, ns = ...
+local f = CreateFrame("Frame")
+f:RegisterEvent("UNIT_AURA")

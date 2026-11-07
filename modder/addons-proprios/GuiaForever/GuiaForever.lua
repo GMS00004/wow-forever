@@ -31,6 +31,10 @@ ns.dicas = function()
 end
 
 local function pontosLivres()
+  if ns.pontosTalento then
+    local ok, p = pcall(ns.pontosTalento)
+    if ok and type(p) == "number" then return p end
+  end
   if UnitCharacterPoints then
     local ok, p = pcall(UnitCharacterPoints, "player")
     if ok and type(p) == "number" then return p end
@@ -184,36 +188,29 @@ local function dicasDoNivel(nivel)
 end
 ns.dicasDoNivel = dicasDoNivel
 
+-- Sem texto grande no meio da tela. Com o painel Agora (ns.agora), o chat fica so com
+-- a linha de talento na subida de nivel; no login o painel mostra tudo.
 local function anunciar(nivel, login)
-  local linhas = {}
+  if login then
+    if not ns.agora and ns.dicas() then
+      msg("J, the book button or /guia opens the guide.")
+    end
+    return
+  end
+  -- com o painel Agora, o talento do nivel ja aparece la: o chat fica limpo (UX da 1.0)
+  if ns.agora then return end
   if dados and (nivel >= MIN_NIVEL or nivel + 1 == MIN_NIVEL) then
     local livres = pontosLivres()
     if nivel >= MIN_NIVEL and nivel <= MAX_NIVEL and (livres == nil or livres > 0) then
-      linhas[#linhas + 1] = "Now (level " .. nivel .. "): " .. (entrada(nivel) or "?")
+      msg("Now (level " .. nivel .. "): " .. (entrada(nivel) or "?"))
     end
     local prox = entrada(nivel + 1)
     if prox then
-      linhas[#linhas + 1] = "Next (level " .. (nivel + 1) .. "): " .. prox
+      msg("Next (level " .. (nivel + 1) .. "): " .. prox)
     end
   end
-  if #linhas > 0 then
-    for _, l in ipairs(linhas) do msg(l) end
-    local grande = table.concat(linhas, "\n")
-    if UIErrorsFrame and UIErrorsFrame.AddMessage then
-      UIErrorsFrame:AddMessage(grande, 0.2, 1, 0.6, 1, 6)
-    elseif RaidNotice_AddMessage and RaidWarningFrame and ChatTypeInfo then
-      RaidNotice_AddMessage(RaidWarningFrame, grande, ChatTypeInfo["RAID_WARNING"])
-    end
-  end
-  local extras = dicasDoNivel(nivel)
-  if login then
-    if #extras > 0 then
-      msg("level " .. nivel .. ": " .. #extras .. " new tip(s). J, the book button or /guia opens the guide.")
-    elseif ns.dicas() then
-      msg("J, the book button or /guia opens the guide.")
-    end
-  else
-    for _, l in ipairs(extras) do msg(l) end
+  if not ns.agora then
+    for _, l in ipairs(dicasDoNivel(nivel)) do msg(l) end
   end
 end
 
@@ -234,6 +231,7 @@ local function lerCVar(nome)
   return nil
 end
 
+-- fora-de-combate (aplicarGraficos e desfazerGraficos checam emCombate antes de chamar)
 local function gravarCVar(nome, valor)
   local ok
   if C_CVar and C_CVar.SetCVar then ok = pcall(C_CVar.SetCVar, nome, valor)
@@ -318,6 +316,7 @@ local function conjuntoTeclasPersonagem()
   return (Enum and Enum.BindingSet and Enum.BindingSet.Character) or 2
 end
 
+-- fora-de-combate (criarMacros sai em combate antes de chamar)
 local function criarUmaMacro(m)
   for _, icone in ipairs({ m.icone, "INV_MISC_QUESTIONMARK", 134400 }) do
     if icone then
@@ -459,12 +458,11 @@ local function macrosNoLogin()
 end
 
 -- Comandos ---------------------------------------------------------------
-local ABAS = { nivel = true, talentos = true, armas = true, pets = true, rotacao = true, prof = false, treinos = true, zona = true, teclas = true }
-
 -- Apelidos em ingles: cada subcomando em portugues continua valendo.
 local APELIDO_1 = {
+  now = "agora", combat = "combate", help = "ajuda",
   level = "nivel", talents = "talentos", weapons = "armas", rotation = "rotacao",
-  trainers = "treinos", zone = "zona", keys = "teclas", training = "treinos", all = "tudo", professions = "prof",
+  trainers = "treinos", zone = "zona", keys = "teclas", training = "treinos", all = "tudo", professions = "profissoes",
   tracker = "rastreador", graphics = "graficos", key = "tecla", trainer = "treinador",
 }
 local APELIDO_2 = { undo = "desfazer", apply = "aplicar", class = "classe" }
@@ -482,6 +480,16 @@ local function normalizarArg(arg)
   if a == "treinos" and b == "desfazer" then a = "treinadores" end -- "trainers undo"
   if b ~= "" then return a .. " " .. b end
   return a
+end
+
+-- Abas do J: vem de Janela.lua (ns.abas e os apelidos dos ids antigos em ns.apelidosAba),
+-- conferidas na hora do comando. "prof" nao e aba (lista no chat).
+local function ehAba(arg)
+  if arg == "prof" then return false end
+  for _, aba in ipairs(ns.abas or {}) do
+    if aba.id == arg then return true end
+  end
+  return ns.apelidosAba ~= nil and ns.apelidosAba[arg] ~= nil
 end
 
 SLASH_GUIAFOREVER1 = "/guia"
@@ -508,15 +516,17 @@ SlashCmdList["GUIAFOREVER"] = function(arg)
     if ns.desfazerTecla then ns.desfazerTecla() end
   elseif arg == "rastreador" then
     if ns.alternarRastreador then ns.alternarRastreador() end
+  elseif arg == "treinador pet" then
+    if ns.setaTreinador then ns.setaTreinador("pet") end
   elseif arg == "treinador" or arg:sub(1, 10) == "treinador " then
     if ns.setaTreinador then ns.setaTreinador(strtrim and strtrim(arg:sub(11)) or arg:sub(11)) end
-  elseif ABAS[arg] then
+  elseif ehAba(arg) then
     if ns.abrirAba then ns.abrirAba(arg) end
   elseif arg == "" then
     if ns.alternarJanela then ns.alternarJanela() end
   else
-    msg("commands: /guia (window), /guia level|talents|weapons|pets|rotation|keys|trainers|zone, /guia prof, /guia all, "
-      .. "/guia trainer class|<profession>, /guia tracker (shows or hides the profession goals), "
+    msg("commands: /guia (window), /guia now|pet|talents|combat|professions|help (old names like level, keys, zone, trainers and addons still work), /guia prof, /guia all, "
+      .. "/guia trainer class|pet|<profession>, /guia tracker (shows or hides the profession goals), "
       .. "/guia macros, /guia graphics, and the undo ones: "
       .. "/guia macros undo, /guia graphics undo, /guia trainers undo, /guia key undo")
   end

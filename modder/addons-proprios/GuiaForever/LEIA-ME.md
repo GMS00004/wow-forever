@@ -1,94 +1,128 @@
 # GuiaForever
 
-Addon próprio do dono, versão 0.5.0 (2026-11-05). Leva para dentro do jogo o que as fontes do dono dizem: talento por nível, dicas por nível (magias, armas, pets, rotação, atributos), roteiro das profissões, treinadores, macros do caçador e o perfil gráfico. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+Addon próprio do dono, versão 1.0.0 (2026-11-07). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
 
-Versão 0.7.0 (2026-11-06): todo o texto do jogo foi traduzido para inglês a pedido do dono, com apelidos de subcomando em inglês (`/guia level`, `talents`, `weapons`, `rotation`, `trainers`, `all`, `tracker`, `graphics`, `trainer class|<profession>`, e `undo` no lugar de `desfazer`); os subcomandos em português continuam valendo.
+## O que mudou na 1.0
+
+Pedido do dono, 2026-11-06, noite: "A user experience do guia está genuinamente muito ruim. Sinto que não estou nem conseguindo aproveitar o jogo, porque o tempo inteiro preciso voltar ao Claude para consultar as coisas." A resposta foi o plano `C:\Users\PC-AVELL\.claude\plans\continue-lexical-elephant.md`. A 1.0 deixa de ser uma janela que o dono consulta e passa a aparecer onde ele já está olhando, na hora certa, com um botão:
+
+1. O painel "Agora", embaixo do RestedXP, com até 4 linhas que nascem e somem pelos eventos do jogo e nunca aparecem em combate.
+2. O Ctrl+1 alimenta o pet com a comida certa da bolsa, pela macro `feed_Pet`.
+3. Marcas dentro das janelas do jogo: o selo "PLAN" no treinador de pet, os selos "NOW", "ALL" e "?" na árvore de talentos, e linhas do guia nos tooltips de item, de magia e de ação do pet.
+4. A janela J vira a segunda camada: 6 abas, busca, seções recolhíveis, texto 14, a fonte de cada linha no tooltip, "Show all" e as perguntas que o dono fez ao Claude, respondidas pelas fontes.
+
+Os contratos entre os arquivos estão em `ARQUITETURA.md`.
+
+Desde a 0.7.0, todo o texto do jogo está em inglês. Os subcomandos do `/guia` têm apelidos em inglês, e os em português continuam valendo.
 
 ## Regra do conteúdo
 
-Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\..\comum\fontes\` ou de uma ficha em `..\..\..\comum\personagens\`, com a fonte no campo `fonte` e a origem (arquivo e linha) num comentário. Onde as fontes divergem, o dono escolhe; as escolhas estão na tabela "Decisões do dono" da ficha de cada personagem. Fonte anterior a 03/11 entra marcada "(beta)". Lacuna fica como "sem fonte" no jogo.
+Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\..\comum\fontes\` ou de uma ficha em `..\..\..\comum\personagens\`. A fonte fica no campo `fonte` e a origem (arquivo e linha) num comentário. Onde as fontes divergem, o dono escolhe, e as escolhas estão na tabela "Decisões do dono" da ficha de cada personagem. Fonte anterior a 03/11 entra marcada "(beta)", e decisão do próprio dono entra com a fonte "you". Lacuna fica como "sem fonte" no jogo. O estado (dieta do pet, pontos de treino, magias conhecidas, perícia) vem do jogo.
 
 ## Arquivos (na ordem do `.toc`)
 
 | Arquivo | O que tem |
 |---|---|
-| `Dados.lua` | `GuiaForeverDados[CLASSE]` (talento por nível, `lei` e `aberto`), `GuiaForeverMacros[CLASSE]` (macros, com `versao`), `GuiaForeverGraficos` (CVars do perfil gráfico), `GuiaForeverProfissoesPlanejadas[CLASSE]` (profissões decididas pelo dono, para a aba Treinos) |
-| `Dicas.lua` | `GuiaForeverDicas[CLASSE] = { personagem, magias = {{nivel, texto, fonte}}, armas/pets/rotacao = {{de, ate, texto, fonte}}, atributos, notas = {{texto, fonte}} }`; só ASCII, texto até 160 caracteres, fontes da lista do checador |
-| `ProfissoesA.lua`, `ProfissoesB.lua` | roteiros das 10 profissões (`passos` por faixa de perícia e `treino` com nomes e lugares de treinadores) |
-| `GuiaForever.lua` | núcleo: anúncio a cada nível, dicas do nível no chat, profissões, gráficos, macros, comandos `/guia`; compartilha funções com os outros arquivos pela tabela `ns` (listas de ganchos `ns.aoCarregar` e `ns.aoEntrar`) |
-| `Janela.lua` | janela com abas (Level, Talents, Weapons, Pets, Rotation, Keys, Prof., Zone, Trainers; 580 de largura desde a 0.8.0) e rolagem, botão do livro perto do minimapa, tecla J |
-| `Treinadores.lua` | liga no Questie os ícones de treinador (classe e profissões conhecidas), liga o rastreamento de treinadores do minimapa, seta do TomTom para o treinador mais perto (NPCs pela API pública do QuestieDB, contrato 4) |
-| `SkinDB.lua` | `GuiaForeverSkinDB[idDoNPC] = { nome, nivelMin, nivelMax, tipo }`: as 924 criaturas com loot de Skinning do cmangos/classic-db (0.8.0) |
-| `Zona.lua` | aba Zone, linha de Skinning no tooltip dos bichos e diário de calibração (0.8.0; ver a seção abaixo) |
-| `Teclas.lua` | `GuiaForeverTeclas[CLASSE]` e a aba Keys (0.8.0): o que cada tecla faz e a partir de que nível (ver a seção abaixo) |
-| `Rastreador.lua` | rastreador discreto de profissões embaixo do minimapa (0.6.0): perícia / meta da área de quest atual, por `GuiaForeverRastreador` do `Dados.lua`; mouse em cima mostra área, faixa, teto e o passo do roteiro |
-| `Bindings.xml` | a ação `GUIAFOREVER_JANELA` (abre e fecha a janela) |
+| `Dados.lua` | `GuiaForeverDados[CLASSE]` (talento por nível, `lei` e `aberto`), `GuiaForeverMacros`, `GuiaForeverGraficos`, `GuiaForeverProfissoesPlanejadas`, `GuiaForeverRastreador` e, desde a 1.0, `GuiaForeverPet` (ids das magias de pet, missão 6103, treinadores de pet e vendedor de carne, com coordenadas do Naowh) |
+| `Dicas.lua` | `GuiaForeverDicas[CLASSE]`. As listas `magias`, `armas`, `pets`, `rotacao`, `atributos` e `notas` trazem os campos opcionais da 1.0 (`tags`, `raca`, `zona`, `requer`, `magia`, `prio`). A lista nova `petTreino` guarda as habilidades de pet do plano |
+| `Ajuda.lua` | `GuiaForeverAjuda[CLASSE]`: 13 perguntas do dono com as respostas das fontes, para a aba Help (1.0) |
+| `ProfissoesA.lua`, `ProfissoesB.lua` | roteiros das 10 profissões |
+| `GuiaForever.lua` | núcleo: profissões, gráficos, macros e comandos `/guia`; funções compartilhadas em `ns` |
+| `Estado.lua` | base comum da 1.0: eventos (`ns.ao`), debounce, fila de depois do combate, estado do jogo (`ns.estado`), magias conhecidas, livro do pet, pontos de talento por `C_Traits`, missões, uma seta só (`ns.seta`, pelo TomTom ou pela seta nativa), tecla de uma ação (`ns.teclaDe`) e o filtro das dicas (`ns.relevante`) |
+| `Janela.lua` | janela J (760 × 600, abas Now, Pet, Talents, Combat, Professions e Help, busca, seções recolhíveis), botão do livro e tecla J; os ids antigos das abas continuam valendo (`ns.apelidosAba`) |
+| `Treinadores.lua` | Questie e minimapa com os treinadores; seta para o treinador de classe, de profissão ou de pet (`/guia trainer pet`) |
+| `SkinDB.lua` | as 924 criaturas com loot de Skinning (cmangos/classic-db) |
+| `Zona.lua` | linha de Skinning no tooltip dos bichos, diário de calibração e `ns.bichosDaZona` (1.0) |
+| `Teclas.lua` | `GuiaForeverTeclas[CLASSE]`. Desde a 1.0, a lista confere cada tecla contra a barra real e avisa quando o botão está vazio ou o pet ainda não sabe a habilidade |
+| `Rastreador.lua` | rastreador de profissões embaixo do minimapa (fonte 13 na 1.0), "Skin here" no tooltip e a linha do painel quando a profissão trava no teto do treino |
+| `Agora.lua` | o painel Agora e os provedores de talento, de treino de classe (pelo Naowh) e de teclas novas |
+| `Pet.lua` | provedor do pet (ausente, fome, comida, missão, treino, autocast do Growl), macro `feed_Pet` e as marcas no treinador de pet |
+| `Arvore.lua` | plano de talentos (`ns.arvore.plano`, `ns.arvore.proximo`) e as marcas na árvore de talentos do Forever |
+| `Tooltips.lua` | linhas do guia nos tooltips de item ("Your pet can eat this"), de magia (tecla e uso) e de ação do pet (autocast) |
+| `Bindings.xml` | a ação `GUIAFOREVER_JANELA` |
 
-Classes com dados: HUNTER (Hexumlite Bull) e SHAMAN (Rurik Thunderfist). As outras classes usam só as abas Prof. e Treinos.
+Classes com dados: HUNTER (Hexumlite Bull) e SHAMAN (Rurik Thunderfist). O painel, o pet e as marcas são do caçador; as outras classes usam a janela.
 
 ## No jogo
 
-| Como | O quê |
+| Onde | O quê |
 |---|---|
-| J, botão do livro, `/guia` | abre e fecha a janela |
-| `/guia nivel`, `talentos`, `armas`, `pets`, `rotacao`, `treinos` | abre a janela na aba |
+| Embaixo do RestedXP | Painel "Now" com até 4 linhas: faixa vermelha para o que te prejudica agora, laranja para tarefa na cidade, amarela para quando der e azul para aviso. O clique no texto abre o J no assunto; o botão da linha põe a seta, abre o planejador ou mostra a tecla; o botão direito esconde a linha até o texto mudar. Nos primeiros 30 s depois de entrar, o painel mostra "Next 3" |
+| Ctrl+1 | macro `feed_Pet`: alimenta com a melhor comida da bolsa que o pet come (nasce quando o Feed Pet é aprendido) |
+| Treinador de pet | selo "PLAN" na próxima graduação do plano e um painel à direita com os pontos de treino; você compra com o botão Train da própria janela |
+| Árvore de talentos | selo "NOW" no ponto do nível, níveis nos seguintes, check nos feitos e, do 22 em diante, "ALL" e "?"; faixa "Plan:" no alto; você aplica o ponto |
+| Tooltips | comida: "Your pet can eat this"; magia: "Key:" e "Use:" das fontes; Growl e Cower: o autocast das fontes |
+| J, botão do livro, `/guia` | a janela; `/guia now`, `pet`, `talents`, `combat`, `professions`, `help` (e os nomes antigos) abrem a aba |
+| `/guia trainer class`, `/guia trainer pet`, `/guia trainer <profissão>` | seta para o treinador mais perto |
 | `/guia tudo`, `/guia prof` | ordem completa dos talentos e roteiro das profissões no chat |
-| `/guia treinador classe` ou `/guia treinador <profissão>` | seta do TomTom para o treinador mais perto da facção |
-| `/guia rastreador` | mostra ou esconde o rastreador de profissões embaixo do minimapa (lembrado em `GuiaForeverDB.rastreadorOculto`) |
-| `/guia macros`, `/guia graficos` | recria macros que faltam; mostra o perfil gráfico |
+| `/guia rastreador`, `/guia macros`, `/guia graficos` | rastreador, macros e perfil gráfico |
 
-O que roda sozinho, e onde fica guardado em `GuiaForeverDB` (SavedVariables da conta):
+O que roda sozinho fica guardado em `GuiaForeverDB` (SavedVariables da conta):
 
 | Quando | O quê | Chave |
 |---|---|---|
-| uma vez por conta, no carregamento | Questie: `townsfolkConfig["Class Trainer"]` e `townsfolkKnownProfessions` ligados | `treinadores.questie` |
+| uma vez por conta, no carregamento | Questie com os treinadores ligados | `treinadores.questie` |
 | uma vez por conta, no login | perfil gráfico | `graficos` |
 | 8 s depois do login, por personagem | macros da classe (de novo só quando `versao` sobe), tecla J (só se livre), rastreamento de treinadores do minimapa | `macros`, `tecla`, `treinadores.rastreio` |
+| fora de combate, quando a bolsa, o pet ou as magias mudam | a macro `feed_Pet` | `macros[personagem].gerenciadas` |
+| o tempo todo | linhas escondidas do painel e estado das seções da janela | `personagens[...].agoraOcultos`, `secoes` |
 
-Desfazer: `/guia macros desfazer`, `/guia graficos desfazer`, `/guia tecla desfazer`, `/guia treinadores desfazer` (o do Questie vale depois de `/reload`).
+Para desfazer:
 
-## Rastreador de profissões (0.6.0, 2026-11-06)
+| Comando | O que volta |
+|---|---|
+| `/guia macros undo` | apaga as macros criadas pelo guia, inclusive a `feed_Pet`, se você não as editou |
+| `/guia graphics undo` | volta o perfil gráfico |
+| `/guia key undo` | solta a tecla J |
+| `/guia trainers undo` | desliga os treinadores no Questie e no minimapa |
 
-Pedido do dono: ver de forma discreta até que perícia subir cada profissão antes de sair da área de quest. Escolhas dele em 2026-11-06: meta pelo nível da área, a partir das fontes dele, e o rastreador embaixo do minimapa.
+Uma linha do painel some com o botão direito e volta na aba Now do J, em "Hidden".
 
-- **O que mostra:** uma linha por profissão planejada da classe (`GuiaForeverProfissoesPlanejadas`) que tem meta na faixa da área: `Skinning 42 / 75`, em verde quando a meta foi batida. Quando o teto do treino atual fica abaixo da meta, aparece "teto N" em amarelo. Profissão ainda não aprendida aparece em cinza, com "aprender". Some em combate (`esconderEmCombate`) e quando não há meta.
-- **Metas** (`GuiaForeverRastreador.faixas`, números aprovados pelo dono): 1–10, Skinning 75 e Leatherworking 75; 10–20, Skinning 125 e Leatherworking 100; 20–30, Skinning 150 e Leatherworking 150. Saem do wow-professions (Skinning por nível de bicho) e do Gfinity (Leatherworking pelo couro de cada faixa); 75 também é o teto do Apprentice.
-- **Zona → faixa** (`GuiaForeverRastreador.zonas`, pelo `GetRealZoneText`): Teldrassil, Elwynn Forest e Dun Morogh na 1–10; Darkshore, Westfall, Loch Modan e Redridge Mountains na 10–20; Ashenvale, Wetlands, Duskwood, Stonetalon Mountains e Hillsbrad Foothills na 20–30. A ligação é do agente, pelo nível típico dos bichos de cada zona, e está a conferir. Fora da lista (cidade, zona nova do Forever), vale a faixa do nível do personagem.
-- **Perícia e teto:** `ns.minhasProfissoes()` lê primeiro `C_SkillInfo.GetNumSkillLines` e `C_SkillInfo.GetSkillLineInfo(i)` (tabela com `name`, `isHeader`, `rank` e `maxRank`; é a API que a janela de perícias do Forever usa, `Blizzard_UIPanels_Game/Camelot/SkillsFrame.lua`). As globais antigas (`GetProfessions` com `GetProfessionInfo`, e `GetSkillLineInfo`) ficam de reserva, e não foi conferido se existem no cliente. Até a 0.5.0, a leitura usava só as globais antigas: se elas não existirem no Forever, o `/guia prof` e a aba Prof. nunca acharam profissão.
-- **Lugar:** `TOP` do quadro preso ao `BOTTOM` do último quadro visível da pilha embaixo do minimapa (`Minimap`, depois `MinimapPanel` e as barras de dados do ElvUI, como a `ElvUI_ReputationBar`), contando só os que estão na coluna do minimapa e encostados no de cima (folga de 12 unidades). Desde a 0.9.1: na 0.6.0 ele ficava preso ao `MinimapPanel` e a barra de reputação, que o ElvUI põe logo abaixo do painel, cobria a primeira linha (print do dono de 06/11, 22h56). Reposiciona a cada atualização e quando um quadro da pilha aparece ou some (`HookScript` de `OnShow` e `OnHide`).
+## Rastreador de profissões (0.6.0; 0.9.1; 1.0)
 
-## Aba Zone (0.8.0)
+O rastreador mostra uma linha por profissão planejada com meta na faixa da área (`Skinning 42 / 75`), verde quando bate a meta e com "teto N" quando o treino trava abaixo dela. As metas foram aprovadas pelo dono: 1-10, 75 e 75; 10-20, Skinning 125 e Leatherworking 100; 20-30, 150 e 150. A ligação zona → faixa é do agente e está a conferir. Desde a 0.9.1, ele fica embaixo do último quadro visível da pilha do minimapa. Na 1.0, a letra passa a 13, o tooltip ganha "Skin here" com os 3 melhores bichos da zona, e a profissão travada no teto vira uma linha laranja no painel, com seta para o treinador.
 
-Na zona onde o jogador está, lista cada bicho esfolável com a perícia de Skinning que ele pede e até onde dá ponto, com um botão de seta do TomTom para os até 6 mais úteis, e põe uma linha "Skinning: needs N" no tooltip dos bichos (`/guia zone`). Sem Skinning, mostra a lista com perícia 0.
+## Zona e calibração de cor (0.8.0; 1.0)
 
-- **Dados:** `SkinDB.lua` (924 criaturas com loot de Skinning, do banco aberto cmangos/classic-db, GPL-3.0); locais e níveis vêm do QuestieDB e do ZoneDB do Questie, lidos só depois de `Questie.API.isReady`. A perícia mínima segue wow.gg/professions/forever/skinning (04/11/2026): até o nível 10 pede 1, de 11 a 20 pede (nível - 10) x 10, do 21 em diante nível x 5.
-- **Estimativa:** as faixas de cor (laranja até mínima+25, amarelo até +50, verde até +100, cinza depois) são a regra dos nós de coleta, a confirmar; ficam na tabela `FAIXAS` no topo de `Zona.lua` e aparecem marcadas "estimated". Os níveis de personagem dos treinos (10, 20, 35) vêm do addon Naowh (inferência).
-- **Diário de calibração** (`GuiaForeverDB`): `skinCores` (cor da linha "Skinnable" do cadáver, com nível e perícia, até 400), `skinLog` (nível do alvo e perícia antes e depois de cada esfolada, até 400) e `skinAprendidos` (bichos esfoláveis que não estão no SkinDB). Nada disso roda em combate; se a API negar o dado, o addon fica sem ele.
-
-Correções da sessão principal no gate: o diário de cores grava uma vez por cadáver e perícia (o tooltip de unidade se refaz várias vezes com o mouse em cima), e o nível do cadáver esfolado vem primeiro do `mouseover`, depois do `softinteract` e só então do alvo (quem esfola clicando nem sempre está com ele no alvo).
-
-## Aba Keys (0.8.0)
-
-Pedido do dono em 2026-11-06: "um guia de cada nível, qual macro eu vou usar a partir de cada nível, e das minhas hotkeys". A aba mostra, no nível do personagem, o que é novo neste nível, o que cada tecla já faz (por grupo: barra principal, barra do Shift, barra 2 e mouse, pet, outras teclas, só clique), o que chega nos próximos 6 níveis e o resto depois (`/guia keys`).
-
-- **Dados:** `Teclas.lua`, montado a partir do cruzamento das fontes de 2026-11-06 (UIForever `Config.lua`, macros do `Dados.lua`, `Dicas.lua`, fontes de `comum\fontes\builds\`). Nível de cada magia: das fontes do dono; onde elas não dão, dos dados do Training Planner do Naowh Forever (`NaowhForever_Training\Data\TrainingData.lua`, gerado do cliente 1.60.1.70790), marcados `f = "Naowh"`.
-- **Manutenção:** ao mudar uma tecla ou um botão no UIForever, mude a linha correspondente aqui. A tabela não lê os botões do jogo; é um mapa escrito.
+A linha "Skinning: needs N" do tooltip e a seção da zona na aba Professions usam `SkinDB.lua` e o Questie. A perícia mínima segue o wow.gg (04/11/2026). As faixas de cor ficam em `FAIXAS`. Na 1.0, o laranja vai até 24 acima da mínima, calibrado por 1 transição do diário (nightsaber de nível 6: laranja até a perícia 24 e amarelo com 25). Amarelo e verde seguem estimados. O diário (`skinCores`, `skinLog`, `skinAprendidos`) continua gravando.
 
 ## Como mudar e validar
 
-1. Edite os dados (`Dicas.lua`, `Dados.lua`) com a fonte e a origem de cada linha. Macro nova: acrescente na lista e suba a `versao` do conjunto, senão o login não a cria.
-2. Valide, a partir de `modder\ferramentas\guia\` (na primeira vez, `npm install` ali):
-   - `node checar-lua.mjs ..\..\addons-proprios\GuiaForever --globais` (sintaxe Lua 5.1, ASCII e as globais de cada arquivo, para conferir contra a API);
-   - `node checar-dicas.mjs ..\..\addons-proprios\GuiaForever\Dicas.lua` (esquema e regras dos dados);
-   - `node rodar-casos.mjs` (o checador barra os 7 casos ruins e passa o bom).
-3. Função nova do cliente: confira no espelho `Ketho/wow-ui-source-forever` (como em `..\..\..\comum\referencia\api-forever.md`, seção 3); função de outro addon, nos arquivos instalados em `_forever_\Interface\AddOns`.
+1. Edite os dados (`Dicas.lua`, `Dados.lua`, `Ajuda.lua`) com a fonte e a origem de cada linha. Macro nova: acrescente na lista e suba a `versao` do conjunto.
+2. Valide, a partir de `modder\ferramentas\guia\` (na primeira vez, `npm install` ali e as listas da API pelo comando em `api-forever-baixar.txt`):
+   - `node checar-lua.mjs ..\..\addons-proprios\GuiaForever --globais`: sintaxe Lua 5.1 e ASCII.
+   - `node checar-dicas.mjs ..\..\addons-proprios\GuiaForever\Dicas.lua` e `node checar-ajuda.mjs ..\..\addons-proprios\GuiaForever\Ajuda.lua`: esquema dos dados.
+   - `node checar-combate.mjs ..\..\addons-proprios\GuiaForever --toc`: chamada protegida sem guarda de combate, API que vira secreta, função ou evento que não existe no Forever, template inexistente, chamada proibida (compra, magia, gastar ponto) e `.toc` diferente dos arquivos.
+   - `node rodar-casos.mjs` e `node rodar-casos-combate.mjs`: os casos de teste dos checadores.
+3. Função nova do cliente: confira nas listas de `api-forever\` e, para a assinatura, no espelho `Ketho/wow-ui-source-forever`; o caminho está em `..\..\..\comum\referencia\api-forever.md`, seções 3 e 3e.
 4. Mudou só `.lua` que já existia: `/reload`. Arquivo novo ou `.toc` mudado: reiniciar o jogo.
 
 ## Pendente
 
-- Teste no jogo da 0.8.0 (arquivos novos no `.toc`: reiniciar o jogo, não basta `/reload`): abas Keys e Zone abrem e cabem na janela; a Zone lista os bichos de Teldrassil ou Darkshore com cores e o botão de seta funciona; o tooltip de um bicho mostra "Skinning: needs N"; depois de esfolar alguns, com o jogo fechado, conferir `skinCores` e `skinLog` no `GuiaForever.lua` das SavedVariables (se a cor da linha "Skinnable" varia com a perícia, dá para trocar a estimativa das `FAIXAS` pelos números reais). A macro `mark_Conc` no 5 (conjunto de macros na versão 4): 1o aperto marca e manda o pet, os seguintes soltam o Concussive Shot.
+**Teste da 1.0 no jogo.** Ele começa por reiniciar o jogo: a 1.0 tem 6 arquivos novos no `.toc`, e o `/reload` não basta. A lista completa está no relatório da sessão de 2026-11-07, na ordem em que o dono encontra as coisas:
 
-- Teste no jogo da 0.6.0 (precisa reiniciar o jogo: arquivo novo no `.toc`): o rastreador aparece embaixo do minimapa, mostra Skinning e Leatherworking com a meta de Teldrassil, some em combate, e o `/guia prof` passa a achar as profissões; conferir a ligação de cada zona a uma faixa.
-- Teste no jogo da macro `sting_Auto` (conjunto de macros na versão 2, 2026-11-05 à noite): fora de combate a tecla 1 só liga o Auto Shot; o aperto seguinte, já em combate, solta o Serpent Sting; os outros não desligam o Auto Shot; Alt+1 reaplica o Sting. A J abre o guia pelo UIForever (`UIForeverConfig.teclas`), porque a J era da janela de guilda.
-- Teste no jogo da 0.5.0: J e o botão abrem a janela; as abas mostram o personagem; no próximo nível sai a dica no chat; o mapa mostra os treinadores do Questie; o botão de Leatherworking da aba Treinos põe a seta do TomTom; o BugSack fica vazio.
-- Lacunas sem fonte: magias do caçador do 31 ao 60 (exceto o 40); do xamã do 1 ao 9 e do 33 ao 45; armas do xamã por nome; atributos do caçador só de fonte beta (MetaGoblin). Talentos do Hexumlite do 22 ao 60 em aberto (seis pontos, na ficha), mostrados como "A decidir".
+1. painel embaixo do RestedXP;
+2. vendedor à direita dele;
+3. painel some em combate;
+4. seta da Jocaste e do Keldas;
+5. Ctrl+1 depois do Feed Pet;
+6. tooltip da comida;
+7. treinador de pet;
+8. árvore de talentos;
+9. janela J;
+10. BugSack vazio.
+
+Ainda sem teste no jogo:
+
+| O quê | Desde |
+|---|---|
+| macro `sting_Auto` (o "!" e o "null") | 0.4.0 |
+| `mark_Conc` | 0.8.0 |
+| ligação zona → faixa do rastreador | 0.6.0 |
+
+**Lacunas sem fonte:**
+
+| Classe | O que falta |
+|---|---|
+| Caçador | magias do 31 ao 60 (exceto o 40); habilidades de pet depois do 10; talentos do Hexumlite do 22 ao 60 (seis pontos em aberto, na ficha) |
+| Xamã | magias do 1 ao 9 e do 33 ao 45; armas por nome |

@@ -2,10 +2,11 @@
 -- 1. Liga no Questie os icones do treinador de classe e das profissoes conhecidas
 --    (uma vez por conta; o Questie carrega antes por causa do OptionalDeps do .toc).
 -- 2. Liga no minimapa do jogo o rastreamento de treinadores (uma vez por personagem).
--- 3. Seta do TomTom para o treinador mais perto, da faccao do personagem
---    (/guia treinador classe|<profissao> e os botoes da aba Treinos).
+-- 3. Seta para o treinador mais perto, da faccao do personagem
+--    (/guia treinador classe|pet|<profissao> e os botoes da aba Treinos). A seta sai
+--    por ns.seta (Estado.lua), que usa o TomTom quando ele existe.
 -- NPCs: API publica do QuestieDB (LibQuestieDB, contrato 4); zona para mapa: ZoneDB
--- do Questie. Seta: TomTom:AddWaypoint(mapa, x, y, opcoes) com x e y de 0 a 1.
+-- do Questie. Seta: ns.seta(mapa, x, y, titulo) com x e y de 0 a 1.
 
 local _, ns = ...
 
@@ -100,7 +101,7 @@ end
 table.insert(ns.aoEntrar, aoEntrar)
 
 -- 3. Treinador mais perto ------------------------------------------------
-local cache, uidAtual
+local cache
 
 local function montarCache()
   if cache then return cache end
@@ -150,6 +151,7 @@ local function montarCache()
 end
 
 local function casa(sub, alvo)
+  if alvo.sub then return sub == alvo.sub end -- treinador de pet: subName "Pet Trainer"
   if alvo.classe then return sub:find(alvo.classe, 1, true) ~= nil end
   for _, r in ipairs(alvo.raizes) do
     if sub:find(r, 1, true) then return true end
@@ -185,6 +187,8 @@ function ns.setaTreinador(arg)
   if arg == "" or arg == "classe" or arg == "class" then
     local nomeClasse = UnitClass("player")
     alvo, rotulo = { classe = nomeClasse }, tostring(nomeClasse) .. " trainer"
+  elseif arg == "pet" then
+    alvo, rotulo = { sub = "Pet Trainer" }, "Pet trainer"
   else
     local prof = NOMES[arg]
     if not prof then
@@ -220,18 +224,16 @@ function ns.setaTreinador(arg)
   local zona = (info and info.name) or ("map " .. e.mapa)
   local onde = string.format("%s (%s), %s %.1f %.1f", e.nome, e.sub, zona, e.x * 100, e.y * 100)
   local aviso = melhor and "" or " (none found on your continent)"
-  if TomTom and TomTom.AddWaypoint then
-    if uidAtual and TomTom.RemoveWaypoint then pcall(TomTom.RemoveWaypoint, TomTom, uidAtual) end
-    local ok, uid = pcall(TomTom.AddWaypoint, TomTom, e.mapa, e.x, e.y, {
-      title = e.nome .. " (" .. e.sub .. ")", from = "GuiaForever", persistent = false, crazy = true,
-    })
-    if ok then
-      uidAtual = uid
+  -- ns.seta (Estado.lua) poe a seta; sem ela, ou se ela falhar, ns.seta ja imprimiu a linha /way.
+  if ns.seta then
+    if ns.seta(e.mapa, e.x, e.y, e.nome .. " (" .. e.sub .. ")") then
       ns.msg("arrow to " .. onde .. aviso)
-      return
+    else
+      ns.msg(onde .. aviso)
     end
+    return
   end
-  ns.msg(onde .. aviso .. ". No TomTom: /way #" .. e.mapa .. string.format(" %.1f %.1f", e.x * 100, e.y * 100))
+  ns.msg(onde .. aviso .. ". No arrow: /way #" .. e.mapa .. string.format(" %.1f %.1f", e.x * 100, e.y * 100))
 end
 
 -- Aba Treinos --------------------------------------------------------------
@@ -241,6 +243,9 @@ function ns.blocosTreinos(b)
   T(b, ns.COR .. "Trainers" .. ns.FIM)
   T(b, "Each button points the TomTom arrow at the nearest trainer of your faction.")
   B(b, "Arrow: " .. tostring(nomeClasse) .. " trainer", function() ns.setaTreinador("classe") end)
+  if ns.classe() == "HUNTER" then
+    B(b, "Arrow: Pet trainer", function() ns.setaTreinador("pet") end)
+  end
   local planejadas = (GuiaForeverProfissoesPlanejadas and GuiaForeverProfissoesPlanejadas[ns.classe()]) or {}
   local lista, vistas = {}, {}
   for _, p in ipairs(planejadas) do
@@ -287,9 +292,6 @@ function ns.desfazerTreinadores()
     t.rastreio[chave] = { ligados = {}, desfeito = true }
     partes[#partes + 1] = "minimap tracking turned off"
   end
-  if uidAtual and TomTom and TomTom.RemoveWaypoint then
-    pcall(TomTom.RemoveWaypoint, TomTom, uidAtual)
-    uidAtual = nil
-  end
+  if ns.limparSeta then ns.limparSeta() end
   ns.msg(#partes > 0 and ("trainers: " .. table.concat(partes, "; ") .. ".") or "trainers: nothing to undo.")
 end

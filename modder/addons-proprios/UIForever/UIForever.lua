@@ -258,13 +258,22 @@ local function pegarMagia(id)
   elseif PickupSpell then PickupSpell(id) end
 end
 
+-- O nome da macro no botao: o Forever documenta C_ActionBar.GetActionText; a
+-- global GetActionText funciona no jogo (o diario mostra macros postas), mas nao
+-- esta nas listas oficiais, entao fica de reserva (achado do checar-combate, 2026-11-06).
+local function textoDaAcao(slot)
+  if C_ActionBar and C_ActionBar.GetActionText then return C_ActionBar.GetActionText(slot) end
+  if GetActionText then return GetActionText(slot) end
+end
+
 local function acaoNoSlot(slot)
   local tipo, id = GetActionInfo(slot)
   if tipo == "spell" then return "magia", nomeDaMagia(id), id end
-  if tipo == "macro" then return "macro", GetActionText(slot), id end
+  if tipo == "macro" then return "macro", textoDaAcao(slot), id end
   return tipo, nil, id
 end
 
+-- fora-de-combate (so o aplicarBarras chama, e ele sai em combate)
 local function limparSlot(slot)
   ClearCursor()
   PickupAction(slot)
@@ -273,6 +282,24 @@ end
 
 local barrasPendentes = false
 local barrasAgendadas = false
+
+-- Ajusta a barra 5 do ElvUI ao numero de magias da lista (minimo 1) e manda o
+-- ElvUI redesenhar. fora-de-combate: o ElvUI mexe em estado seguro ao redesenhar.
+local function ajustarBarraRecargas(n)
+  if emCombate() then barrasPendentes = true; return end
+  local db = E and E.db and E.db.actionbar and E.db.actionbar.bar5
+  if not db then return end
+  local alvo = math.max(1, n or 0)
+  if db.buttons == alvo and db.buttonsPerRow == alvo then return end
+  db.buttons = alvo
+  db.buttonsPerRow = alvo
+  local AB = E.GetModule and E:GetModule("ActionBars", true)
+  if AB and AB.PositionAndSizeBar and AB.handledBars and AB.handledBars.bar5 then
+    local ok, erro = pcall(AB.PositionAndSizeBar, AB, "bar5")
+    if not ok then registrar("erro ao redesenhar a barra 5: " .. tostring(erro)) end
+  end
+  registrar("barra 5: " .. alvo .. " botoes")
+end
 
 local function aplicarBarras()
   barrasAgendadas = false
@@ -296,6 +323,27 @@ local function aplicarBarras()
   local magias = magiasConhecidas()
   local colocados, limpos, falhas = 0, 0, {}
 
+  -- Barra 5 compacta (0.6.0): os slots 49 a 59 nao tem plano fixo. As magias
+  -- conhecidas de cfg.barraRecargas[classe], na ordem, ocupam os slots seguidos
+  -- a partir do 49; os outros ficam sem plano (a regra do botao do dono vale).
+  local lista = cfg.barraRecargas and cfg.barraRecargas[classe]
+  local nRecargas
+  if lista then
+    local copia = {}
+    for slot, entrada in pairs(plano) do
+      if slot < 49 or slot > 59 then copia[slot] = entrada end
+    end
+    plano = copia
+    nRecargas = 0
+    for _, nome in ipairs(lista) do
+      if magias[nome] and nRecargas < 11 then
+        nRecargas = nRecargas + 1
+        plano[48 + nRecargas] = { magia = nome }
+      end
+    end
+  end
+
+  -- fora-de-combate (o aplicarBarras sai no comeco quando ha combate)
   local function colocar(slot, querTipo, querNome, querId)
     ClearCursor()
     if querTipo == "macro" then PickupMacro(querId) else pegarMagia(querId) end
@@ -355,6 +403,8 @@ local function aplicarBarras()
   if #falhas > 0 then
     registrar("barras: nao consegui pegar " .. table.concat(falhas, ", "))
   end
+  -- livro de magias ainda vazio: nao encolhe a barra por engano
+  if nRecargas and next(magias) ~= nil then ajustarBarraRecargas(nRecargas) end
 end
 
 local function agendarBarras()
@@ -676,6 +726,159 @@ local function criarBarraXP()
 end
 
 ---------------------------------------------------------------------------
+-- 8. Margem das janelas do jogo (0.6.0, pedido do dono em 2026-11-06)
+---------------------------------------------------------------------------
+-- O Forever posiciona vendedor, missao, treinador, talentos e livro a partir
+-- de uma margem publica, SetUIPanelLayoutAttribute("LEFT_OFFSET", x), padrao
+-- 16 (Blizzard_UIParentPanelManager, Shared\UIPanelLayoutFrame.lua e
+-- UIParentPanelManager.lua, linhas 616-725). O UIForever poe essa margem na
+-- borda direita da coluna do RestedXP (RXPFrame) com o painel Agora do
+-- GuiaForever embaixo, em unidades do UIParent. Contrato: GuiaForever,
+-- ARQUITETURA.md, secao 9.
+
+local MARGEM_PADRAO = 16
+local margemPendente = false
+local margemAgendada = false
+local ganchosMargem = false
+
+local function seguro(fn)
+  return function(...) return xpcall(fn, geterrorhandler(), ...) end
+end
+
+local function calcularMargem()
+  local c = cfg.margemJanelas
+  if not (c and c.ligado) then return MARGEM_PADRAO end
+  local rxp = _G.RXPFrame
+  if not (rxp and rxp.GetLeft and rxp.GetWidth and rxp.GetEffectiveScale) then return MARGEM_PADRAO end
+  local esquerda = rxp:GetLeft()
+  local escalaUI = UIParent:GetEffectiveScale()
+  local escalaRxp = rxp:GetEffectiveScale()
+  if not (esquerda and escalaUI and escalaUI > 0 and escalaRxp and escalaRxp > 0) then return MARGEM_PADRAO end
+  local larguraRxp = (rxp:GetWidth() or 0) * escalaRxp / escalaUI
+  local larguraAgora = c.larguraMinima or 360
+  local agora = _G.GuiaForeverAgora
+  if agora and agora.GetWidth and agora.GetEffectiveScale then
+    local escalaAgora = agora:GetEffectiveScale() or escalaUI
+    larguraAgora = (agora:GetWidth() or 0) * escalaAgora / escalaUI
+  end
+  local v = esquerda * escalaRxp / escalaUI + math.max(larguraRxp, larguraAgora)
+  if v ~= v or v < 0 then return MARGEM_PADRAO end
+  return math.floor(v + (c.folga or 8))
+end
+
+-- fora-de-combate
+local function aplicarMargem()
+  if emCombate() then margemPendente = true; return end
+  margemPendente = false
+  if not (SetUIPanelLayoutAttribute and GetUIPanelLayoutAttribute) then return end
+  local novo = calcularMargem()
+  local antes = GetUIPanelLayoutAttribute("LEFT_OFFSET")
+  if antes == novo then return end
+  SetUIPanelLayoutAttribute("LEFT_OFFSET", novo)
+  registrar("margem das janelas: " .. tostring(antes) .. " -> " .. novo)
+end
+
+local function agendarMargem()
+  if margemAgendada then return end
+  margemAgendada = true
+  depois(0.2, seguro(function()
+    margemAgendada = false
+    aplicarMargem()
+  end))
+end
+
+function UIForever_AtualizarMargem()
+  agendarMargem()
+end
+
+local function instalarGanchosMargem()
+  if ganchosMargem then return end
+  local rxp = _G.RXPFrame
+  if not (rxp and rxp.HookScript) then return end
+  ganchosMargem = true
+  pcall(rxp.HookScript, rxp, "OnMouseUp", agendarMargem)
+  pcall(rxp.HookScript, rxp, "OnSizeChanged", agendarMargem)
+end
+
+---------------------------------------------------------------------------
+-- 9. Chat da esquerda no painel de baixo (0.6.0)
+---------------------------------------------------------------------------
+-- Por que o ChatFrame1 aparece solto no meio da tela. No Forever o chat padrao
+-- e do Edit Mode: EditModeSystemMixin:ApplySystemAnchor (Blizzard_EditMode,
+-- Shared\EditModeSystemTemplates.lua, 350-383) faz ClearAllPoints e SetPoint na
+-- ancora do layout salvo, e FCF_RestorePositionAndDimensions deixa o chat padrao
+-- para o Edit Mode (Blizzard_ChatFrameBase, Mainline\FloatingChatFrame.lua,
+-- 1475-1478). O ElvUI so devolve o chat ao LeftChatPanel pelo CH:PositionChat
+-- (Chat.lua, 1603-1607), e so se o CH:FindChatWindows (1389-1434) o escolher
+-- como janela da esquerda. Em E.Modern o ElvUI nao escuta o PLAYER_ENTERING_WORLD
+-- (4149-4150); so religa depois do EditModeManagerFrame:UpdateLayoutInfo (4110),
+-- por ResnapDock, que chama CH:Unsnapped (1528-1534) e zera o panelSnapLeftID.
+-- Sem o id, o FindChatWindows so escolhe o chat se ele SOBREPOR o painel
+-- (1408, E:FramesOverlap); se o Edit Mode o deixou em outro lugar, a janela da
+-- esquerda fica nula, o PositionChat nao ancora nada e o chat fica onde o Edit
+-- Mode o pos. E nada religa se o Edit Mode reancorar o chat sem passar pelo
+-- UpdateLayoutInfo.
+-- Correcao: depois de cada ApplySystemAnchor do ChatFrame1 e de cada
+-- UpdateLayoutInfo (e uma vez no login), se o ChatFrame1 e o chat principal do
+-- dock e nao esta no LeftChatPanel, o UIForever grava o id dele como janela da
+-- esquerda e chama o CH:PositionChat do proprio ElvUI. Nao mexe em aba, canal
+-- nem no layout do Edit Mode, e nao refaz as janelas (nada de E:SetupChat).
+
+local chatPendente = false
+local chatAgendado = false
+local ganchoChatApply = false
+local ganchoChatLayout = false
+
+-- fora-de-combate
+local function corrigirChat()
+  if emCombate() then chatPendente = true; return end
+  chatPendente = false
+  if not cfg.chatNoPainel then return end
+  local CH = E and E.GetModule and E:GetModule("Chat", true)
+  local chat, painel = _G.ChatFrame1, _G.LeftChatPanel
+  if not (CH and CH.PositionChat and CH.db and CH.Initialized and chat and painel) then return end
+  if not (E.private and E.private.chat and E.private.chat.enable and CH.db.panelSnapping) then return end
+  local dock = _G.GeneralDockManager
+  if not (dock and dock.primary == chat and chat.isDocked) then return end
+  local _, relativo = chat:GetPoint(1)
+  if chat:GetParent() == painel and relativo == painel then return end
+  if CH.RightChatWindow == chat or CH.db.panelSnapRightID == chat:GetID() then return end
+  if CH.LeftChatWindow and CH.LeftChatWindow ~= chat then return end
+  if CH.LeftChatWindow ~= chat then
+    CH.LeftChatWindow = nil
+    CH.db.panelSnapLeftID = chat:GetID()
+  end
+  local ok, erro = pcall(CH.PositionChat, CH, chat)
+  if not ok then
+    registrar("erro ao devolver o chat ao painel: " .. tostring(erro))
+    return
+  end
+  local _, depoisRel = chat:GetPoint(1)
+  registrar("chat da esquerda devolvido ao LeftChatPanel (ancora: " .. tostring(depoisRel == painel) .. ")")
+end
+
+local function agendarChat()
+  if chatAgendado then return end
+  chatAgendado = true
+  depois(0.5, seguro(function()
+    chatAgendado = false
+    corrigirChat()
+  end))
+end
+
+local function instalarGanchosChat()
+  if not cfg.chatNoPainel then return end
+  local chat = _G.ChatFrame1
+  if not ganchoChatApply and chat and type(chat.ApplySystemAnchor) == "function" then
+    ganchoChatApply = pcall(hooksecurefunc, chat, "ApplySystemAnchor", agendarChat)
+  end
+  local em = _G.EditModeManagerFrame
+  if not ganchoChatLayout and em and type(em.UpdateLayoutInfo) == "function" then
+    ganchoChatLayout = pcall(hooksecurefunc, em, "UpdateLayoutInfo", agendarChat)
+  end
+end
+
+---------------------------------------------------------------------------
 -- Eventos
 ---------------------------------------------------------------------------
 
@@ -688,7 +891,7 @@ registrarEvento("PLAYER_ENTERING_WORLD")
 registrarEvento("PLAYER_REGEN_ENABLED")
 registrarEvento("UPDATE_MACROS")
 registrarEvento("SPELLS_CHANGED")
-registrarEvento("LEARNED_SPELL_IN_TAB")
+-- LEARNED_SPELL_IN_TAB nao existe no Forever (Events.lua); o LEARNED_SPELL_IN_SKILL_LINE abaixo cobre
 registrarEvento("LEARNED_SPELL_IN_SKILL_LINE")
 registrarEvento("PLAYER_LOGOUT")
 
@@ -703,6 +906,7 @@ f:SetScript("OnEvent", function(_, evento, arg1)
     if E then
       local ok, erro = pcall(prepararPerfilElvUI)
       if not ok then registrar("erro no perfil do ElvUI: " .. tostring(erro)) end
+      pcall(instalarGanchosChat)
       if cfg.fonteNumeros and cfg.fonteNumeros.ligado and type(E.UpdateBlizzardFonts) == "function" then
         hooksecurefunc(E, "UpdateBlizzardFonts", function()
           local okF, erroF = pcall(aplicarFonteNumeros)
@@ -735,12 +939,23 @@ f:SetScript("OnEvent", function(_, evento, arg1)
         msg("layout do ElvUI aplicado (" .. UIForeverCharDB.resumo .. " ajustes).")
         UIForeverCharDB.resumo = 0
       end
+      if E then
+        pcall(instalarGanchosChat)
+        agendarChat()
+      end
     end)
+    -- margem das janelas: 3 s depois de entrar no mundo
+    depois(3, seguro(function()
+      instalarGanchosMargem()
+      aplicarMargem()
+    end))
 
   elseif evento == "PLAYER_REGEN_ENABLED" then
     if teclasPendentes then aplicarTeclas() end
     if cvarsPendentes then aplicarCVars() end
     if barrasPendentes then agendarBarras() end
+    if margemPendente then agendarMargem() end
+    if chatPendente then agendarChat() end
 
   elseif evento == "PLAYER_LOGOUT" then
     if UIForeverDB.mmGrande and E and E.db and E.db.general and E.db.general.minimap then

@@ -30,13 +30,13 @@ UIForeverConfig.elvui = {
   -- habilidades da minha rotacao bem discriminadas na tela, a fim de trackear
   -- cooldowns"). Barra 5 do ElvUI (slots 49 a 59), logo abaixo do personagem,
   -- acima dos timers de ataque; so mostra o que o personagem ja aprendeu (o
-  -- conteudo fica em UIForeverConfig.barras, slots 49 a 59). Sem tecla propria:
+  -- conteudo vem de UIForeverConfig.barraRecargas, slots 49 a 59). Sem tecla propria:
   -- as teclas continuam as da barra 1. O icone fica cinza enquanto recarrega,
   -- em todas as barras (desaturateOnCooldown, que no Forever le a recarga pelo
   -- objeto de duracao da Blizzard, sem ler valor secreto).
   { "actionbar.bar5.enabled", true },
-  { "actionbar.bar5.buttons", 11 },
-  { "actionbar.bar5.buttonsPerRow", 11 },
+  -- buttons e buttonsPerRow da barra 5 nao ficam aqui: o UIForever ajusta ao
+  -- numero de magias conhecidas da lista UIForeverConfig.barraRecargas (0.6.0)
   { "actionbar.bar5.buttonSize", 44 },
   { "actionbar.bar5.buttonSpacing", 4 },
   { "actionbar.bar5.showGrid", false },
@@ -53,6 +53,10 @@ UIForeverConfig.elvui = {
   { "movers.ElvUF_PetMover", "BOTTOM,ElvUIParent,BOTTOM,-385,101" },
   { "movers.ElvUF_TargetTargetMover", "BOTTOM,ElvUIParent,BOTTOM,385,101" },
   { "movers.ElvUF_FocusMover", "BOTTOM,ElvUIParent,BOTTOM,385,60" },
+  -- buffs num lugar so (dono, 2026-11-06): os do quadro do jogador saem e a
+  -- fileira perto do minimapa fica; debuffs do quadro prendem no proprio quadro
+  { "unitframe.units.player.buffs.enable", false },
+  { "unitframe.units.player.debuffs.attachTo", "FRAME" },
   -- retrato 3D animado no jogador e no alvo
   { "unitframe.units.player.width", 330 },
   { "unitframe.units.player.portrait.enable", true },
@@ -281,7 +285,7 @@ UIForeverConfig.barras = {
     [13] = { macro = "Taunt" },
     [14] = { macro = "cancel_Cheetah" },
     [15] = { macro = "RXPTargeting" },
-    [16] = { magia = "Feed Pet" },
+    [16] = { macro = "feed_Pet", magia = "Feed Pet" },  -- macro criada pelo GuiaForever depois de aprender o Feed Pet; ate la vale a magia (dono, 2026-11-06)
     [17] = { magia = "Dismiss Pet" },
     [18] = { magia = "Tame Beast" },
     [19] = { macro = "eagle_Eye", magia = "Eagle Eye" },
@@ -300,19 +304,8 @@ UIForeverConfig.barras = {
     [34] = { magia = "Flare" },
     [35] = { magia = "Scare Beast" },
     [36] = { magia = "Distracting Shot" },
-    -- barra 5 (recargas da rotacao, sem tecla), na ordem do nivel em que chegam
-    -- (Method; Mongoose Bite e Immolation Trap pelo Kargoz e pela MetaGoblin)
-    [49] = { magia = "Raptor Strike" },     -- 1
-    [50] = { magia = "Arcane Shot" },       -- 6
-    [51] = { magia = "Concussive Shot" },   -- 8
-    [52] = { magia = "Mongoose Bite" },     -- 16
-    [53] = { magia = "Immolation Trap" },   -- 16 (as armadilhas dividem 30 s)
-    [54] = { magia = "Multi-Shot" },        -- 18
-    [55] = { magia = "Aimed Shot" },        -- 20 (divide a recarga com o Multi-Shot)
-    [56] = { magia = "Summon Hawk" },       -- 25 (divide 6 s com o Arcane Shot)
-    [57] = { magia = "Rapid Fire" },        -- 26
-    [58] = { magia = "Intimidation" },      -- 30
-    [59] = { magia = "Bestial Wrath" },     -- 40
+    -- barra 5 (recargas da rotacao, sem tecla): slots 49 a 59 sem plano fixo; as
+    -- magias vem de UIForeverConfig.barraRecargas.HUNTER, na ordem, sem buracos
     -- barra 6 (clique)
     [61] = { magia = "Track Beasts" },
     [62] = { magia = "Track Humanoids" },
@@ -322,6 +315,30 @@ UIForeverConfig.barras = {
     [66] = { macro = "Attack_Speed" },
   },
 }
+
+-- 4b. Barra 5 compacta (0.6.0). Para cada classe, as magias na ordem do nivel em
+-- que chegam (Method; Mongoose Bite e Immolation Trap pelo Kargoz e pela
+-- MetaGoblin; as armadilhas dividem 30 s, Aimed Shot divide a recarga com o
+-- Multi-Shot, Summon Hawk divide 6 s com o Arcane Shot). So as que o personagem
+-- ja conhece entram, nos slots seguidos a partir do 49, e a barra 5 do ElvUI
+-- ganha esse numero de botoes (minimo 1), centrada no mover dela.
+UIForeverConfig.barraRecargas = {
+  HUNTER = { "Raptor Strike", "Arcane Shot", "Concussive Shot", "Mongoose Bite", "Immolation Trap",
+    "Multi-Shot", "Aimed Shot", "Summon Hawk", "Rapid Fire", "Intimidation", "Bestial Wrath" },
+}
+
+-- 4c. Margem das janelas do jogo (0.6.0, dono, 2026-11-06). O RestedXP fica no
+-- alto a esquerda e o painel Agora do GuiaForever logo embaixo dele; vendedor,
+-- missao, treinador, talentos e livro abrem a direita dessa coluna. A margem e a
+-- borda direita da coluna (lado esquerdo do RXPFrame mais o maior entre a largura
+-- dele e a do GuiaForeverAgora, ou larguraMinima se o painel nao existir) mais
+-- folga. Desligado, ou sem RestedXP, a margem volta ao padrao do jogo (16).
+UIForeverConfig.margemJanelas = { ligado = true, folga = 8, larguraMinima = 360 }
+
+-- 4d. Chat da esquerda de volta no painel de baixo (0.6.0). O Edit Mode da
+-- Blizzard reposiciona o ChatFrame1 e o ElvUI so o devolve ao LeftChatPanel se o
+-- achar sobre o painel; ver UIForever.lua, secao 9.
+UIForeverConfig.chatNoPainel = true
 
 -- 5. Opcoes do menu do jogo (CVars), gravadas pela API oficial (SetCVar).
 -- Cada linha e gravada uma vez por personagem, quando o valor daqui muda; o que

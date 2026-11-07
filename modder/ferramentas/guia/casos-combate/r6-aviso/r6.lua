@@ -1,0 +1,3 @@
+local _, ns = ...
+local f = CreateFrame("Frame")
+pcall(f.RegisterEvent, f, "EVENTO_QUE_NAO_EXISTE")

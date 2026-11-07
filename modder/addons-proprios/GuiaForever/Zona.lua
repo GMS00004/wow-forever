@@ -11,7 +11,8 @@ local MAX_DIARIO = 400
 
 -- ESTIMATIVA: nenhuma fonte aberta da os numeros; e a regra dos nos de coleta, a confirmar
 -- com o diario (skinCores e skinLog). Distancia acima da pericia minima em que a cor muda.
-local FAIXAS = { laranja = 25, amarelo = 50, verde = 100 }
+-- calibrado por 1 transicao: nightsaber nivel 6, laranja ate pericia 24 e amarelo com 25 (skinCores de 2026-11-06); amarelo e verde seguem estimados
+local FAIXAS = { laranja = 24, amarelo = 50, verde = 100 }
 
 local COR_HEX = {
   laranja = "ff8000", amarelo = "ffff00", verde = "40c040", vermelho = "ff3030", cinza = "9d9d9d",
@@ -27,6 +28,7 @@ local TREINOS = {
   { nome = "Expert", pede = 125, vai = 225, nivel = 20 },
   { nome = "Artisan", pede = 200, vai = 300, nivel = 35 },
 }
+ns.TREINOS = TREINOS
 
 local function db()
   GuiaForeverDB = GuiaForeverDB or {}
@@ -53,6 +55,7 @@ end
 local function colorir(cor, s)
   return "|cff" .. COR_HEX[cor] .. s .. "|r"
 end
+ns.colorirBicho = colorir
 
 local function aprendidos()
   local d = db()
@@ -177,9 +180,34 @@ local function nomeMapa(m)
   return (ok and info and info.name) or ("map " .. tostring(m))
 end
 
--- Seta do TomTom ----------------------------------------------------------
-local uidAtual
+-- Bichos esfolaveis do mapa atual para o rastreador: ate n, com cor (chave de corDe) e nivel.
+-- Sem Skinning, sem indice ou em combate, devolve lista vazia.
+function ns.bichosDaZona(n)
+  local saida = {}
+  if ns.emCombate() then return saida end
+  local pericia, _, tem = periciaSkinning()
+  if not tem then return saida end
+  local idx = montarIndice()
+  if not idx then return saida end
+  local mapaIdx = mapaDaZona(idx)
+  if not (mapaIdx and idx[mapaIdx]) then return saida end
+  for _, e in ipairs(idx[mapaIdx]) do
+    local cor = corDe(pericia, periciaMinima(e.max))
+    if cor == "laranja" or cor == "amarelo" or cor == "verde" then
+      saida[#saida + 1] = { nome = e.nome, cor = cor, nivel = e.max }
+    end
+  end
+  table.sort(saida, function(a, c)
+    if ORDEM[a.cor] ~= ORDEM[c.cor] then return ORDEM[a.cor] < ORDEM[c.cor] end
+    if a.nivel ~= c.nivel then return a.nivel < c.nivel end
+    return a.nome < c.nome
+  end)
+  local maximo = tonumber(n) or 0
+  while #saida > maximo do table.remove(saida) end
+  return saida
+end
 
+-- Seta do guia ------------------------------------------------------------
 local function setaBicho(e, mapa)
   if ns.emCombate() then ns.msg("zone: in combat, try again out of combat."); return end
   local px, py
@@ -199,18 +227,16 @@ local function setaBicho(e, mapa)
   end
   if not melhor then ns.msg("zone: no spawn point for " .. e.nome .. "."); return end
   local onde = string.format("%s, %s %.1f %.1f", e.nome, nomeMapa(mapa), melhor[1] * 100, melhor[2] * 100)
-  if TomTom and TomTom.AddWaypoint then
-    if uidAtual and TomTom.RemoveWaypoint then pcall(TomTom.RemoveWaypoint, TomTom, uidAtual) end
-    local okW, uid = pcall(TomTom.AddWaypoint, TomTom, mapa, melhor[1], melhor[2], {
-      title = e.nome .. " (skinning)", from = "GuiaForever", persistent = false, crazy = true,
-    })
-    if okW then
-      uidAtual = uid
+  -- ns.seta (Estado.lua) poe a seta; sem ela, ou se ela falhar, ns.seta ja imprimiu a linha /way.
+  if ns.seta then
+    if ns.seta(mapa, melhor[1], melhor[2], e.nome .. " (skinning)") then
       ns.msg("arrow to " .. onde)
-      return
+    else
+      ns.msg(onde)
     end
+    return
   end
-  ns.msg(onde .. ". No TomTom: /way #" .. mapa .. string.format(" %.1f %.1f", melhor[1] * 100, melhor[2] * 100))
+  ns.msg(onde .. ". No arrow: /way #" .. mapa .. string.format(" %.1f %.1f", melhor[1] * 100, melhor[2] * 100))
 end
 
 -- Aba Zone ------------------------------------------------------------------

@@ -67,6 +67,50 @@ Tudo `[local]`, lido no código instalado em `Interface\AddOns\ElvUI` em 2026-11
 - **Número da recarga nos botões:** o ElvUI 16.01 usa o contador nativo dos quadros de recarga (`ElvUI/Game/Shared/General/Cooldowns.lua`: `SetHideCountdownNumbers`, `SetCountdownFormatter`). A CVar da Blizzard para o mesmo fim é `countdownForCooldowns` (`Blizzard_SettingsDefinitions_Frame/ActionBars.lua`).
 - **Sem versão Forever:** WeakAuras e OmniCC (seção da `forever.md`).
 
+## 3e. Listas oficiais, janelas da Blizzard, treinador de pet e pet (2026-11-06)
+
+Estes fatos foram lidos em 2026-11-06 e 2026-11-07, para o GuiaForever 1.0 (`modder\addons-proprios\GuiaForever\ARQUITETURA.md`). Nada foi testado no jogo. Marcas: `[página]` é o espelho `Ketho/wow-ui-source-forever` (branch `forever`, build 70009) ou o repositório `Ketho/BlizzardInterfaceResources` (branch `forever`, último commit no build 1.60.1.70532, de 2026-10-21), lidos pelo `gh`; `[local]` são arquivos instalados no Avell.
+
+### Listas da API
+
+Lista oficial de nomes `[página]`: o `Ketho/BlizzardInterfaceResources`, branch `forever`, pasta `Resources`, tem `GlobalAPI.lua` (funções), `FrameXML.lua` (funções da interface), `Events.lua`, `Templates.lua`, `CVars.lua`, `LuaEnum.lua`, `Mixins.lua`, `Frames.lua` e `AtlasInfo.lua`. Uma cópia fica em `modder\ferramentas\guia\api-forever\`, fora do git; o comando para baixar está em `api-forever-baixar.txt`. É a base do `checar-combate.mjs`.
+
+Duas funções do Classic **não existem** no Forever `[página]`: `IsPlayerSpell` (use `C_SpellBook.IsSpellKnown(spellID, banco)`) e `UnitCharacterPoints` (use `C_ClassTalents.GetActiveConfigID`, `C_Traits.GetConfigInfo(...).treeIDs` e `C_Traits.GetTreeCurrencyInfo(config, árvore, false)[1].quantity`). Também não estão na lista os eventos `LEARNED_SPELL_IN_TAB` (registro morto no UIForever até a 0.5.0) e a global `GetActionText` (há `C_ActionBar.GetActionText`). A global, mesmo fora da lista, funcionou no jogo, porque o diário do UIForever registra macros postas pelo nome.
+
+### Janelas da Blizzard
+
+Margem das janelas `[página]`: vendedor, missão, conversa, treinador, talentos, livro e personagem abrem a partir de uma margem pública, `SetUIPanelLayoutAttribute("LEFT_OFFSET", x)`, que vale 16 por padrão (`Blizzard_UIParentPanelManager/Shared/UIPanelLayoutFrame.lua`). O `FramePositionDelegate:UpdateUIPanelPositions` (`UIParentPanelManager.lua:616-725`) põe o painel da esquerda nessa margem e o do centro logo depois dele. O addon Skinner usa o mesmo setter para o `TOP_OFFSET`. O UIForever 0.6.0 usa para abrir as janelas à direita do RestedXP.
+
+### Treinador de pet
+
+Modo pet do treinador `[página]`: não há `CraftFrame` nem `GetCraftInfo`. O treinador de pet reusa o `ClassTrainerFrame` em modo pet (`Blizzard_TrainerUI/Mainline/Blizzard_TrainerUI.lua:453-745`), com título e retrato do pet e custo em pontos de treino. `C_Trainer.GetTrainerType()` devolve `Enum.TrainerType`, e Pet é 3. Cada linha passa pela global `ClassTrainerFrame_InitServiceButton(button, elementData)`, que aceita `hooksecurefunc`. Os eventos são `TRAINER_SHOW`, `TRAINER_UPDATE`, `TRAINER_CLOSED` e `UNIT_PET_TRAINING_POINTS`.
+
+### Pet
+
+API do pet `[página]`, de `PetInfoDocumentation.lua`, nenhuma com `SecretWhen`:
+
+| Função | Retorno |
+|---|---|
+| `C_PetInfo.GetPetHappiness()` | felicidade (1 a 3), % de dano, taxa de lealdade |
+| `C_PetInfo.GetPetFoodTypes()` | lista de textos |
+| `C_PetInfo.CanPetEatItem(itemID)` | booleano |
+| `C_PetInfo.GetPetTrainingPoints()` | total, usados |
+| `C_PetInfo.GetSpellForPetAction(actionID)` | id da magia |
+
+Os eventos são `UNIT_HAPPINESS` e `PET_UI_UPDATE`. O ElvUI esconde o `PetFrame` da Blizzard, então a felicidade tem de ser mostrada no `ElvUF_Pet` (UIForever 0.5.0).
+
+### Tooltips e setas
+
+Tooltips e setas `[página]`: o `TooltipDataProcessor.AddTooltipPostCall` existe no Forever e cobre `SetTrainerService`, `SetSpellBookItem` e `SetPetAction`; ninguém usa `OnTooltipSetSpell`. A seta nativa, sem TomTom, sai de `C_Map.SetUserWaypoint` mais `C_SuperTrack.SetSuperTrackedUserWaypoint`.
+
+### Talentos e RestedXP
+
+Os talentos são uma árvore nova `[página]`: não há `Blizzard_TalentUI`. A árvore é o `PlayerSpellsFrame.TalentsFrame` (`Blizzard_PlayerSpells`, carregado só quando aberto), com botões por nó. Por isso o guia de talentos do RestedXP, que só conhece o `PlayerTalentFrame`, não funciona no Forever (`[local]`: `RXPGuides/Talents.lua:214-235`).
+
+### NPCs no Naowh
+
+Posições de NPC `[local]`: `NaowhForever\Shared\Game\Towns.lua` tem `ns.TownNPCs[uiMapID] = { { x, y, categoria, nome, título, classe, lado } }`, de 0 a 100, com treinadores de pet, estábulos e vendedores de comida do Forever. Os de Dolanaar, em Teldrassil (1438), são Keldas, "Pet Trainer", em 56.8 59.8, e Dazalar, "Hunter Trainer", em 56.7 59.5. Os de Darnassus (1457) são Jocaste (40.4 8.6), Silvaria, "Pet Trainer" (42.5 9.2), e Jaeana, "Meat Vendor" (64.5 71.7). A licença do Naowh é "all rights reserved": o GuiaForever lê esses dados em tempo de execução e não copia código.
+
 ## 4. Fluxo de desenvolvimento
 
 1. Editar em `addons-proprios\<Nome>` (modelo em `addons-proprios\_modelo\Modelo`; instruções em `addons-proprios\LEIA-ME.md`).

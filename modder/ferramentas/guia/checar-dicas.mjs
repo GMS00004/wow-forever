@@ -15,8 +15,29 @@ const CAMPOS = {
   rotacao: ['de', 'ate', 'texto', 'fonte'],
   atributos: ['texto', 'fonte'],
   notas: ['texto', 'fonte'],
+  // v2: lista por classe, com as mesmas regras de nivel das outras listas por nivel
+  petTreino: ['de', 'ate', 'habilidade', 'texto', 'fonte'],
 };
-const FONTES = ['Method', 'DoubleZug', 'Kargoz (beta)', 'Gladius (beta)', 'LudiDeo (beta)', 'MetaGoblin (beta)'];
+// Campos opcionais (v2, ARQUITETURA.md secao 7): aceitos em toda entrada das listas de LISTAS;
+// "magia" so em magias; petTreino nao tem opcionais.
+const OPCIONAIS = ['tags', 'raca', 'zona', 'requer', 'prio'];
+const TAGS = ['pvp', 'grupo', 'fimdejogo', 'escolhapet'];
+const FONTES = [
+  'Method',
+  'DoubleZug',
+  'Kargoz (beta)',
+  'Gladius (beta)',
+  'LudiDeo (beta)',
+  'MetaGoblin (beta)',
+  'RestedXP',
+  'Naowh',
+  'leak',
+  'you', // decisao do proprio dono (ficha), como nas teclas (Teclas.lua, f = "you")
+];
+const permitidos = (lista) => {
+  if (lista === 'petTreino') return CAMPOS[lista];
+  return [...CAMPOS[lista], ...OPCIONAIS, ...(lista === 'magias' ? ['magia'] : [])];
+};
 const TEXTO_MAX = 160;
 
 const caminho = process.argv[2];
@@ -32,7 +53,8 @@ function sair(resultadoOk, contagens) {
   if (problemas.length === 0) {
     console.log('ok');
     for (const [classe, c] of Object.entries(contagens)) {
-      console.log(`${classe}: ${LISTAS.map((l) => `${l} ${c[l]}`).join(', ')}`);
+      const listas = c.petTreino !== undefined ? [...LISTAS, 'petTreino'] : LISTAS;
+      console.log(`${classe}: ${listas.map((l) => `${l} ${c[l]}`).join(', ')}`);
     }
     process.exit(0);
   }
@@ -139,10 +161,10 @@ function checarEntrada(onde, node, lista) {
     const l = `linha ${campo.loc.start.line}`;
     const nome = campo.type === 'TableKeyString' ? campo.key.name : null;
     if (nome === null) {
-      erro(`${onde} ${l}`, 'campo sem nome (esperado nivel/de/ate/texto/fonte)');
+      erro(`${onde} ${l}`, 'campo sem nome (esperado nivel/de/ate/texto/fonte, e opcionais)');
       continue;
     }
-    if (!CAMPOS[lista].includes(nome)) {
+    if (!permitidos(lista).includes(nome)) {
       erro(`${onde} ${l}`, `campo desconhecido "${nome}" em ${lista}`);
       continue;
     }
@@ -175,6 +197,33 @@ function checarEntrada(onde, node, lista) {
       erro(onde, `fonte invalida "${shown}" (use: ${FONTES.join(', ')})`);
     }
   }
+  // habilidade (so petTreino)
+  const h = campos.habilidade;
+  if (h && (h.type !== 'StringLiteral' || h.value.trim() === '')) erro(onde, 'habilidade deve ser texto nao vazio');
+  // tags: lista de textos, cada um dos TAGS
+  const tg = campos.tags;
+  if (tg) {
+    if (tg.type !== 'TableConstructorExpression') {
+      erro(onde, `tags deve ser lista de textos { "pvp", ... } (use: ${TAGS.join(', ')})`);
+    } else {
+      for (const item of tg.fields) {
+        const v = item.type === 'TableValue' ? item.value : null;
+        if (!v || v.type !== 'StringLiteral') {
+          erro(`${onde} linha ${item.loc.start.line}`, `item de tags deve ser texto (use: ${TAGS.join(', ')})`);
+        } else if (!TAGS.includes(v.value)) {
+          erro(onde, `tag invalida "${v.value}" (use: ${TAGS.join(', ')})`);
+        }
+      }
+    }
+  }
+  // prio: 1 essencial, 2 util, 3 opcional
+  const pr = campos.prio;
+  if (pr && inteiroEntre(pr, 1, 3) === null) erro(onde, 'prio deve ser inteiro de 1 a 3');
+  // texto livre nao vazio
+  for (const nome of ['raca', 'zona', 'requer', 'magia']) {
+    const v = campos[nome];
+    if (v && (v.type !== 'StringLiteral' || v.value.trim() === '')) erro(onde, `${nome} deve ser texto nao vazio`);
+  }
   return campos;
 }
 
@@ -206,7 +255,7 @@ const contarLista = (classe, lista, node) => {
         if (anterior !== null && n < anterior) erro(onde, `nivel ${n} fora de ordem (anterior ${anterior})`);
         anterior = n;
       }
-    } else if (lista === 'armas' || lista === 'pets' || lista === 'rotacao') {
+    } else if (lista === 'armas' || lista === 'pets' || lista === 'rotacao' || lista === 'petTreino') {
       const de = inteiroEntre(campos.de, 1, 60);
       const ate = inteiroEntre(campos.ate, 1, 60);
       if (campos.de && de === null) erro(onde, 'de deve ser inteiro de 1 a 60');
@@ -256,6 +305,8 @@ for (const classe of CLASSES) {
     }
     contarLista(classe, lista, campos[lista]);
   }
+  // petTreino (opcional por classe); se existir, nao pode ser vazia
+  if ('petTreino' in campos) contarLista(classe, 'petTreino', campos.petTreino);
 }
 
 sair(true, contagens);
