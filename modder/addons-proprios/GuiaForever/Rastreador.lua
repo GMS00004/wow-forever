@@ -33,10 +33,50 @@ local function faixaAtual()
   return id and cfg.faixas[id], origem
 end
 
+local agendar -- definida mais abaixo; os ganchos do criarQuadro a chamam
+
+-- Quadros que o ElvUI pode empilhar embaixo do minimapa: o painel Guild/Friends
+-- e as barras de dados. O rastreador desce para baixo do ultimo da pilha que
+-- estiver visivel (0.9.1: no print do dono de 06/11, 22h56, a barra de
+-- reputacao, logo abaixo do painel, cobria a linha do Leatherworking).
+local SOB_MINIMAPA = { "MinimapPanel", "ElvUI_ReputationBar", "ElvUI_HonorBar", "ElvUI_AzeriteBar", "ElvUI_ThreatBar" }
+local FOLGA = 12 -- distancia maxima, em unidades da UI, entre um quadro e o de cima na pilha
+
+-- borda em pixels de tela, para comparar quadros com escalas diferentes
+local function borda(f, lado)
+  local v = f[lado](f)
+  local s = f:GetEffectiveScale()
+  return v and s and v * s
+end
+
 local function ancora()
-  local painel = _G.MinimapPanel
-  if painel and painel:IsShown() then return painel end
-  return _G.Minimap
+  local mapa = _G.Minimap
+  if not (mapa and mapa:IsVisible()) then return nil end
+  local esq, dir, base = borda(mapa, "GetLeft"), borda(mapa, "GetRight"), borda(mapa, "GetBottom")
+  if not (esq and dir and base) then return mapa end
+  local folga = FOLGA * UIParent:GetEffectiveScale()
+  local atual, usados, mudou = mapa, {}, true
+  while mudou do
+    mudou = false
+    for _, nome in ipairs(SOB_MINIMAPA) do
+      local f = _G[nome]
+      if f and not usados[nome] and f.IsVisible and f:IsVisible() then
+        local l, r, b, t = borda(f, "GetLeft"), borda(f, "GetRight"), borda(f, "GetBottom"), borda(f, "GetTop")
+        -- na coluna do minimapa, encostado (ou quase) embaixo do ultimo da pilha
+        if l and r and b and t and r > esq and l < dir and t <= base + folga and t >= base - folga and b < base then
+          atual, base, usados[nome], mudou = f, b, true, true
+        end
+      end
+    end
+  end
+  return atual
+end
+
+local function posicionar()
+  local a = ancora()
+  quadro:ClearAllPoints()
+  if a then quadro:SetPoint("TOP", a, "BOTTOM", 0, -4)
+  else quadro:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -20, -230) end
 end
 
 local function criarQuadro()
@@ -45,9 +85,16 @@ local function criarQuadro()
   quadro:SetSize(220, 14)
   quadro:SetFrameStrata("LOW")
   quadro:EnableMouse(true)
-  local a = ancora()
-  if a then quadro:SetPoint("TOP", a, "BOTTOM", 0, -4)
-  else quadro:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -20, -230) end
+  posicionar()
+  -- a barra de reputacao aparece quando uma faccao passa a ser acompanhada;
+  -- quando um quadro da pilha aparece ou some, o rastreador se reposiciona
+  for _, nome in ipairs(SOB_MINIMAPA) do
+    local f = _G[nome]
+    if f and f.HookScript then
+      f:HookScript("OnShow", function() agendar() end)
+      f:HookScript("OnHide", function() agendar() end)
+    end
+  end
   quadro:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT")
     GameTooltip:AddLine("Profession goals for this area")
@@ -134,11 +181,12 @@ local function atualizar()
     quadro:Hide()
   else
     quadro:SetHeight(n * 13 + 2)
+    posicionar()
     quadro:Show()
   end
 end
 
-local function agendar()
+function agendar()
   if agendado then return end
   agendado = true
   if C_Timer and C_Timer.After then C_Timer.After(0.5, atualizar) else atualizar() end

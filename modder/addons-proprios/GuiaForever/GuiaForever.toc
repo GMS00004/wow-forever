@@ -2,7 +2,7 @@
 ## Title: GuiaForever
 ## Notes: Talents and tips by level (spells, weapons, pets, rotation), professions with a per-area goal tracker, trainers, per-zone skinning targets, macros and graphics profile.
 ## Author: Bruno
-## Version: 0.8.0
+## Version: 0.9.1
 ## SavedVariables: GuiaForeverDB
 ## OptionalDeps: Questie, QuestieDB, TomTom
 Dados.lua

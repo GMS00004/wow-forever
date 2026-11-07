@@ -26,6 +26,24 @@ UIForeverConfig.elvui = {
   { "actionbar.bar2.showGrid", false },
   { "actionbar.bar6.buttonSize", 30 },
   { "actionbar.bar6.showGrid", false },
+  -- Barra de recargas da rotacao (dono, 2026-11-06, noite: "uma barra com as
+  -- habilidades da minha rotacao bem discriminadas na tela, a fim de trackear
+  -- cooldowns"). Barra 5 do ElvUI (slots 49 a 59), logo abaixo do personagem,
+  -- acima dos timers de ataque; so mostra o que o personagem ja aprendeu (o
+  -- conteudo fica em UIForeverConfig.barras, slots 49 a 59). Sem tecla propria:
+  -- as teclas continuam as da barra 1. O icone fica cinza enquanto recarrega,
+  -- em todas as barras (desaturateOnCooldown, que no Forever le a recarga pelo
+  -- objeto de duracao da Blizzard, sem ler valor secreto).
+  { "actionbar.bar5.enabled", true },
+  { "actionbar.bar5.buttons", 11 },
+  { "actionbar.bar5.buttonsPerRow", 11 },
+  { "actionbar.bar5.buttonSize", 44 },
+  { "actionbar.bar5.buttonSpacing", 4 },
+  { "actionbar.bar5.showGrid", false },
+  { "actionbar.bar5.backdrop", false },
+  { "actionbar.bar5.hotkeytext", false },
+  { "movers.ElvAB_5", "BOTTOM,ElvUIParent,BOTTOM,0,300" },
+  { "actionbar.desaturateOnCooldown", true },
   -- barras mais baixas e quadros afastados para caber o retrato
   { "movers.ElvAB_3", "BOTTOM,ElvUIParent,BOTTOM,0,139" },
   { "movers.ElvAB_1", "BOTTOM,ElvUIParent,BOTTOM,0,175" },
@@ -76,6 +94,8 @@ local NUMEROS = {
   contorno = "OUTLINE",
   tamanhoQuadro = 13,   -- vida e recurso do jogador e do alvo
   tamanhoBotao = 12,    -- tecla e contagem nos botoes, contagem das auras
+  tamanhoNivel = 14,    -- nivel do alvo (dono, 2026-11-06, noite: "ilegivel")
+  tamanhoPlaca = 13,    -- nivel e vida nas placas de nome (o padrao do ElvUI e 11)
 }
 
 -- Vida em pontos, atual / maxima (pedido do dono em 2026-11-06). Tags do ElvUI
@@ -110,6 +130,36 @@ for unidade, lados in pairs({ player = { "LEFT", 2, "RIGHT", -2 }, target = { "R
   numero(base .. ".castbar.customTimeFont.font", NUMEROS.fonte, "PT Sans Narrow")
 end
 
+-- Nivel do alvo (dono, 2026-11-06, noite: "o nivel do nightsaber esta ilegivel").
+-- No ElvUI o nivel vem na mesma linha do nome, na Homespun 10 de pixel, no painel
+-- de info embaixo do quadro, e por isso a 0.4.0 o deixou de fora. Agora o nivel
+-- sai do nome e vira texto proprio na ponta direita do painel, com a cor de
+-- dificuldade e o "+" de elite; o nome continua no centro, na fonte de antes.
+numero("unitframe.units.target.name.text_format", "[classcolor][name]",
+  "[classcolor][name] [difficultycolor][smartlevel] [shortclassification]")
+table.insert(UIForeverConfig.elvui, { "unitframe.units.target.customTexts.UIForeverNivel", {
+  enable = NUMEROS.ligado, text_format = "[difficultycolor][smartlevel][shortclassification]",
+  attachTextTo = "InfoPanel", justifyH = "RIGHT", xOffset = -4, yOffset = 0,
+  font = NUMEROS.fonte, size = NUMEROS.tamanhoNivel, fontOutline = NUMEROS.contorno,
+} })
+
+-- 1c. Quadro do pet legivel (dono, 2026-11-06, noite: "como eu cuido do meu pet,
+-- com uma UI aceitavel"). A barra do pet ja muda de cor com a felicidade
+-- (health.colorHappiness, padrao do ElvUI no Forever: verde Happy, amarelo
+-- Content, vermelho Unhappy). Sobre ela, em Expressway: a felicidade em palavra,
+-- na mesma cor, a esquerda (tags happiness:color e happiness:full do ElvUI, que
+-- so existem no cacador com pet), e a vida em % a direita. O nome fica no centro.
+-- Para desfazer: PET.ligado = false e /reload.
+local PET = { ligado = true }
+for nome, texto in pairs({
+  UIForeverFelicidade = { "[happiness:color][happiness:full]", "LEFT", 2 },
+  UIForeverVidaPet = { "||cFF29CC00[perhp<%]||r", "RIGHT", -2 },
+}) do
+  local t = textoProprio(texto[1], texto[2], texto[3])
+  t.enable = PET.ligado
+  table.insert(UIForeverConfig.elvui, { "unitframe.units.pet.customTexts." .. nome, t })
+end
+
 -- contagem das auras nos quadros (pilhas)
 for _, unidade in ipairs({ "player", "target", "pet", "targettarget", "focus" }) do
   for _, grupo in ipairs({ "buffs", "debuffs", "auras" }) do
@@ -140,6 +190,8 @@ end
 for _, placa in ipairs({ "FRIENDLY_PLAYER", "FRIENDLY_NPC", "ENEMY_PLAYER", "ENEMY_NPC" }) do
   numero("nameplates.units." .. placa .. ".health.text.font", NUMEROS.fonte, "PT Sans Narrow")
   numero("nameplates.units." .. placa .. ".level.font", NUMEROS.fonte, "PT Sans Narrow")
+  numero("nameplates.units." .. placa .. ".health.text.fontSize", NUMEROS.tamanhoPlaca, 11)
+  numero("nameplates.units." .. placa .. ".level.fontSize", NUMEROS.tamanhoPlaca, 11)
 end
 
 -- barra de vida do tooltip
@@ -206,7 +258,7 @@ UIForeverConfig.teclas = {
 -- a macro vence. Magia aprendida depois entra sozinha no slot dela, se o slot
 -- estiver vazio. Desde a 0.2.0 o que o dono pos ou tirou de um slot fica: o
 -- UIForever so mexe no slot enquanto ele tiver o que o proprio UIForever pos.
-UIForeverConfig.gerenciados = { { 1, 12 }, { 13, 21 }, { 25, 36 }, { 61, 66 } }
+UIForeverConfig.gerenciados = { { 1, 12 }, { 13, 21 }, { 25, 36 }, { 49, 59 }, { 61, 66 } }
 
 UIForeverConfig.barras = {
   -- Hexumlite (BM). Magias e niveis: Method, guia de leveling de cacador de
@@ -248,6 +300,19 @@ UIForeverConfig.barras = {
     [34] = { magia = "Flare" },
     [35] = { magia = "Scare Beast" },
     [36] = { magia = "Distracting Shot" },
+    -- barra 5 (recargas da rotacao, sem tecla), na ordem do nivel em que chegam
+    -- (Method; Mongoose Bite e Immolation Trap pelo Kargoz e pela MetaGoblin)
+    [49] = { magia = "Raptor Strike" },     -- 1
+    [50] = { magia = "Arcane Shot" },       -- 6
+    [51] = { magia = "Concussive Shot" },   -- 8
+    [52] = { magia = "Mongoose Bite" },     -- 16
+    [53] = { magia = "Immolation Trap" },   -- 16 (as armadilhas dividem 30 s)
+    [54] = { magia = "Multi-Shot" },        -- 18
+    [55] = { magia = "Aimed Shot" },        -- 20 (divide a recarga com o Multi-Shot)
+    [56] = { magia = "Summon Hawk" },       -- 25 (divide 6 s com o Arcane Shot)
+    [57] = { magia = "Rapid Fire" },        -- 26
+    [58] = { magia = "Intimidation" },      -- 30
+    [59] = { magia = "Bestial Wrath" },     -- 40
     -- barra 6 (clique)
     [61] = { magia = "Track Beasts" },
     [62] = { magia = "Track Humanoids" },
@@ -281,8 +346,10 @@ UIForeverConfig.cvars = {
   -- tamanho e "sempre / em combate" ficam no Edit Mode.
   { "showSwingTimer", "1" },
   -- Cooldown Manager (Options > Advanced > Enable Cooldown Manager): recargas e
-  -- buffs escolhidos no painel dele, dentro do jogo.
-  { "cooldownViewerEnabled", "1" },
+  -- buffs escolhidos no painel dele, dentro do jogo. Desligado em 2026-11-06,
+  -- noite, por escolha do dono: a barra de recargas da rotacao (barra 5) faz o
+  -- papel, e os icones pequenos dele, sem magias escolhidas, so duplicavam.
+  { "cooldownViewerEnabled", "0" },
 }
 
 -- 6. Barra de experiencia com a cara original da Blizzard (pedido do dono em

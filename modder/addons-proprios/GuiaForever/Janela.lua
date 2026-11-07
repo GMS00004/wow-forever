@@ -4,7 +4,7 @@
 
 local _, ns = ...
 
-local LARGURA, ALTURA = 580, 460
+local LARGURA, ALTURA = 642, 460
 local ABAS = {
   { id = "nivel", rotulo = "Level" },
   { id = "talentos", rotulo = "Talents" },
@@ -15,6 +15,7 @@ local ABAS = {
   { id = "prof", rotulo = "Prof." },
   { id = "zona", rotulo = "Zone" },
   { id = "treinos", rotulo = "Trainers" },
+  { id = "addons", rotulo = "Addons" },
 }
 local CINZA, AMARELO = "|cff999999", "|cffffd100"
 
@@ -169,6 +170,37 @@ end
 
 construtores.zona = function(b) if ns.blocosZona then ns.blocosZona(b) else T(b, "Zone tab unavailable.") end end
 construtores.teclas = function(b) if ns.blocosTeclas then ns.blocosTeclas(b) else T(b, "Keys tab unavailable.") end end
+
+-- Aba Addons (dono, 2026-11-06, noite: "nao estou sabendo acessar todas as
+-- funcionalidades"). Os comandos foram lidos no codigo de cada addon instalado
+-- (SLASH_ e RegisterChatCommand) na mesma noite. Nome, o que faz, como abrir.
+local ADDONS = {
+  { "GuiaForever", "talents, spells, pets, rotation and keys by level", "J, /guia or the book button by the minimap" },
+  { "Naowh Training Planner", "what to train now, its cost and the nearest trainer", "/nftraining" },
+  { "Naowh Forever", "options of the Naowh modules; its profession window replaces the game's", "/nf" },
+  { "RestedXP Guides", "the step-by-step route (window at the top left)", "/rxp" },
+  { "Questie", "quests, trainers and services on the map and minimap", "M (map); /questie for options" },
+  { "Forever Quests", "marks Forever's new quests in Questie's tooltips", "automatic" },
+  { "Baganator", "all your bags in one window, with search", "B" },
+  { "Syndicator", "your other characters' items in Baganator's search", "automatic" },
+  { "Auctionator", "prices and quick selling at the auction house", "opens with the auctioneer; /atr" },
+  { "TomTom", "arrow to a map coordinate", "/way 57 61" },
+  { "GatherMate2", "gathering nodes you have already seen, on the map", "M (map); /gathermate" },
+  { "Leatrix Plus", "sells junk, repairs and loots fast (already on)", "/ltp" },
+  { "Pawn", "green arrow in the tooltip when an item is an upgrade", "hover an item; /pawn" },
+  { "Deadly Boss Mods", "boss alerts and timers", "automatic in dungeons; /dbm" },
+  { "BugSack", "addon errors", "/bugsack" },
+  { "UIForever", "this layout, keys, rotation cooldown bar under your character, number fonts", "automatic on login" },
+}
+
+construtores.addons = function(b)
+  T(b, ns.COR .. "What each addon gives you and how to open it" .. ns.FIM)
+  for _, a in ipairs(ADDONS) do
+    T(b, " ")
+    T(b, AMARELO .. a[1] .. ns.FIM .. ": " .. a[2])
+    T(b, CINZA .. "   Open: " .. ns.FIM .. a[3])
+  end
+end
 
 -- Desenho ------------------------------------------------------------
 local function desenhar(blocos)
