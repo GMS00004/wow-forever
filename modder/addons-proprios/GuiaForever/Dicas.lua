@@ -4,28 +4,28 @@ GuiaForeverDicas = {
   HUNTER = {
     personagem = "Hexumlite Bull",
     magias = {   -- em ordem crescente de nivel
-      { nivel = 1, texto = "No pet: maximize Auto Shot.", fonte = "Method", magia = "Auto Shot" },  -- origem: hexumlite-bull.md:95
-      { nivel = 4, texto = "Serpent Sting when the target won't die quickly.", fonte = "Method", magia = "Serpent Sting" },  -- origem: hexumlite-bull.md:95
-      { nivel = 6, texto = "Arcane Shot.", fonte = "Method", magia = "Arcane Shot" },  -- origem: hexumlite-bull.md:95
-      { nivel = 6, texto = "Hunter's Mark.", fonte = "Method", magia = "Hunter's Mark" },  -- origem: hexumlite-bull.md:95
-      { nivel = 8, texto = "Concussive Shot to slow and kite.", fonte = "Method", magia = "Concussive Shot" },  -- origem: hexumlite-bull.md:95
-      { nivel = 10, texto = "Keep Aspect of the Hawk on whenever you fight.", fonte = "Method", magia = "Aspect of the Hawk" },  -- origem: hexumlite-bull.md:96
-      { nivel = 12, texto = "Mend Pet, for high-level elites.", fonte = "Method", magia = "Mend Pet" },  -- origem: hexumlite-bull.md:97
-      { nivel = 18, texto = "Multi-Shot: AoE; shares its cooldown with Aimed Shot.", fonte = "Method", magia = "Multi-Shot" },  -- origem: hexumlite-bull.md:98
-      { nivel = 20, texto = "Aimed Shot: single target, 2 s cast.", fonte = "Method", magia = "Aimed Shot" },  -- origem: hexumlite-bull.md:99
-      { nivel = 20, texto = "Aspect of the Cheetah: always out of combat when unmounted.", fonte = "Method", magia = "Aspect of the Cheetah" },  -- origem: hexumlite-bull.md:99
-      { nivel = 20, texto = "Freezing Trap.", fonte = "Method", magia = "Freezing Trap" },  -- origem: hexumlite-bull.md:99
-      { nivel = 24, texto = "Track Hidden.", fonte = "Method", magia = "Track Hidden" },  -- origem: hexumlite-bull.md:100
-      { nivel = 25, texto = "Summon Hawk (talent, new in Forever): keep 2 hawks and your pet out at all times.", fonte = "Method", magia = "Summon Hawk" },  -- origem: hexumlite-bull.md:101
+      { nivel = 1, id = 75, texto = "No pet: maximize Auto Shot.", fonte = "Method", magia = "Auto Shot" },  -- origem: hexumlite-bull.md:95
+      { nivel = 4, id = 1978, texto = "Serpent Sting when the target won't die quickly.", fonte = "Method", magia = "Serpent Sting" },  -- origem: hexumlite-bull.md:95
+      { nivel = 6, id = 3044, texto = "Arcane Shot.", fonte = "Method", magia = "Arcane Shot" },  -- origem: hexumlite-bull.md:95
+      { nivel = 6, id = 1130, texto = "Hunter's Mark.", fonte = "Method", magia = "Hunter's Mark" },  -- origem: hexumlite-bull.md:95
+      { nivel = 8, id = 5116, texto = "Concussive Shot to slow and kite.", fonte = "Method", magia = "Concussive Shot" },  -- origem: hexumlite-bull.md:95
+      { nivel = 10, id = 13165, texto = "Keep Aspect of the Hawk on whenever you fight.", fonte = "Method", magia = "Aspect of the Hawk" },  -- origem: hexumlite-bull.md:96
+      { nivel = 12, id = 136, texto = "Mend Pet, for high-level elites.", fonte = "Method", magia = "Mend Pet" },  -- origem: hexumlite-bull.md:97
+      { nivel = 18, id = 2643, texto = "Multi-Shot: AoE; shares its cooldown with Aimed Shot.", fonte = "Method", magia = "Multi-Shot" },  -- origem: hexumlite-bull.md:98
+      { nivel = 20, id = 19434, texto = "Aimed Shot: single target, 2 s cast.", fonte = "Method", magia = "Aimed Shot" },  -- origem: hexumlite-bull.md:99
+      { nivel = 20, id = 5118, texto = "Aspect of the Cheetah: always out of combat when unmounted.", fonte = "Method", magia = "Aspect of the Cheetah" },  -- origem: hexumlite-bull.md:99
+      { nivel = 20, id = 1499, texto = "Freezing Trap.", fonte = "Method", magia = "Freezing Trap" },  -- origem: hexumlite-bull.md:99
+      { nivel = 24, id = 19885, texto = "Track Hidden.", fonte = "Method", magia = "Track Hidden" },  -- origem: hexumlite-bull.md:100
+      { nivel = 25, id = 1293525, texto = "Summon Hawk (talent, new in Forever): keep 2 hawks and your pet out at all times.", fonte = "Method", magia = "Summon Hawk" },  -- origem: hexumlite-bull.md:101
       { nivel = 25, texto = "Hawks last 18 s: recast only in the last second.", fonte = "Method" },  -- origem: hexumlite-bull.md:101
-      { nivel = 25, texto = "Summon Hawk shares a 6 s cooldown with Arcane Shot.", fonte = "Method", magia = "Summon Hawk" },  -- origem: hexumlite-bull.md:101
-      { nivel = 25, texto = "After 25, Arcane Shot only in long single-target fights (one every 3 casts).", fonte = "Method", magia = "Arcane Shot" },  -- origem: hexumlite-bull.md:101
-      { nivel = 26, texto = "Rapid Fire (5 min cooldown).", fonte = "Method", magia = "Rapid Fire" },  -- origem: hexumlite-bull.md:102
-      { nivel = 28, texto = "Frost Trap: 60% slow in an area.", fonte = "Method", magia = "Frost Trap" },  -- origem: hexumlite-bull.md:103
-      { nivel = 30, texto = "Intimidation (talent); also works as the pet's taunt.", fonte = "Method", magia = "Intimidation" },  -- origem: hexumlite-bull.md:104
-      { nivel = 30, texto = "Feign Death (can resist).", fonte = "Method", magia = "Feign Death" },  -- origem: hexumlite-bull.md:104
+      { nivel = 25, id = 1293525, texto = "Summon Hawk shares a 6 s cooldown with Arcane Shot.", fonte = "Method", magia = "Summon Hawk" },  -- origem: hexumlite-bull.md:101
+      { nivel = 25, id = 3044, texto = "After 25, Arcane Shot only in long single-target fights (one every 3 casts).", fonte = "Method", magia = "Arcane Shot" },  -- origem: hexumlite-bull.md:101
+      { nivel = 26, id = 3045, texto = "Rapid Fire (5 min cooldown).", fonte = "Method", magia = "Rapid Fire" },  -- origem: hexumlite-bull.md:102
+      { nivel = 28, id = 13809, texto = "Frost Trap: 60% slow in an area.", fonte = "Method", magia = "Frost Trap" },  -- origem: hexumlite-bull.md:103
+      { nivel = 30, id = 7093, texto = "Intimidation (talent); also works as the pet's taunt.", fonte = "Method", magia = "Intimidation" },  -- origem: hexumlite-bull.md:104
+      { nivel = 30, id = 5384, texto = "Feign Death (can resist).", fonte = "Method", magia = "Feign Death" },  -- origem: hexumlite-bull.md:104
       { nivel = 30, texto = "Pet Dash, learned through Wild Taming: tame a pet that knows Dash and use it in combat until the spell-learned message.", fonte = "Method" },  -- origem: hexumlite-bull.md:104
-      { nivel = 40, texto = "Bestial Wrath (talent).", fonte = "Method", magia = "Bestial Wrath" },  -- origem: hexumlite-bull.md:105
+      { nivel = 40, id = 19574, texto = "Bestial Wrath (talent).", fonte = "Method", magia = "Bestial Wrath" },  -- origem: hexumlite-bull.md:105
     },
     armas = {
       { de = 1, ate = 10, texto = "Night Elf: white bow (3.81 DPS) from the Crown of the Earth chain, 7 quests, starts at Tenaron's Summons (Teldrassil).", fonte = "Gladius (beta)", raca = "NightElf" },  -- origem: transcricao Gladius J1kDM4QI3Ks 03:47
@@ -93,7 +93,7 @@ GuiaForeverDicas = {
       { de = 1, ate = 60, texto = "If you are pulling the pet's aggro, let the pet land a few hits first.", fonte = "Method" },  -- origem: hexumlite-bull.md:107
       { de = 1, ate = 60, texto = "Since 11/03 all traps share a 30 s cooldown: using Immolation locks Freezing and Frost.", fonte = "Method", requer = "Immolation Trap" },  -- origem: hexumlite-bull.md:103
       { de = 16, ate = 40, texto = "Second mob: Serpent Sting with Immolation Trap and melee.", fonte = "MetaGoblin (beta)", requer = "Immolation Trap" },  -- origem: metagoblin-hunter.md:24
-      { de = 16, ate = 60, texto = "Immolation Trap, option 1: Method leaves it out of the rotation; Freezing Trap (20) and Frost Trap (28) appear as control and slow.", fonte = "Method", requer = "Immolation Trap" },  -- origem: hexumlite-bull.md:99-103 (escolha do dono: as duas orientacoes)
+      { de = 16, ate = 60, texto = "Immolation Trap, option 1: leave it out of the rotation; Freezing Trap (20) and Frost Trap (28) serve as control and slow.", fonte = "Method", requer = "Immolation Trap" },  -- origem: hexumlite-bull.md:99-103 (escolha do dono: as duas orientacoes)
       { de = 16, ate = 60, texto = "Immolation Trap, option 2: Raptor Strike together with Immolation Trap.", fonte = "Kargoz (beta)", requer = "Immolation Trap" },  -- origem: kargoz-hunter-bm.md:25
       { de = 25, ate = 60, texto = "Hawk, Immolation Trap, Hawk again.", fonte = "Kargoz (beta)", requer = "Summon Hawk" },  -- origem: kargoz-hunter-bm.md:25
       { de = 25, ate = 60, texto = "Serpent Sting in long fights.", fonte = "Kargoz (beta)" },  -- origem: kargoz-hunter-bm.md:25
@@ -113,17 +113,17 @@ GuiaForeverDicas = {
   SHAMAN = {
     personagem = "Rurik Thunderfist",
     magias = {   -- em ordem crescente de nivel
-      { nivel = 10, texto = "Searing Totem.", fonte = "Method" },  -- origem: rurik-thunderfist.md:129
-      { nivel = 12, texto = "Fire Nova: only with spare mana; the threat goes to you.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:76
-      { nivel = 20, texto = "Ghost Wolf (40% speed).", fonte = "Method" },  -- origem: rurik-thunderfist.md:131
-      { nivel = 20, texto = "Water Shield: always.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:73
-      { nivel = 20, texto = "Lightning Shield: only with full mana between pulls.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:73
-      { nivel = 26, texto = "Magma Totem: almost never while leveling.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:75
+      { nivel = 10, id = 3599, texto = "Searing Totem.", fonte = "Method" },  -- origem: rurik-thunderfist.md:129
+      { nivel = 12, id = 408341, texto = "Fire Nova: only with spare mana; the threat goes to you.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:76
+      { nivel = 20, id = 2645, texto = "Ghost Wolf (40% speed).", fonte = "Method" },  -- origem: rurik-thunderfist.md:131
+      { nivel = 20, id = 408510, texto = "Water Shield: always.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:73
+      { nivel = 20, id = 324, texto = "Lightning Shield: only with full mana between pulls.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:73
+      { nivel = 26, id = 8190, texto = "Magma Totem: almost never while leveling.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:75
       { nivel = 30, texto = "Respec at the trainer: needs a good two-handed weapon.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:54
-      { nivel = 30, texto = "Stormstrike (talent, from the respec).", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:54
-      { nivel = 32, texto = "Windfury Totem, for the group.", fonte = "Method" },  -- origem: rurik-thunderfist.md:135
-      { nivel = 46, texto = "Maelstrom Weapon: only worth it for Lightning Bolt; release at 5 stacks.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:78
-      { nivel = 51, texto = "Rage of the Farseer: Bloodlust for you alone, with attack speed.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:44
+      { nivel = 30, id = 17364, texto = "Stormstrike (talent, from the respec).", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:54
+      { nivel = 32, id = 8512, texto = "Windfury Totem, for the group.", fonte = "Method" },  -- origem: rurik-thunderfist.md:135
+      { nivel = 46, id = 408498, texto = "Maelstrom Weapon: only worth it for Lightning Bolt; release at 5 stacks.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:78
+      { nivel = 51, id = 425336, texto = "Rage of the Farseer: Bloodlust for you alone, with attack speed.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:44
     },
     armas = {
       { de = 1, ate = 29, texto = "One-hander and shield until Stormstrike.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:71

@@ -226,7 +226,7 @@ for (const chave of Object.keys(doadores)) {
 }
 
 // ---------- regras, fontes ----------
-const regras = (textos?.regras || []).map((x) => ({ t: x.t, f: x.f }));
+const regras = (textos?.regras || []).map((x) => ({ t: x.t, f: x.f, ...(x.essencial ? { e: true } : {}) }));
 const hoje = new Date().toISOString().slice(0, 10);
 const fontes = [
   { id: 'Client', nome: 'WoW Forever game client data (wago.tools DB2)', url: 'https://wago.tools/db2', data: `build ${cli.build}` },

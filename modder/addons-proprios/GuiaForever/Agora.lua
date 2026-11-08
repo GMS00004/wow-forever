@@ -40,6 +40,17 @@ local function dbOcultos()
   return db.agoraOcultos
 end
 
+-- Treino pulado (dono, 2026-11-08: "quando eu clicar para [pular] alguma coisa, para ela nao
+-- ficar voltando o tempo todo [...] estou precisando de dinheiro"). O botao direito no aviso de
+-- treino guarda as magias daquele aviso (id do Naowh ou nome das Dicas) e o aviso so volta com
+-- magia nova, mostrando so a nova. Antes ele escondia pelo texto, que muda com o treinador mais
+-- perto ("Train 2 spells: Kaerbrus" virou "...: Dorion" e voltou). Desfazer: J > Now > Hidden.
+local function dbPulados()
+  local db = ns.dbPersonagem()
+  if type(db.treinoPulado) ~= "table" then db.treinoPulado = {} end
+  return db.treinoPulado
+end
+
 -- Estado ----------------------------------------------------------------------
 
 local provedores = {}        -- lista de { id, eventos, itens }
@@ -129,8 +140,12 @@ local function dicaTooltip(dono, item)
   elseif type(d) == "table" then
     for _, l in ipairs(d) do GameTooltip:AddLine(tostring(l), 0.9, 0.9, 0.9, true) end
   end
-  if item.fonte then GameTooltip:AddLine("Source: " .. tostring(item.fonte), 0.6, 0.6, 0.6) end
-  GameTooltip:AddLine("Click: open the guide. Right-click: hide until it changes.", 0.5, 0.5, 0.5, true)
+  -- sem a linha "Source:" desde a 1.2 (dono: "nem ligo mais pra fonte dela")
+  if type(item.aoOcultar) == "function" then
+    GameTooltip:AddLine("Click: open the guide. Right-click: skip these for now (only new ones bring it back).", 0.5, 0.5, 0.5, true)
+  else
+    GameTooltip:AddLine("Click: open the guide. Right-click: hide until it changes.", 0.5, 0.5, 0.5, true)
+  end
   GameTooltip:Show()
 end
 
@@ -138,6 +153,13 @@ local desenhar -- definida adiante
 
 local function ocultar(item)
   if not (item and item.chave) then return end
+  if type(item.aoOcultar) == "function" then
+    -- o provedor guarda o que foi pulado e deixa de emitir o item; refaz a lista
+    seguro(item.aoOcultar)
+    GameTooltip:Hide()
+    if A.atualizar then A.atualizar() end
+    return
+  end
   dbOcultos()[item.chave] = tostring(item.texto)
   desenhar()
 end
@@ -355,6 +377,22 @@ function A.mostrar(chave)
   desenhar()
 end
 
+-- treino pulado: a lista (para a secao Hidden do J) e o desfazer
+function A.pulados()
+  local r = {}
+  for k in pairs(dbPulados()) do
+    r[#r + 1] = type(k) == "number" and ((ns.nomeMagia and ns.nomeMagia(k)) or ("spell " .. k)) or tostring(k)
+  end
+  table.sort(r)
+  return r
+end
+
+function A.desfazerPulo()
+  local db = ns.dbPersonagem()
+  db.treinoPulado = {}
+  A.atualizar()
+end
+
 function A.provedor(def)
   if type(def) ~= "table" or type(def.id) ~= "string" or type(def.itens) ~= "function" then return end
   local novo = { id = def.id, eventos = def.eventos, itens = def.itens }
@@ -462,8 +500,9 @@ local function treinoNaowh(nivel)
   if not ok or type(plano) ~= "table" then return nil end
   local agora = type(plano.now) == "table" and plano.now or {}
   local lista = {}
+  local pulados = dbPulados()
   for _, e in ipairs(agora) do
-    if type(e) == "table" and not e.quest then lista[#lista + 1] = e end
+    if type(e) == "table" and not e.quest and not pulados[e[2]] then lista[#lista + 1] = e end
   end
   if #lista == 0 then return {} end
 
@@ -499,6 +538,10 @@ local function treinoNaowh(nivel)
   return { {
     chave = "classe:treino", prio = 60, cor = "amarelo", icone = icone,
     texto = texto, dica = dica, fonte = "Naowh Forever", aba = "nivel",
+    aoOcultar = function()
+      local p = dbPulados()
+      for _, e in ipairs(lista) do if e[2] then p[e[2]] = true end end
+    end,
     botao = {
       rotulo = "Arrow",
       acao = function()
@@ -526,8 +569,9 @@ local function treinoDicas(nivel)
   local magias = dicas and dicas.magias
   if type(magias) ~= "table" then return {} end
   local faltam, vistas = {}, {}
+  local pulados = dbPulados()
   for _, e in ipairs(magias) do
-    if type(e) == "table" and e.magia and (tonumber(e.nivel) or 99) <= nivel
+    if type(e) == "table" and e.magia and (tonumber(e.nivel) or 99) <= nivel and not pulados[e.magia]
        and not vistas[e.magia] and (not ns.relevante or ns.relevante(e)) and not ns.conhece(e.magia) then
       vistas[e.magia] = true
       faltam[#faltam + 1] = e
@@ -546,6 +590,10 @@ local function treinoDicas(nivel)
     icone = icone or "Interface\\Icons\\INV_Misc_Book_11",
     texto = "Train " .. n .. (n == 1 and " spell" or " spells") .. ": class trainer",
     dica = dica, fonte = faltam[1].fonte, aba = "nivel",
+    aoOcultar = function()
+      local p = dbPulados()
+      for _, e in ipairs(faltam) do p[e.magia] = true end
+    end,
     botao = {
       rotulo = "Arrow",
       acao = function() if ns.setaTreinador then ns.setaTreinador("classe") end end,

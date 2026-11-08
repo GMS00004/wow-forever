@@ -10,59 +10,70 @@
 -- Campos: g = grupo, k = tecla, n = nivel em que comeca a funcionar, s = o que faz,
 -- f = de onde vem o conteudo do botao (e o nivel, quando f = "Naowh"),
 -- cheio = nivel em que a macro fica completa (quando for depois de n).
+-- Janela 1.2: id = id de magia (icone da grade, pelo magias.json); icone = caminho, ou uma
+-- funcao que devolve o caminho (lida na hora, para as texturas do pet); rot = rotulo da tecla
+-- como nas barras do ElvUI ("1", "Q", "S1", "C1", "M4", "SMwU"). Sem rot = so em lista (k).
 
 GuiaForeverTeclasGrupos = { "Main bar", "Shift bar", "Bar 2 and mouse", "Pet", "Other keys", "Click only (bar 6)" }
 
 GuiaForeverTeclas = {
   HUNTER = {
     -- barra 1
-    { g = "Main bar", k = "1", tecla = "1", n = 1, cheio = 4, f = "you",
+    { g = "Main bar", k = "1", tecla = "1", n = 1, cheio = 4, f = "you", rot = "1", id = 75,
       s = "sting_Auto: Auto Shot; in combat the next press casts Serpent Sting once per target (Sting from 4)" },
-    { g = "Main bar", k = "2", tecla = "2", n = 6, f = "Method", s = "Arcane Shot" },
-    { g = "Main bar", k = "3", tecla = "3", n = 18, f = "Method", s = "Multi-Shot (shares cooldown with Aimed Shot)" },
-    { g = "Main bar", k = "4", tecla = "4", n = 20, f = "Method", s = "Aimed Shot (2 s cast)" },
-    { g = "Main bar", k = "5", tecla = "5", n = 6, cheio = 10, f = "you",
+    { g = "Main bar", k = "2", tecla = "2", n = 6, f = "Method", rot = "2", id = 3044, s = "Arcane Shot" },
+    { g = "Main bar", k = "3", tecla = "3", n = 18, f = "Method", rot = "3", id = 2643, s = "Multi-Shot (shares cooldown with Aimed Shot)" },
+    { g = "Main bar", k = "4", tecla = "4", n = 20, f = "Method", rot = "4", id = 19434, s = "Aimed Shot (2 s cast)" },
+    { g = "Main bar", k = "5", tecla = "5", n = 6, cheio = 10, f = "you", rot = "5", id = 1130,
       s = "mark_Conc: 1st press on a new target = Hunter's Mark and sends the pet (pet from 10); next presses = Concussive Shot when ready (from 8)" },
-    { g = "Main bar", k = "6", tecla = "6", n = 26, cheio = 40, f = "leak",
+    { g = "Main bar", k = "6", tecla = "6", n = 26, cheio = 40, f = "leak", rot = "6", id = 3045,
       s = "Burst: Rapid Fire (26) with Bestial Wrath (40), racials and trinket 13" },
-    { g = "Main bar", k = "Q", tecla = "Q", n = 1, f = "Method", s = "Raptor Strike (melee, only when melee is unavoidable)" },
-    { g = "Main bar", k = "E", tecla = "E", n = 12, f = "Naowh", s = "Wing Clip (melee slow)" },
-    { g = "Main bar", k = "R", tecla = "R", n = 10, cheio = 12, f = "leak",
+    { g = "Main bar", k = "Q", tecla = "Q", n = 1, f = "Method", rot = "Q", id = 14260, s = "Raptor Strike (melee, only when melee is unavoidable)" },
+    { g = "Main bar", k = "E", tecla = "E", n = 12, f = "Naowh", rot = "E", id = 2974, s = "Wing Clip (melee slow)" },
+    { g = "Main bar", k = "R", tecla = "R", n = 10, cheio = 12, f = "leak", rot = "R", id = 136,
       s = "pet_AllInOne: no pet = Call Pet; dead pet = Revive Pet; live pet = Mend Pet (12)" },
-    { g = "Main bar", k = "F", tecla = "F", n = 1, f = "Method", s = "Auto Shot" },
-    { g = "Main bar", k = "T", tecla = "T", n = 25, f = "Method", s = "Summon Hawk (talent; shares cooldown with Arcane Shot)" },
-    { g = "Main bar", k = "G", tecla = "G", n = 16, f = "Naowh", s = "Mongoose Bite (melee, after a dodge)" },
+    { g = "Main bar", k = "F", tecla = "F", n = 1, f = "Method", rot = "F", id = 75, s = "Auto Shot" },
+    { g = "Main bar", k = "T", tecla = "T", n = 25, f = "Method", rot = "T", id = 1293525, s = "Summon Hawk (talent; shares cooldown with Arcane Shot)" },
+    { g = "Main bar", k = "G", tecla = "G", n = 16, f = "Naowh", rot = "G", id = 1495, s = "Mongoose Bite (melee, after a dodge)" },
     -- barra 3 (Shift)
-    { g = "Shift bar", k = "Shift+1", tecla = "SHIFT-1", n = 10, cheio = 30, f = "leak",
+    { g = "Shift bar", k = "Shift+1", tecla = "SHIFT-1", n = 10, cheio = 30, f = "leak", rot = "S1", id = 13165,
       s = "aspect_Hawk: Aspect of the Hawk; with Alt, Aspect of the Beast (30)" },
-    { g = "Shift bar", k = "Shift+2", tecla = "SHIFT-2", n = 4, f = "Naowh", s = "Aspect of the Monkey" },
-    { g = "Shift bar", k = "Shift+3", tecla = "SHIFT-3", n = 20, cheio = 40, f = "leak",
+    { g = "Shift bar", k = "Shift+2", tecla = "SHIFT-2", n = 4, f = "Naowh", rot = "S2", id = 13163, s = "Aspect of the Monkey" },
+    { g = "Shift bar", k = "Shift+3", tecla = "SHIFT-3", n = 20, cheio = 40, f = "leak", rot = "S3", id = 5118,
       s = "aspect_Cheetah: Aspect of the Cheetah; with Alt, Aspect of the Pack (40)" },
-    { g = "Shift bar", k = "Shift+4", tecla = "SHIFT-4", n = 28, f = "Method", s = "Frost Trap (all traps share a 30 s cooldown)" },
-    { g = "Shift bar", k = "Shift+5", tecla = "SHIFT-5", n = 16, f = "Naowh", s = "Immolation Trap" },
-    { g = "Shift bar", k = "Shift+6", tecla = "SHIFT-6", n = 34, f = "Naowh", s = "Explosive Trap" },
-    { g = "Shift bar", k = "Shift+Q", tecla = "SHIFT-Q", n = 20, f = "Naowh", s = "Disengage" },
-    { g = "Shift bar", k = "Shift+E", tecla = "SHIFT-E", n = 30, f = "Method", s = "Feign Death (can be resisted)" },
-    { g = "Shift bar", k = "Shift+R", tecla = "SHIFT-R", n = 30, f = "Method", s = "Intimidation (talent; also a pet taunt)" },
-    { g = "Shift bar", k = "Shift+F", tecla = "SHIFT-F", n = 32, f = "Naowh", s = "Flare" },
-    { g = "Shift bar", k = "Shift+T", tecla = "SHIFT-T", n = 14, f = "Naowh", s = "Scare Beast" },
-    { g = "Shift bar", k = "Shift+G", tecla = "SHIFT-G", n = 12, f = "Naowh", s = "Distracting Shot" },
+    { g = "Shift bar", k = "Shift+4", tecla = "SHIFT-4", n = 28, f = "Method", rot = "S4", id = 13809, s = "Frost Trap (all traps share a 30 s cooldown)" },
+    { g = "Shift bar", k = "Shift+5", tecla = "SHIFT-5", n = 16, f = "Naowh", rot = "S5", id = 13795, s = "Immolation Trap" },
+    { g = "Shift bar", k = "Shift+6", tecla = "SHIFT-6", n = 34, f = "Naowh", rot = "S6", id = 13813, s = "Explosive Trap" },
+    { g = "Shift bar", k = "Shift+Q", tecla = "SHIFT-Q", n = 20, f = "Naowh", rot = "SQ", id = 781, s = "Disengage" },
+    { g = "Shift bar", k = "Shift+E", tecla = "SHIFT-E", n = 30, f = "Method", rot = "SE", id = 5384, s = "Feign Death (can be resisted)" },
+    { g = "Shift bar", k = "Shift+R", tecla = "SHIFT-R", n = 30, f = "Method", rot = "SR", id = 19577, s = "Intimidation (talent; also a pet taunt)" },
+    { g = "Shift bar", k = "Shift+F", tecla = "SHIFT-F", n = 32, f = "Naowh", rot = "SF", id = 1543, s = "Flare" },
+    { g = "Shift bar", k = "Shift+T", tecla = "SHIFT-T", n = 14, f = "Naowh", rot = "ST", id = 1513, s = "Scare Beast" },
+    { g = "Shift bar", k = "Shift+G", tecla = "SHIFT-G", n = 12, f = "Naowh", rot = "SG", id = 20736, s = "Distracting Shot" },
     -- barra 2 e mouse
-    { g = "Bar 2 and mouse", k = "Z", tecla = "Z", pet = "Growl", n = 10, f = "Gladius", s = "Taunt: pet Growl" },
-    { g = "Bar 2 and mouse", k = "X", tecla = "X", n = 20, f = "leak",
+    { g = "Bar 2 and mouse", k = "Z", tecla = "Z", pet = "Growl", n = 10, f = "Gladius", rot = "Z", id = 2649, s = "Taunt: pet Growl" },
+    { g = "Bar 2 and mouse", k = "X", tecla = "X", n = 20, f = "leak", rot = "X", id = 5118,
       s = "cancel_Cheetah: cancels Cheetah or Pack without using the global cooldown" },
-    { g = "Bar 2 and mouse", k = "V", tecla = "V", n = 1, f = "RestedXP", s = "RXPTargeting: targets the NPC or mob of the current RestedXP step" },
-    { g = "Bar 2 and mouse", k = "Ctrl+1", tecla = "CTRL-1", n = 10, f = "Naowh", s = "Feed Pet" },
-    { g = "Bar 2 and mouse", k = "Ctrl+2", tecla = "CTRL-2", n = 10, f = "Naowh", s = "Dismiss Pet" },
-    { g = "Bar 2 and mouse", k = "Ctrl+3", tecla = "CTRL-3", n = 10, f = "Naowh", s = "Tame Beast" },
-    { g = "Bar 2 and mouse", k = "Ctrl+4", tecla = "CTRL-4", n = 14, f = "Gladius", s = "eagle_Eye: Eagle Eye, recast without breaking the channel (level per Naowh)" },
-    { g = "Bar 2 and mouse", k = "Mouse 4 (side)", tecla = "BUTTON4", n = 8, f = "Method", s = "Concussive Shot" },
-    { g = "Bar 2 and mouse", k = "Mouse 5 (side)", tecla = "BUTTON5", n = 20, f = "Gladius",
+    { g = "Bar 2 and mouse", k = "V", tecla = "V", n = 1, f = "RestedXP", rot = "V", icone = "Interface\\Icons\\INV_Misc_Map_01",
+      s = "RXPTargeting: targets the NPC or mob of the current RestedXP step" },
+    { g = "Bar 2 and mouse", k = "Ctrl+1", tecla = "CTRL-1", n = 10, f = "Naowh", rot = "C1", id = 6991, s = "Feed Pet" },
+    { g = "Bar 2 and mouse", k = "Ctrl+2", tecla = "CTRL-2", n = 10, f = "Naowh", rot = "C2", id = 2641, s = "Dismiss Pet" },
+    { g = "Bar 2 and mouse", k = "Ctrl+3", tecla = "CTRL-3", n = 10, f = "Naowh", rot = "C3", id = 1515, s = "Tame Beast" },
+    { g = "Bar 2 and mouse", k = "Ctrl+4", tecla = "CTRL-4", n = 14, f = "Gladius", rot = "C4", id = 6197,
+      s = "eagle_Eye: Eagle Eye, recast without breaking the channel (level per Naowh)" },
+    { g = "Bar 2 and mouse", k = "Mouse 4 (side)", tecla = "BUTTON4", n = 8, f = "Method", rot = "M4", id = 5116, s = "Concussive Shot" },
+    { g = "Bar 2 and mouse", k = "Mouse 5 (side)", tecla = "BUTTON5", n = 20, f = "Gladius", rot = "M5", id = 1499,
       s = "Freezing Trap: pet goes passive, then the trap (the mob runs into it)" },
     -- pet
-    { g = "Pet", k = "Shift+wheel up", tecla = "SHIFT-MOUSEWHEELUP", n = 10, f = "Gladius", s = "send_Pet: pet attacks your target" },
-    { g = "Pet", k = "Shift+wheel down", tecla = "SHIFT-MOUSEWHEELDOWN", n = 10, f = "Gladius", s = "pet_Return: pet comes back (follow)" },
-    { g = "Pet", k = "Middle click", tecla = "BUTTON3", n = 10, f = "Gladius", s = "move_Here: pet moves to where you click" },
+    { g = "Pet", k = "Shift+wheel up", tecla = "SHIFT-MOUSEWHEELUP", n = 10, f = "Gladius", rot = "SMwU",
+      icone = function() return _G.PET_ATTACK_TEXTURE or "Interface\\Icons\\Ability_GhoulFrenzy" end,
+      s = "send_Pet: pet attacks your target" },
+    { g = "Pet", k = "Shift+wheel down", tecla = "SHIFT-MOUSEWHEELDOWN", n = 10, f = "Gladius", rot = "SMwD",
+      icone = function() return _G.PET_FOLLOW_TEXTURE or "Interface\\Icons\\Ability_Tracking" end,
+      s = "pet_Return: pet comes back (follow)" },
+    { g = "Pet", k = "Middle click", tecla = "BUTTON3", n = 10, f = "Gladius", rot = "M3",
+      icone = function() return _G.PET_MOVE_TO_TEXTURE or "Interface\\Icons\\Ability_Hunter_Pet_Goto" end,
+      s = "move_Here: pet moves to where you click" },
     -- outras teclas
     { g = "Other keys", k = "A / D", n = 1, f = "you", s = "strafe left / right" },
     { g = "Other keys", k = "Ctrl+X", tecla = "CTRL-X", n = 1, f = "you", s = "sit / stand (moves down in water)" },
@@ -76,23 +87,26 @@ GuiaForeverTeclas = {
     { g = "Click only (bar 6)", k = "bar 6", n = 18, f = "Naowh", s = "Track Undead" },
     { g = "Click only (bar 6)", k = "bar 6", n = 24, f = "Method", s = "Track Hidden" },
     { g = "Click only (bar 6)", k = "bar 6", n = 24, f = "Naowh", s = "Beast Lore" },
-    { g = "Click only (bar 6)", k = "bar 6", n = 10, f = "Gladius", s = "Attack_Speed: prints the target's attack speed (to pick a pet)" },
+    { g = "Click only (bar 6)", k = "bar 6", n = 10, f = "Gladius", s = "Attack_Speed: prints the target's attack speed" },
   },
 }
 
--- Aba Keys -------------------------------------------------------------------
+-- Aba Keys (janela 1.2) ----------------------------------------------------------------
 local _, ns = ...
 
-local VERDE, CINZA, AMARELO, FIM = "|cff40ff40", "|cff999999", "|cffffd100", "|r"
 local PROXIMOS = 6 -- niveis a frente mostrados em "Coming next"
+local GRADE = { "Main bar", "Shift bar", "Bar 2 and mouse", "Pet" } -- grupos desenhados como barras
+local FORA_GRADE = { ["Other keys"] = true, ["Click only (bar 6)"] = true }
+local ESPACO = { ["6"] = true, S6 = true, V = true, C4 = true } -- espaco depois destas teclas, como nas barras
 
 -- Conferencia com as barras e o pet reais (fora de combate). Comando de botao de barra ->
--- slot pela tabela da secao 3 do ARQUITETURA.md; slot vazio ou pet sem a magia gera aviso cinza.
+-- slot pela tabela da secao 3 do ARQUITETURA.md; slot vazio ou pet sem a magia gera aviso.
 local BARRAS = {
   { "^ACTIONBUTTON(%d+)$", 0 }, { "^ELVUIBAR2BUTTON(%d+)$", 12 }, { "^MULTIACTIONBAR3BUTTON(%d+)$", 24 },
   { "^MULTIACTIONBAR4BUTTON(%d+)$", 36 }, { "^MULTIACTIONBAR2BUTTON(%d+)$", 48 }, { "^MULTIACTIONBAR1BUTTON(%d+)$", 60 },
 }
 
+-- Avisos de hoje, em texto puro (sem codigo de cor). Comeca com espaco quando ha aviso.
 local function avisoTecla(e)
   if not e.tecla then return "" end
   if InCombatLockdown and InCombatLockdown() then return "" end
@@ -115,63 +129,98 @@ local function avisoTecla(e)
     local ok, sabe = pcall(ns.petConhece, e.pet)
     if ok and sabe == false then txt = txt .. " (your pet must learn " .. e.pet .. " first)" end
   end
-  if txt == "" then return "" end
-  return CINZA .. txt .. FIM
+  return txt
 end
 
-local function linha(e, n)
-  local txt = AMARELO .. e.k .. FIM .. ": " .. e.s
-  if e.cheio and n < e.cheio then txt = txt .. CINZA .. " (complete at " .. e.cheio .. ")" .. FIM end
+-- Icone da tecla: id de magia, caminho, ou a funcao que devolve o caminho (lida na hora).
+local function iconeDe(e)
+  local i = e.icone
+  if type(i) == "function" then
+    local ok, v = pcall(i)
+    i = ok and v or nil
+  end
+  if i == nil then i = e.id end
+  return i
+end
+
+-- Nome curto: o texto antes de ":", "(" ou ";" (o nome da macro ou da magia).
+local function nomeDe(e)
+  local nome = string.match(e.s, "^([^:(;]+)") or e.s
+  return (string.gsub(nome, "%s+$", ""))
+end
+
+-- Explicacao da tecla: o que faz, quando completa e os avisos de hoje.
+local function explicacaoDe(e, n)
+  local txt = (string.gsub(e.s, " %(level per Naowh%)", ""))
+  if e.cheio and n < e.cheio then txt = txt .. " Complete at " .. e.cheio .. "." end
   return txt .. avisoTecla(e)
 end
 
-function ns.blocosTeclas(b)
-  local T, cab = ns.blocoTexto, ns.blocoCabecalho
+local function estadoDe(e, n)
+  if e.n > n then return "travado" end
+  if e.n == n or e.cheio == n then return "novo" end
+  return nil
+end
+
+local function tecla(e, n)
+  local estado = estadoDe(e, n)
+  return {
+    k = e.rot, icone = iconeDe(e), nome = nomeDe(e), estado = estado,
+    nivel = (estado == "travado") and e.n or nil, dica = explicacaoDe(e, n),
+  }
+end
+
+function ns.blocosTeclas(b, ctx)
   local lista = GuiaForeverTeclas[ns.classe()]
   if not lista then
-    T(b, "No key map for this class yet.")
+    b[#b + 1] = { t = "vazio", s = "No key map for this class yet." }
     return
   end
   local n = UnitLevel("player") or 1
-  T(b, ns.COR .. "Your keys at level " .. n .. ns.FIM)
 
-  local novas = {}
-  for _, e in ipairs(lista) do
-    if e.n == n or (e.cheio and e.cheio == n) then novas[#novas + 1] = e end
-  end
-  if #novas > 0 then
-    cab(b, "New at this level")
-    for _, e in ipairs(novas) do T(b, VERDE .. "+ " .. FIM .. linha(e, n)) end
-  end
-
-  for _, g in ipairs(GuiaForeverTeclasGrupos) do
-    local doGrupo = {}
+  b[#b + 1] = { t = "sec", s = "Your keys", qtd = "level " .. n, id = "teclas-tuas" }
+  for _, g in ipairs(GRADE) do
+    local teclas = {}
     for _, e in ipairs(lista) do
-      if e.g == g and e.n <= n then doGrupo[#doGrupo + 1] = e end
+      if e.g == g then
+        teclas[#teclas + 1] = tecla(e, n)
+        if ESPACO[e.rot] then teclas[#teclas + 1] = false end
+      end
     end
-    if #doGrupo > 0 then
-      cab(b, g)
-      for _, e in ipairs(doGrupo) do T(b, linha(e, n)) end
+    if #teclas > 0 then b[#b + 1] = { t = "grade", titulo = g, teclas = teclas } end
+  end
+
+  -- proximas: teclas das grades que chegam em ate PROXIMOS niveis, na ordem de nivel
+  local proximas = {}
+  for i, e in ipairs(lista) do
+    if e.rot and e.n > n and e.n <= n + PROXIMOS then proximas[#proximas + 1] = { e = e, i = i } end
+  end
+  table.sort(proximas, function(a, c)
+    if a.e.n ~= c.e.n then return a.e.n < c.e.n end
+    return a.i < c.i
+  end)
+  if #proximas > 0 then
+    b[#b + 1] = { t = "sec", s = "Coming next", qtd = "up to level " .. (n + PROXIMOS), id = "teclas-proximas" }
+    local ultimo
+    for _, p in ipairs(proximas) do
+      local e = p.e
+      b[#b + 1] = {
+        t = "item", nivel = (e.n ~= ultimo) and e.n or "", icone = iconeDe(e), tecla = e.rot,
+        s = nomeDe(e), dica = explicacaoDe(e, n),
+      }
+      ultimo = e.n
     end
   end
 
-  local proximas, depois = {}, {}
+  -- fora das grades: recolhida, uma linha por tecla (k curto; o que faz em s)
+  local outras = {}
   for _, e in ipairs(lista) do
-    if e.n > n then
-      if e.n <= n + PROXIMOS then proximas[#proximas + 1] = e else depois[#depois + 1] = e end
+    if FORA_GRADE[e.g] then outras[#outras + 1] = e end
+  end
+  if #outras > 0 then
+    b[#b + 1] = { t = "sec", s = "Other keys", qtd = tostring(#outras), aberta = false, id = "teclas-outras" }
+    for _, e in ipairs(outras) do
+      b[#b + 1] = { t = "item", nivel = (e.n > 1) and e.n or "", tecla = e.k, s = e.s, apagado = (e.n > n) or nil }
     end
   end
-  local porNivel = function(a, c) return a.n < c.n end
-  table.sort(proximas, porNivel)
-  table.sort(depois, porNivel)
-  if #proximas > 0 then
-    cab(b, "Coming next (up to level " .. (n + PROXIMOS) .. ")")
-    for _, e in ipairs(proximas) do T(b, "Level " .. e.n .. ": " .. linha(e, n)) end
-  end
-  if #depois > 0 then
-    cab(b, "Later")
-    for _, e in ipairs(depois) do T(b, CINZA .. "Level " .. e.n .. ": " .. e.k .. ": " .. e.s .. FIM .. avisoTecla(e)) end
-  end
-  T(b, " ")
-  T(b, CINZA .. "Levels: your sources (Method, Gladius, leak) and, where they give none, the Naowh Training Planner (/nftraining). Button contents: UIForever." .. FIM)
 end

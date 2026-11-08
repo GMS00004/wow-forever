@@ -1,5 +1,5 @@
 -- PetGuia.lua: ARQUIVO GERADO, nao edite a mao.
--- Gerado por ferramentas\guia\pets\gerar-guia.mjs em 2026-11-08 03:34 (UTC).
+-- Gerado por ferramentas\guia\pets\gerar-guia.mjs em 2026-11-08 18:35 (UTC).
 -- Fontes: habilidades.json, professores.json, feras.json, saltii.json, textos.json e a pagina abilities.php da Petopia.
 -- Contrato: ARQUITETURA.md, secao 10.2. Para regerar: node gerar-guia.mjs --pasta <pets> --petopia <html> --lua <este arquivo>.
 GuiaForeverPetGuia = {
@@ -89,10 +89,15 @@ GuiaForeverPetGuia = {
       t = "Every family can learn Bite or Claw, sometimes both, plus Dash or Dive. Those ranks never upgrade on their own: you must learn and teach each new one.",
       f = "Saltii",
     },
-    { t = "Beast Training is in the General tab of the spellbook, not in the Beast Mastery tab.", f = "Saltii" },
+    {
+      t = "Beast Training is in the General tab of the spellbook, not in the Beast Mastery tab.",
+      f = "Saltii",
+      e = true,
+    },
     {
       t = "You can skip ranks: a pet that meets the level for rank 4 does not need to learn rank 1 first.",
       f = "Saltii",
+      e = true,
     },
     {
       t = "Beast Lore unlocks at level 24 and lets you inspect a wild beast's skills before you tame it.",
@@ -102,7 +107,11 @@ GuiaForeverPetGuia = {
       t = "A pet trainer teaches Growl, Great Stamina, Natural Armor and resistances; damage attacks, movement and many family skills come from temporary donor tames.",
       f = "Saltii",
     },
-    { t = "Growl costs no training points but still takes one of the four active ability slots.", f = "Saltii" },
+    {
+      t = "Growl costs no training points but still takes one of the four active ability slots.",
+      f = "Saltii",
+      e = true,
+    },
     {
       t = "A newly tamed low-level pet needs experience to catch up, so keep stable space free for the skills you still need to learn.",
       f = "Saltii",
@@ -135,7 +144,7 @@ GuiaForeverPetGuia = {
       t = "Night Elf Elder Nightsaber (about level 8, Teldrassil); Tauren Taloned Swoop (Mulgore) and Skyborne Windsong Crawler (Zephras Isle), no level given.",
       f = "Saltii",
     },
-    { t = "Keep a usable rank of Bite or Claw as your first priority.", f = "Saltii" },
+    { t = "Keep a usable rank of Bite or Claw as your first priority.", f = "Saltii", e = true },
     {
       t = "Corehounds appear in some game data, but the speaker has not verified a tameable one on Forever, so do not plan a build around them.",
       f = "Saltii",
@@ -163,8 +172,9 @@ GuiaForeverPetGuia = {
     {
       t = "Training points equal pet level times (loyalty minus 1), and buying a higher rank refunds the points of the lower one.",
       f = "Petopia",
+      e = true,
     },
-    { t = "A pet can have four active abilities, while passive abilities have no cap.", f = "Petopia" },
+    { t = "A pet can have four active abilities, while passive abilities have no cap.", f = "Petopia", e = true },
     {
       t = "Stable slots: the first is free, the second costs 10 silver and the third 5 gold; LudiDeo says Blizzard promised more.",
       f = "LudiDeo (beta)",
@@ -172,12 +182,17 @@ GuiaForeverPetGuia = {
     {
       t = "Happy pets deal 125% damage, content 100% and unhappy 75%, so feed them often to keep happiness up.",
       f = "Saltii",
+      e = true,
     },
     {
       t = "A rank has two levels: PET LVL is the minimum for your pet, BEAST LVL is the wild teacher you tame. Keep your own pet; the teacher is only borrowed.",
       f = "Saltii",
     },
-    { t = "Blizzard's 24/09 beta notes: Tame Beast stopped working on beasts above your level.", f = "Blizzard" },
+    {
+      t = "Blizzard's 24/09 beta notes: Tame Beast stopped working on beasts above your level.",
+      f = "Blizzard",
+      e = true,
+    },
     {
       t = "Same-family pets have normalized basic damage, so faster attacks hit weaker each time; speed can still matter for PvP pushback.",
       f = "Saltii",

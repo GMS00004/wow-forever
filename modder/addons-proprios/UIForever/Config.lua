@@ -113,11 +113,18 @@ local NUMEROS = {
 -- o ElvUI passa o valor da Blizzard direto, sem ler o valor secreto.
 local VIDA = "||cFF29CC00[health:current:longvalue] / [health:max:longvalue]||r"
 local RECURSO = "||cFF007ACC[perpp<%]||r" -- o padrao do ElvUI no Forever
--- Mana do jogador em numeros, atual / maxima, como a vida (dono, 2026-11-08:
--- "preciso que a quantidade de mana seja displayed (em numeros)"). Tags do
--- modo moderno (Tags\Modern.lua), iguais as da vida. O alvo continua em %
+-- Mana do jogador em numeros, atual / maxima, como a vida (dono, 2026-11-08,
+-- madrugada: "preciso que a quantidade de mana seja displayed (em numeros)");
+-- era o RECURSO_JOGADOR, sobre a barra de vida. O alvo continua em %
 -- (decisao do modder: bicho sem mana mostraria "0 / 100" de furia).
-local RECURSO_JOGADOR = "||cFF007ACC[power:current:longvalue] / [power:max:longvalue]||r"
+-- Jogador, 2026-11-08 (tarde): numero e % da vida na barra verde, numero e % da
+-- mana na barra azul (dono: "tanto em vida quanto em mana vai ter o numero
+-- absoluto e a porcentagem"; o numero da mana sai de cima da barra de vida e
+-- vai para a barra de mana). A mana fica em branco: o azul de antes some na
+-- barra azul (decisao do modder). Tags do modo moderno, como as da vida.
+local VIDA_PCT = "||cFF29CC00[perhp<%]||r"
+local MANA = "||cFFFFFFFF[power:current:longvalue] / [power:max:longvalue]||r"
+local MANA_PCT = "||cFFFFFFFF[perpp<%]||r"
 
 local function numero(caminho, novo, padrao)
   local valor = padrao
@@ -125,23 +132,40 @@ local function numero(caminho, novo, padrao)
   table.insert(UIForeverConfig.elvui, { caminho, valor })
 end
 
-local function textoProprio(formato, lado, x)
+-- barra: "Health" (padrao) ou "Power" (CustomText.lua:42 do ElvUI 16.01 aceita)
+local function textoProprio(formato, lado, x, barra)
   return {
-    enable = NUMEROS.ligado, text_format = formato, attachTextTo = "Health",
+    enable = NUMEROS.ligado, text_format = formato, attachTextTo = barra or "Health",
     justifyH = lado, xOffset = x, yOffset = 0,
     font = NUMEROS.fonte, size = NUMEROS.tamanhoQuadro, fontOutline = NUMEROS.contorno,
   }
 end
 
--- quadros do jogador e do alvo: lado e deslocamento iguais aos do texto padrao
--- (jogador: vida a esquerda e recurso a direita; alvo: o contrario). O quinto
--- item e o formato do recurso (jogador em numeros, alvo em %).
-for unidade, lados in pairs({ player = { "LEFT", 2, "RIGHT", -2, RECURSO_JOGADOR }, target = { "RIGHT", -2, "LEFT", 2, RECURSO } }) do
+-- quadros do jogador e do alvo. Jogador: na vida, numero a esquerda e % a
+-- direita; na mana, o mesmo. Alvo: vida a direita e recurso em % a esquerda,
+-- os dois sobre a barra de vida (como o texto padrao).
+-- Desfazer o do jogador: voltar este bloco ao commit db3abcb e por enable = false
+-- em UIForeverVidaPct e UIForeverRecursoPct (o UIForever nao apaga texto que sai
+-- da lista), depois /reload; ou o backup do WTF sessoes\2026-11-08_1451.
+local TEXTOS = {
+  player = {
+    { "UIForeverVida", VIDA, "LEFT", 2 },
+    { "UIForeverVidaPct", VIDA_PCT, "RIGHT", -2 },
+    { "UIForeverRecurso", MANA, "LEFT", 2, "Power" },
+    { "UIForeverRecursoPct", MANA_PCT, "RIGHT", -2, "Power" },
+  },
+  target = {
+    { "UIForeverVida", VIDA, "RIGHT", -2 },
+    { "UIForeverRecurso", RECURSO, "LEFT", 2 },
+  },
+}
+for unidade, textos in pairs(TEXTOS) do
   local base = "unitframe.units." .. unidade
   numero(base .. ".health.text_format", "", VIDA)
   numero(base .. ".power.text_format", "", RECURSO)
-  table.insert(UIForeverConfig.elvui, { base .. ".customTexts.UIForeverVida", textoProprio(VIDA, lados[1], lados[2]) })
-  table.insert(UIForeverConfig.elvui, { base .. ".customTexts.UIForeverRecurso", textoProprio(lados[5], lados[3], lados[4]) })
+  for _, t in ipairs(textos) do
+    table.insert(UIForeverConfig.elvui, { base .. ".customTexts." .. t[1], textoProprio(t[2], t[3], t[4], t[5]) })
+  end
   numero(base .. ".castbar.customTimeFont.enable", true, false) -- tempo da barra de lancamento
   numero(base .. ".castbar.customTimeFont.font", NUMEROS.fonte, "PT Sans Narrow")
 end

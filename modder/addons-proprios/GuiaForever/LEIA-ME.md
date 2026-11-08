@@ -1,6 +1,26 @@
 # GuiaForever
 
-Addon próprio do dono, versão 1.1.0 (2026-11-08: guia de habilidades de pet por família, aba Families e seção Next ability upgrades na aba Pet; ver "O que mudou na 1.1"). Antes: versão 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+Addon próprio do dono, versão 1.2.0 (2026-11-08, tarde: a janela J refeita no estilo do ElvUI, organizada por tipo de informação; ver "O que mudou na 1.2"). Antes: 1.1.0 (2026-11-08, madrugada: guia de habilidades de pet por família, aba Families e seção Next ability upgrades na aba Pet) e 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+
+## O que mudou na 1.2
+
+Pedido do dono, 2026-11-08: "Minha UI agora está bem boa, o problema agora é somente o guia (Tecla J)". Estudo e quadros em `ferramentas\guia\visual\` (LEIA-ME e `png\q1` a `q4`); decisões dele: navegação em coluna à esquerda, teclas numa grade igual às barras, nada de fonte na tela e nada de despejar informação ("Só quero que esteja organizado e estruturado para eu acompanhar bem"). Contrato na seção 11 do `ARQUITETURA.md`; plano em `C:\Users\PC-AVELL\.claude\plans\guia-1-2-janela-organizada.md`.
+
+| Peça | O que mudou |
+|---|---|
+| Janela | estilo do ElvUI (skin dele quando carregado, aparência plana sem ele), 820 × 600 por padrão e redimensionável pela alça do canto (o tamanho fica salvo) |
+| Cabeçalho | etiquetas de estado: pontos de talento livres, pet (família, nível, felicidade) e a profissão que trava; clique abre a aba |
+| Navegação | coluna à esquerda com ícone por aba e o contador do Now; "Show all" no pé da coluna |
+| Now | cartões com a faixa de cor, o ícone, uma linha de explicação, a tecla desenhada e o botão; "Coming up" com o nível numa coluna |
+| Pet | cartão do pet (retrato, felicidade, pontos de treino, dieta), tabela de upgrades com um Arrow e o passo a passo em 5 etapas, checklist do treino |
+| Families | lista de famílias à esquerda (a do seu pet marcada) e o detalhe à direita, com a régua de ranks por nível do pet; "How abilities work" vira um item da lista, com as 5 etapas e só as 8 regras essenciais (as outras com "Show all") |
+| Combat | sub-abas Rotation, Keys, Weapons e Stats; Keys é uma grade com os rótulos das barras (S1, C1, M4), cadeado com o nível nas teclas que ainda não valem e NEW nas novas |
+| Professions | sub-abas Mine, Zone e Trainers; Mine tem um cartão por profissão com o passo atual e, embaixo, o roteiro de cada uma numa tabela (faixa de perícia, receita e quantidade, materiais), com o passo atual em destaque e o resto em "Show N more", e, nas de fabricar, o total de materiais de cada faixa de treino (Apprentice, Journeyman, Expert, Artisan; na faixa atual, só o que falta), em pares de quantidade e material, com a faixa atual e a próxima abertas (os dois pedidos do dono na mesma tarde) |
+| Help | sub-abas Questions (recolhidas), Addons (tabela) e Signs |
+| Painel Now | botão direito no aviso de treino ("Train 2 spells: Dorion") pula aquelas magias: o aviso só volta com magia nova, e só com ela (antes voltava sempre que o treinador mais perto mudava, porque escondia pelo texto); a lista dos pulados e o "Show again" ficam em J > Now > Hidden; o tooltip do painel não mostra mais a fonte. Pedido do dono na mesma tarde; vale já com `/reload` |
+| Curadoria | a fonte some da tela (fica nos dados); cada seção mostra até 5 linhas e guarda o resto em "Show N more"; estado por ícone, não por código de texto; frases dos dados que citavam a fonte foram reescritas |
+
+Arquivos novos no `.toc`: `Visual.lua` e `Abas.lua`. Por isso o jogo precisa ser reiniciado; um `/reload` num jogo aberto antes deles mostra na janela só o aviso para reiniciar.
 
 ## O que mudou na 1.1
 
@@ -42,7 +62,8 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 | `ProfissoesA.lua`, `ProfissoesB.lua` | roteiros das 10 profissões |
 | `GuiaForever.lua` | núcleo: profissões, gráficos, macros e comandos `/guia`; funções compartilhadas em `ns` |
 | `Estado.lua` | base comum da 1.0: eventos (`ns.ao`), debounce, fila de depois do combate, estado do jogo (`ns.estado`), magias conhecidas, livro do pet, pontos de talento por `C_Traits`, missões, uma seta só (`ns.seta`, pelo TomTom ou pela seta nativa), tecla de uma ação (`ns.teclaDe`) e o filtro das dicas (`ns.relevante`) |
-| `Janela.lua` | janela J (760 × 600, abas Now, Pet, Families (1.1), Talents, Combat, Professions e Help, busca, seções recolhíveis), botão do livro e tecla J; os ids antigos das abas continuam valendo (`ns.apelidosAba`) |
+| `Visual.lua` | `ns.ui` (1.2): skin do ElvUI com reserva plana, fontes, cores, ícones e o desenhista dos blocos (`ns.ui.desenhar`) |
+| `Janela.lua` | a casca da janela J (1.2): cabeçalho de estado, navegação à esquerda, busca (`ns.buscarJanela`), sub-abas, redimensionar e "Show all"; tecla J e botão do livro. Não constrói conteúdo |
 | `Treinadores.lua` | Questie e minimapa com os treinadores; seta para o treinador de classe, de profissão ou de pet (`/guia trainer pet`) |
 | `SkinDB.lua` | as 924 criaturas com loot de Skinning (cmangos/classic-db) |
 | `Zona.lua` | linha de Skinning no tooltip dos bichos, diário de calibração e `ns.bichosDaZona` (1.0) |
@@ -53,6 +74,7 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 | `Pet.lua` | provedor do pet (ausente, fome, comida, missão, treino, autocast do Growl), macro `feed_Pet` e as marcas no treinador de pet |
 | `Arvore.lua` | plano de talentos (`ns.arvore.plano`, `ns.arvore.proximo`) e as marcas na árvore de talentos do Forever |
 | `Tooltips.lua` | linhas do guia nos tooltips de item ("Your pet can eat this"), de magia (tecla e uso) e de ação do pet (autocast) |
+| `Abas.lua` | construtores das abas (1.2): Now, Pet, Families (repasse), Talents, Combat, Professions e Help, mais `ns.abasEstado` e `ns.abaVisivel` |
 | `Bindings.xml` | a ação `GUIAFOREVER_JANELA` |
 
 Classes com dados: HUNTER (Hexumlite Bull) e SHAMAN (Rurik Thunderfist). O painel, o pet e as marcas são do caçador; as outras classes usam a janela.
@@ -108,6 +130,7 @@ A linha "Skinning: needs N" do tooltip e a seção da zona na aba Professions us
    - `node checar-dicas.mjs ..\..\addons-proprios\GuiaForever\Dicas.lua` e `node checar-ajuda.mjs ..\..\addons-proprios\GuiaForever\Ajuda.lua`: esquema dos dados.
    - `node checar-combate.mjs ..\..\addons-proprios\GuiaForever --toc`: chamada protegida sem guarda de combate, API que vira secreta, função ou evento que não existe no Forever, template inexistente, chamada proibida (compra, magia, gastar ponto) e `.toc` diferente dos arquivos.
    - `node rodar-casos.mjs` e `node rodar-casos-combate.mjs`: os casos de teste dos checadores.
+   - `node rodar-janela.mjs --estrito --abrir --desenhar` (1.2): roda o addon fora do jogo no fengari, num estado fixo (caçador 16, javali 16), monta cada aba e sub-aba, confere os blocos contra a seção 11 do `ARQUITETURA.md` (tipos, campos, fonte na tela, códigos de texto, tamanho), abre a janela e passa tudo pelo desenhista; `--pular` roda o cenário do treino pulado; `RESUMO erros=0` é o pronto. Ele grava `ferramentasguiaisualeal.html`, e `node visualenderizar.mjs --html real.html agora pet` fotografa as abas em `visualpngeal-*.png` (prévia aproximada; quem desenha no jogo é o `Visual.lua`).
 3. Função nova do cliente: confira nas listas de `api-forever\` e, para a assinatura, no espelho `Ketho/wow-ui-source-forever`; o caminho está em `..\..\..\comum\referencia\api-forever.md`, seções 3 e 3e.
 4. Mudou só `.lua` que já existia: `/reload`. Arquivo novo ou `.toc` mudado: reiniciar o jogo.
 5. Guia de pets (1.1), a partir de `modder\ferramentas\guia\pets\` (o cache fica em `cache\`, fora do git):
@@ -119,6 +142,9 @@ A linha "Skinning: needs N" do tooltip e a seção da zona na aba Professions us
    Depois, `checar-lua.mjs` e `checar-combate.mjs` na pasta do addon, e `/reload` no jogo (o `PetGuia.lua` já está no `.toc`).
 
 ## Pendente
+
+**Teste da 1.2 no jogo.** Reiniciar o jogo (dois arquivos novos no `.toc`). Depois: J abre a janela nova; trocar de aba e de sub-aba; arrastar a alça do canto; Families com o javali marcado e a régua; Combat > Keys com a grade; Professions > Mine com o roteiro de Leatherworking; buscar "boar"; Esc fecha; BugSack sem erro do GuiaForever. A conferir no jogo: as texturas de estado (marca, x, cadeado), a skin do ElvUI nos controles, o retrato do pet e os ícones de talento por `C_Traits`.
+
 
 **Teste da 1.0 no jogo.** Ele começa por reiniciar o jogo: a 1.0 tem 6 arquivos novos no `.toc`, e o `/reload` não basta. A lista completa está no relatório da sessão de 2026-11-07, na ordem em que o dono encontra as coisas:
 

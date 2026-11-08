@@ -19,7 +19,8 @@ const CAMPOS = {
   petTreino: ['de', 'ate', 'habilidade', 'texto', 'fonte'],
 };
 // Campos opcionais (v2, ARQUITETURA.md secao 7): aceitos em toda entrada das listas de LISTAS;
-// "magia" so em magias; petTreino nao tem opcionais.
+// "magia" e "id" (id de magia do cliente, para o icone; ARQUITETURA.md 11.6) so em magias;
+// petTreino nao tem opcionais.
 const OPCIONAIS = ['tags', 'raca', 'zona', 'requer', 'prio'];
 const TAGS = ['pvp', 'grupo', 'fimdejogo', 'escolhapet'];
 const FONTES = [
@@ -37,7 +38,7 @@ const FONTES = [
 ];
 const permitidos = (lista) => {
   if (lista === 'petTreino') return CAMPOS[lista];
-  return [...CAMPOS[lista], ...OPCIONAIS, ...(lista === 'magias' ? ['magia'] : [])];
+  return [...CAMPOS[lista], ...OPCIONAIS, ...(lista === 'magias' ? ['magia', 'id'] : [])];
 };
 const TEXTO_MAX = 160;
 
@@ -252,6 +253,7 @@ const contarLista = (classe, lista, node) => {
     if (lista === 'magias') {
       const n = inteiroEntre(campos.nivel, 1, 60);
       if (campos.nivel && n === null) erro(onde, 'nivel deve ser inteiro de 1 a 60');
+      if (campos.id && inteiroEntre(campos.id, 1, 99999999) === null) erro(onde, 'id deve ser inteiro positivo');
       if (n !== null) {
         if (anterior !== null && n < anterior) erro(onde, `nivel ${n} fora de ordem (anterior ${anterior})`);
         anterior = n;

@@ -1,0 +1,644 @@
+{
+  "build": "1.60.1.70862",
+  "gerado": "2026-11-08",
+  "magias": {
+    "Track Beasts": {
+      "id": 1494,
+      "nivel": 1,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Rockbiter Weapon": {
+      "id": 8017,
+      "nivel": 1,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Serpent Sting": {
+      "id": 1978,
+      "nivel": 4,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Earth Shock": {
+      "id": 8042,
+      "nivel": 4,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Stoneskin Totem": {
+      "id": 8071,
+      "nivel": 4,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Aspect of the Monkey": {
+      "id": 13163,
+      "nivel": 4,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Healing Wave": {
+      "id": 332,
+      "nivel": 6,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Hunter's Mark": {
+      "id": 1130,
+      "nivel": 6,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Earthbind Totem": {
+      "id": 2484,
+      "nivel": 6,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Arcane Shot": {
+      "id": 3044,
+      "nivel": 6,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Lightning Shield": {
+      "id": 324,
+      "nivel": 8,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Lightning Bolt": {
+      "id": 529,
+      "nivel": 8,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Concussive Shot": {
+      "id": 5116,
+      "nivel": 8,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Stoneclaw Totem": {
+      "id": 5730,
+      "nivel": 8,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Raptor Strike": {
+      "id": 14260,
+      "nivel": 8,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Call Pet": {
+      "id": 883,
+      "nivel": 10,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Revive Pet": {
+      "id": 982,
+      "nivel": 10,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Tame Beast": {
+      "id": 1515,
+      "nivel": 10,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Dismiss Pet": {
+      "id": 2641,
+      "nivel": 10,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Searing Totem": {
+      "id": 3599,
+      "nivel": 10,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Feed Pet": {
+      "id": 6991,
+      "nivel": 10,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Flametongue Weapon": {
+      "id": 8024,
+      "nivel": 10,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Flame Shock": {
+      "id": 8050,
+      "nivel": 10,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Strength of Earth Totem": {
+      "id": 8075,
+      "nivel": 10,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Aspect of the Hawk": {
+      "id": 13165,
+      "nivel": 10,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Track Humanoids": {
+      "id": 19883,
+      "nivel": 10,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Mend Pet": {
+      "id": 136,
+      "nivel": 12,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Purge": {
+      "id": 370,
+      "nivel": 12,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Ancestral Spirit": {
+      "id": 2008,
+      "nivel": 12,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Wing Clip": {
+      "id": 2974,
+      "nivel": 12,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Distracting Shot": {
+      "id": 20736,
+      "nivel": 12,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Fire Nova": {
+      "id": 408341,
+      "nivel": 12,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Eyes of the Beast": {
+      "id": 1002,
+      "nivel": 14,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Scare Beast": {
+      "id": 1513,
+      "nivel": 14,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Eagle Eye": {
+      "id": 6197,
+      "nivel": 14,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Cure Poison": {
+      "id": 526,
+      "nivel": 16,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Mongoose Bite": {
+      "id": 1495,
+      "nivel": 16,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Immolation Trap": {
+      "id": 13795,
+      "nivel": 16,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Multi-Shot": {
+      "id": 2643,
+      "nivel": 18,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Tremor Totem": {
+      "id": 8143,
+      "nivel": 18,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Track Undead": {
+      "id": 19884,
+      "nivel": 18,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Disengage": {
+      "id": 781,
+      "nivel": 20,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Freezing Trap": {
+      "id": 1499,
+      "nivel": 20,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Ghost Wolf": {
+      "id": 2645,
+      "nivel": 20,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Aspect of the Cheetah": {
+      "id": 5118,
+      "nivel": 20,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Healing Stream Totem": {
+      "id": 5394,
+      "nivel": 20,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Lesser Healing Wave": {
+      "id": 8004,
+      "nivel": 20,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Frostbrand Weapon": {
+      "id": 8033,
+      "nivel": 20,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Frost Shock": {
+      "id": 8056,
+      "nivel": 20,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Aimed Shot": {
+      "id": 19434,
+      "nivel": 20,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Totemic Recall": {
+      "id": 36936,
+      "nivel": 20,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Call of the Elements": {
+      "id": 66842,
+      "nivel": 20,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Water Breathing": {
+      "id": 131,
+      "nivel": 22,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Cure Disease": {
+      "id": 2870,
+      "nivel": 22,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Scorpid Sting": {
+      "id": 3043,
+      "nivel": 22,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Poison Cleansing Totem": {
+      "id": 8166,
+      "nivel": 22,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Totemic Call": {
+      "id": 437009,
+      "nivel": 22,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Beast Lore": {
+      "id": 1462,
+      "nivel": 24,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Frost Resistance Totem": {
+      "id": 8181,
+      "nivel": 24,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Track Hidden": {
+      "id": 19885,
+      "nivel": 24,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Rapid Fire": {
+      "id": 3045,
+      "nivel": 26,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Mana Spring Totem": {
+      "id": 5675,
+      "nivel": 26,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Far Sight": {
+      "id": 6196,
+      "nivel": 26,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Magma Totem": {
+      "id": 8190,
+      "nivel": 26,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Track Elementals": {
+      "id": 19880,
+      "nivel": 26,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Water Walking": {
+      "id": 546,
+      "nivel": 28,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Fire Resistance Totem": {
+      "id": 8184,
+      "nivel": 28,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Flametongue Totem": {
+      "id": 8227,
+      "nivel": 28,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Frost Trap": {
+      "id": 13809,
+      "nivel": 28,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Astral Recall": {
+      "id": 556,
+      "nivel": 30,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Feign Death": {
+      "id": 5384,
+      "nivel": 30,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Grounding Totem": {
+      "id": 8177,
+      "nivel": 30,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Windfury Weapon": {
+      "id": 8232,
+      "nivel": 30,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Nature Resistance Totem": {
+      "id": 10595,
+      "nivel": 30,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Aspect of the Beast": {
+      "id": 13161,
+      "nivel": 30,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Reincarnation": {
+      "id": 20608,
+      "nivel": 30,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Lacerate": {
+      "id": 24118,
+      "nivel": 30,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Call of the Ancestors": {
+      "id": 66843,
+      "nivel": 30,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Counterattack": {
+      "id": 1242634,
+      "nivel": 30,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Chain Lightning": {
+      "id": 421,
+      "nivel": 32,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Flare": {
+      "id": 1543,
+      "nivel": 32,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Windfury Totem": {
+      "id": 8512,
+      "nivel": 32,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Track Demons": {
+      "id": 19878,
+      "nivel": 32,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Trueshot Aura": {
+      "id": 1299348,
+      "nivel": 32,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Sentry Totem": {
+      "id": 6495,
+      "nivel": 34,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Explosive Trap": {
+      "id": 13813,
+      "nivel": 34,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Viper Sting": {
+      "id": 3034,
+      "nivel": 36,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Windwall Totem": {
+      "id": 15107,
+      "nivel": 36,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Summon Hawk": {
+      "id": 1293525,
+      "nivel": 36,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Disease Cleansing Totem": {
+      "id": 8170,
+      "nivel": 38,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Mana Tide Totem": {
+      "id": 17354,
+      "nivel": 38,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Chain Heal": {
+      "id": 1064,
+      "nivel": 40,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Volley": {
+      "id": 1510,
+      "nivel": 40,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Aspect of the Pack": {
+      "id": 13159,
+      "nivel": 40,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Track Giants": {
+      "id": 19882,
+      "nivel": 40,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Call of the Spirits": {
+      "id": 66844,
+      "nivel": 40,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Grace of Air Totem": {
+      "id": 8835,
+      "nivel": 42,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Aspect of the Wild": {
+      "id": 20043,
+      "nivel": 46,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Sniper Shot": {
+      "id": 1310785,
+      "nivel": 48,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Track Dragonkin": {
+      "id": 19879,
+      "nivel": 50,
+      "classe": "HUNTER",
+      "de": "TrainingData"
+    },
+    "Riptide": {
+      "id": 1239242,
+      "nivel": 50,
+      "classe": "SHAMAN",
+      "de": "TrainingData"
+    },
+    "Auto Shot": {
+      "id": 75,
+      "de": "SpellName (menor id)"
+    },
+    "Growl": {
+      "id": 1853,
+      "de": "SpellName (menor id)"
+    },
+    "Intimidation": {
+      "id": 19577,
+      "de": "SpellName (id fixo)"
+    },
+    "Bestial Wrath": {
+      "id": 19574,
+      "de": "SpellName (menor id)"
+    },
+    "Stormstrike": {
+      "id": 17364,
+      "de": "SpellName (menor id)"
+    },
+    "Maelstrom Weapon": {
+      "id": 408498,
+      "de": "SpellName (menor id)"
+    },
+    "Rage of the Farseer": {
+      "id": 425336,
+      "de": "SpellName (menor id)"
+    },
+    "Water Shield": {
+      "id": 408510,
+      "de": "SpellName (menor id)"
+    }
+  }
+}

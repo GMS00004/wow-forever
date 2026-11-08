@@ -4,3 +4,12 @@ api-forever/
 
 # Cache dos geradores do guia de pets (CSV do wago, pagina da Petopia); os scripts baixam de novo
 pets/cache/
+
+# Estudo visual da janela J: icones da Blizzard (CDN da Wowhead, lista em visual/icones.txt) e os
+# quadros em png (1 MB cada), que o visual/renderizar.mjs refaz nesta maquina
+visual/icones/
+visual/png/
+# CSV do wago.tools baixados pelo visual/magias.mjs e a saida do rodar-janela.mjs (refeitos por comando)
+visual/cache/
+visual/real.json
+visual/real.html

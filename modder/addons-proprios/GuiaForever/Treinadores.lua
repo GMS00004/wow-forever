@@ -236,15 +236,24 @@ function ns.setaTreinador(arg)
   ns.msg(onde .. aviso .. ". No arrow: /way #" .. e.mapa .. string.format(" %.1f %.1f", e.x * 100, e.y * 100))
 end
 
--- Aba Treinos --------------------------------------------------------------
+-- Aba Treinos (janela 1.2): um item por treinador, com a seta; o resto fica recolhido.
+local ICONE_CLASSE = "Interface\\Icons\\INV_Misc_Book_09"
+local ICONE_PET = "Interface\\Icons\\Ability_Hunter_BeastCall"
+local ICONE_PROF = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01"
+
 function ns.blocosTreinos(b)
-  local T, cab, B = ns.blocoTexto, ns.blocoCabecalho, ns.blocoBotao
   local nomeClasse = UnitClass("player")
-  T(b, ns.COR .. "Trainers" .. ns.FIM)
-  T(b, "Each button points the TomTom arrow at the nearest trainer of your faction.")
-  B(b, "Arrow: " .. tostring(nomeClasse) .. " trainer", function() ns.setaTreinador("classe") end)
+  b[#b + 1] = { t = "sec", s = "Trainers", id = "treinos-lista" }
+  b[#b + 1] = { t = "nota", s = "Each Arrow points the TomTom arrow at the nearest trainer of your faction." }
+  b[#b + 1] = {
+    t = "item", icone = ICONE_CLASSE, s = tostring(nomeClasse) .. " trainer",
+    botao = { rotulo = "Arrow", acao = function() ns.setaTreinador("classe") end },
+  }
   if ns.classe() == "HUNTER" then
-    B(b, "Arrow: Pet trainer", function() ns.setaTreinador("pet") end)
+    b[#b + 1] = {
+      t = "item", icone = ICONE_PET, s = "Pet trainer",
+      botao = { rotulo = "Arrow", acao = function() ns.setaTreinador("pet") end },
+    }
   end
   local planejadas = (GuiaForeverProfissoesPlanejadas and GuiaForeverProfissoesPlanejadas[ns.classe()]) or {}
   local lista, vistas = {}, {}
@@ -255,18 +264,23 @@ function ns.blocosTreinos(b)
     if RAIZES[pr.nome] and not vistas[pr.nome] then vistas[pr.nome] = true; lista[#lista + 1] = pr.nome end
   end
   for _, prof in ipairs(lista) do
-    cab(b, prof)
-    B(b, "Arrow: " .. prof .. " trainer", function() ns.setaTreinador(prof) end)
+    -- passos de treino na dica (tooltip): a janela mostra so o nome e a seta
+    local passos = {}
     local tab = ns.tabelaProf(prof)
     if tab and tab.treino then
-      for _, s in ipairs(tab.treino) do T(b, "  " .. s) end
+      for _, s in ipairs(tab.treino) do passos[#passos + 1] = (string.gsub(s, "^%s+", "")) end
     end
+    b[#b + 1] = {
+      t = "item", icone = ICONE_PROF, s = prof .. " trainer", dica = (#passos > 0) and passos or nil,
+      botao = { rotulo = "Arrow", acao = function() ns.setaTreinador(prof) end },
+    }
   end
-  cab(b, "On the map and minimap")
-  T(b, "Questie: class trainer and your known-profession trainer icons (right-click the Questie icon to change this).")
-  T(b, "Minimap: class and profession trainer tracking (right-click the minimap).")
-  T(b, "Ctrl+click a Questie icon also sets the TomTom arrow.")
-  T(b, "|cff999999Undo: /guia trainers undo|r")
+
+  b[#b + 1] = { t = "sec", s = "On the map", aberta = false, id = "treinos-mapa" }
+  b[#b + 1] = { t = "nota", s = "Questie: class trainer and your known-profession trainer icons (right-click the Questie icon to change this)." }
+  b[#b + 1] = { t = "nota", s = "Minimap: class and profession trainer tracking (right-click the minimap)." }
+  b[#b + 1] = { t = "nota", s = "Ctrl+click a Questie icon also sets the TomTom arrow." }
+  b[#b + 1] = { t = "nota", s = "|cff999999Undo: /guia trainers undo|r" }
 end
 
 -- Desfazer -----------------------------------------------------------------

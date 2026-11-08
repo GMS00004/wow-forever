@@ -314,3 +314,133 @@ Regras da seção 1 valem por inteiro. Leitura só de estado (`UnitCreatureFamil
 ### 10.4 PDF
 
 `ferramentas\guia\pets\gerar-pdf.mjs` monta um HTML com o mesmo conteúdo do `GuiaForeverPetGuia` (regras, famílias com progressão, habilidades com todos os professores, treinador, fontes), página de 125 mm de largura, e imprime pelo Edge sem tela (`msedge --headless=new --no-pdf-header-footer --print-to-pdf=...`) em `P:\Meu Drive\WoW Forever\Guias\guia-pets-cacador.pdf`. Texto em inglês, igual ao do jogo.
+
+## 11. Janela J 1.2: organizada (2026-11-08)
+
+Pedido e decisões do dono em `ferramentas\guia\visual\LEIA-ME.md` (estudo, quadros `png\q1` a `q4`) e no plano `C:\Users\PC-AVELL\.claude\plans\guia-1-2-janela-organizada.md`. Esta seção é o contrato entre `Visual.lua`, `Janela.lua`, `Abas.lua`, `Familias.lua`, `Teclas.lua`, `Zona.lua` e `Treinadores.lua`. As regras da seção 1 continuam valendo por inteiro.
+
+### 11.1 Curadoria (vale para todo construtor)
+
+| # | Regra |
+|---|---|
+| C1 | A janela nunca mostra a fonte. Bloco não tem campo `fonte`, e nenhum texto, sub ou dica contém "Source" ou o nome de uma fonte entre parênteses. O `fonte` continua nos arquivos de dados |
+| C2 | Seção mostra no máximo `limite` unidades (padrão 5; tabela, 6); o desenhista põe "Show N more" e "Show less" sozinho. Construtor não passa `limite` acima de 6 |
+| C3 | Referência longa (regras de pet, todas as habilidades, as famílias, as perguntas da Help) nunca abre sozinha: fica em `duas` (lista e detalhe) ou em `sec` com `aberta = false` |
+| C4 | A aba começa pelo que dá para fazer agora, depois o progresso, depois a referência |
+| C5 | Estado por `estado` (ícone), nunca por código de texto: proibidos `[v]`, `[x]`, `> ` no começo, `+ ` no começo, `* =` e `*` no fim |
+| C6 | `s` até cerca de 60 caracteres, `sub` até cerca de 80; o que passar vai para `dica` (tooltip) |
+| C7 | Com "Show all" desligado (`ctx.tudo` falso), o construtor só emite o que `ns.relevante` aprova e o que é do nível atual ou próximo; o resto só com `ctx.tudo` |
+
+### 11.2 Casca (`Janela.lua`), medidas em unidades do `UIParent`
+
+| Parte | Medida e comportamento |
+|---|---|
+| Janela | `GuiaForeverJanela`, 820 × 600 na primeira vez; `SetResizable(true)` e `SetResizeBounds(700, 460, 1200, 900)`; alça de 16 × 16 no canto inferior direito; tamanho em `GuiaForeverDB.janela = { w, h }`, posição em `GuiaForeverDB.pos` (como hoje); `ns.ui.painel(janela, "janela")`; Esc fecha (`UISpecialFrames`) |
+| Cabeçalho | 48 de altura. Ícone do livro (28), "GuiaForever" (fonte `titulo`) e, embaixo, "<nome> · <Classe> · level N" (fonte `menor`, cinza). À direita: as etiquetas de `ns.abasEstado()` (até 3; clique abre `e.aba`, `e.sub`), a busca (150 × 24, `ns.ui.skinBusca`) e o fechar (`ns.ui.skinFechar`) |
+| Trilho | 150 de largura, do cabeçalho ao pé, fundo preto a 28% e borda direita preta. Um item de 34 de altura por aba visível (`ns.abaVisivel(id)`, guardada; sem ela, todas): ícone 20, rótulo em fonte `nav`. Ativo: fundo branco a 7% e faixa de 3 px na cor `destaque`. Contador laranja (fonte `numero`) no Now com o número de itens visíveis do painel. No pé, a chave "Show all" (liga `ctx.tudo`; desliga ao fechar a janela, como hoje) |
+| Área | à direita do trilho, com rolagem (`UIPanelScrollFrameTemplate` com `ns.ui.skinRolagem`); margens 16 à esquerda, 12 em cima e embaixo, 10 mais a rolagem à direita. `largura` do desenhista = largura da janela − 150 − 44 |
+| Atualização | `ns.atualizarJanela()` refaz a aba atual (só com a janela aberta); a rolagem volta ao topo ao trocar de aba ou sub-aba |
+| Busca | a partir de 2 letras, roda os construtores de todas as abas e sub-abas, junta os blocos com texto (`s`, `sub`, `nome`, texto das células e das notas) que contêm a busca e mostra um `sec` por aba ("Pet", "Combat · Keys") com um `item` por achado; clique no item abre a aba e a sub-aba dele |
+
+Abas (`ns.abas`, na ordem; o `/guia` confere os ids por ela):
+
+| id | Rótulo | Ícone | Sub-abas (`id` = rótulo) |
+|---|---|---|---|
+| `agora` | Now | `Interface\Icons\INV_Misc_Book_09` | |
+| `pet` | Pet | `Interface\Icons\Ability_Hunter_BeastCall` | |
+| `familias` | Families | `Interface\Icons\Ability_Hunter_BeastTaming` | |
+| `talentos` | Talents | `Interface\Icons\Ability_Marksmanship` | |
+| `combate` | Combat | `Interface\Icons\Ability_ImpalingBolt` | `rotacao` = Rotation, `teclas` = Keys, `armas` = Weapons, `atributos` = Stats |
+| `profissoes` | Professions | `Interface\Icons\INV_Misc_Pelt_Wolf_01` | `minhas` = Mine, `zona` = Zone, `treinos` = Trainers |
+| `ajuda` | Help | `Interface\Icons\INV_Misc_QuestionMark` | `perguntas` = Questions, `addons` = Addons, `sinais` = Signs |
+
+Cada aba é `{ id, rotulo, icone, subs = { { id, rotulo } } }`. A sub-aba atual fica em `GuiaForeverDB.sub[aba]` (padrão: a primeira). `ns.abrirAba(id, sub)` aceita os ids novos e os antigos por `ns.apelidosAba`, que passa a mapear para `{ aba, sub }`: `nivel` para agora; `pets` para pet; `armas` para combate/armas; `rotacao` para combate/rotacao; `teclas` para combate/teclas; `prof` para profissoes/minhas; `zona` para profissoes/zona; `treinos` para profissoes/treinos; `addons` para ajuda/addons. A tecla J, o botão do livro e o `GuiaForever_AlternarJanela` ficam como estão.
+
+### 11.3 Construtores (`Abas.lua` e módulos)
+
+`ns.abasConstrutores[id] = function(b, ctx)` acrescenta blocos à lista `b`. `ctx = { nivel, classe, tudo, sub, largura, atualizar, abrir }`, em que `atualizar()` refaz a janela e `abrir(aba, sub)` troca de aba. A casca chama o construtor em `xpcall` (erro vira um `vazio` "This tab hit an error (see BugSack)."). Quem constrói:
+
+| Aba ou sub-aba | Função |
+|---|---|
+| `agora`, `pet`, `talentos`, `combate` (rotacao, armas, atributos), `profissoes` (minhas), `ajuda` (todas) | `Abas.lua` |
+| `pet`, seção de upgrades | `ns.blocosProximosRanks(b, ctx)`, em `Familias.lua` (chamada pelo construtor de `pet`) |
+| `familias` | `ns.blocosFamilias(b, ctx)`, em `Familias.lua` (o construtor de `Abas.lua` só repassa) |
+| `combate/teclas` | `ns.blocosTeclas(b, ctx)`, em `Teclas.lua` |
+| `profissoes/zona` | `ns.blocosZona(b, ctx)`, em `Zona.lua` |
+| `profissoes/treinos` | `ns.blocosTreinos(b, ctx)`, em `Treinadores.lua` |
+
+O construtor de uma aba com sub-abas emite primeiro o bloco `segs` e depois só a sub-aba `ctx.sub`. Também em `Abas.lua`: `ns.abasEstado()` devolve até 3 etiquetas `{ icone, s, n, cor, aba, sub }` (pontos de talento livres por `ns.pontosTalento()`, laranja quando passam de 0; para o caçador, família, nível e felicidade do pet; a profissão que trava, laranja, ou a primeira profissão) e `ns.abaVisivel(id)` (Pet e Families só para quem tem dados de pet). Toda chamada entre módulos fica guardada (regra 3).
+
+### 11.4 Blocos
+
+Campos comuns opcionais: `dica` (texto ou lista de textos: tooltip, com o `s` do bloco como título) e `aoClicar` (função; a linha ganha realce). `cor` é um nome de `ns.ui.cor`. `icone` é o que `ns.ui.icone` aceita. `botao = { rotulo, acao }` desenha um botão pequeno (22 de altura, largura do texto) à direita da linha.
+
+| `t` | Campos | Como desenha |
+|---|---|---|
+| `sec` | `s`, `id`, `qtd`, `aberta` (padrão true), `limite` | título em fonte `secao` (maiúsculas) na cor `destaque`, com seta de recolher, `qtd` cinza ao lado e um fio até a borda. Os blocos seguintes, até o próximo `sec`, são da seção. Recolher grava `GuiaForeverDB.secoes[id]`; "Show N more" grava `GuiaForeverDB.mais[id]` |
+| `card` | `cor`, `icone`, `s`, `sub`, `tecla`, `botao`, `dica`, `aoClicar` | 42 de altura mínima, faixa de 4 px na `cor`, ícone 28, `s` em fonte `cartao`, `sub` em `menor` cinza, `tecla` desenhada como tecla à direita, depois o botão |
+| `item` | `nivel`, `estado`, `nivelTrava`, `icone`, `s`, `sub`, `tecla`, `botao`, `dica`, `apagado`, `destaque`, `aoClicar` | linha de 28 de altura mínima, zebrada na seção: coluna de nível (30, fonte `numero`, caixa a 8%; `""` deixa a coluna vazia; sem `nivel`, sem coluna), ícone de estado (16), ícone (20), `s` e `sub` (cinza) na mesma linha, quebrando se precisar; `tecla` e botão à direita. `apagado` = 55% de opacidade; `destaque` = faixa de 2 px na cor `destaque` |
+| `nota` | `s`, `dica` | parágrafo em fonte `texto`, zebrado, quebra de linha livre |
+| `vazio` | `s` | uma linha cinza (estado vazio: "Nothing needs you right now.") |
+| `tabela` | `id`, `colunas = { { s, largura, alinha } }`, `linhas = { { celulas, apagado, dica, botao } }`, `limite` | cabeçalho em fonte `secao` cinza; linhas de 30, zebradas. Célula: texto ou `{ s, icone, estado, numero, cor }`. `largura` nil divide o que sobra; `alinha` "esq", "centro" ou "dir". Botão de linha numa última coluna automática. `limite` (padrão 6) com "Show N more" |
+| `passos` | `lista` (textos) | etiquetas numeradas (número na cor `destaque`) separadas por "›", quebrando para a linha de baixo se não couberem |
+| `checklist` | `itens = { { s, feito, sub } }` | etiquetas em linha com o ícone de feito ou de falta |
+| `grade` | `titulo`, `teclas = { { k, icone, nome, estado, nivel, dica } ou false }` | `titulo` cinza em fonte `menor`; quadrados de 46 com o ícone e `k` no canto (fonte `tecla`), `nome` embaixo (fonte 11, corta com "..."); `estado` "novo" = contorno na cor `destaque` e a etiqueta NEW; "travado" = ícone cinza e escuro com o `nivel` no centro; `false` = espaço de 10 |
+| `regua` | `min`, `max`, `atual`, `rotuloAtual`, `linhas = { { nome, icone, marcas = { { nivel, rank, estado, dica } } } }` | uma faixa de 30 por linha (ícone e nome em 78 de largura), marcas redondas de 18 com o `rank` na posição do `nivel`; `estado` "tem" = cheia na cor `destaque`, "agora" = dourada com brilho, "depois" = vazia cinza; linha tracejada dourada no `atual` com o `rotuloAtual`; régua de níveis embaixo (de 10 em 10) e a legenda "has it / can learn now / later" |
+| `perfil` | `icone`, `retrato` (unidade, ex. "pet"), `titulo`, `sub` (lista de linhas), `barras = { { s, valor, max, cor } }`, `etiquetas` (textos) | cartão: retrato redondo de 58 (`SetPortraitTexture` na unidade; sem unidade, o `icone`), título em fonte `titulo`, linhas cinza, até 2 barras de 210 × 16 com o texto por cima, etiquetas à direita |
+| `titulo` | `icone`, `s`, `etiquetas` | cabeçalho de detalhe: ícone 40, `s` em fonte `titulo` (20), etiquetas embaixo |
+| `etiquetas` | `rotulo`, `lista` | rótulo cinza e etiquetas em linha |
+| `segs` | `aba`, `opcoes = { { id, s } }`, `atual` | sub-abas em segmentos colados; a atual com fundo a 9% e sublinhado na cor `destaque`; clique grava `GuiaForeverDB.sub[aba]` e chama `ctx.atualizar()` |
+| `duas` | `id`, `lista = { { id, s, sub, icone, marca } }`, `atual`, `detalhe` (blocos), `largura` (padrão 190) | coluna da esquerda com os itens (25 de altura; `marca` = etiqueta na cor `destaque`, ex. "YOUR PET"); o atual realçado com faixa à esquerda; à direita, `detalhe` desenhado pelo mesmo desenhista. Clique grava `GuiaForeverDB.sel[id]` e chama `ctx.atualizar()`; o construtor lê a escolha por `ns.ui.selecionado(id, padrao)` |
+| `botao` | `s`, `f` | só o botão pequeno, numa linha (compatível) |
+
+Compatíveis, desenhados no estilo novo: `texto` = `nota`, `cab` = `sec`, `linha` = `item` sem nível, `espaco` = 8 de altura. Construtor da 1.2 não os emite.
+
+Estados (`estado` de `item`, de célula e de `checklist`): "feito" (marca verde, `Interface\RaidFrame\ReadyCheck-Ready`), "falta" (x vermelho, `ReadyCheck-NotReady`), "agora" (ponto dourado), "depois" (ponto cinza), "travado" (cadeado `Interface\Buttons\LockButton-Locked-Up` e o `nivelTrava`). As texturas ficam a conferir no jogo; sem textura, um quadrado na cor.
+
+### 11.5 `ns.ui` (`Visual.lua`)
+
+| API | Contrato |
+|---|---|
+| `ns.ui.cor(nome)` | r, g, b, a. Nomes: `destaque` (cor da classe por `C_ClassColor.GetClassColor(token)`, reserva verde 0,67/0,83/0,45), `fundo` (0,05/0,05/0,05/0,92), `borda` (0/0/0/1), `zebra` (1/1/1/0,035), `cinza` (0,6), `texto` (1), `verde`, `vermelho`, `laranja`, `amarelo`, `azul` (os de `Agora.lua`), `dourado` (1/0,82/0) |
+| `ns.ui.hex(nome)` | o código de cor "\|cffRRGGBB" |
+| `ns.ui.fonte(nome)` | nome de objeto de fonte (`CreateFont`, criado uma vez): `titulo` 17, `nav` 15, `cartao` 15, `texto` 14, `menor` 12 (PT Sans Narrow); `secao` 12, `numero` 12, `tecla` 12 com contorno (Expressway). Arquivo pela `LibSharedMedia-3.0` do ElvUI (`Fetch("font", "PT Sans Narrow")` e `"Expressway"`) quando existir; senão `STANDARD_TEXT_FONT`. Sombra preta de 1 px |
+| `ns.ui.icone(x)` | número = id de magia (`C_Spell.GetSpellTexture`, reserva `GetSpellTexture`); texto começando por "Interface" = caminho; "macro:<nome>" = ícone de `GetMacroInfo`; nil ou falha = `Interface\Icons\INV_Misc_QuestionMark` |
+| `ns.ui.painel(f, estilo)` | estilo "janela", "cartao" ou "campo": com ElvUI, `f:SetTemplate("Transparent")` (janela) ou `f:SetTemplate()`; sem ElvUI ou se falhar, `BackdropTemplate` com `Interface\Buttons\WHITE8X8`, fundo `fundo` e borda `borda` de 1 px |
+| `ns.ui.skinBotao(b)`, `skinRolagem(sf)`, `skinBusca(eb)`, `skinCaixa(cb)`, `skinFechar(b)` | ElvUI: `E:GetModule("Skins")` e `S:HandleButton`, `HandleScrollBar` (na barra do `ScrollFrame`), `HandleEditBox`, `HandleCheckBox`, `HandleCloseButton`, cada um em `pcall`; sem ElvUI, aparência plana própria |
+| `ns.ui.botao(pai, rotulo)` | botão pequeno (22 de altura, largura do texto + 20), já com a skin |
+| `ns.ui.etiqueta(pai)` | quadro de etiqueta com `:Definir(icone, s, n, cor)` (ícone 18, texto, número em fonte `numero`) |
+| `ns.ui.tooltip(dono, titulo, dica)` | `GameTooltip` com o título em branco e as linhas da dica; nunca "Source:" |
+| `ns.ui.selecionado(id, padrao)` | `GuiaForeverDB.sel[id]` ou `padrao` |
+| `ns.ui.desenhar(conteudo, blocos, largura, ctx)` | desenha os blocos de cima para baixo no quadro `conteudo`, reaproveitando quadros de pools guardados no próprio `conteudo`, esconde o que sobrou e devolve a altura total. Cada tipo de bloco tem uma função na tabela de despacho `desenhistas[t]`; tipo desconhecido vira `vazio` com o nome do tipo |
+
+Sem regra nova de combate: nada disso é protegido. Os quadros e as skins só se criam quando a janela abre.
+
+### 11.6 Dados para ícones
+
+`Dicas.lua` (entradas de `magias`) e `Teclas.lua` ganham `id` (id de magia do cliente; o de rank 1 serve, o ícone é o mesmo). Entrada de macro em `Teclas.lua` ganha o `id` da magia principal (sting_Auto = Auto Shot) ou `icone` com caminho; o campo `rot` dá o rótulo da tecla como nas barras do ElvUI ("1", "Q", "S1", "C1", "M4"). Os ids saem da `TrainingData.lua` do Naowh (só o fato, nunca o código) cruzada com o `SpellName` do wago.tools no build do cliente, por `ferramentas\guia\visual\magias.mjs`, que grava `magias.json`.
+
+### 11.7 Chaves novas do `GuiaForeverDB`
+
+`janela = { w, h }`, `sub = { [aba] = sub }`, `mais = { [secId] = true }`, `sel = { [id] = escolha }`. `aba`, `pos`, `secoes`, `botao` e `tecla` ficam como estão.
+
+### 11.8 Banco de prova (`ferramentas\guia\rodar-janela.mjs`)
+
+Roda os `.lua` do `.toc` no fengari (Lua em JavaScript) com a API do jogo simulada num estado fixo (caçador Night Elf 16, javali 16 feliz com Bite 1 e Charge 1, sem grupo, Skinning 75 de 75 e Leatherworking 55 de 100), chama cada aba e sub-aba e confere os blocos contra esta seção (tipos, campos obrigatórios, C1, C2, C5, C6). `--estrito` faz dos tipos compatíveis um erro; `--abas a,b/c` limita; `--desenhar` passa os blocos pelo `ns.ui.desenhar` com quadros simulados, para pegar erro de execução. Grava `ferramentas\guia\visual\real.json` e `real.html` (os blocos desenhados com o CSS dos quadros), que o `renderizar.mjs` fotografa.
+
+### 11.9 Como ficou (2026-11-08, depois da execução)
+
+Executado em três ondas (contrato e esqueletos na sessão principal; T1 a T3; T4 a T7) e um portão final. O que difere do texto acima ou foi acrescentado:
+
+| Onde | O quê |
+|---|---|
+| `Visual.lua` | o separador de `passos` é ">" (só ASCII); fontes extras `mini` (11) e `detalhe` (20); `ns.ui.botao(pai, rotulo, acao)` e `etiqueta:Definir(icone, s, n, cor, antes)` aceitam um argumento a mais; `nivelTrava` aparece como "Lv N" cinza no fim do texto; só `item`, `card`, `nota`, `linha` e `texto` contam para o `limite`; `skinCaixa` e `skinFechar` sem ElvUI ficam com a aparência da Blizzard |
+| `Janela.lua` | `ns.buscarJanela(texto)` devolve os blocos do resultado (a caixa de busca usa a mesma); a busca põe `limite = 30` nas seções dela; `GuiaForeverDB.janela = { w = , h = }`; o ponto do meio (·) vai como `\194\183`; os ajudantes antigos `ns.blocoTexto`, `ns.blocoCabecalho` e `ns.blocoBotao` continuam (compatíveis); sem `ns.ui.desenhar` (jogo aberto antes do `.toc` novo), a janela só mostra o aviso para reiniciar |
+| `Abas.lua` | `semFonte` tira de texto de dados o nome de fonte no começo ou entre parênteses; a sub-aba Mine ganhou, a pedido do dono, uma `sec` recolhível por profissão com o roteiro numa `tabela` (`limite = 4`; três colunas nas de fabricar, duas nas de coleta; os passos feitos só com "Show all"), e nas de fabricar uma `sec` por faixa de treino com o total de materiais (`totaisPorFaixa`: o passo entra na faixa em que começa, a faixa atual soma só os passos que terminam acima da perícia, o que está entre parênteses no texto fica de fora; `tabela` de 4 colunas com dois materiais por linha) |
+| `Familias.lua` | regras com `e = true` (8 essenciais, marcadas em `ferramentas\guia\pets\textos.json` e passadas pelo `gerar-guia.mjs`); a nota de tier vira etiqueta "Tier: ..." sem o nome; `limpo()` descarta nota ou regra que ainda cite fonte |
+| `Teclas.lua` | campos novos `rot`, `id` e `icone`; os ícones do pet (`PET_ATTACK_TEXTURE` e os outros) lidos na hora; a grade mostra todas as teclas, as que ainda não valem com cadeado |
+| Dados | ids de magia em `Dicas.lua` (30 entradas); 10 frases de `Dicas.lua` e `Ajuda.lua` e 16 de `ProfissoesA.lua`/`ProfissoesB.lua` reescritas sem o nome da fonte nem a palavra "source"; `checar-dicas.mjs` aceita `id` |
+| `Agora.lua` | item pode ter `aoOcultar` (função): o botão direito chama ela em vez de esconder pelo texto. O treino de classe usa isso para guardar as magias puladas em `ns.dbPersonagem().treinoPulado` (id do Naowh ou nome das Dicas), e os dois provedores deixam de emitir as puladas; `ns.agora.pulados()` e `ns.agora.desfazerPulo()` servem a seção Hidden do J. O tooltip do painel não mostra mais "Source:" |
+| Banco de prova | `--pular` (cenário do treino pulado: some, não volta com outro treinador, volta só com magia nova, aparece em Hidden, desfaz); `--abrir` (abre a janela, cada aba e sub-aba, os ids antigos e a busca "boar"); o `real.html` respeita o `limite` e põe "Show N more" |
+
+Resultado do portão final: `checar-lua`, `checar-combate`, `checar-dicas`, `checar-ajuda`, `checar-guia`, os 16 e os 13 casos, e `rodar-janela.mjs --estrito --abrir --desenhar` com 14 abas e sub-abas, 29 passos de abertura e `RESUMO erros=0 avisos=0`. Nada disso rodou no jogo ainda.

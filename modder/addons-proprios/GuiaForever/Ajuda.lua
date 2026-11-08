@@ -13,7 +13,7 @@ GuiaForeverAjuda = {
     } },
     { id = "comida", aba = "pet", pergunta = "What does my pet eat, and where do I buy food?", linhas = {
       -- origem: comum\fontes\builds\ludideo-hunter-pets.md:51 (comida de taverna e peixe)
-      { texto = "LudiDeo lists tavern food (bread, cheese, fruit) and fish for anglers.", fonte = "LudiDeo (beta)" },
+      { texto = "Tavern food (bread, cheese, fruit), and fish if you fish.", fonte = "LudiDeo (beta)" },
       -- origem: comum\personagens\hexumlite-bull.md:152 (o que o gato come: nao conferido)
       { texto = "What a cat eats on Forever (not checked).", fonte = "you" },
       -- origem: comum\personagens\hexumlite-bull.md:152 (sem resposta na ficha nem nas fontes)
@@ -21,7 +21,7 @@ GuiaForeverAjuda = {
     } },
     { id = "feed", aba = "pet", pergunta = "Why don't I have Feed Pet yet?", linhas = {
       -- origem: comum\personagens\hexumlite-bull.md:152 (Naowh marca como magia de quest do 10)
-      { texto = "Naowh marks Feed Pet as a quest spell from level 10.", fonte = "Naowh" },
+      { texto = "The Naowh planner marks Feed Pet as a quest spell from level 10.", fonte = "Naowh" },
       -- origem: comum\personagens\hexumlite-bull.md:152 (de qual quest vem: nao conferido)
       { texto = "Which quest gives it: not checked yet.", fonte = "Naowh" },
     } },
@@ -58,7 +58,7 @@ GuiaForeverAjuda = {
       -- origem: comum\personagens\hexumlite-bull.md:60 e :82 (lei das tres builds)
       { texto = "Now (10-14): Deadly Aspects 5/5, the same in all three builds (your rule).", fonte = "you" },
       -- origem: comum\personagens\hexumlite-bull.md:77 (decisao do dono, Kargoz)
-      { texto = "15-19 (your pick, Kargoz): Focused Fire 2/2, Improved Revive Pet 1, Endurance Training 2.", fonte = "Kargoz (beta)" },
+      { texto = "15-19 (your pick): Focused Fire 2/2, Improved Revive Pet 1, Endurance Training 2.", fonte = "Kargoz (beta)" },
       -- origem: comum\personagens\hexumlite-bull.md:82 (lei das tres builds)
       { texto = "20-21: Pathfinding 2/2, the same in all three builds (your rule).", fonte = "you" },
       -- origem: comum\personagens\hexumlite-bull.md:64-70 (divergencias ainda abertas)
@@ -74,9 +74,9 @@ GuiaForeverAjuda = {
     } },
     { id = "alvos", aba = "combate", pergunta = "One mob at a time or two with the pet?", linhas = {
       -- origem: comum\personagens\hexumlite-bull.md:129 (um por vez, Method)
-      { texto = "Not decided by you yet. Method: one mob at a time, mostly from range.", fonte = "Method" },
+      { texto = "Not decided by you yet. Option A: one mob at a time, mostly from range.", fonte = "Method" },
       -- origem: comum\personagens\hexumlite-bull.md:130 (dois por vez, MetaGoblin)
-      { texto = "MetaGoblin: two at once, the pet holds the first. Riskier and faster.", fonte = "MetaGoblin (beta)" },
+      { texto = "Option B: two at once, the pet holds the first. Riskier and faster.", fonte = "MetaGoblin (beta)" },
       -- origem: comum\personagens\hexumlite-bull.md:136-140 (tecla 5 desfaz a divisao)
       { texto = "Key 5 sends the pet on the target you mark, which undoes a two-mob split.", fonte = "you" },
     } },
@@ -92,15 +92,15 @@ GuiaForeverAjuda = {
     } },
     { id = "atributos", aba = "combate", pergunta = "Which stats matter on my gear?", linhas = {
       -- origem: comum\personagens\hexumlite-bull.md:80 (decisao do dono, ate o 45)
-      { texto = "Up to 45 (your pick): follow Method. Leatherworking blues with lots of Agility raise DPS a lot.", fonte = "you" },
+      { texto = "Up to 45 (your pick): Agility. Leatherworking blues with lots of Agility raise DPS a lot.", fonte = "you" },
       -- origem: comum\personagens\hexumlite-bull.md:80 (decisao do dono, do 46)
-      { texto = "From 46 (your pick): MetaGoblin, Intellect and Spirit, since Careful Aim turns Intellect into attack power.", fonte = "MetaGoblin (beta)" },
+      { texto = "From 46 (your pick): Intellect and Spirit, since Careful Aim turns Intellect into attack power.", fonte = "MetaGoblin (beta)" },
     } },
     { id = "prof", aba = "profissoes", pergunta = "How far should I level Skinning and Leatherworking here?", linhas = {
       -- origem: comum\personagens\hexumlite-bull.md:160 (decididas pelo dono)
       { texto = "You chose Leatherworking and Skinning (2026-11-04); Cooking and First Aid are secondary.", fonte = "you" },
       -- origem: comum\personagens\hexumlite-bull.md:160 (A Method diz o Leatherworking)
-      { texto = "Leatherworking gives blue Agility gear from level 10 (Method).", fonte = "Method" },
+      { texto = "Leatherworking gives blue Agility gear from level 10.", fonte = "Method" },
       -- origem: modder\estado\estado.md, alteracao de 2026-11-06 (GuiaForever 0.6.0: metas aprovadas pelo dono) e Dados.lua (GuiaForeverRastreador)
       { texto = "Your goals by area: levels 1-10 Skinning 75 and Leatherworking 75; 10-20 Skinning 125, LW 100; 20-30 both 150.", fonte = "you" },
       -- origem: Dados.lua (GuiaForeverRastreador); a ligacao zona -> faixa e do agente, a conferir

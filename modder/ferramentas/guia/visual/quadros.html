@@ -1,0 +1,431 @@
+<!doctype html>
+<!--
+  Quadros do estudo visual da janela J do GuiaForever (2026-11-08).
+  Esquerda: a janela 1.1.0 reconstruida do codigo (Janela.lua, Familias.lua, Teclas.lua) com os dados
+  reais do nivel 16. Direita: o esboco da proposta. Um quadro por hash (#q1 a #q4).
+  Renderizar: node renderizar.mjs (Edge sem tela). Fontes: as do ElvUI instalado. Icones: icones\ (baixar-icones.txt).
+  Valores de estado do pet (nome, pontos de treino) sao ilustrativos.
+-->
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: PTSN; src: url("file:///C:/Program%20Files%20(x86)/World%20of%20Warcraft/_forever_/Interface/AddOns/ElvUI/Game/Shared/Media/Fonts/PTSansNarrow.ttf"); }
+@font-face { font-family: EXPW; src: url("file:///C:/Program%20Files%20(x86)/World%20of%20Warcraft/_forever_/Interface/AddOns/ElvUI/Game/Shared/Media/Fonts/Expressway.ttf"); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1860px; height: 780px; overflow: hidden; font-family: PTSN, "Arial Narrow", sans-serif; color: #fff;
+  background: #222 url("file:///C:/Program%20Files%20(x86)/World%20of%20Warcraft/_forever_/Screenshots/WoWScrnShot_110626_022013.jpg") center / cover; }
+.veu { position: absolute; inset: 0; background: rgba(0,0,0,0.42); }
+.col { position: absolute; top: 14px; }
+.rotulo { font: 15px Arial, sans-serif; color: #fff; background: rgba(0,0,0,0.75); padding: 5px 12px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+.rotulo b { color: #ffd100; font-weight: bold; }
+.zoom { zoom: 1.1; position: relative; }
+.ic { width: 18px; height: 18px; vertical-align: middle; }
+
+/* ---------- HOJE: janela Blizzard ---------- */
+.blz { position: relative; width: 760px; height: 600px; background: rgba(14,14,16,0.86); border: 2px solid #8d8d8d; border-radius: 6px;
+  box-shadow: inset 0 0 0 1px #3a3a3a, 0 0 0 1px #111; overflow: visible; }
+.blz .tit { position: absolute; left: 14px; top: 11px; font-size: 16px; color: #ffd100; text-shadow: 1px 1px 0 #000; }
+.blz .fechar { position: absolute; right: 4px; top: 4px; width: 24px; height: 24px; border-radius: 4px; background: radial-gradient(#c21a12, #6e0905);
+  border: 1px solid #d4a640; color: #ffd9a0; font: bold 15px Arial; text-align: center; line-height: 21px; }
+.blz .busca { position: absolute; right: 40px; top: 10px; width: 220px; height: 22px; border: 1px solid #5a5a5a; border-radius: 3px; background: rgba(0,0,0,0.6);
+  color: #777; font-size: 13px; padding: 2px 6px 0 22px; font-style: italic; }
+.blz .busca:before { content: "\26B2"; position: absolute; left: 6px; top: 0; color: #aaa; font-style: normal; transform: rotate(-45deg); }
+.rbtn { position: absolute; height: 24px; border-radius: 3px; border: 1px solid #c9a24a; background: linear-gradient(#b3170f 0%, #7d0b06 55%, #5c0703 100%);
+  color: #ffd100; font-size: 13px; text-align: center; line-height: 22px; text-shadow: 1px 1px 0 #000; box-shadow: inset 0 1px 0 rgba(255,200,150,0.35); }
+.rbtn.on { background: linear-gradient(#e0372a 0%, #a8160d 55%, #7d0b06 100%); box-shadow: inset 0 0 6px rgba(255,230,160,0.7); }
+.blz .tudo { position: absolute; left: 694px; top: 37px; width: 24px; height: 24px; border: 2px solid #9c8a5a; border-radius: 3px; background: #111; }
+.blz .tudoTxt { position: absolute; left: 722px; top: 41px; font-size: 14px; color: #fff; white-space: nowrap; }
+.blz .rol { position: absolute; left: 10px; top: 70px; right: 30px; bottom: 10px; overflow: hidden; }
+.blz .barra { position: absolute; right: 8px; top: 70px; bottom: 10px; width: 16px; }
+.blz .barra .seta { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(#d8b25a, #6b4a12); color: #2a1a00; font-size: 9px; text-align: center; line-height: 16px; }
+.blz .barra .trilho { position: absolute; top: 18px; bottom: 18px; left: 6px; width: 4px; background: rgba(255,255,255,0.06); }
+.blz .barra .pega { position: absolute; top: 22px; left: 1px; width: 14px; height: 40px; border-radius: 3px; background: linear-gradient(90deg, #8a6a22, #e6c46a, #8a6a22); }
+.blz .barra .seta.baixo { position: absolute; bottom: 0; }
+.bl { position: relative; font-size: 14px; line-height: 17px; color: #fff; text-shadow: 1px 1px 0 #000; }
+.bl.cab { height: 24px; font-size: 16px; color: #ffd100; display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+.bl.cab:first-child { margin-top: 0; }
+.bl.cab .pm { width: 16px; height: 16px; border-radius: 50%; border: 1px solid #b89a50; background: radial-gradient(#5a4a2a, #1a1408); color: #ffe7a0;
+  font: bold 13px Arial; text-align: center; line-height: 14px; flex: none; }
+.bl.cab .res { color: #999; font-size: 16px; margin-left: 12px; }
+.bl.lin { padding: 1px 0 3px 22px; }
+.bl.txt { padding: 0 0 3px 22px; }
+.bl.bt { margin: 0 0 4px 22px; height: 22px; }
+.bl.bt .rbtn { position: relative; display: inline-block; width: 260px; height: 22px; line-height: 20px; font-size: 12px; }
+.bl.esp { height: 8px; }
+.c-ver { color: #e63333; } .c-lar { color: #ff8c1a; } .c-ama { color: #ffd91a; } .c-azu { color: #4d99ff; }
+.c-mint { color: #33ff99; } .c-cin { color: #999; } .c-verde { color: #33ff33; } .c-x { color: #ff4040; } .c-gold { color: #ffd100; }
+
+/* ---------- PROPOSTA: janela no estilo ElvUI ---------- */
+:root { --ac: #aad372; --ac2: rgba(170,211,114,0.16); --borda: #000; --fundo: rgba(13,13,13,0.93); --linha: rgba(255,255,255,0.035); --cin: #9a9a9a; }
+.elv { position: relative; width: 820px; height: 600px; background: var(--fundo); border: 1px solid var(--borda); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); overflow: hidden; }
+.elv .topo { position: absolute; left: 0; right: 0; top: 0; height: 48px; background: rgba(255,255,255,0.035); border-bottom: 1px solid #000; display: flex; align-items: center; padding: 0 10px; gap: 10px; }
+.elv .topo .livro { width: 28px; height: 28px; border: 1px solid #000; }
+.elv .topo .nome { font-size: 17px; line-height: 17px; }
+.elv .topo .sub { font-size: 12px; color: var(--cin); margin-top: 2px; }
+.elv .chips { display: flex; gap: 6px; margin-left: auto; }
+.chipE { display: flex; align-items: center; gap: 5px; height: 26px; padding: 0 8px 0 4px; background: rgba(0,0,0,0.45); border: 1px solid #000; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); font-size: 13px; white-space: nowrap; }
+.chipE img { width: 18px; height: 18px; border: 1px solid #000; }
+.chipE .n { font-family: EXPW; font-size: 13px; }
+.elv .buscaE { width: 150px; height: 24px; background: rgba(0,0,0,0.5); border: 1px solid #000; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); color: #6f6f6f; font-size: 13px; padding: 3px 8px; }
+.elv .x { width: 20px; height: 20px; color: #bbb; font: 16px Arial; text-align: center; line-height: 20px; }
+.elv .trilho { position: absolute; left: 0; top: 48px; bottom: 0; width: 150px; background: rgba(0,0,0,0.28); border-right: 1px solid #000; padding-top: 8px; }
+.nav { position: relative; height: 34px; display: flex; align-items: center; gap: 9px; padding-left: 14px; font-size: 15px; color: #b5b5b5; }
+.nav img { width: 20px; height: 20px; border: 1px solid #000; opacity: 0.8; }
+.nav.on { background: rgba(255,255,255,0.07); color: #fff; }
+.nav.on:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--ac); }
+.nav.on img { opacity: 1; }
+.nav .qt { margin-left: auto; margin-right: 10px; font-family: EXPW; font-size: 12px; color: #111; background: #ff8c1a; padding: 0 5px; line-height: 16px; }
+.elv .rodape { position: absolute; left: 12px; bottom: 12px; font-size: 13px; color: var(--cin); display: flex; align-items: center; gap: 7px; }
+.chave { width: 26px; height: 14px; border-radius: 7px; background: #2a2a2a; border: 1px solid #000; position: relative; }
+.chave:after { content: ""; position: absolute; left: 1px; top: 1px; width: 10px; height: 10px; border-radius: 50%; background: #777; }
+.elv .area { position: absolute; left: 151px; right: 0; top: 49px; bottom: 0; padding: 12px 18px 12px 16px; overflow: hidden; }
+.elv .rolE { position: absolute; right: 4px; top: 56px; width: 5px; height: 90px; background: #3a3a3a; }
+.sec { display: flex; align-items: center; gap: 8px; margin: 14px 0 7px; font-family: EXPW; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--ac); }
+.sec:first-child { margin-top: 0; }
+.sec:after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
+.sec .ch { color: #777; font-size: 10px; width: 10px; }
+.sec .qtd { color: #777; letter-spacing: 0; text-transform: none; font-family: PTSN; font-size: 13px; }
+.card { position: relative; display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 5px 8px 5px 12px; margin-bottom: 4px; background: rgba(255,255,255,0.04); border: 1px solid #000; }
+.card:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--cor); }
+.card img { width: 28px; height: 28px; border: 1px solid #000; flex: none; }
+.card .t { font-size: 15px; line-height: 17px; }
+.card .s { font-size: 12.5px; color: var(--cin); line-height: 15px; }
+.card .dir { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.bE { height: 22px; padding: 0 10px; background: #1c1c1c; border: 1px solid #000; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.09); font-size: 13px; line-height: 20px; color: #fff; white-space: nowrap; }
+.bE.ac { box-shadow: inset 0 0 0 1px var(--ac); }
+.tecla { min-width: 26px; height: 20px; padding: 0 4px; border: 1px solid #000; background: #262626; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.1);
+  font-family: EXPW; font-size: 12px; line-height: 19px; text-align: center; color: #fff; }
+.row { display: flex; align-items: center; gap: 9px; min-height: 28px; padding: 3px 6px; font-size: 14.5px; }
+.row:nth-child(even) { background: var(--linha); }
+.row img { width: 20px; height: 20px; border: 1px solid #000; flex: none; }
+.row .s { color: var(--cin); font-size: 12.5px; }
+.badge { flex: none; width: 30px; height: 19px; font-family: EXPW; font-size: 12px; line-height: 19px; text-align: center; background: rgba(255,255,255,0.08); color: #ddd; }
+.badge.vazio { background: none; }
+.fonte { margin-left: auto; flex: none; font-size: 11.5px; color: #8a8a8a; border: 1px solid rgba(255,255,255,0.1); padding: 0 5px; line-height: 16px; }
+.dim { opacity: 0.55; }
+table.tb { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tb th { font-family: EXPW; font-size: 11px; letter-spacing: 0.5px; color: #7d7d7d; font-weight: normal; text-align: left; padding: 0 6px 4px; text-transform: uppercase; }
+.tb td { padding: 4px 6px; height: 30px; }
+.tb tr:nth-child(even) td { background: var(--linha); }
+.tb .num { font-family: EXPW; font-size: 13px; text-align: center; }
+.tb img { width: 20px; height: 20px; border: 1px solid #000; vertical-align: middle; margin-right: 6px; }
+.ok { color: #6be06b; } .tranca { color: #888; }
+.passos { display: flex; align-items: center; gap: 4px; font-size: 12.5px; color: #cfcfcf; margin-top: 8px; flex-wrap: nowrap; }
+.passos span.p { background: rgba(255,255,255,0.05); border: 1px solid #000; padding: 1px 6px; white-space: nowrap; }
+.passos .n { font-family: EXPW; color: var(--ac); margin-right: 4px; }
+.passos .seta { color: #666; }
+.chk { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; font-size: 14px; }
+.chk i { font-style: normal; width: 16px; height: 16px; line-height: 15px; text-align: center; font: bold 12px Arial; border: 1px solid #000; }
+.chk i.s { background: #2f6b2f; color: #c8ffc8; } .chk i.n { background: #6b2222; color: #ffd0d0; }
+.dieta { display: inline-block; font-size: 12px; color: #ccc; background: rgba(255,255,255,0.06); border: 1px solid #000; padding: 0 6px; line-height: 17px; margin: 0 3px 3px 0; }
+.petcard { display: flex; gap: 14px; align-items: center; padding: 10px; background: rgba(255,255,255,0.04); border: 1px solid #000; }
+.petcard .retrato { width: 58px; height: 58px; border-radius: 50%; border: 2px solid #000; box-shadow: 0 0 0 1px rgba(255,255,255,0.15); }
+.petcard .nome { font-size: 19px; }
+.barraE { position: relative; width: 210px; height: 16px; background: #1b1b1b; border: 1px solid #000; margin: 3px 0; }
+.barraE .f { position: absolute; left: 0; top: 0; bottom: 0; }
+.barraE .r { position: absolute; left: 6px; top: 0; font-size: 12px; line-height: 15px; text-shadow: 1px 1px 0 #000; }
+.segs { display: flex; gap: 0; margin-bottom: 10px; border: 1px solid #000; width: max-content; }
+.segs span { padding: 3px 14px; font-size: 14px; color: #aaa; background: rgba(255,255,255,0.03); border-right: 1px solid #000; }
+.segs span:last-child { border-right: 0; }
+.segs span.on { color: #fff; background: rgba(255,255,255,0.09); box-shadow: inset 0 -2px 0 var(--ac); }
+.grade { display: flex; gap: 5px; margin-bottom: 4px; }
+.grade .sep { width: 10px; }
+.tile { position: relative; width: 46px; }
+.tile .q { position: relative; width: 46px; height: 46px; border: 1px solid #000; background-size: cover; }
+.tile .q .k { position: absolute; left: 2px; top: 1px; font-family: EXPW; font-size: 12px; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
+.tile .nm { font-size: 11px; color: #bbb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; margin-top: 1px; line-height: 13px; }
+.tile.trava .q { filter: grayscale(1) brightness(0.35); }
+.tile.trava .lv { position: absolute; left: 0; right: 0; top: 13px; text-align: center; font-family: EXPW; font-size: 15px; color: #ddd; text-shadow: 1px 1px 0 #000; }
+.tile.novo .q { box-shadow: 0 0 0 2px var(--ac), 0 0 8px var(--ac); }
+.tile.novo .tag { position: absolute; right: -3px; top: -6px; font-family: EXPW; font-size: 9px; background: var(--ac); color: #000; padding: 0 3px; line-height: 12px; }
+.tile.vazio .q { background: rgba(255,255,255,0.03); }
+.gtit { font-size: 12px; color: #8d8d8d; margin: 6px 0 3px; }
+.tip { position: absolute; width: 270px; background: rgba(10,10,10,0.96); border: 1px solid #000; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.6); padding: 8px 10px; font-size: 13.5px; line-height: 16px; z-index: 5; }
+.tip .h { font-size: 15px; margin-bottom: 3px; }
+.tip .g { color: #8a8a8a; font-size: 12.5px; margin-top: 5px; }
+.lt { position: relative; }
+.duas { display: flex; height: 100%; }
+.lista { width: 190px; border-right: 1px solid rgba(255,255,255,0.06); padding-right: 8px; margin-right: 14px; flex: none; }
+.lista .it { display: flex; align-items: center; gap: 8px; height: 25px; padding: 0 6px; font-size: 14px; color: #c8c8c8; }
+.lista .it img { width: 18px; height: 18px; border: 1px solid #000; }
+.lista .it .p { margin-left: auto; font-size: 11px; color: #777; }
+.lista .it.on { background: rgba(255,255,255,0.08); color: #fff; box-shadow: inset 3px 0 0 var(--ac); }
+.lista .it .seu { margin-left: auto; font-family: EXPW; font-size: 9px; color: #000; background: var(--ac); padding: 0 3px; line-height: 12px; }
+.detalhe { flex: 1; min-width: 0; }
+.eixo { position: relative; height: 150px; margin: 18px 0 6px; }
+.eixo .rotH { position: absolute; left: 0; width: 70px; font-size: 14px; display: flex; align-items: center; gap: 6px; height: 26px; }
+.eixo .rotH img { width: 18px; height: 18px; border: 1px solid #000; }
+.eixo .faixa { position: absolute; left: 78px; right: 6px; height: 2px; background: rgba(255,255,255,0.12); }
+.eixo .mk { position: absolute; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; font-family: EXPW; font-size: 10px; line-height: 16px; text-align: center; }
+.mk.sabe { background: var(--ac); color: #000; border: 1px solid #000; }
+.mk.agora { background: #2a2208; color: #ffd100; border: 1px solid #ffd100; box-shadow: 0 0 7px #ffd100; }
+.mk.futuro { background: #151515; color: #888; border: 1px solid #555; }
+.eixo .hoje { position: absolute; top: -2px; bottom: 16px; width: 0; border-left: 1px dashed #ffd100; }
+.eixo .hoje span { position: absolute; top: -16px; left: 4px; font-family: EXPW; font-size: 10px; color: #ffd100; white-space: nowrap; }
+.eixo .reg { position: absolute; bottom: 0; font-family: EXPW; font-size: 10px; color: #666; margin-left: -6px; }
+.nota { display: flex; gap: 8px; font-size: 13.5px; line-height: 16px; padding: 4px 6px; align-items: flex-start; }
+.nota:nth-child(even) { background: var(--linha); }
+.nota .fonte { margin-top: 1px; }
+.leg { font-size: 12px; color: #8a8a8a; display: flex; gap: 14px; align-items: center; margin-top: 2px; }
+.leg i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; vertical-align: -1px; margin-right: 4px; }
+</style></head>
+<body><div class="veu"></div>
+<div class="col" style="left:24px"><div class="rotulo" id="rotA"></div><div class="zoom" id="A"></div></div>
+<div class="col" style="left:906px"><div class="rotulo" id="rotB"></div><div class="zoom" id="B"></div></div>
+<script>
+const I = n => `icones/${n}.jpg`;
+const im = (n, c) => `<img src="${I(n)}"${c ? ` class="${c}"` : ""}>`;
+
+/* ================= HOJE ================= */
+const ABAS = ["Now", "Pet", "Families", "Talents", "Combat", "Professions", "Help"];
+function blz(aba, blocos) {
+  let tabs = ABAS.map((a, i) => `<div class="rbtn${a === aba ? " on" : ""}" style="left:${10 + i * 96}px;top:38px;width:94px">${a}</div>`).join("");
+  let corpo = blocos.map(b => {
+    if (b.t === "cab") return `<div class="bl cab" style="padding-left:${4 + 14 * ((b.nivel || 1) - 1)}px"><span class="pm">${b.aberta === false ? "+" : "&minus;"}</span>${b.s}${b.res && b.aberta === false ? `<span class="res">${b.res}</span>` : ""}</div>`;
+    if (b.t === "linha") return `<div class="bl lin">${b.s}</div>`;
+    if (b.t === "texto") return `<div class="bl txt">${b.s}</div>`;
+    if (b.t === "botao") return `<div class="bl bt"><span class="rbtn">${b.s}</span></div>`;
+    return `<div class="bl esp"></div>`;
+  }).join("");
+  return `<div class="blz"><div class="tit">GuiaForever - Hexumlite Bull</div><div class="busca">Search</div><div class="fechar">&times;</div>
+    ${tabs}<div class="tudo"></div><div class="tudoTxt">Show all</div>
+    <div class="rol">${corpo}</div>
+    <div class="barra"><div class="seta">&#9650;</div><div class="trilho"></div><div class="pega"></div><div class="seta baixo">&#9660;</div></div></div>`;
+}
+const C = (k, s) => `<span class="c-${k}">${s}</span>`;
+const cab = (s, o = {}) => ({ t: "cab", s, ...o });
+const L = s => ({ t: "linha", s });
+const T = s => ({ t: "texto", s });
+const BT = s => ({ t: "botao", s });
+const ESP = { t: "espaco" };
+
+/* ================= PROPOSTA ================= */
+const NAV = [["Now", "inv_misc_book_09"], ["Pet", "ability_hunter_pet_boar"], ["Families", "ability_hunter_beasttaming"], ["Talents", "ability_hunter_beasttraining"],
+  ["Combat", "ability_impalingbolt"], ["Professions", "inv_misc_pelt_wolf_01"], ["Help", "inv_misc_questionmark"]];
+function elv(aba, area, extra = "") {
+  const nav = NAV.map(([n, ic]) => `<div class="nav${n === aba ? " on" : ""}">${im(ic)}${n}${n === "Now" ? `<span class="qt">4</span>` : ""}</div>`).join("");
+  return `<div class="elv">
+    <div class="topo">${im("inv_misc_book_09", "livro")}<div><div class="nome">GuiaForever</div><div class="sub">Hexumlite Bull &middot; Hunter &middot; level 16</div></div>
+      <div class="chips">
+        <div class="chipE">${im("ability_hunter_beasttraining")}Talent <span class="n">0</span></div>
+        <div class="chipE">${im("ability_hunter_pet_boar")}Boar <span class="n">16</span> <span class="ok">Happy</span></div>
+        <div class="chipE">${im("inv_misc_pelt_wolf_01")}Skinning <span class="n" style="color:#ff8c1a">75/75</span></div>
+      </div>
+      <div class="buscaE">Search</div><div class="x">&#10005;</div></div>
+    <div class="trilho">${nav}<div class="rodape"><span class="chave"></span>Show all</div></div>
+    <div class="area">${area}</div><div class="rolE"></div>${extra}</div>`;
+}
+const sec = (s, q = "", fechada = false) => `<div class="sec"><span class="ch">${fechada ? "&#9656;" : "&#9662;"}</span>${s}${q ? ` <span class="qtd">${q}</span>` : ""}</div>`;
+const card = (cor, ic, t, s, dir = "") => `<div class="card" style="--cor:${cor}">${im(ic)}<div><div class="t">${t}</div>${s ? `<div class="s">${s}</div>` : ""}</div><div class="dir">${dir}</div></div>`;
+const row = (badge, ic, t, s, fonte, cls = "") => `<div class="row ${cls}"><span class="badge${badge ? "" : " vazio"}">${badge}</span>${ic ? im(ic) : ""}<div>${t}${s ? ` <span class="s">${s}</span>` : ""}</div>${fonte ? `<span class="fonte">${fonte}</span>` : ""}</div>`;
+const tecla = k => `<span class="tecla">${k}</span>`;
+const bE = (s, ac) => `<span class="bE${ac ? " ac" : ""}">${s}</span>`;
+
+const Q = {};
+
+/* ---------- Q1: Now ---------- */
+Q.q1 = {
+  rotA: "<b>Hoje</b> &middot; aba Now (1.1.0, reconstru&iacute;da do c&oacute;digo, n&iacute;vel 16)",
+  rotB: "<b>Proposta</b> &middot; mesma informa&ccedil;&atilde;o, com a cara do ElvUI",
+  A: blz("Now", [
+    cab("Now (4)"),
+    L(C("lar", "Skinning capped at 75: train Journeyman")), BT("Arrow"),
+    L(C("azu", "New at 16: G = Mongoose Bite")),
+    L(C("azu", "New at 16: Shift+5 = Immolation Trap")),
+    L(C("ama", "Growl autocast is on in a group")),
+    cab("Coming up (levels 17-18)"),
+    L("Level 17: Talent: Improved Revive Pet 1/2"),
+    L("Level 18: Talent: Endurance Training 1/5"),
+    L("Level 18: Multi-Shot: AoE; shares its cooldown with Aimed Shot."),
+    L("Level 18: Key 3 = Multi-Shot (shares cooldown with Aimed Shot)"),
+    cab("Hidden", { aberta: false, res: "2 hidden" }),
+  ]),
+  B: elv("Now",
+    sec("Now", "4") +
+    card("#ff8c1a", "inv_misc_pelt_wolf_01", "Skinning capped at 75: train Journeyman", "Journeyman goes from 50 to 150 &middot; skinning trainer", bE("Arrow", 1)) +
+    card("#4d99ff", "ability_hunter_swiftstrike", "New key: Mongoose Bite", "Melee, after a dodge", tecla("G")) +
+    card("#4d99ff", "spell_fire_flameshock", "New key: Immolation Trap", "All traps share a 30 s cooldown", tecla("S5")) +
+    card("#ffd91a", "ability_physical_taunt", "Growl autocast is on in a group", "Right-click Growl on the pet bar to turn it off") +
+    sec("Coming up", "levels 17&ndash;18") +
+    `<div>` +
+    row("17", "ability_hunter_beastsoothe", "Talent: Improved Revive Pet 1/2", "", "build sheet") +
+    row("18", "spell_nature_reincarnation", "Talent: Endurance Training 1/5", "", "build sheet") +
+    row("", "ability_upgrademoonglaive", "New spell: Multi-Shot", "AoE; shares its cooldown with Aimed Shot", "Method") +
+    row("", "", `${tecla("3")}&nbsp; Multi-Shot goes on key 3`, "", "UIForever") +
+    `</div>` +
+    sec("Hidden", "2", true)
+  ),
+};
+
+/* ---------- Q2: Pet ---------- */
+Q.q2 = {
+  rotA: "<b>Hoje</b> &middot; aba Pet (javali no 16; pontos de treino ilustrativos)",
+  rotB: "<b>Proposta</b> &middot; cart&atilde;o do pet, tabela de ranks e passo a passo",
+  A: blz("Pet", [
+    cab("Your pet"),
+    L("Boar, level 16"),
+    L("Happiness: Happy (125% damage)"),
+    L("Diet: Meat, Fish, Cheese, Bread, Fungus, Fruit"),
+    L("Training points: 12 free (95 of 107 used)"),
+    cab("Next ability upgrades"),
+    L(C("mint", "Boar") + ", pet level 16 (you: level 16)"),
+    L("Bite: rank 1 -> 3 (pet 16, 7 TP) - " + C("verde", "can train now")),
+    L("&nbsp;&nbsp;&nbsp;" + C("cin", "No teacher you can tame yet. Lowest: Bloodsnout Worg (16-17, Silverpine Forest) *")),
+    L("Dash: not learned -> rank 1 (pet 30, 15 TP) - needs pet level 30"),
+    L("&nbsp;&nbsp;&nbsp;" + C("cin", "No teacher you can tame yet. Lowest: Sandstrider (30-31, Desolace)")),
+    L("Charge: rank 1 -> 2 (pet 12, 9 TP) - " + C("verde", "can train now")),
+    L("&nbsp;&nbsp;&nbsp;Tame: Young Goretusk (12-13, Westfall) *"), BT("Arrow: Young Goretusk"),
+    L("&nbsp;&nbsp;&nbsp;Tame: Goretusk (14-15, Westfall)"), BT("Arrow: Goretusk"),
+    L("&nbsp;&nbsp;&nbsp;Tame: Mangy Mountain Boar (14-15, Loch Modan)"), BT("Arrow: Mangy Mountain Boar"),
+    L("Cower: not learned -> rank 2 (pet 15, 10 TP) - " + C("verde", "can train now")),
+    L("&nbsp;&nbsp;&nbsp;" + C("cin", "No teacher you can tame yet. Lowest: Ornery Plainstrider (16-17, The Barrens)")),
+    L(C("cin", "* = the Saltii pick.")),
+    T(C("cin", "Route: stable your pet, tame the teacher, fight with it until you learn the rank, abandon it, call your pet back and teach the rank at Beast Training.")),
+    cab("Training plan", { aberta: false, res: "1 to learn" }),
+    cab("Pet tips"),
+    L(C("mint", "> ") + "Levels 1-60: Pet inherits 100% of the hunter's crit."),
+    L(C("mint", "> ") + "Levels 1-60: Inherited armor: check the pet tooltip (sources disagree)."),
+  ]),
+  B: elv("Pet",
+    `<div class="petcard"><img class="retrato" src="${I("ability_hunter_pet_boar")}">
+       <div style="width:190px"><div class="nome">Boar</div><div class="s" style="color:#9a9a9a;font-size:13px">level 16 &middot; Early leveling<br>unique: Charge</div></div>
+       <div><div class="barraE"><div class="f" style="width:100%;background:#3f8f3f"></div><div class="r">Happy &middot; 125% damage</div></div>
+            <div class="barraE"><div class="f" style="width:89%;background:#7a5fc0"></div><div class="r">Training points &middot; 12 free of 107</div></div></div>
+       <div style="width:150px;margin-left:4px">${["Meat", "Fish", "Cheese", "Bread", "Fungus", "Fruit"].map(d => `<span class="dieta">${d}</span>`).join("")}</div></div>` +
+    sec("Next ability upgrades", "what your Boar can learn now") +
+    `<table class="tb"><tr><th>Ability</th><th style="text-align:center">Rank</th><th style="text-align:center">Pet</th><th style="text-align:center">TP</th><th>Status</th><th>Teacher you can tame</th><th></th></tr>
+      <tr><td>${im("ability_hunter_pet_boar")}Charge</td><td class="num">1 &rarr; 2</td><td class="num">12</td><td class="num">9</td><td class="ok">&#9679; ready</td><td>Young Goretusk <span class="c-gold">&#9733;</span> <span class="c-cin">12&ndash;13 &middot; Westfall</span></td><td>${bE("Arrow", 1)}</td></tr>
+      <tr><td>${im("ability_racial_cannibalize")}Bite</td><td class="num">1 &rarr; 3</td><td class="num">16</td><td class="num">7</td><td class="ok">&#9679; ready</td><td class="c-cin">none yet &middot; first at 17: Bloodsnout Worg</td><td></td></tr>
+      <tr><td>${im("ability_druid_cower")}Cower</td><td class="num">&ndash; &rarr; 2</td><td class="num">15</td><td class="num">10</td><td class="ok">&#9679; ready</td><td class="c-cin">none yet &middot; first at 17: Ornery Plainstrider</td><td></td></tr>
+      <tr class="dim"><td>${im("ability_druid_dash")}Dash</td><td class="num">&ndash; &rarr; 1</td><td class="num">30</td><td class="num">15</td><td class="tranca">&#128274; pet 30</td><td class="c-cin">Sandstrider &middot; Desolace</td><td></td></tr></table>` +
+    `<div class="passos"><span class="p"><span class="n">1</span>Stable your pet</span><span class="seta">&rsaquo;</span><span class="p"><span class="n">2</span>Tame the teacher</span><span class="seta">&rsaquo;</span><span class="p"><span class="n">3</span>Fight until learned</span><span class="seta">&rsaquo;</span><span class="p"><span class="n">4</span>Abandon it</span><span class="seta">&rsaquo;</span><span class="p"><span class="n">5</span>Teach at Beast Training</span></div>` +
+    sec("Training plan", "1 to learn") +
+    `<div style="padding:2px 6px"><span class="chk"><i class="s">&#10003;</i>Growl</span><span class="chk"><i class="s">&#10003;</i>Great Stamina</span><span class="chk"><i class="n">&#10007;</i>Natural Armor <span class="c-cin" style="font-size:12.5px">&nbsp;pet trainer</span></span></div>` +
+    sec("Pet tips", "6 for your level &middot; 14 more with Show all") +
+    `<div>` + row("1&ndash;60", "", "Pet inherits 100% of the hunter's crit.", "", "LudiDeo") +
+    row("1&ndash;60", "", "An unhappy pet does much less damage and may run away.", "", "LudiDeo") + `</div>`
+  ),
+};
+
+/* ---------- Q3: Combat / Keys ---------- */
+const K = (k, ic, nm, est, lv) => ({ k, ic, nm, est, lv });
+const linha1 = [K("1", "ability_whirlwind", "sting_Auto"), K("2", "ability_impalingbolt", "Arcane Shot"), K("3", "ability_upgrademoonglaive", "Multi-Shot", "trava", 18),
+  K("4", "inv_spear_07", "Aimed Shot", "trava", 20), K("5", "ability_hunter_snipershot", "mark_Conc"), K("6", "ability_hunter_runningshot", "Burst", "trava", 26), null,
+  K("Q", "ability_meleedamage", "Raptor Strike"), K("E", "ability_rogue_trip", "Wing Clip"), K("R", "ability_hunter_mendpet", "pet_AllInOne"), K("F", "ability_whirlwind", "Auto Shot"),
+  K("T", "inv_misc_questionmark", "Summon Hawk", "trava", 25), K("G", "ability_hunter_swiftstrike", "Mongoose Bite", "novo")];
+const linha2 = [K("S1", "spell_nature_ravenform", "aspect_Hawk"), K("S2", "ability_hunter_aspectofthemonkey", "Monkey"), K("S3", "ability_mount_jungletiger", "Cheetah", "trava", 20),
+  K("S4", "spell_frost_freezingbreath", "Frost Trap", "trava", 28), K("S5", "spell_fire_flameshock", "Immolation", "novo"), K("S6", "spell_fire_selfdestruct", "Explosive", "trava", 34), null,
+  K("SQ", "ability_rogue_feint", "Disengage", "trava", 20), K("SE", "ability_rogue_feigndeath", "Feign Death", "trava", 30), K("SR", "ability_devour", "Intimidation", "trava", 30),
+  K("SF", "spell_fire_flare", "Flare", "trava", 32), K("ST", "ability_druid_cower", "Scare Beast"), K("SG", "inv_misc_questionmark", "Distracting")];
+const linha3 = [K("Z", "ability_physical_taunt", "Growl"), K("X", "ability_mount_jungletiger", "cancel_Cheetah", "trava", 20), K("V", "inv_misc_map_01", "RXPTargeting"), null,
+  K("C1", "ability_hunter_beasttraining", "feed_Pet"), K("C2", "spell_nature_spiritwolf", "Dismiss"), K("C3", "ability_hunter_beasttaming", "Tame Beast"), K("C4", "ability_hunter_eagleeye", "eagle_Eye"), null,
+  K("M4", "spell_frost_stun", "Concussive"), K("M5", "spell_frost_chainsofice", "Freezing Trap", "trava", 20)];
+const linha4 = [K("&#8679;&#9650;", "ability_hunter_beastcall", "send_Pet"), K("&#8679;&#9660;", "ability_hunter_beastsoothe", "pet_Return"), K("M3", "ability_hunter_beasttaming", "move_Here")];
+const grade = l => `<div class="grade">${l.map(t => t ? `<div class="tile ${t.est || ""}"><div class="q" style="background-image:url(${I(t.ic)})"><span class="k">${t.k}</span></div>${t.est === "trava" ? `<div class="lv">${t.lv}</div>` : ""}${t.est === "novo" ? `<span class="tag">NEW</span>` : ""}<div class="nm">${t.nm}</div></div>` : `<div class="sep"></div>`).join("")}</div>`;
+Q.q3 = {
+  rotA: "<b>Hoje</b> &middot; aba Combat, que abre com Rotation e segue com Keys",
+  rotB: "<b>Proposta</b> &middot; sub-abas e as teclas como uma grade igual &agrave;s barras",
+  A: blz("Combat", [
+    cab("Rotation"),
+    L("Levels 1-60: Auto Shot is a big part of your damage."),
+    L("Levels 1-60: If you are pulling the pet's aggro, let the pet land a few hits first."),
+    L("Levels 1-60: Since 11/03 all traps share a 30 s cooldown: using Immolation locks Freezing and Frost."),
+    L("Levels 16-40: Second mob: Serpent Sting with Immolation Trap and melee."),
+    L("Levels 16-60: Immolation Trap, option 1: Method leaves it out of the rotation; Freezing Trap (20) and Frost Trap (28) appear as control and slow."),
+    L("Levels 16-60: Immolation Trap, option 2: Raptor Strike together with Immolation Trap."),
+    cab("Keys"),
+    T(C("mint", "Your keys at level 16")), T(" "), T(C("mint", "New at this level")),
+    T(C("verde", "+ ") + C("gold", "G") + ": Mongoose Bite (melee, after a dodge)"),
+    T(C("verde", "+ ") + C("gold", "Shift+5") + ": Immolation Trap"), T(" "),
+    T(C("mint", "Main bar")),
+    T(C("gold", "1") + ": sting_Auto: Auto Shot; in combat the next press casts Serpent Sting once per target (Sting from 4)"),
+    T(C("gold", "2") + ": Arcane Shot"),
+    T(C("gold", "5") + ": mark_Conc: 1st press on a new target = Hunter's Mark and sends the pet (pet from 10); next presses = Concussive Shot when ready (from 8)"),
+    T(C("gold", "Q") + ": Raptor Strike (melee, only when melee is unavoidable)"),
+    T(C("gold", "E") + ": Wing Clip (melee slow)"),
+    T(C("gold", "R") + ": pet_AllInOne: no pet = Call Pet; dead pet = Revive Pet; live pet = Mend Pet (12)"),
+    T(C("gold", "F") + ": Auto Shot"),
+    T(C("gold", "G") + ": Mongoose Bite (melee, after a dodge)"),
+  ]),
+  B: elv("Combat",
+    `<div class="segs"><span>Rotation</span><span class="on">Keys</span><span>Weapons</span><span>Stats</span></div>` +
+    `<div class="lt">` +
+    `<div class="gtit">Main bar &middot; no modifier</div>` + grade(linha1) +
+    `<div class="gtit">Shift</div>` + grade(linha2) +
+    `<div class="gtit">Bar 2 &middot; Ctrl &middot; mouse buttons</div>` + grade(linha3) +
+    `<div class="gtit">Pet</div>` + grade(linha4) +
+    `<div class="tip" style="left:214px;top:66px"><div class="h">5 &middot; mark_Conc</div>1st press on a new target: Hunter's Mark and sends the pet.<br>Next presses: Concussive Shot when ready.<div class="g">Your macro &middot; Concussive also on Mouse 4</div></div>` +
+    `</div>` +
+    sec("Coming next", "up to level 22") +
+    `<div>` + row("18", "ability_upgrademoonglaive", `${tecla("3")} Multi-Shot`, "") +
+    row("20", "inv_spear_07", `${tecla("4")} Aimed Shot &nbsp;&middot;&nbsp; ${tecla("S3")} Cheetah &nbsp;&middot;&nbsp; ${tecla("SQ")} Disengage &nbsp;&middot;&nbsp; ${tecla("X")} cancel &nbsp;&middot;&nbsp; ${tecla("M5")} Freezing Trap`, "") + `</div>`
+  ),
+};
+
+/* ---------- Q4: Families ---------- */
+const FAM = [["Cat", "Damage", "cat"], ["Raptor", "Damage", "raptor"], ["Wind Serpent", "Nature dmg", "windserpent"], ["Scorpid", "Poison", "scorpid"], ["Boar", "Early leveling", "boar"],
+  ["Carrion Bird", "Safer solo", "vulture"], ["Bear", "AoE", "bear"], ["Gorilla", "AoE", "gorilla"], ["Turtle", "Defense", "turtle"], ["Spider", "PvP control", "spider"],
+  ["Crab", "Slow", "crab"], ["Hyena", "Bleed + slow", "hyena"], ["Crocolisk", "Anti-heal", "crocolisk"], ["Bat", "Anti-caster", "bat"], ["Bird of Prey", "Disarm", "owl"],
+  ["Tallstrider", "Armor reduction", "tallstrider"], ["Wolf", "Melee support", "wolf"], ["Fox", "Dodge / speed", "wolf"], ["Core Hound", "", "corehound"]];
+const REGRAS = ["Step 1 to learn a rank: stable your main pet before you tame the donor.", "Step 2: tame the donor beast, a wild creature at the level and zone listed for that rank.",
+  "Step 3: with the donor out, turn off its other abilities and fight until the new skill is learned.", "Step 4: once the skill is learned, let the donor go, since donor pets should be kept only as long as needed.",
+  "Step 5: take your main pet out of the stable and train the skill on it at Beast Training.", "Every family can learn Bite or Claw, sometimes both, plus Dash or Dive. Those ranks never upgrade on their own: you must learn and teach each new one.",
+  "Beast Training is in the General tab of the spellbook, not in the Beast Mastery tab.", "You can skip ranks: a pet that meets the level for rank 4 does not need to learn rank 1 first.",
+  "Beast Lore unlocks at level 24 and lets you inspect a wild beast's skills before you tame it.", "A pet trainer teaches Growl, Great Stamina, Natural Armor and resistances; damage attacks, movement and many family skills come from temporary donor tames.",
+  "Growl costs no training points but still takes one of the four active ability slots.", "A newly tamed low-level pet needs experience to catch up, so keep stable space free for the skills you still need to learn.",
+  "Food closer to the pet's level works better, and each family eats only some foods, so check its diet before buying stock.", "Claw has no cooldown and can spend focus fast, so cast a control skill like Web by hand when timing matters instead of letting the pet spend it all.",
+  "Pets now scale with your hunter gear: attack power, armor, stamina, hit and crit all feed the pet, so upgrading your own gear makes it stronger too.", "Blizzard says pets are less durable than intended and plans a stat adjustment on November 10; the numbers are unconfirmed, so doubt tanky picks for now.",
+  "At level 10, finishing both parts of the taming quest unlocks feeding and Beast Training. Busy players should tame something nearby, close to level 10.", "Early pet by race (level range): Human Prowler (9-10, Elwynn Forest); Dwarf Scarred Crag Boar (9-10, Dun Morogh); Orc/Troll Elder Mottled Boar (9-10, Durotar).",
+  "Night Elf Elder Nightsaber (about level 8, Teldrassil); Tauren Taloned Swoop (Mulgore) and Skyborne Windsong Crawler (Zephras Isle), no level given.", "Keep a usable rank of Bite or Claw as your first priority.",
+  "Corehounds appear in some game data, but the speaker has not verified a tameable one on Forever, so do not plan a build around them."];
+// ranks do javali (PetGuia.lua): nivel do pet de cada rank; sabe = ranks que o pet ja tem (ilustrativo: Bite 1 e Charge 1)
+const EIXO = [["Bite", "ability_racial_cannibalize", [1, 8, 16, 24, 32, 40, 48, 56], 1], ["Charge", "ability_hunter_pet_boar", [1, 12, 24, 36, 48, 60], 1],
+  ["Cower", "ability_druid_cower", [5, 15, 25, 35, 45, 55], 0], ["Dash", "ability_druid_dash", [30, 40, 50], 0]];
+function eixo() {
+  const x = lv => `calc(78px + (100% - 84px) * ${(lv - 1) / 59})`;
+  let h = "";
+  EIXO.forEach(([nm, ic, rs, sabe], i) => {
+    const y = i * 30;
+    h += `<div class="rotH" style="top:${y}px">${im(ic)}${nm}</div><div class="faixa" style="top:${y + 12}px"></div>`;
+    const alvo = rs.reduce((m, lv, j) => (lv <= 16 && j + 1 > sabe ? j + 1 : m), 0);
+    rs.forEach((lv, j) => {
+      const r = j + 1, cls = r <= sabe ? "sabe" : (r === alvo ? "agora" : "futuro");
+      h += `<div class="mk ${cls}" style="left:${x(lv)};top:${y + 4}px">${r}</div>`;
+    });
+  });
+  h += `<div class="hoje" style="left:${x(16)}"><span>your pet 16</span></div>`;
+  [1, 10, 20, 30, 40, 50, 60].forEach(lv => h += `<div class="reg" style="left:${x(lv)}">${lv}</div>`);
+  return `<div class="eixo">${h}</div>`;
+}
+Q.q4 = {
+  rotA: "<b>Hoje</b> &middot; aba Families ao abrir: as 38 regras v&ecirc;m primeiro, as fam&iacute;lias ficam embaixo",
+  rotB: "<b>Proposta</b> &middot; lista de fam&iacute;lias e detalhe, com os ranks numa r&eacute;gua de n&iacute;vel",
+  A: blz("Families", [cab("How pet abilities work"), ...REGRAS.map(r => L(r))]),
+  B: elv("Families",
+    `<div class="duas"><div class="lista">
+       <div class="buscaE" style="width:100%;margin-bottom:6px">Filter families</div>
+       ${FAM.slice(0, 15).map(([n, p, ic]) => `<div class="it${n === "Boar" ? " on" : ""}">${im("ability_hunter_pet_" + ic)}${n}${n === "Boar" ? `<span class="seu">YOUR PET</span>` : `<span class="p">${p}</span>`}</div>`).join("")}
+       <div class="it" style="color:#8a8a8a">&hellip; 4 more</div>
+       <div class="it" style="margin-top:4px;border-top:1px solid rgba(255,255,255,0.06)">${im("inv_misc_book_09")}How abilities work</div>
+     </div>
+     <div class="detalhe">
+       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><img src="${I("ability_hunter_pet_boar")}" style="width:40px;height:40px;border:1px solid #000">
+         <div><div style="font-size:20px;line-height:20px">Boar</div><div style="margin-top:4px"><span class="dieta">Early leveling</span><span class="dieta">unique: Charge</span><span class="dieta">LudiDeo: leveling A &middot; PvP C</span></div></div></div>
+       <div style="margin-bottom:2px"><span class="c-cin" style="font-size:12.5px">Eats&nbsp; </span>${["Meat", "Fish", "Cheese", "Bread", "Fungus", "Fruit"].map(d => `<span class="dieta">${d}</span>`).join("")}</div>
+       ${sec("Ranks by pet level")}
+       ${eixo()}
+       <div class="leg"><span><i style="background:#aad372"></i>your pet has it</span><span><i style="background:#2a2208;border:1px solid #ffd100"></i>can learn now</span><span><i style="background:#151515;border:1px solid #555"></i>later</span><span style="margin-left:auto">hover a rank: who teaches it</span></div>
+       <div class="tip" style="left:400px;top:182px;width:250px"><div class="h">Charge 2 &middot; pet 12 &middot; 9 TP</div>Young Goretusk <span class="c-gold">&#9733;</span> 12&ndash;13, Westfall<br>Goretusk 14&ndash;15, Westfall<br>Mangy Mountain Boar 14&ndash;15, Loch Modan<div class="g">&#9733; Saltii pick &middot; click for an arrow</div></div>
+       ${sec("Notes")}
+       <div><div class="nota">The single-target tank for leveling, because Charge holds the threat.<span class="fonte">LudiDeo</span></div>
+       <div class="nota">Charge closes the distance, briefly holds the target and strengthens the next hit; boars eat many foods.<span class="fonte">Saltii</span></div>
+       <div class="nota">A boar's Charge lets you jump with Bestial Swiftness.<span class="fonte">MetaGoblin</span></div></div>
+     </div></div>`
+  ),
+};
+
+const q = Q[(location.hash || "#q1").slice(1)] || Q.q1;
+document.getElementById("rotA").innerHTML = q.rotA;
+document.getElementById("rotB").innerHTML = q.rotB;
+document.getElementById("A").innerHTML = q.A;
+document.getElementById("B").innerHTML = q.B;
+</script></body></html>

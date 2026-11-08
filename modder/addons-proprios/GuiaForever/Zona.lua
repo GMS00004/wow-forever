@@ -239,73 +239,71 @@ local function setaBicho(e, mapa)
   ns.msg(onde .. ". No arrow: /way #" .. mapa .. string.format(" %.1f %.1f", melhor[1] * 100, melhor[2] * 100))
 end
 
--- Aba Zone ------------------------------------------------------------------
+-- Aba Zone (janela 1.2): blocos da janela. A fonte dos dados nunca aparece na janela.
+local ICONE_PROF = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01"
+local ESTADO_COR = { vermelho = "falta", laranja = "agora", amarelo = "agora", verde = "depois", cinza = "depois" }
+
 local function linhaFaixas(minima)
   return string.format("orange to %d, yellow to %d, green to %d, grey from %d (estimated)",
     minima + FAIXAS.laranja, minima + FAIXAS.amarelo, minima + FAIXAS.verde, minima + FAIXAS.verde)
 end
 
-local function linhaRota(b, T, tab, pericia, rotulo)
-  if not (tab and tab.passos and ns.indicePasso) then return end
-  local i = ns.indicePasso(tab, pericia)
-  local passo = tab.passos[i]
-  if passo then T(b, rotulo .. ": " .. passo.texto .. " (" .. passo.de .. "-" .. passo.ate .. ")") end
+-- Passo do roteiro de leveling da profissao para a pericia: item curto, o texto inteiro na dica.
+local function itemRota(b, tab, pericia)
+  if not (tab and tab.passos and ns.indicePasso) then return false end
+  local passo = tab.passos[ns.indicePasso(tab, pericia)]
+  if not passo then return false end
+  b[#b + 1] = { t = "item", s = "Leveling route, skill " .. passo.de .. "-" .. passo.ate, dica = passo.texto }
+  return true
 end
 
 function ns.blocosZona(b)
-  local T, cab, B = ns.blocoTexto, ns.blocoCabecalho, ns.blocoBotao
   local pericia, maximo, tem = periciaSkinning()
   local idx, motivo = montarIndice()
   local mapaIdx, mapaReal = nil, nil
   if idx then mapaIdx, mapaReal = mapaDaZona(idx) end
   local nomeZona = mapaReal and nomeMapa(mapaReal) or "unknown zone"
-  T(b, ns.COR .. nomeZona .. ns.FIM .. "  Skinning " .. pericia .. "/" .. tostring(maximo or "?"))
+  b[#b + 1] = { t = "item", s = nomeZona, sub = "Skinning " .. pericia .. "/" .. tostring(maximo or "?"), icone = ICONE_PROF }
   if not tem then
-    T(b, "You do not have Skinning (shown with skill 0). Trainers: Trainers tab.")
+    b[#b + 1] = { t = "item", s = "You do not have Skinning yet", dica = "Trainers: see the Trainers sub-tab." }
   end
-  for _, tr in ipairs(TREINOS) do
-    if not maximo or maximo < tr.vai then
-      T(b, "|cff999999" .. tr.nome .. " Skinning needs skill " .. tr.pede .. " (goes to " .. tr.vai
-        .. "), character level " .. tr.nivel .. " (level per Naowh)|r")
-    end
-  end
+
   if maximo and maximo < 300 and pericia >= maximo then
     local prox
     for _, tr in ipairs(TREINOS) do
       if tr.vai > maximo then prox = tr; break end
     end
-    T(b, colorir("vermelho", "Capped at " .. maximo .. ": train " .. (prox and prox.nome or "the next rank")))
+    b[#b + 1] = {
+      t = "card", cor = "laranja", s = "Capped at " .. maximo .. ": train " .. (prox and prox.nome or "the next rank"),
+      botao = { rotulo = "Arrow", acao = function() if ns.setaTreinador then ns.setaTreinador("Skinning") end end },
+    }
+  end
+  for _, tr in ipairs(TREINOS) do
+    if not maximo or maximo < tr.vai then
+      b[#b + 1] = { t = "item", nivel = tr.nivel, s = tr.nome .. " needs skill " .. tr.pede, sub = "goes to " .. tr.vai, apagado = true }
+    end
   end
 
   if not idx then
-    T(b, motivo or "Index unavailable.")
+    b[#b + 1] = { t = "vazio", s = motivo or "Index unavailable." }
   elseif not mapaIdx then
-    T(b, "No skinnable creature known in " .. nomeZona .. ".")
+    b[#b + 1] = { t = "vazio", s = "No skinnable creature known in " .. nomeZona .. "." }
   else
     local itens = {}
     for _, e in ipairs(idx[mapaIdx]) do
       local minimaMax = periciaMinima(e.max)
       local minimaMin = periciaMinima(e.min)
-      local cor = corDe(pericia, minimaMax)
-      local corMin = corDe(pericia, minimaMin)
-      itens[#itens + 1] = { e = e, minima = minimaMax, cor = cor, corMin = corMin }
+      itens[#itens + 1] = { e = e, minima = minimaMax, cor = corDe(pericia, minimaMax), corMin = corDe(pericia, minimaMin) }
     end
     table.sort(itens, function(a, c)
       if ORDEM[a.cor] ~= ORDEM[c.cor] then return ORDEM[a.cor] < ORDEM[c.cor] end
       if a.e.max ~= c.e.max then return a.e.max < c.e.max end
       return a.e.nome < c.e.nome
     end)
-    cab(b, "Skinnable creatures here (" .. #itens .. ")")
+
+    -- uteis: laranja e amarelo; sem nenhum, os verdes (como antes). Seta nas seis primeiras.
     local uteis = {}
     for _, it in ipairs(itens) do
-      local e = it.e
-      local niv = (e.min == e.max) and tostring(e.max) or (e.min .. "-" .. e.max)
-      local estado = ROTULO[it.cor]
-      if it.corMin ~= it.cor then
-        estado = estado .. ", higher levels; lowest level " .. ROTULO[it.corMin]
-      end
-      T(b, colorir(it.cor, e.nome .. " (lvl " .. niv .. "): needs " .. it.minima .. " | "
-        .. linhaFaixas(it.minima) .. " - " .. estado))
       if it.cor == "laranja" or it.cor == "amarelo" then uteis[#uteis + 1] = it end
     end
     if #uteis == 0 then
@@ -313,33 +311,67 @@ function ns.blocosZona(b)
         if it.cor == "verde" then uteis[#uteis + 1] = it end
       end
     end
-    if #uteis > 0 then
-      T(b, " ")
-      for i = 1, math.min(6, #uteis) do
-        local e = uteis[i].e
-        B(b, "Arrow: " .. e.nome, function() setaBicho(e, mapaIdx) end)
-      end
-    else
-      cab(b, "No useful creature here for your skill")
-      linhaRota(b, T, ns.tabelaProf("Skinning"), pericia, "Source route (wow-professions)")
+    local comSeta = {}
+    for i = 1, math.min(6, #uteis) do comSeta[uteis[i]] = true end
+
+    b[#b + 1] = { t = "sec", s = "Skinnable creatures here", qtd = tostring(#itens), id = "zona-bichos" }
+    if #uteis == 0 then
+      b[#b + 1] = { t = "item", s = "No useful creature here for your skill" }
+      itemRota(b, ns.tabelaProf("Skinning"), pericia)
     end
+
+    local linhas = {}
+    for _, it in ipairs(itens) do
+      local e = it.e
+      local niv = (e.min == e.max) and tostring(e.max) or (e.min .. "-" .. e.max)
+      local dica = linhaFaixas(it.minima)
+      if it.corMin ~= it.cor then dica = dica .. ". At its lowest level: " .. ROTULO[it.corMin] end
+      local linha = {
+        celulas = {
+          e.nome,
+          { s = niv, numero = true },
+          { s = tostring(it.minima), numero = true },
+          { s = ROTULO[it.cor], estado = ESTADO_COR[it.cor], cor = it.cor },
+        },
+        dica = dica,
+      }
+      if comSeta[it] then
+        linha.botao = { rotulo = "Arrow", acao = function() setaBicho(e, mapaIdx) end }
+      end
+      linhas[#linhas + 1] = linha
+    end
+    b[#b + 1] = {
+      t = "tabela", id = "zona-bichos",
+      colunas = {
+        { s = "Creature" },
+        { s = "Level", largura = 70, alinha = "centro" },
+        { s = "Needs", largura = 70, alinha = "centro" },
+        { s = "Color", largura = 110 },
+      },
+      linhas = linhas, limite = 6,
+    }
   end
 
   local okL, lista = pcall(ns.minhasProfissoes)
   if okL and type(lista) == "table" then
     for _, pr in ipairs(lista) do
       if pr.nome == "Leatherworking" then
-        T(b, " ")
-        linhaRota(b, T, pr.tab, pr.pericia, "Leatherworking " .. pr.pericia .. " - source route (wow-professions)")
+        local rota = {}
+        if itemRota(rota, pr.tab, pr.pericia) then
+          b[#b + 1] = { t = "sec", s = "Leatherworking", qtd = tostring(pr.pericia), id = "zona-couro" }
+          for _, x in ipairs(rota) do b[#b + 1] = x end
+        end
       end
     end
   end
 
   local d = db()
-  T(b, " ")
-  T(b, "|cff999999Journal: " .. contar(d.skinCores) .. " colors, " .. contar(d.skinLog) .. " skill gains, "
-    .. contar(d.skinAprendidos) .. " learned creatures. Ranges marked estimated are to be confirmed."
-    .. " Sources: skill rule wow.gg (Nov 4, 2026); creatures cmangos classic-db; locations and levels Questie|r")
+  b[#b + 1] = { t = "sec", s = "Journal", aberta = false, id = "zona-diario" }
+  b[#b + 1] = {
+    t = "nota",
+    s = contar(d.skinCores) .. " colors, " .. contar(d.skinLog) .. " skill gains, " .. contar(d.skinAprendidos)
+      .. " learned creatures. Ranges marked estimated are to be confirmed.",
+  }
 end
 
 -- Tooltip ---------------------------------------------------------------------
