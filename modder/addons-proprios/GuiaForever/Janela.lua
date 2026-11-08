@@ -372,6 +372,8 @@ end
 -- 2026-11-07 (1.0.1): marcas de recompensa do RestedXP, pular magia no Naowh e
 -- precos no tooltip do Auctionator, lidos no codigo instalado a partir do video
 -- do Studen Albatroz (comum\fontes\economia\studen-ouro-leveling.md).
+-- 2026-11-07 (noite): Forever Guide 1.38.5, comandos lidos no codigo instalado
+-- (Dungeons.lua:2906 /fguide, ItemSearch.lua:1816 /flfind).
 local ADDONS = {
   { "GuiaForever", "the guide: your next steps, pet, talents, combat and professions", "J, /guia or the book button by the minimap" },
   { "Naowh Training Planner", "what to train now, its cost and the nearest trainer; right-click a spell to skip it and see the gold you save", "/nftraining" },
@@ -387,6 +389,7 @@ local ADDONS = {
   { "Leatrix Plus", "sells junk, repairs and loots fast (already on)", "/ltp" },
   { "Pawn", "green arrow in the tooltip when an item is an upgrade", "hover an item; /pawn" },
   { "Deadly Boss Mods", "boss alerts and timers", "automatic in dungeons; /dbm" },
+  { "Forever Guide", "dungeon loot tables (bosses with 3D model, trash, drop chances), where any item drops, rares with alerts", "/fguide (or the compass button); /flfind <item>" },
   { "BugSack", "addon errors", "/bugsack" },
   { "UIForever", "this layout, keys, rotation cooldown bar under your character, number fonts", "automatic on login" },
 }

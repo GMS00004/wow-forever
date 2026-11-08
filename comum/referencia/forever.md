@@ -62,6 +62,26 @@ Cada fato leva a marca de como foi lido e a data. `[página]` é página aberta 
 | A build de leveling da Method fica no atributo `data-talent` da página: a parte depois do `;` tem uma letra (alfabeto base64) por ponto, do nível 10 ao 60, e cada letra indexa a lista de talentos da classe ordenada pelo id do nó, em `/dfc/ForeverTalentsData-1.60.1-custom.json`. Quando a Method remove um nó da tabela, as builds salvas antes ficam deslocadas | [página] | method.gg, lido bruto pela sessão |
 | O tooltip da Wowhead do Forever devolve o nome atual de uma magia: `https://nether.wowhead.com/forever/tooltip/spell/<id>` | [página] | Wowhead |
 
+## Bestiário, loot e modelo de criatura (lido em 2026-11-07)
+
+Levantamento para o pedido do dono de um bestiário dentro do jogo (buscar qualquer inimigo pelo nome e ver onde vive, o loot e o modelo animado) e das loot tables de dungeon. As linhas `[página]` são páginas da CurseForge ou do GitHub lidas pelo WebFetch ou pelo `gh`; a compatibilidade real se confere no TOC depois de baixar.
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| Nenhum addon do Forever junta busca de qualquer mob por nome, mapa de spawns, tabela de loot com chance e modelo 3D animado | [busca] e [página] | levantamento desta tabela |
+| Forever Guide (LinFeiyizu, 1.38.5 de 07/11, 155 mil downloads, só CurseForge, sem GitHub nem Wago): 22 mil itens com todas as fontes e chance de drop, 404 raros (28 novos) com loot, spawns e alerta, cartões de chefe com modelo 3D, habilidades e loot das 35 dungeons (9 novas), com trash; dados do cliente 1.60.1, QuestieDB, ForeverChanges, Wowhead Forever, WoWSims e cmangos, com o dado Classic marcado. Traz também LFG, troca de layer, varredura de leilão e profissões. A página não descreve navegador de mob comum por nome | [página] | curseforge.com/wow/addons/forever-guide |
+| Naowh Forever, módulo Dungeon Journal (1.2.16, Interface 16001, depende só do núcleo `NaowhForever`, já instalado): chefes de cada dungeon em ordem, com raros, baús e um cartão de trash, o loot com chance, quests da dungeon, mapa com os chefes, reputação e PvP, histórico de abates e saques; abre com `/nfjournal`; começa desligado. O loot vem da Wowhead Forever e da wowsrc.com, montado fora do jogo. O README não fala em modelo 3D | [página] | `NaowhForever_DungeonJournal` (TOC e README), GitHub naowh-gaming/NaowhForever, branch `main` |
+| O mesmo README: o id do NPC sai do GUID, e o GUID de inimigo fica secreto em combate e em alguns lugares (conferir com `issecretvalue` antes de ler); dentro de dungeon, `UNIT_DIED` e `PARTY_KILL` escondem qual criatura morreu (visto no 1.60.1, Deadmines, 30/09); abate de chefe se conta pelo `ENCOUNTER_END` | [página] | idem |
+| Forever Bestiary (Saul31322, 0.7.0 de 20/10, ainda do beta): só feras domáveis (606, 49 novas), modelo 3D girável, spawns, habilidades por rank; usa `/bestiary` e `/bestiario` | [página] | curseforge.com/wow/addons/forever-bestiary-pet-hunter |
+| Forever Bestiary (Arxie, 1.2.1 de 03/11), Forever Bestiary (Ragunduh, 1.2 de 13/10), Mob Ledger (1.4.6 de 04/11), Explore Forever (1.0.1 de 05/11) e Forever Drops (05/11): só registram o que o jogador (ou a comunidade do addon) viu e saqueou; nenhum traz banco de loot completo nem modelo animado | [página] | páginas de cada um na CurseForge |
+| RareNet (0.9.4 de 07/11, GPL-3.0, github.com/zyra-v21/wow-rarenet): só raros, com modelo 3D, spawns e loot (Forever e Classic) | [página] | curseforge.com/wow/addons/rarenet |
+| WhatItDrops (1.4.0 de 22/10, GPL-3.0, github.com/SokratisV/WhatItDrops): loot do alvo e busca de criatura por nome, com dados da era TBC (o autor avisa que erra no Forever) | [página] | curseforge.com/wow/addons/whatitdrops |
+| Lootwise (1.0.13 de 07/11, github.com/barbecue-citrus-varmint/lootwise): loot de chefe de dungeon com modelo 3D; sem mob comum | [página] | curseforge.com/wow/addons/lootwise |
+| Loot fica no servidor: o cliente não diz quem dropa o quê, então todo addon de loot embarca dados ou aprende saqueando | [página] | README do `NaowhForever_DungeonJournal` |
+| A API de modelo existe na lista oficial do Forever: `SetCreature`, `SetDisplayInfo`, `SetAnimation`, `HasAnimation`, `SetModelByCreatureDisplayID`. O `EJ_*` e o `C_EncounterJournal` também estão na lista, sem confirmação de que o cliente tenha dados de diário | [local] | `modder\ferramentas\guia\api-forever\WidgetAPI.lua` e `GlobalAPI.lua` (Ketho/BlizzardInterfaceResources, branch `forever`) |
+| O QuestieDB do Forever (1.0.12) traz, de cada NPC, nome, níveis, rank, spawns por zona, rotas, quests e facção; o loot dele cobre só itens de quest (`classicItemDrops.lua`, chances da Wowhead) | [local] | `QuestieDB\src\meta\npcMeta.lua` e `support\Forever\DropTables` |
+| A página de NPC da Wowhead Forever responde 403 ao cliente automático; o tooltip público (`nether.wowhead.com/forever/tooltip/npc/<id>`) responde com nome, nível, tipo, família e coordenadas | [local] | teste com `curl` em 2026-11-07 (npc 2032) |
+
 ## Fontes
 
 - Warcraft Wiki, Patch 1.60.1: https://warcraft.wiki.gg/wiki/Patch_1.60.1
