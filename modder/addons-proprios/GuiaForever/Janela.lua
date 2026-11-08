@@ -369,16 +369,19 @@ end
 -- Aba Addons (dono, 2026-11-06, noite: "nao estou sabendo acessar todas as
 -- funcionalidades"). Os comandos foram lidos no codigo de cada addon instalado
 -- (SLASH_ e RegisterChatCommand) na mesma noite. Nome, o que faz, como abrir.
+-- 2026-11-07 (1.0.1): marcas de recompensa do RestedXP, pular magia no Naowh e
+-- precos no tooltip do Auctionator, lidos no codigo instalado a partir do video
+-- do Studen Albatroz (comum\fontes\economia\studen-ouro-leveling.md).
 local ADDONS = {
   { "GuiaForever", "the guide: your next steps, pet, talents, combat and professions", "J, /guia or the book button by the minimap" },
-  { "Naowh Training Planner", "what to train now, its cost and the nearest trainer", "/nftraining" },
+  { "Naowh Training Planner", "what to train now, its cost and the nearest trainer; right-click a spell to skip it and see the gold you save", "/nftraining" },
   { "Naowh Forever", "options of the Naowh modules; its profession window replaces the game's", "/nf" },
-  { "RestedXP Guides", "the step-by-step route (window at the top left)", "/rxp" },
+  { "RestedXP Guides", "the step-by-step route (window at the top left); when a quest lets you choose a reward, a vendor icon marks the one that sells for most and the RestedXP logo marks its upgrade pick (it may disagree with Pawn)", "/rxp" },
   { "Questie", "quests, trainers and services on the map and minimap", "M (map); /questie for options" },
   { "Forever Quests", "marks Forever's new quests in Questie's tooltips", "automatic" },
   { "Baganator", "all your bags in one window, with search", "B" },
   { "Syndicator", "your other characters' items in Baganator's search", "automatic" },
-  { "Auctionator", "prices and quick selling at the auction house", "opens with the auctioneer; /atr" },
+  { "Auctionator", "prices and quick selling at the auction house; item tooltips show the vendor and the auction price (auction only for items it has already seen)", "opens with the auctioneer; /atr" },
   { "TomTom", "arrow to a map coordinate", "/way 57 61" },
   { "GatherMate2", "gathering nodes you have already seen, on the map", "M (map); /gathermate" },
   { "Leatrix Plus", "sells junk, repairs and loots fast (already on)", "/ltp" },
