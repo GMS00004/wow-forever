@@ -103,6 +103,10 @@ Os eventos são `UNIT_HAPPINESS` e `PET_UI_UPDATE`. O ElvUI esconde o `PetFrame`
 
 Tooltips e setas `[página]`: o `TooltipDataProcessor.AddTooltipPostCall` existe no Forever e cobre `SetTrainerService`, `SetSpellBookItem` e `SetPetAction`; ninguém usa `OnTooltipSetSpell`. A seta nativa, sem TomTom, sai de `C_Map.SetUserWaypoint` mais `C_SuperTrack.SetSuperTrackedUserWaypoint`.
 
+### Alvo elite, mapa e tags de recurso (lido em 2026-11-08)
+
+Lido `[página]` no espelho `Ketho/wow-ui-source-forever`. `UnitClassification` e `UnitIsBossMob` não têm `SecretWhen` no `UnitDocumentation.lua`, então o retorno nunca é secreto e um addon pode decidir com ele em combate. O quadro de alvo do Forever escolhe a arte em `Blizzard_UnitFrame\Camelot\TargetFrameUtils.lua` (`GetBossPortraitFrameData`): chefe usa `UI-HUD-UnitFrame-Target-PortraitOn-Boss-Gold-Winged` (11, -4), raro e raro elite usam `...-Boss-Rare-Silver-Winged` (8, -7) e elite usa `...-Boss-Gold` (0, 1). Os números são o deslocamento do canto de cima à direita em relação ao container, e o retrato é um círculo de 58 em (-26, -19). Mapa: o M abre maximizado ou em janela pelo CVar `miniWorldMap` (`QuestLogOwnerMixin`), salvo quando a regra `Enum.GameRule.MaximizeWorldMapDisabled` está ativa; no Forever o botão de maximizar aparece (print do dono, 2026-11-08), então a regra não está ativa. Barra de XP: `STATUS_BAR_CONTAINER_WIDTH_GAMEPAD` e `STATUS_BAR_NUM_SEGMENTS_GAMEPAD` são a metade dos normais (`Camelot\StatusTrackingBarConstants.lua`). ElvUI 16.01 `[local]`: no modo moderno, `Tags\Modern.lua` tem `health:current:longvalue`, `power:current:longvalue` e `power:max:longvalue`.
+
 ### Talentos e RestedXP
 
 Os talentos são uma árvore nova `[página]`: não há `Blizzard_TalentUI`. A árvore é o `PlayerSpellsFrame.TalentsFrame` (`Blizzard_PlayerSpells`, carregado só quando aberto), com botões por nó. Por isso o guia de talentos do RestedXP, que só conhece o `PlayerTalentFrame`, não funciona no Forever (`[local]`: `RXPGuides/Talents.lua:214-235`).

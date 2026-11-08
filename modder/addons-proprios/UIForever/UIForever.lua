@@ -879,6 +879,177 @@ local function instalarGanchosChat()
 end
 
 ---------------------------------------------------------------------------
+-- 10. Icones de cidade do Questie no minimapa (pedido do dono em 2026-11-08)
+---------------------------------------------------------------------------
+-- O Questie desenha vendedores, reparo, estalagem, voo e afins no mapa e no
+-- minimapa (QuestieMenu, "Townsfolk"), lendo Questie.db.profile.townsfolkConfig
+-- no QuestieMenu:OnLogin, no fim da inicializacao dele (QuestieInit, Stage3,
+-- numa thread que comeca no PLAYER_LOGIN). O UIForever liga as categorias de
+-- UIForeverConfig.questie antes disso, no proprio ADDON_LOADED: o Questie
+-- carrega antes (ordem alfabetica) e o Questie.db nasce no OnInitialize dele.
+-- Se o Questie.db ainda nao existir, tenta de novo 2 s depois de entrar no
+-- mundo e, se o Questie ja tiver terminado de iniciar, pede o redesenho pelo
+-- proprio QuestieMenu:OnLogin(true), como o Questie faz. Cada item so e gravado
+-- quando entra no Config.lua (controle em UIForeverDB.questie).
+
+local function aplicarQuestie(tarde)
+  local c = cfg.questie
+  if not (c and c.ligado) then return end
+  local Q = _G.Questie
+  local perfil = Q and Q.db and Q.db.profile
+  if not perfil then return end
+  UIForeverDB.questie = UIForeverDB.questie or {}
+  local feito = UIForeverDB.questie
+  local mudou = {}
+  if type(perfil.townsfolkConfig) ~= "table" then perfil.townsfolkConfig = {} end
+  for _, chave in ipairs(c.cidade or {}) do
+    if feito["cidade:" .. chave] ~= true then
+      perfil.townsfolkConfig[chave] = true
+      feito["cidade:" .. chave] = true
+      mudou[#mudou + 1] = chave
+    end
+  end
+  if c.escalaMinimapa and feito.escalaMinimapa ~= c.escalaMinimapa then
+    perfil.globalMiniMapTownsfolkScale = c.escalaMinimapa
+    feito.escalaMinimapa = c.escalaMinimapa
+    mudou[#mudou + 1] = "escala no minimapa " .. tostring(c.escalaMinimapa)
+  end
+  if #mudou == 0 then return end
+  registrar("questie: " .. table.concat(mudou, ", "))
+  if tarde and Q.started and _G.QuestieLoader and QuestieLoader.ImportModule then
+    local ok, menu = pcall(QuestieLoader.ImportModule, QuestieLoader, "QuestieMenu")
+    if ok and menu and menu.OnLogin then
+      local okL, erroL = pcall(menu.OnLogin, menu, true)
+      if not okL then registrar("questie: erro ao redesenhar: " .. tostring(erroL)) end
+    end
+  end
+end
+
+---------------------------------------------------------------------------
+-- 11. Dragao do elite no retrato do alvo (pedido do dono em 2026-11-08)
+---------------------------------------------------------------------------
+-- A arte e a regra do quadro de alvo da propria Blizzard no Forever
+-- (Blizzard_UnitFrame, Camelot\TargetFrameUtils.lua, GetBossPortraitFrameData,
+-- usada em Mainline\TargetFrame.lua): chefe = dourado com asas, raro e raro
+-- elite = prateado com asas, elite = dragao dourado. No quadro da Blizzard o
+-- retrato e um circulo de 58 a (-26, -19) do canto de cima a direita do
+-- container, e o dragao prende o canto de cima a direita dele no do container,
+-- com o deslocamento de cada arte; logo, em relacao ao centro do circulo, o
+-- canto do dragao fica em (29 + 26 + dx, 29 + 19 + dy). Aqui o circulo e
+-- imaginario, de 58 x escala, centrado no retrato do ElvUI, e a arte vira de
+-- lado quando o retrato fica a esquerda do quadro, para as asas abrirem para
+-- fora. UnitClassification e UnitIsBossMob nao devolvem valor secreto
+-- (UnitDocumentation.lua do Forever, sem SecretWhen).
+-- O quadro do alvo do ElvUI e seguro; o dragao nao se prende a ele: fica no
+-- UIParent, num ponto calculado fora de combate (o quadro nao anda em combate),
+-- e em combate so troca a arte e aparece ou some.
+
+local ARTES_ELITE = {
+  chefe = { "UI-HUD-UnitFrame-Target-PortraitOn-Boss-Gold-Winged", 11, -4 },
+  raro = { "UI-HUD-UnitFrame-Target-PortraitOn-Boss-Rare-Silver-Winged", 8, -7 },
+  elite = { "UI-HUD-UnitFrame-Target-PortraitOn-Boss-Gold", 0, 1 },
+}
+
+local dragao
+local geometriaAlvo -- centro do retrato em unidades do UIParent e o lado dele
+local avisouAtlas = {}
+local fElite = CreateFrame("Frame")
+local dragaoInstalado = false
+
+local function segredo(v)
+  return issecretvalue and issecretvalue(v)
+end
+
+local function arteDoAlvo()
+  if not UnitExists("target") then return nil end
+  local chefe = UnitIsBossMob and UnitIsBossMob("target")
+  if segredo(chefe) then return nil end
+  if chefe then return ARTES_ELITE.chefe end
+  local c = UnitClassification and UnitClassification("target")
+  if c == nil or segredo(c) then return nil end
+  if c == "worldboss" then return ARTES_ELITE.chefe end
+  if c == "rare" or c == "rareelite" then return ARTES_ELITE.raro end
+  if c == "elite" then return ARTES_ELITE.elite end
+  return nil
+end
+
+-- fora-de-combate
+local function lerGeometriaAlvo()
+  if emCombate() then return end
+  local quadro = _G.ElvUF_Target
+  local retrato = quadro and quadro.Portrait
+  local base = retrato and (retrato.backdrop or retrato)
+  if not (base and base.GetCenter and quadro.GetCenter) then return end
+  local bx, by = base:GetCenter()
+  local qx = quadro:GetCenter()
+  if not (bx and by and qx) or segredo(bx) or segredo(by) or segredo(qx) then return end
+  local r = base:GetEffectiveScale() / UIParent:GetEffectiveScale()
+  geometriaAlvo = { x = bx * r, y = by * r, esquerda = bx < qx }
+end
+
+local function atualizarDragao()
+  local c = cfg.elite
+  local arte = c and c.ligado and arteDoAlvo()
+  if not arte then
+    if dragao then dragao:Hide() end
+    return
+  end
+  lerGeometriaAlvo()
+  local info = C_Texture and C_Texture.GetAtlasInfo and C_Texture.GetAtlasInfo(arte[1])
+  if not (geometriaAlvo and info and info.width and info.width > 0) then
+    if not info and not avisouAtlas[arte[1]] then
+      avisouAtlas[arte[1]] = true
+      registrar("dragao do elite: atlas " .. arte[1] .. " nao existe neste cliente")
+    end
+    if dragao then dragao:Hide() end
+    return
+  end
+  if not dragao then
+    dragao = CreateFrame("Frame", "UIForeverDragaoElite", UIParent)
+    dragao:SetFrameStrata("MEDIUM")
+    dragao:SetFrameLevel(40)
+    dragao.tex = dragao:CreateTexture(nil, "OVERLAY")
+    dragao.tex:SetAllPoints(dragao)
+  end
+  local k = c.escala or 1
+  local dx = (55 + arte[2]) * k + (c.x or 0)
+  local dy = (48 + arte[3]) * k + (c.y or 0)
+  dragao:SetSize(info.width * k, info.height * k)
+  dragao:ClearAllPoints()
+  local tex = dragao.tex
+  tex:SetAtlas(arte[1])
+  if geometriaAlvo.esquerda then
+    dragao:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", geometriaAlvo.x - dx, geometriaAlvo.y + dy)
+    local ULx, ULy, LLx, LLy, URx, URy, LRx, LRy = tex:GetTexCoord()
+    tex:SetTexCoord(URx, URy, LRx, LRy, ULx, ULy, LLx, LLy)
+  else
+    dragao:SetPoint("TOPRIGHT", UIParent, "BOTTOMLEFT", geometriaAlvo.x + dx, geometriaAlvo.y + dy)
+  end
+  dragao:Show()
+end
+
+local function agendarDragao()
+  -- um instante depois, para o quadro do alvo do ElvUI ja estar de pe
+  depois(0.05, function()
+    local ok, erro = pcall(atualizarDragao)
+    if not ok then registrar("erro no dragao do elite: " .. tostring(erro)) end
+  end)
+end
+
+local function instalarDragao()
+  if dragaoInstalado or not (cfg.elite and cfg.elite.ligado) then return end
+  dragaoInstalado = true
+  fElite:SetScript("OnEvent", function(_, evento, unidade)
+    if evento == "UNIT_CLASSIFICATION_CHANGED" and unidade ~= "target" then return end
+    agendarDragao()
+  end)
+  for _, ev in ipairs({ "PLAYER_TARGET_CHANGED", "UNIT_CLASSIFICATION_CHANGED", "PLAYER_REGEN_ENABLED" }) do
+    pcall(fElite.RegisterEvent, fElite, ev)
+  end
+  agendarDragao()
+end
+
+---------------------------------------------------------------------------
 -- Eventos
 ---------------------------------------------------------------------------
 
@@ -916,6 +1087,8 @@ f:SetScript("OnEvent", function(_, evento, arg1)
     else
       registrar("ElvUI ausente")
     end
+    local okQ, erroQ = pcall(aplicarQuestie, false)
+    if not okQ then registrar("erro no questie: " .. tostring(erroQ)) end
 
   elseif evento == "PLAYER_ENTERING_WORLD" then
     if entrou then return end
@@ -935,6 +1108,10 @@ f:SetScript("OnEvent", function(_, evento, arg1)
       aplicarBarras()
       local okXP, erroXP = pcall(criarBarraXP)
       if not okXP then registrar("erro na barra de XP: " .. tostring(erroXP)) end
+      local okQ, erroQ = pcall(aplicarQuestie, true)
+      if not okQ then registrar("erro no questie: " .. tostring(erroQ)) end
+      local okD, erroD = pcall(instalarDragao)
+      if not okD then registrar("erro no dragao do elite: " .. tostring(erroD)) end
       if (UIForeverCharDB.resumo or 0) > 0 then
         msg("layout do ElvUI aplicado (" .. UIForeverCharDB.resumo .. " ajustes).")
         UIForeverCharDB.resumo = 0

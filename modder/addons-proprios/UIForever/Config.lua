@@ -77,6 +77,12 @@ UIForeverConfig.elvui = {
   { "chat.panelWidthRight", 472 },
   { "LeftChatPanelFaded", false },
   { "RightChatPanelFaded", false },
+  -- sem o fundo dos dois paineis de chat (dono, 2026-11-08: "barra fantasma"
+  -- nos dois cantos de baixo). O da direita ficava vazio (o Loot / Trade esta
+  -- solto) e o da esquerda aparecia vazio quando o Edit Mode tirava o chat
+  -- dele. O texto do chat e as barras de dados ficam; as abas somem ate passar
+  -- o mouse (fadeTabsNoBackdrop, padrao do ElvUI). Para voltar: "SHOWBOTH".
+  { "chat.panelBackdrop", "HIDEBOTH" },
   { "datatexts.panels.LeftChatDataPanel.backdrop", false },
   { "datatexts.panels.RightChatDataPanel.backdrop", false },
   -- a barra de XP da Blizzard (secao 6, barraXP) substitui a do ElvUI;
@@ -107,6 +113,11 @@ local NUMEROS = {
 -- o ElvUI passa o valor da Blizzard direto, sem ler o valor secreto.
 local VIDA = "||cFF29CC00[health:current:longvalue] / [health:max:longvalue]||r"
 local RECURSO = "||cFF007ACC[perpp<%]||r" -- o padrao do ElvUI no Forever
+-- Mana do jogador em numeros, atual / maxima, como a vida (dono, 2026-11-08:
+-- "preciso que a quantidade de mana seja displayed (em numeros)"). Tags do
+-- modo moderno (Tags\Modern.lua), iguais as da vida. O alvo continua em %
+-- (decisao do modder: bicho sem mana mostraria "0 / 100" de furia).
+local RECURSO_JOGADOR = "||cFF007ACC[power:current:longvalue] / [power:max:longvalue]||r"
 
 local function numero(caminho, novo, padrao)
   local valor = padrao
@@ -123,13 +134,14 @@ local function textoProprio(formato, lado, x)
 end
 
 -- quadros do jogador e do alvo: lado e deslocamento iguais aos do texto padrao
--- (jogador: vida a esquerda e recurso a direita; alvo: o contrario)
-for unidade, lados in pairs({ player = { "LEFT", 2, "RIGHT", -2 }, target = { "RIGHT", -2, "LEFT", 2 } }) do
+-- (jogador: vida a esquerda e recurso a direita; alvo: o contrario). O quinto
+-- item e o formato do recurso (jogador em numeros, alvo em %).
+for unidade, lados in pairs({ player = { "LEFT", 2, "RIGHT", -2, RECURSO_JOGADOR }, target = { "RIGHT", -2, "LEFT", 2, RECURSO } }) do
   local base = "unitframe.units." .. unidade
   numero(base .. ".health.text_format", "", VIDA)
   numero(base .. ".power.text_format", "", RECURSO)
   table.insert(UIForeverConfig.elvui, { base .. ".customTexts.UIForeverVida", textoProprio(VIDA, lados[1], lados[2]) })
-  table.insert(UIForeverConfig.elvui, { base .. ".customTexts.UIForeverRecurso", textoProprio(RECURSO, lados[3], lados[4]) })
+  table.insert(UIForeverConfig.elvui, { base .. ".customTexts.UIForeverRecurso", textoProprio(lados[5], lados[3], lados[4]) })
   numero(base .. ".castbar.customTimeFont.enable", true, false) -- tempo da barra de lancamento
   numero(base .. ".castbar.customTimeFont.font", NUMEROS.fonte, "PT Sans Narrow")
 end
@@ -367,6 +379,11 @@ UIForeverConfig.cvars = {
   -- noite, por escolha do dono: a barra de recargas da rotacao (barra 5) faz o
   -- papel, e os icones pequenos dele, sem magias escolhidas, so duplicavam.
   { "cooldownViewerEnabled", "0" },
+  -- M abre o mapa maximizado (dono, 2026-11-08: "o mapa do M e pequeno demais").
+  -- E o mesmo CVar que o botao de maximizar do mapa grava
+  -- (QuestLogOwnerMixin:HandleUserActionMaximizeSelf); o botao de minimizar
+  -- volta para a janela e fica, porque esta linha so e gravada uma vez.
+  { "miniWorldMap", "0" },
 }
 
 -- 6. Barra de experiencia com a cara original da Blizzard (pedido do dono em
@@ -377,10 +394,43 @@ UIForeverConfig.cvars = {
 -- ao passar o mouse, ou sempre, se o "status text" estiver ligado).
 UIForeverConfig.barraXP = {
   ligada = true,
-  largura = 1192, -- tamanho do container da Blizzard no Forever (STATUS_BAR_CONTAINER_WIDTH)
+  -- metade do comprimento (dono, 2026-11-08), como a propria Blizzard faz no
+  -- modo de controle: STATUS_BAR_CONTAINER_WIDTH_GAMEPAD = 1192 / 2 e
+  -- STATUS_BAR_NUM_SEGMENTS_GAMEPAD = 20 / 2 (Camelot\StatusTrackingBarConstants.lua).
+  -- Para voltar ao tamanho cheio: 1192 e 20.
+  largura = 596,  -- era 1192 (STATUS_BAR_CONTAINER_WIDTH)
   altura = 17,    -- STATUS_BAR_CONTAINER_HEIGHT
-  segmentos = 20, -- STATUS_BAR_NUM_SEGMENTS
+  segmentos = 10, -- era 20 (STATUS_BAR_NUM_SEGMENTS)
   -- sem "ponto", a barra fica onde estava a barra de XP do ElvUI; para mudar:
   -- ponto = { "BOTTOM", "UIParent", "BOTTOM", 0, 44 },
   corQuests = { r = 1, g = 0.82, b = 0, a = 0.7 }, -- trecho das quests (amarelo de quest)
 }
+
+-- 7. Icones de cidade do Questie no minimapa e no mapa (dono, 2026-11-08: "o
+-- icone dos vendedores e etc tem que aparecer no meu minimapa, tudo de
+-- relevante tem de aparecer no minimapa"). Nomes das categorias do Questie
+-- (QuestieMenu.lua e Townsfolk.lua). Os treinadores das profissoes que o
+-- personagem tem ja aparecem ("Known Professions", ligado no Questie).
+-- Estabulo, municao e comida de pet so existem para o cacador. Cada item so e
+-- gravado quando entra nesta lista; o que o dono desmarcar depois no menu do
+-- Questie (botao do Questie no minimapa) fica desmarcado.
+UIForeverConfig.questie = {
+  ligado = true,
+  cidade = {
+    "Repair", "Innkeeper", "Flight Master", "Stable Master", "Mailbox", "Banker", "Auctioneer",
+    "Class Trainer", "Weapon Master",
+    -- vendedores (submenu Vendor do Questie); Trade Goods tem linha e sal do Leatherworking
+    "Ammo", "Pet Food", "Food", "Drink", "Bags", "Trade Goods",
+  },
+  escalaMinimapa = 1.0, -- tamanho dos icones de cidade no minimapa (o padrao do Questie e 0.7)
+}
+
+-- 8. Dragao do elite no retrato do alvo (dono, 2026-11-08: "preciso que seja
+-- melhor indicado visualmente quando um inimigo e elite, eu gosto do dragao
+-- dourado da UI da Blizzard"). A arte e a regra sao as do quadro de alvo da
+-- Blizzard no Forever: elite = dragao dourado, chefe = dourado com asas, raro e
+-- raro elite = prateado com asas. escala = 1 e o tamanho da Blizzard (em volta
+-- de um retrato redondo de 58, aqui imaginario e centrado no retrato do ElvUI);
+-- x (para fora do retrato) e y (para cima) acertam a posicao depois de ver no
+-- jogo. Desligar: ligado = false e /reload.
+UIForeverConfig.elite = { ligado = true, escala = 1.0, x = 0, y = 0 }
