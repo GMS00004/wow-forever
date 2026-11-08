@@ -106,7 +106,7 @@ O painel:
 | Linha nova | entra com um fade de 0,3 s; sem som e sem piscar |
 | Clique no texto | `ns.abrirAba(item.aba)` |
 | Mouse por cima | tooltip com `dica` e "Source: ..." |
-| Botão direito | esconde até o texto mudar (`ns.dbPersonagem().agoraOcultos[chave] = texto`) |
+| Botão direito | esconde até o texto mudar (`ns.dbPersonagem().agoraOcultos[chave] = texto`); item com `aoOcultar` (o treino de classe, desde a 1.2) chama essa função no lugar, que guarda o que foi pulado (`ns.dbPersonagem().treinoPulado`), e o item só volta com conteúdo novo (seção 11.9, linha `Agora.lua`) |
 | Login | por 30 s o título vira "Next 3" e o painel mostra só 3 linhas |
 | Mudança de tamanho ou lugar | chama `UIForever_AtualizarMargem()` se existir |
 
