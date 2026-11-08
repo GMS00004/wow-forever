@@ -9,7 +9,7 @@
 --    portugues, a janela diz como trocar o idioma.
 -- Texto com acento vai em escape de byte (o checar-lua.mjs exige .lua so em ASCII).
 
-local NOME = ...
+local NOME, ns = ...
 
 local SEMENTE_LEATRIX = {
   AutoSellJunk = "On",    -- vende o lixo no vendedor
@@ -57,9 +57,15 @@ local function gravarCVar(nome, valor)
   return false
 end
 
+local LINHA_BRUXO = "Voc\195\170 \195\169 bruxo: a cada n\195\173vel, uma janela diz o talento e o que aprender no instrutor. Digite /kit bruxo para ver de novo."
+
 local function textoBemvindo()
   local linhas = {}
   for i, linha in ipairs(LINHAS) do linhas[i] = linha end
+  if ns.ehBruxo and ns.ehBruxo() then
+    table.insert(linhas, #linhas, LINHA_BRUXO)
+    table.insert(linhas, #linhas, "")
+  end
   if not emPortugues() then
     table.insert(linhas, 2, "")
     table.insert(linhas, 3, LINHA_IDIOMA)
@@ -107,4 +113,8 @@ quadro:SetScript("OnEvent", function(_, evento, arg1)
 end)
 
 SLASH_KITAMIGO1 = "/kit"
-SlashCmdList["KITAMIGO"] = mostrarBemvindo
+SlashCmdList["KITAMIGO"] = function(msg)
+  local arg = string.lower(strtrim(msg or ""))
+  if arg == "bruxo" and ns.kitBruxo and ns.kitBruxo() then return end
+  mostrarBemvindo()
+end

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Guia do Bruxo (Demonologia)</title>
+<style>
+@page { size: 125mm 200mm; margin: 7mm; }
+* { box-sizing: border-box; }
+body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.35; color: #1b1b1b; margin: 0; }
+h1 { font-size: 19pt; margin: 0 0 3mm; color: #4b1f6b; }
+h2 { font-size: 14pt; margin: 5mm 0 2mm; color: #fff; background: #5b2a82; padding: 1.2mm 2.5mm; border-radius: 1.5mm; break-after: avoid; }
+p { margin: 0 0 2mm; }
+ol.passos { list-style: none; counter-reset: p; padding: 0; margin: 0 0 2mm; }
+ol.passos > li { counter-increment: p; position: relative; padding-left: 10mm; margin-bottom: 2mm; break-inside: avoid; }
+ol.passos > li::before { content: counter(p); position: absolute; left: 0; top: 0; width: 7mm; height: 7mm; line-height: 7mm; text-align: center; font-weight: 700; font-size: 13pt; color: #fff; background: #7a3fa8; border-radius: 50%; }
+ul.dicas { list-style: none; padding: 0; margin: 0; }
+ul.dicas li { margin-bottom: 1.6mm; padding-left: 4mm; position: relative; break-inside: avoid; }
+ul.dicas li::before { content: "•"; position: absolute; left: 0; color: #7a3fa8; font-weight: 700; }
+table { width: 100%; border-collapse: collapse; font-size: 10.5pt; }
+td, th { border: 0.3mm solid #bbb; padding: 1.3mm 2mm; vertical-align: top; text-align: left; }
+th { background: #eadcf5; }
+tr { break-inside: avoid; }
+td.n { white-space: nowrap; font-weight: 700; }
+.dica { background: #f6effc; border-left: 1.2mm solid #7a3fa8; padding: 1.5mm 2.5mm; margin: 0 0 2mm; }
+.pe { font-size: 9pt; color: #666; margin-top: 4mm; }
+</style>
+</head>
+<body>
+
+<h1>Guia do Bruxo</h1>
+<p>Você é um bruxo de Demonologia: o seu demônio faz o trabalho pesado. Você marca o alvo, põe os feitiços que machucam com o tempo e atira com a varinha no resto do tempo.</p>
+
+<h2>O jogo te avisa</h2>
+<p>A cada nível, aparece uma janela dizendo o talento daquele nível, o que aprender no instrutor de bruxo (e quanto custa) e o que pode pular para economizar ouro.</p>
+<p>Para ver de novo: aperte Enter, digite <b>/kit bruxo</b> e aperte Enter.</p>
+<p class="dica">No nível 18, quando você aprender a Dor Lancinante, aparece um botão novo na sua barra chamado <b>Marca</b>. É com ele que você começa as lutas.</p>
+
+<h2>Talentos, nível a nível</h2>
+<p>A partir do nível 10, você ganha um ponto de talento por nível. Abra a janela de talentos e clique no talento da tabela.</p>
+<table>
+<tr><th>Nível</th><th>Talento</th><th>Árvore</th></tr>
+<tr><td class="n">10</td><td>Corrupção Aprimorada (1 ponto)</td><td>Suplício</td></tr>
+<tr><td class="n">11 a 15</td><td>Poder Profano (5 pontos)</td><td>Demonologia</td></tr>
+<tr><td class="n">16 e 17</td><td>Energias Demoníacas (2)</td><td>Demonologia</td></tr>
+<tr><td class="n">18 a 20</td><td>Vitalidade Vil (3)</td><td>Demonologia</td></tr>
+<tr><td class="n">21 a 23</td><td>Sayaad Aprimorado (3)</td><td>Demonologia</td></tr>
+<tr><td class="n">24 e 25</td><td>Mestre-evocador (2)</td><td>Demonologia</td></tr>
+<tr><td class="n">26 a 28</td><td>Marca Demoníaca (3)</td><td>Demonologia</td></tr>
+<tr><td class="n">29</td><td>Dominância Vil</td><td>Demonologia</td></tr>
+<tr><td class="n">30</td><td>Sacrifício Demoníaco</td><td>Demonologia</td></tr>
+<tr><td class="n">31</td><td>Vínculo Anímico</td><td>Demonologia</td></tr>
+<tr><td class="n">32 a 34</td><td>Conhecimento Demoníaco (3)</td><td>Demonologia</td></tr>
+<tr><td class="n">35</td><td>1 ponto livre: Abraço Demoníaco ou Égide Demoníaca</td><td>Demonologia</td></tr>
+<tr><td class="n">36 a 40</td><td>Mestre Demonologista (5)</td><td>Demonologia</td></tr>
+<tr><td class="n">41</td><td>Pacto Demoníaco</td><td>Demonologia</td></tr>
+<tr><td class="n">42 a 45</td><td>Corrupção Aprimorada (até completar 5)</td><td>Suplício</td></tr>
+<tr><td class="n">46 a 50</td><td>Supressão (5)</td><td>Suplício</td></tr>
+<tr><td class="n">51 a 60</td><td>Pandemia, Ruína da Agonia Aprimorada (2) e Malevolência, nesta ordem</td><td>Suplício</td></tr>
+</table>
+<p class="dica">Se o nome no jogo estiver um pouco diferente, ou se não achar o talento, chame o Bruno.</p>
+
+<h2>Seus demônios</h2>
+<ul class="dicas">
+<li>Você começa com o Diabrete.</li>
+<li>Missões de bruxo dão demônios novos: o Emissário do Caos no nível 10, a Súcubo no 20 e o Caçador Vil no 30. A janela do nível avisa.</li>
+<li>Quando tiver a Súcubo, use ela o tempo todo. O Emissário do Caos fica para as puxadas grandes nas masmorras.</li>
+<li>Demônio muito machucado: chame outro, em vez de curar com o Funil de Vida.</li>
+<li>De tempos em tempos, use uma bandagem no demônio (profissão Primeiros Socorros).</li>
+</ul>
+
+<h2>Como lutar</h2>
+<ol class="passos">
+<li>Botão <b>Marca</b>: a Dor Lancinante acerta o alvo e o demônio ataca junto. A partir do nível 26, com a Marca Demoníaca, o demônio bate muito mais nesse alvo.</li>
+<li>Ruína da Agonia.</li>
+<li>Maldição dos Elementos (a partir do nível 20).</li>
+<li>Imolação.</li>
+<li>Corrupção.</li>
+<li>Depois, a varinha na maior parte do tempo. Quando for lançar alguma coisa, use a Dor Lancinante ou a Seta Sombria.</li>
+</ol>
+<p>Antes do nível 18, ainda sem a Dor Lancinante, use o que já tiver da lista, começando pela Ruína da Agonia.</p>
+<ul class="dicas">
+<li>Dá para lutar com dois inimigos: quando o primeiro estiver com 20 a 30% de vida, puxe o próximo com a Ruína da Agonia ou a Maldição dos Elementos, e o demônio segura. Três também dá.</li>
+<li>Medo, só quando precisar.</li>
+<li>Pouca mana: Drenar Vida.</li>
+<li>Armadura Demoníaca e, a partir do 31, Vínculo Anímico: deixe sempre ligados.</li>
+<li>A varinha é muito forte. Compre uma boa no leilão (o Bruno ajuda a escolher).</li>
+</ul>
+
+<h2>Jogando com o Bruno (paladino tanque)</h2>
+<ul class="dicas">
+<li>Comece marcando com o botão Marca o alvo que o Bruno está segurando. Depois marque outro alvo, e nunca o mesmo de novo: a Súcubo tira a atenção do inimigo do tanque.</li>
+<li>Antes do Fogo do Inferno, ponha os feitiços de dano nos inimigos, para o Bruno segurar eles.</li>
+<li>Cuidado com a atenção dos inimigos: se eles vierem em você, pare um pouco e deixe o Bruno pegar.</li>
+<li>Peça a bênção do paladino.</li>
+<li>A sua Maldição dos Elementos também aumenta o dano do paladino.</li>
+</ul>
+
+<p class="pe">Build do Crix Forever (vídeo de 03/11/2026), escolhida pelo Bruno. Nomes em português da Wowhead do Forever; podem mudar um pouco no jogo.</p>
+
+</body>
+</html>

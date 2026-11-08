@@ -75,8 +75,9 @@ exit (Invoke-ScriptWow {
     foreach ($f in @('instalar.ps1')) {
         if (-not (Test-Path -LiteralPath (Join-Path $kitFonte $f) -PathType Leaf)) { Stop-Wow PREREQ "Falta $f em $kitFonte" }
     }
-    $pdf = Join-Path $kitFonte 'Guia do Kit.pdf'
-    if (-not (Test-Path -LiteralPath $pdf -PathType Leaf)) { Write-Linha 'AVISO sem o Guia do Kit.pdf: o zip sai sem o guia' ; $pdf = $null }
+    $pdfs = @(Get-ChildItem -LiteralPath $kitFonte -Filter '*.pdf' -File | ForEach-Object { $_.FullName })
+    if ($pdfs.Count -eq 0) { Write-Linha 'AVISO sem PDF na pasta kit: o zip sai sem guia' }
+    foreach ($x in $pdfs) { Write-Linha ("GUIA " + [IO.Path]::GetFileName($x)) }
     if (-not $Aplicar) { Write-Linha 'PREVIA nada gravado; rode com -Aplicar'; return 0 }
 
     # 2. Montagem numa pasta curta
@@ -112,7 +113,7 @@ exit (Invoke-ScriptWow {
         $ps1 = [IO.File]::ReadAllText((Join-Path $kitFonte 'instalar.ps1'), [Text.Encoding]::UTF8).TrimStart([char]0xFEFF)
         $bat = ($CABECALHO.TrimEnd() + "`n" + $ps1) -replace "`r`n", "`n" -replace "`n", "`r`n"
         [IO.File]::WriteAllText((Join-Path $raizKit 'INSTALAR.bat'), $bat, (New-Object System.Text.UTF8Encoding $false))
-        if ($pdf) { Copy-Item -LiteralPath $pdf -Destination (Join-Path $raizKit 'Guia do Kit.pdf') }
+        foreach ($x in $pdfs) { Copy-Item -LiteralPath $x -Destination (Join-Path $raizKit ([IO.Path]::GetFileName($x))) }
 
         # Montado à mão: o CreateFromDirectory do .NET do PowerShell 5.1 grava os nomes com "\".
         $zipKit = Join-Path $tmp 'Kit-WoW-Forever.zip'
@@ -129,7 +130,7 @@ exit (Invoke-ScriptWow {
         if (-not (Test-Path -LiteralPath $Destino)) { [void](New-Item -ItemType Directory -Path $Destino -Force) }
         $final = Join-Path $Destino 'Kit-WoW-Forever.zip'
         Copy-Item -LiteralPath $zipKit -Destination $final -Force
-        if ($pdf) { Copy-Item -LiteralPath $pdf -Destination (Join-Path $Destino 'Guia do Kit.pdf') -Force }
+        foreach ($x in $pdfs) { Copy-Item -LiteralPath $x -Destination (Join-Path $Destino ([IO.Path]::GetFileName($x))) -Force }
         $msg = Join-Path $kitFonte 'mensagem-whatsapp.txt'
         if (Test-Path -LiteralPath $msg -PathType Leaf) { Copy-Item -LiteralPath $msg -Destination (Join-Path $Destino 'mensagem-whatsapp.txt') -Force }
         $mb = (Get-Item -LiteralPath $final).Length / 1MB
