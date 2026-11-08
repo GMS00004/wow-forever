@@ -21,6 +21,7 @@ const FONTES = [
   'RestedXP',
   'Naowh',
   'leak',
+  'Saltii', // guia de pets do Saltii (comum\fontes\builds\saltii-hunter-pets.md), 2026-11-08
   'you', // decisao do proprio dono (ficha), como nas teclas (Teclas.lua, f = "you")
 ];
 const PERGUNTA_MAX = 90;

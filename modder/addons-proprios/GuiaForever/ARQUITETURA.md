@@ -263,3 +263,54 @@ O mapa vale para que os itens do painel (que usam `talentos`, `nivel`, `teclas`,
 ## 9. UIForever 0.6.0 (tarefa A9)
 
 A margem das janelas do jogo é a borda direita da coluna da esquerda: o lado esquerdo do `RXPFrame` mais o maior entre a largura dele e a do `GuiaForeverAgora` (360 quando ele não existe), mais 8, em unidades do `UIParent`. Ela é aplicada por `SetUIPanelLayoutAttribute("LEFT_OFFSET", v)` só fora de combate, no login (+3 s), quando o `RXPFrame` muda de lugar ou tamanho e quando a global `UIForever_AtualizarMargem()` é chamada. Sem RestedXP, a margem fica no padrão (16).
+
+## 10. Guia de pets (1.1.0, 2026-11-08)
+
+Pedido do dono em 2026-11-07: um guia completo de habilidades de pet, por família e com progressão ("quando preciso domar outra fera de nível maior para aprender o rank seguinte"), no jogo e em PDF, com as explicações dos vídeos do Saltii (cartões) e do LudiDeo (tier list). Plano: `C:\Users\PC-AVELL\.claude\plans\olha-a-coisa-que-wiggly-pinwheel.md`.
+
+### 10.1 Arquivos
+
+| Arquivo | Papel |
+|---|---|
+| `PetGuia.lua` | dados gerados, global `GuiaForeverPetGuia`; nunca editar à mão (`ferramentas\guia\pets\gerar-guia.mjs`) |
+| `Familias.lua` | módulo: aba "Families" e a seção de próximos ranks da aba Pet |
+| `Janela.lua` | aba nova `{ id = "familias", rotulo = "Families" }` logo depois de `pet`; botões de aba com 94 de largura e passo de 96 (7 abas cabem nos 760); `construtores.familias` chama `ns.blocosFamilias(b)`; `construtores.pet` chama `ns.blocosProximosRanks(b)` logo depois de "Your pet" (as duas chamadas guardadas, regra 3) |
+| `GuiaForever.toc` | `PetGuia.lua` depois de `Dicas.lua`; `Familias.lua` depois de `Pet.lua`; versão 1.1.0 |
+
+Entradas do gerador, em `ferramentas\guia\pets\`: `habilidades.json` (cliente do Forever pelo wago.tools, build 1.60.1.70862: famílias, dieta, habilidades, rank, nível do pet, pontos de treino, spell id), `professores.json` e `feras.json` (Forever-Hunter-Pets, MIT, e Petopia Forever: quem ensina cada rank e a velocidade de cada fera), `saltii.json` (cartões do Saltii) e `textos.json` (notas por família e regras, escritas a partir das fontes do dono, cada uma com a fonte).
+
+### 10.2 `GuiaForeverPetGuia`
+
+    GuiaForeverPetGuia = {
+      gerado = "AAAA-MM-DD", build = "1.60.1.70862",
+      fontes = { { id = "Saltii", nome = "...", url = "...", data = "..." }, ... },
+      regras = { { t = "<linha>", f = "<fonte>" }, ... },      -- "How pet abilities work"
+      familias = {                                              -- lista, na ordem de exibição
+        { nome = "Cat", papel = "Damage", unica = "Prowl", dieta = { "Meat", "Fish" },
+          habilidades = { "Bite", "Claw", "Dash", "Prowl", ... }, -- treináveis por fera (sem passivas técnicas)
+          notas = { { t = "<linha>", f = "<fonte>" }, ... },
+          rapidas = { { npc = 2850, n = "Broken Tooth", nv = "37", z = "Badlands", v = 1.0, f = "<fonte>" }, ... } },
+      },
+      habilidades = {
+        Claw = { desc = "<efeito>", treinador = false, familias = { "Bat", ... },  -- ou "all"
+                 ranks = { { r = 1, pet = 1, pt = 1, id = <spellId>,
+                             prof = { { npc = <id>, n = "Strigid Owl", nv = "5-6", z = "Teldrassil",
+                                        fam = "Bird of Prey", v = 2.0, f = "Saltii", s = true, ok = true } } } } },
+      },
+    }
+
+`s = true` marca o doador documentado pelo Saltii (vem primeiro na lista); os outros professores seguem por nível. `ok` é a confirmação da Forever-Hunter-Pets (`nil` quando a fonte não diz). Habilidade de treinador (`treinador = true`) não tem `prof`. Texto só ASCII, até 160 caracteres por `t`, em inglês.
+
+### 10.3 `Familias.lua`
+
+| API | Contrato |
+|---|---|
+| `ns.petRanks()` | `{ [habilidade] = rank }` do pet ativo, pelo livro do pet (`C_SpellBook.HasPetSpells`, `GetSpellBookItemInfo(i, Enum.SpellBookSpellBank.Pet)`): primeiro pelo `spellID` contra os `id` dos ranks do `GuiaForeverPetGuia`, depois pelo nome com o número do `subName` ("Rank 3"). Sem pet, `{}` |
+| `ns.blocosProximosRanks(b)` | seção "Next ability upgrades" (aberta): família (`UnitCreatureFamily("pet")`), nível do pet e do jogador; para cada habilidade da família, o rank atual, o próximo (nível do pet e pontos de treino) e se já dá para treinar; até 3 professores que o jogador já pode domar (nível máximo da fera menor ou igual ao do jogador, porque o Tame Beast não funciona acima do seu nível, nota da Blizzard de 24/09), o do Saltii primeiro, com zona; um botão "Arrow" por professor quando o QuestieDB tiver o spawn (mesmo caminho de `Treinadores.lua`/`Zona.lua`, `ns.seta`). Uma linha final lembra o caminho: estabular o pet, domar o professor, lutar até aprender, devolver o professor e ensinar no Beast Training. Sem pet ou sem família conhecida, uma linha só |
+| `ns.blocosFamilias(b)` | aba Families: (1) "How pet abilities work" (aberta na primeira vez) com `regras`; (2) `ns.blocosProximosRanks`; (3) uma seção recolhida por família, com resumo "papel, única, dieta", as linhas de papel, habilidade única, dieta, habilidades, notas e feras rápidas, e uma subseção recolhida (nível 2) "<Família> progression" com uma linha por rank de cada habilidade (`Claw 3 - pet 16, 7 TP: Black Bear Patriarch (16-17, Loch Modan)`, os outros professores no tooltip da linha); (4) "Abilities": uma seção recolhida por habilidade com efeito, quem aprende e os ranks com até 4 professores na linha e o resto no tooltip; (5) "Pet trainer": as de treinador com rank, nível e pontos; (6) "Sources" |
+
+Regras da seção 1 valem por inteiro. Leitura só de estado (`UnitCreatureFamily`, `UnitLevel`, livro do pet, `C_PetInfo.GetPetTrainingPoints`); nada de API secreta, nada que compre ou treine (regra 7). Atualiza no `UNIT_PET`, `PET_BAR_UPDATE`, `SPELLS_CHANGED` e `UNIT_PET_TRAINING_POINTS` pelo `ns.ao`, só marcando sujo; a janela recalcula ao montar a aba.
+
+### 10.4 PDF
+
+`ferramentas\guia\pets\gerar-pdf.mjs` monta um HTML com o mesmo conteúdo do `GuiaForeverPetGuia` (regras, famílias com progressão, habilidades com todos os professores, treinador, fontes), página de 125 mm de largura, e imprime pelo Edge sem tela (`msedge --headless=new --no-pdf-header-footer --print-to-pdf=...`) em `P:\Meu Drive\WoW Forever\Guias\guia-pets-cacador.pdf`. Texto em inglês, igual ao do jogo.

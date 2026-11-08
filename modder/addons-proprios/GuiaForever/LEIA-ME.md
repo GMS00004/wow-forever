@@ -1,6 +1,18 @@
 # GuiaForever
 
-Addon próprio do dono, versão 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+Addon próprio do dono, versão 1.1.0 (2026-11-08: guia de habilidades de pet por família, aba Families e seção Next ability upgrades na aba Pet; ver "O que mudou na 1.1"). Antes: versão 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+
+## O que mudou na 1.1
+
+Pedido do dono, 2026-11-07, noite: um guia completo de habilidades de pet, por família e com progressão ("quando preciso arrumar outro pet [...] de level maior pra aprender um nível maior de habilidade"), no jogo e em PDF, com as explicações dos vídeos do Saltii e do LudiDeo. Contrato na seção 10 do ARQUITETURA.md.
+
+| Peça | O que faz |
+|---|---|
+| aba Families (J) | "How pet abilities work" (o caminho para aprender um rank sem trocar de pet, pontos de treino, estábulo, felicidade, velocidade de ataque), uma seção por família (papel, habilidade única, dieta, habilidades, notas das fontes, feras rápidas e a progressão rank a rank com o professor), "Abilities" com todos os professores, "Pet trainer" e "Sources" |
+| Next ability upgrades (aba Pet e Families) | lê a família, o nível e o livro do pet e mostra, por habilidade, o maior rank que o pet já pode treinar (ou o seguinte, com o nível que falta), os pontos de treino e até 3 professores que você já pode domar, com botão Arrow |
+| PDF | o mesmo conteúdo em P:\Meu Drive\WoW Forever\Guias\guia-pets-cacador.pdf (125 mm, para o celular) |
+
+Dados gerados por ferramentas\guia\pets\gerar-guia.mjs a partir do cliente do Forever (wago.tools, build 1.60.1.70862), da Forever-Hunter-Pets (MIT) e da Petopia (professores), dos cartões do Saltii e dos textos das fontes (textos.json). O Saltii marca o doador documentado de cada rank com *.
 
 ## O que mudou na 1.0
 
@@ -25,17 +37,19 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 |---|---|
 | `Dados.lua` | `GuiaForeverDados[CLASSE]` (talento por nível, `lei` e `aberto`), `GuiaForeverMacros`, `GuiaForeverGraficos`, `GuiaForeverProfissoesPlanejadas`, `GuiaForeverRastreador` e, desde a 1.0, `GuiaForeverPet` (ids das magias de pet, missão 6103, treinadores de pet e vendedor de carne, com coordenadas do Naowh) |
 | `Dicas.lua` | `GuiaForeverDicas[CLASSE]`. As listas `magias`, `armas`, `pets`, `rotacao`, `atributos` e `notas` trazem os campos opcionais da 1.0 (`tags`, `raca`, `zona`, `requer`, `magia`, `prio`). A lista nova `petTreino` guarda as habilidades de pet do plano |
-| `Ajuda.lua` | `GuiaForeverAjuda[CLASSE]`: 13 perguntas do dono com as respostas das fontes, para a aba Help (1.0) |
+| `PetGuia.lua` | gerado (1.1): `GuiaForeverPetGuia`, famílias, habilidades, ranks, professores, regras e notas; nunca editar à mão |
+| `Ajuda.lua` | `GuiaForeverAjuda[CLASSE]`: 14 perguntas (13 até a 1.0.1) do dono com as respostas das fontes, para a aba Help (1.0) |
 | `ProfissoesA.lua`, `ProfissoesB.lua` | roteiros das 10 profissões |
 | `GuiaForever.lua` | núcleo: profissões, gráficos, macros e comandos `/guia`; funções compartilhadas em `ns` |
 | `Estado.lua` | base comum da 1.0: eventos (`ns.ao`), debounce, fila de depois do combate, estado do jogo (`ns.estado`), magias conhecidas, livro do pet, pontos de talento por `C_Traits`, missões, uma seta só (`ns.seta`, pelo TomTom ou pela seta nativa), tecla de uma ação (`ns.teclaDe`) e o filtro das dicas (`ns.relevante`) |
-| `Janela.lua` | janela J (760 × 600, abas Now, Pet, Talents, Combat, Professions e Help, busca, seções recolhíveis), botão do livro e tecla J; os ids antigos das abas continuam valendo (`ns.apelidosAba`) |
+| `Janela.lua` | janela J (760 × 600, abas Now, Pet, Families (1.1), Talents, Combat, Professions e Help, busca, seções recolhíveis), botão do livro e tecla J; os ids antigos das abas continuam valendo (`ns.apelidosAba`) |
 | `Treinadores.lua` | Questie e minimapa com os treinadores; seta para o treinador de classe, de profissão ou de pet (`/guia trainer pet`) |
 | `SkinDB.lua` | as 924 criaturas com loot de Skinning (cmangos/classic-db) |
 | `Zona.lua` | linha de Skinning no tooltip dos bichos, diário de calibração e `ns.bichosDaZona` (1.0) |
 | `Teclas.lua` | `GuiaForeverTeclas[CLASSE]`. Desde a 1.0, a lista confere cada tecla contra a barra real e avisa quando o botão está vazio ou o pet ainda não sabe a habilidade |
 | `Rastreador.lua` | rastreador de profissões embaixo do minimapa (fonte 13 na 1.0), "Skin here" no tooltip e a linha do painel quando a profissão trava no teto do treino |
 | `Agora.lua` | o painel Agora e os provedores de talento, de treino de classe (pelo Naowh) e de teclas novas |
+| `Familias.lua` | aba Families e Next ability upgrades (1.1): `ns.petRanks`, `ns.blocosProximosRanks`, `ns.blocosFamilias` |
 | `Pet.lua` | provedor do pet (ausente, fome, comida, missão, treino, autocast do Growl), macro `feed_Pet` e as marcas no treinador de pet |
 | `Arvore.lua` | plano de talentos (`ns.arvore.plano`, `ns.arvore.proximo`) e as marcas na árvore de talentos do Forever |
 | `Tooltips.lua` | linhas do guia nos tooltips de item ("Your pet can eat this"), de magia (tecla e uso) e de ação do pet (autocast) |
@@ -96,6 +110,13 @@ A linha "Skinning: needs N" do tooltip e a seção da zona na aba Professions us
    - `node rodar-casos.mjs` e `node rodar-casos-combate.mjs`: os casos de teste dos checadores.
 3. Função nova do cliente: confira nas listas de `api-forever\` e, para a assinatura, no espelho `Ketho/wow-ui-source-forever`; o caminho está em `..\..\..\comum\referencia\api-forever.md`, seções 3 e 3e.
 4. Mudou só `.lua` que já existia: `/reload`. Arquivo novo ou `.toc` mudado: reiniciar o jogo.
+5. Guia de pets (1.1), a partir de `modder\ferramentas\guia\pets\` (o cache fica em `cache\`, fora do git):
+   - fatos do cliente: `node gerar-habilidades.mjs --build <build> --cache cache` e `node checar-habilidades.mjs habilidades.json`;
+   - professores e feras: `node gerar-professores.mjs --cache cache --saida-dir .` e `node checar-professores.mjs` (relê a Forever-Hunter-Pets pelo sha mais novo e a Petopia);
+   - cartões do Saltii (`saltii.json`, `node checar-saltii.mjs`), fala do Saltii (`saltii-fala.json`, `node checar-saltii-fala.mjs`), tier list do LudiDeo (`ludideo-tier.json`, `node checar-ludideo-tier.mjs`) e textos-base das fontes (`textos-base.json`): editados a partir de `comum\fontes\builds\`; `node juntar-textos.mjs` junta tudo no `textos.json` e `node checar-textos.mjs` confere;
+   - junção: `node gerar-guia.mjs --pasta . --petopia cache\petopia-abilities.html --lua ..\..\..\addons-proprios\GuiaForever\PetGuia.lua` e `node checar-guia.mjs`;
+   - PDF: `node gerar-pdf.mjs --json guia.json --pdf "P:\Meu Drive\WoW Forever\Guias\guia-pets-cacador.pdf"`.
+   Depois, `checar-lua.mjs` e `checar-combate.mjs` na pasta do addon, e `/reload` no jogo (o `PetGuia.lua` já está no `.toc`).
 
 ## Pendente
 
@@ -124,5 +145,5 @@ Ainda sem teste no jogo:
 
 | Classe | O que falta |
 |---|---|
-| Caçador | magias do 31 ao 60 (exceto o 40); habilidades de pet depois do 10; talentos do Hexumlite do 22 ao 60 (seis pontos em aberto, na ficha) |
+| Caçador | magias do 31 ao 60 (exceto o 40); talentos do Hexumlite do 22 ao 60 (seis pontos em aberto, na ficha) |
 | Xamã | magias do 1 ao 9 e do 33 ao 45; armas por nome |

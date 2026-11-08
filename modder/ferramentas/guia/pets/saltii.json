@@ -1,0 +1,934 @@
+{
+  "fonte": {
+    "id": "Saltii",
+    "titulo": "The ULTIMATE WoW Forever Hunter Pet Guide: UPDATED FOR NOV 4 LAUNCH!",
+    "url": "https://www.youtube.com/watch?v=O-TbXGGHoAs",
+    "publicado": "2026-11-07",
+    "cartoes": "https://drive.google.com/drive/folders/10uSPvK6KqIvWCtbhUfhWig9NtXztrJmh"
+  },
+  "doadores": {
+    "Charge 2": [
+      {
+        "n": "Young Goretusk",
+        "nv": "12-13",
+        "z": "Westfall",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Demoralizing Screech 1": [
+      {
+        "n": "Taloned Swoop",
+        "nv": "8-11",
+        "z": "Mulgore",
+        "pet": null,
+        "cartao": "08"
+      },
+      {
+        "n": "Young Fleshripper",
+        "nv": "8-11",
+        "z": "Westfall",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Swipe 1": [
+      {
+        "n": "Giant Grizzled Bear",
+        "nv": "12-14",
+        "z": "Silverpine",
+        "pet": null,
+        "cartao": "08"
+      },
+      {
+        "n": "Grizzled Black Bear",
+        "nv": "12-14",
+        "z": "Loch Modan",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Savage Rend 1": [
+      {
+        "n": "Sunscale Screecher",
+        "nv": "13-15",
+        "z": "The Barrens",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Web 1": [
+      {
+        "n": "Moss Stalker",
+        "nv": "12-14",
+        "z": "Silverpine",
+        "pet": null,
+        "cartao": "08"
+      },
+      {
+        "n": "Cliff Lurker",
+        "nv": "12-14",
+        "z": "Loch Modan",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Trickster's Dance 1": [
+      {
+        "n": "Gray Fox",
+        "nv": "22-23",
+        "z": "Duskwood",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Thunderstomp 1": [
+      {
+        "n": "Mistvale Gorilla",
+        "nv": "32-33",
+        "z": "Stranglethorn Vale",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Shell Shield 1": [
+      {
+        "n": "Kresh",
+        "nv": "20",
+        "z": "Wailing Caverns",
+        "pet": null,
+        "cartao": "08"
+      }
+    ],
+    "Bite 1": [
+      {
+        "n": "Prairie Wolf",
+        "nv": "5-6",
+        "z": "Mulgore",
+        "pet": 1,
+        "cartao": "11"
+      }
+    ],
+    "Bite 2": [
+      {
+        "n": "Prowler",
+        "nv": "9-10",
+        "z": "Elwynn Forest",
+        "pet": 8,
+        "cartao": "11"
+      }
+    ],
+    "Bite 3": [
+      {
+        "n": "Bloodsnout Worg",
+        "nv": "16-17",
+        "z": "Silverpine Forest",
+        "pet": 16,
+        "cartao": "11"
+      }
+    ],
+    "Bite 4": [
+      {
+        "n": "Black Ravager",
+        "nv": "24-25",
+        "z": "Duskwood",
+        "pet": 24,
+        "cartao": "11"
+      }
+    ],
+    "Bite 5": [
+      {
+        "n": "Plains Creeper",
+        "nv": "32-33",
+        "z": "Arathi Highlands",
+        "pet": 32,
+        "cartao": "11"
+      }
+    ],
+    "Bite 6": [
+      {
+        "n": "Longtooth Runner",
+        "nv": "40-41",
+        "z": "Feralas",
+        "pet": 40,
+        "cartao": "11"
+      }
+    ],
+    "Bite 7": [
+      {
+        "n": "Saltwater Snapjaw",
+        "nv": "49-50",
+        "z": "The Hinterlands",
+        "pet": 48,
+        "cartao": "11"
+      }
+    ],
+    "Bite 8": [
+      {
+        "n": "Bloodaxe Worg",
+        "nv": "56-57",
+        "z": "Blackrock Spire (Dungeon)",
+        "pet": 56,
+        "cartao": "11"
+      }
+    ],
+    "Claw 1": [
+      {
+        "n": "Strigid Owl",
+        "nv": "5-6",
+        "z": "Teldrassil",
+        "pet": 1,
+        "cartao": "12"
+      }
+    ],
+    "Claw 2": [
+      {
+        "n": "Strigid Hunter",
+        "nv": "8-9",
+        "z": "Teldrassil",
+        "pet": 8,
+        "cartao": "12"
+      }
+    ],
+    "Claw 3": [
+      {
+        "n": "Black Bear Patriarch",
+        "nv": "16-17",
+        "z": "Loch Modan",
+        "pet": 16,
+        "cartao": "12"
+      }
+    ],
+    "Claw 4": [
+      {
+        "n": "Elder Ashenvale Bear",
+        "nv": "25-26",
+        "z": "Ashenvale",
+        "pet": 24,
+        "cartao": "12"
+      }
+    ],
+    "Claw 5": [
+      {
+        "n": "Scorpashi Lasher",
+        "nv": "34-35",
+        "z": "Desolace",
+        "pet": 32,
+        "cartao": "12"
+      }
+    ],
+    "Claw 6": [
+      {
+        "n": "Ironfur Bear",
+        "nv": "41-42",
+        "z": "Feralas",
+        "pet": 40,
+        "cartao": "12"
+      }
+    ],
+    "Claw 7": [
+      {
+        "n": "Ironfur Patriarch",
+        "nv": "48-49",
+        "z": "Feralas",
+        "pet": 48,
+        "cartao": "12"
+      }
+    ],
+    "Claw 8": [
+      {
+        "n": "Elder Shardtooth",
+        "nv": "57-58",
+        "z": "Winterspring",
+        "pet": 56,
+        "cartao": "12"
+      }
+    ]
+  },
+  "familias": {
+    "Cat": {
+      "unica": "Prowl",
+      "papel": "Damage",
+      "dieta": [
+        "Fish",
+        "Meat"
+      ]
+    },
+    "Raptor": {
+      "unica": "Savage Rend",
+      "papel": "Damage",
+      "dieta": [
+        "Meat"
+      ]
+    },
+    "Wind Serpent": {
+      "unica": "Lightning Breath",
+      "papel": "Nature damage",
+      "dieta": [
+        "Bread",
+        "Cheese",
+        "Fish"
+      ]
+    },
+    "Scorpid": {
+      "unica": "Scorpid Poison",
+      "papel": "Poison",
+      "dieta": [
+        "Meat"
+      ]
+    },
+    "Boar": {
+      "unica": "Charge",
+      "papel": "Early leveling",
+      "dieta": [
+        "Bread",
+        "Cheese",
+        "Fish",
+        "Fruit",
+        "Fungus",
+        "Meat"
+      ]
+    },
+    "Carrion Bird": {
+      "unica": "Demoralizing Screech",
+      "papel": "Safer solo",
+      "dieta": [
+        "Fish",
+        "Meat"
+      ]
+    },
+    "Bear": {
+      "unica": "Swipe",
+      "papel": "AoE",
+      "dieta": [
+        "Bread",
+        "Cheese",
+        "Fish",
+        "Fruit",
+        "Fungus",
+        "Meat"
+      ]
+    },
+    "Gorilla": {
+      "unica": "Thunderstomp",
+      "papel": "AoE",
+      "dieta": [
+        "Fruit",
+        "Fungus"
+      ]
+    },
+    "Turtle": {
+      "unica": "Shell Shield",
+      "papel": "Defense",
+      "dieta": [
+        "Fish",
+        "Fruit",
+        "Fungus",
+        "Raw Fish"
+      ]
+    },
+    "Spider": {
+      "unica": "Web",
+      "papel": "PvP control",
+      "dieta": [
+        "Meat"
+      ]
+    },
+    "Crab": {
+      "unica": "Pinch",
+      "papel": "Slow",
+      "dieta": [
+        "Bread",
+        "Fish",
+        "Fruit",
+        "Fungus"
+      ]
+    },
+    "Hyena": {
+      "unica": "Tendon Rip",
+      "papel": "Bleed + slow",
+      "dieta": [
+        "Fruit",
+        "Meat"
+      ]
+    },
+    "Crocolisk": {
+      "unica": "Dismember",
+      "papel": "Anti-heal",
+      "dieta": [
+        "Fish",
+        "Meat"
+      ]
+    },
+    "Bat": {
+      "unica": "Sonic Blast",
+      "papel": "Anti-caster",
+      "dieta": [
+        "Fruit",
+        "Fungus"
+      ]
+    },
+    "Bird of Prey": {
+      "unica": "Mine!",
+      "papel": "Disarm",
+      "dieta": [
+        "Meat"
+      ]
+    },
+    "Tallstrider": {
+      "unica": "Dust Cloud",
+      "papel": "Armor reduction",
+      "dieta": [
+        "Cheese",
+        "Fruit",
+        "Fungus"
+      ]
+    },
+    "Wolf": {
+      "unica": "Furious Howl",
+      "papel": "Melee support",
+      "dieta": [
+        "Meat"
+      ]
+    },
+    "Fox": {
+      "unica": "Trickster’s Dance",
+      "papel": "Dodge / speed",
+      "dieta": [
+        "Meat"
+      ]
+    }
+  },
+  "raros": [
+    {
+      "n": "The Rake",
+      "nv": "10",
+      "z": "Mulgore",
+      "familia": "Cat",
+      "nota": "1.2s attack; early rare Cat"
+    },
+    {
+      "n": "Humar the Pridelord",
+      "nv": "23",
+      "z": "The Barrens",
+      "familia": "Cat",
+      "nota": "Iconic rare Cat appearance"
+    },
+    {
+      "n": "Broken Tooth",
+      "nv": "37",
+      "z": "Badlands",
+      "familia": "Cat",
+      "nota": "1.0s attacks; famous PvP Cat"
+    },
+    {
+      "n": "Spiteflayer",
+      "nv": "52",
+      "z": "Blasted Lands",
+      "familia": "Carrion Bird",
+      "nota": "Fast Carrion Bird"
+    },
+    {
+      "n": "Deathmaw",
+      "nv": "53",
+      "z": "Burning Steppes",
+      "familia": "Wolf",
+      "nota": "Fast Wolf"
+    }
+  ],
+  "progressao": [
+    {
+      "nivel": 10,
+      "oque": "Finish tame quest; feed pet and unlock Beast Training",
+      "porque": "First pet; pick an easy nearby tame"
+    },
+    {
+      "nivel": 16,
+      "oque": "Bite / Claw Rank 3 available",
+      "porque": "Upgrade when a useful donor is nearby"
+    },
+    {
+      "nivel": 20,
+      "oque": "Turtle Shell Shield Rank 1 becomes trainable",
+      "porque": "Defensive option for hard solo pulls"
+    },
+    {
+      "nivel": 24,
+      "oque": "Bite / Claw Rank 4; Beast Lore",
+      "porque": "Inspect beasts and plan ability upgrades"
+    },
+    {
+      "nivel": 30,
+      "oque": "Dash / Dive Rank 1 (family-dependent)",
+      "porque": "Faster pet engagement; better movement"
+    },
+    {
+      "nivel": 32,
+      "oque": "Bite / Claw Rank 5",
+      "porque": "Refresh primary damage attack"
+    },
+    {
+      "nivel": 40,
+      "oque": "Bite / Claw Rank 6",
+      "porque": "Check trainer passives and your TP budget"
+    },
+    {
+      "nivel": 48,
+      "oque": "Bite / Claw Rank 7",
+      "porque": "Upgrade without unnecessary dungeon farms"
+    },
+    {
+      "nivel": 50,
+      "oque": "Dash / Dive Rank 3 (if compatible)",
+      "porque": "Mobility upgrade with a suitable donor"
+    },
+    {
+      "nivel": 56,
+      "oque": "Bite / Claw Rank 8",
+      "porque": "Top basic-damage rank for level 60"
+    },
+    {
+      "nivel": 60,
+      "oque": "Review TP, happiness, skills and two-pet setup",
+      "porque": "Final preparation for dungeons / PvP / raids"
+    }
+  ],
+  "outros": {
+    "10": [
+      {
+        "scenario": "First pet",
+        "best pick": "Boar",
+        "alternative": "Carrion Bird (Tauren)",
+        "why": "Charge; sturdy and accessible"
+      },
+      {
+        "scenario": "Fast leveling",
+        "best pick": "Cat",
+        "alternative": "Raptor",
+        "why": "Leading offensive family modifiers"
+      },
+      {
+        "scenario": "Relaxed solo",
+        "best pick": "Carrion Bird",
+        "alternative": "Boar",
+        "why": "Demoralizing Screech reduces melee damage"
+      },
+      {
+        "scenario": "Tough solo target",
+        "best pick": "Turtle",
+        "alternative": "Carrion Bird",
+        "why": "Shell Shield or steady mitigation"
+      },
+      {
+        "scenario": "Multi-target",
+        "best pick": "Bear",
+        "alternative": "Gorilla",
+        "why": "Swipe or Thunderstomp utility"
+      },
+      {
+        "scenario": "Dungeons",
+        "best pick": "Cat / Raptor",
+        "alternative": "Wolf",
+        "why": "Damage; Wolf for suitable melee groups"
+      },
+      {
+        "scenario": "Raids",
+        "best pick": "Cat / Raptor",
+        "alternative": "Wolf",
+        "why": "Provisional—raid DPS rankings not settled"
+      },
+      {
+        "scenario": "PvP vs casters",
+        "best pick": "Bat / fast Cat",
+        "alternative": "Spider",
+        "why": "Casting pressure or control"
+      },
+      {
+        "scenario": "PvP vs healers",
+        "best pick": "Crocolisk",
+        "alternative": "Spider",
+        "why": "Healing reduction or root"
+      },
+      {
+        "scenario": "Best 2-pet combo",
+        "best pick": "Cat + Carrion Bird",
+        "alternative": "—",
+        "why": "Strong damage plus forgiving solo utility"
+      }
+    ],
+    "15": [
+      {
+        "matchup": "Casters",
+        "pet family": "Bat",
+        "ability": "Sonic Blast",
+        "why use it": "Slows enemy casting; play around cooldowns"
+      },
+      {
+        "matchup": "Casters",
+        "pet family": "Fast Cat",
+        "ability": "Frequent hits",
+        "why use it": "More opportunities for spell pushback"
+      },
+      {
+        "matchup": "Healers",
+        "pet family": "Crocolisk",
+        "ability": "Dismember",
+        "why use it": "25% healing reduction for 6 sec"
+      },
+      {
+        "matchup": "Melee",
+        "pet family": "Bird of Prey",
+        "ability": "Mine!",
+        "why use it": "3-second disarm (90-second cooldown)"
+      },
+      {
+        "matchup": "Runners",
+        "pet family": "Spider",
+        "ability": "Web",
+        "why use it": "Root for control and kiting"
+      },
+      {
+        "matchup": "Kiting",
+        "pet family": "Crab / Hyena",
+        "ability": "Pinch / Tendon Rip",
+        "why use it": "Movement slow for chasing or escape"
+      }
+    ],
+    "16": [
+      {
+        "macro": "MOUSEOVER PET ATTACK",
+        "what it does": "Redirect your pet without swapping target"
+      },
+      {
+        "macro": "RECALL PET",
+        "what it does": "Stops attacks and brings your pet back"
+      },
+      {
+        "macro": "TOGGLE GROWL",
+        "what it does": "Turn Growl autocast on or off for solo/group"
+      },
+      {
+        "macro": "HUNTER'S MARK + ATTACK",
+        "what it does": "Mark a tougher target while sending the pet"
+      },
+      {
+        "macro": "MEND PET",
+        "what it does": "Heal pet without retargeting"
+      }
+    ],
+    "00": [
+      {
+        "best early picks": "Human: Prowler (Elwynn)",
+        "best all-round pets": "Cat: fast everyday kills",
+        "top damage families": "Cat: +10% family damage"
+      },
+      {
+        "best early picks": "Dwarf: Scarred Crag Boar (Dun Morogh)",
+        "best all-round pets": "Carrion Bird: safer solo leveling",
+        "top damage families": "Raptor: +10% family damage"
+      },
+      {
+        "best early picks": "Night Elf: Elder Nightsaber (Teldrassil)",
+        "best all-round pets": "Turtle: strong defensive option",
+        "top damage families": "Wind Serpent: +7% + Lightning Breath"
+      },
+      {
+        "best early picks": "Orc / Troll: Elder Mottled Boar (Durotar)",
+        "best all-round pets": "Boar: excellent first pet",
+        "top damage families": "Damage depends on abilities, Focus and fight length"
+      },
+      {
+        "best early picks": "Tauren: Taloned Swoop (Mulgore)",
+        "best all-round pets": "Bear / Gorilla: multi-target utility"
+      },
+      {
+        "best early picks": "Skyborne: Windsong Crawler (Zephras Isle)"
+      },
+      {
+        "important donors": "Charge 2: Young Goretusk — Westfall",
+        "pet management": "Happy pets deal 125% damage",
+        "key milestones": "Level 10: unlock pet"
+      },
+      {
+        "important donors": "Demoralizing Screech 1: Taloned Swoop — Mulgore",
+        "pet management": "Max Loyalty 6 = 300 training points at 60",
+        "key milestones": "Level 24: Beast Lore helps check skills"
+      },
+      {
+        "important donors": "Swipe 1: Grizzled Black Bear — Loch Modan",
+        "pet management": "4 active abilities maximum",
+        "key milestones": "Level 30: start looking for Dash / Dive"
+      },
+      {
+        "important donors": "Savage Rend 1: Sunscale Screecher — Barrens",
+        "pet management": "Growl costs 0 training points",
+        "key milestones": "Level 60: finish key ranks and endgame prep"
+      },
+      {
+        "important donors": "Web 1: Moss Stalker — Silverpine",
+        "pet management": "Stable: 2 stabled pets + 1 active"
+      }
+    ],
+    "01": [
+      {
+        "main goals": "Fight from maximum range",
+        "key abilities": "Serpent Sting on longer fights",
+        "first pets by race": "Human: Prowler — Elwynn"
+      },
+      {
+        "main goals": "Keep your ranged weapon updated",
+        "key abilities": "Arcane Shot at level 6",
+        "first pets by race": "Dwarf: Scarred Crag Boar — Dun Morogh"
+      },
+      {
+        "main goals": "Upgrade ammunition when possible",
+        "key abilities": "Concussive Shot at level 8",
+        "first pets by race": "Night Elf: Elder Nightsaber — Teldrassil"
+      },
+      {
+        "main goals": "Loot everything for early gold",
+        "key abilities": "Hunter’s Mark for tougher enemies",
+        "first pets by race": "Orc / Troll: Elder Mottled Boar — Durotar"
+      },
+      {
+        "first pets by race": "Tauren: Taloned Swoop — Mulgore"
+      },
+      {
+        "first pets by race": "Skyborne: Windsong Crawler — Zephras Isle"
+      },
+      {
+        "gear focus": "Ranged weapon comes first",
+        "money & training": "Save gold for core abilities",
+        "looking ahead": "Level 10 is your first big power spike"
+      },
+      {
+        "gear focus": "Agility and Stamina are best early",
+        "money & training": "Don’t overspend on weak upgrades",
+        "looking ahead": "Unlock your pet through the Hunter quest"
+      },
+      {
+        "gear focus": "Quiver or ammo pouch when possible",
+        "money & training": "Stock ammo and pet food early",
+        "looking ahead": "A nearby first pet beats a long detour"
+      },
+      {
+        "gear focus": "Vendor and quest upgrades matter early",
+        "money & training": "Prepare for the level-10 Hunter quest",
+        "looking ahead": "Set up for easier 11–20 leveling"
+      }
+    ],
+    "02": [
+      {
+        "best picks now": "Boar: easiest first all-round pet",
+        "local picks by race": "Human / Dwarf: Boar, Bear or Cat nearby",
+        "important donors": "Charge 2: Young Goretusk — Westfall"
+      },
+      {
+        "best picks now": "Cat: fast-kill option",
+        "local picks by race": "Night Elf: Cat or bird-family routes",
+        "important donors": "Screech 1: Taloned Swoop — Mulgore"
+      },
+      {
+        "best picks now": "Carrion Bird: safer solo leveling",
+        "local picks by race": "Orc / Troll: Boar first, then Cat or Raptor",
+        "important donors": "Claw 2: Strigid Hunter / Young Forest Bear"
+      },
+      {
+        "best picks now": "Keep one main pet close to your level",
+        "local picks by race": "Tauren: Carrion Bird or Tallstrider routes",
+        "important donors": "Bite 2: Prowler — Elwynn"
+      },
+      {
+        "important donors": "Skyborne: Crab first, then role-based upgrades"
+      },
+      {
+        "pet training": "Stable your main pet before donor tames",
+        "playstyle": "Send pet first, then open from range",
+        "looking ahead": "Start watching for Swipe, Web and Savage Rend"
+      },
+      {
+        "pet training": "Learn the skill, then train your main pet",
+        "playstyle": "Use Mend Pet before things get risky",
+        "looking ahead": "Beast Lore later helps inspect donor skills"
+      },
+      {
+        "pet training": "Keep Growl updated for solo play",
+        "playstyle": "Let your pet tank while you keep distance",
+        "looking ahead": "A second pet slot is useful for a damage pet"
+      },
+      {
+        "pet training": "Feed often to maintain Happiness",
+        "playstyle": "Don’t waste time replacing a good main pet",
+        "looking ahead": "Keep your core ranks current going into 21–30"
+      }
+    ],
+    "03": [
+      {
+        "best pets now": "Cat: strong everyday damage",
+        "important donors": "Swipe 1: Grizzled Black Bear — Loch Modan",
+        "key levels": "Level 24: Beast Lore helps inspect skills"
+      },
+      {
+        "best pets now": "Carrion Bird: low-stress solo leveling",
+        "important donors": "Savage Rend 1: Sunscale Screecher — Barrens",
+        "key levels": "Level 25: your build gains more tools"
+      },
+      {
+        "best pets now": "Boar: still great if already trained well",
+        "important donors": "Web 1: Moss Stalker — Silverpine",
+        "key levels": "Level 30: look for Dash or Dive"
+      },
+      {
+        "best pets now": "Keep a damage pet and a safer pet",
+        "important donors": "Trickster’s Dance 1: Gray Fox — Duskwood",
+        "key levels": "Updated pet ranks matter more than a new tame"
+      },
+      {
+        "pet training": "Use temporary donor pets efficiently",
+        "playstyle": "Pull with range; let your pet establish threat",
+        "looking ahead": "Dash / Dive improve pet uptime noticeably"
+      },
+      {
+        "pet training": "Keep Bite or Claw upgraded",
+        "playstyle": "Mend Pet early instead of late",
+        "looking ahead": "Consider a dedicated PvP or utility pet"
+      },
+      {
+        "pet training": "Growl remains useful for solo play",
+        "playstyle": "Use sturdier pets for tough quests, not just DPS",
+        "looking ahead": "More donors open through level 31–40 zones"
+      },
+      {
+        "pet training": "Stable space matters more than extra tames",
+        "playstyle": "Avoid long donor detours unless upgrade is big",
+        "looking ahead": "A good time to lock in your main pets"
+      }
+    ],
+    "04": [
+      {
+        "best pets now": "Cat or Raptor for stronger damage",
+        "important donors": "Thunderstomp 1: Mistvale Gorilla — Stranglethorn",
+        "special tames": "Broken Tooth: level 37 Cat — Badlands"
+      },
+      {
+        "best pets now": "Carrion Bird remains a forgiving all-rounder",
+        "important donors": "Higher Bite ranks become available",
+        "special tames": "Fast attack speeds help PvP pressure"
+      },
+      {
+        "best pets now": "Turtle is excellent for hard-hitting enemies",
+        "important donors": "Dash / Dive upgrades are worth prioritising",
+        "special tames": "Rare pets are not automatic PvE upgrades"
+      },
+      {
+        "best pets now": "Gorilla offers AoE utility",
+        "important donors": "Keep Claw, Bite and Growl current",
+        "special tames": "Pick performance first, appearance second"
+      },
+      {
+        "pet management": "Use Beast Lore before long tame trips",
+        "playstyle": "Let your pet start each fight cleanly",
+        "looking ahead": "Higher ranks open in 41–50 zones"
+      },
+      {
+        "pet management": "Keep donor pets only as long as needed",
+        "playstyle": "Multi-target pets help on messy pulls",
+        "looking ahead": "PvP utility pets become more attractive"
+      },
+      {
+        "pet management": "Carry food for each family you use",
+        "playstyle": "Don’t break crowd control with Swipe / Thunderstomp",
+        "looking ahead": "Prepare an endgame damage pet now"
+      },
+      {
+        "pet management": "Two well-trained pets beat many neglected pets",
+        "playstyle": "Position your pet carefully in dungeons",
+        "looking ahead": "Efficient training saves time later"
+      }
+    ],
+    "05": [
+      {
+        "best pets now": "Cat or Raptor for damage-focused leveling",
+        "important donors": "Trickster’s Dance: niche Fox upgrade path",
+        "group & pvp value": "Wolf: melee support through Furious Howl"
+      },
+      {
+        "best pets now": "Carrion Bird still shines for safer solo play",
+        "important donors": "Better Bite and Claw ranks open here",
+        "group & pvp value": "Spider: Web for PvP control"
+      },
+      {
+        "best pets now": "Wolf is optional group support",
+        "important donors": "Sonic Blast, Dismember and Mine! worth tracking",
+        "group & pvp value": "Bat: anti-caster utility"
+      },
+      {
+        "best pets now": "Turtle remains a defensive backup",
+        "important donors": "Upgrade Dash / Dive with better ranks",
+        "group & pvp value": "Crocolisk and Bird of Prey add matchup value"
+      },
+      {
+        "training priorities": "Keep your main pet’s damage skills upgraded",
+        "playstyle": "Damage pets speed up routine questing",
+        "looking ahead": "Winterspring, Hinterlands and endgame zones soon"
+      },
+      {
+        "training priorities": "Don’t ignore utility ranks for PvP/dungeons",
+        "playstyle": "Safer pets help with elites and bad pulls",
+        "looking ahead": "Finalize your long-term pet roster"
+      },
+      {
+        "training priorities": "Turn Growl off in groups with a tank",
+        "playstyle": "Uptime matters: mobility and positioning",
+        "looking ahead": "Plan remaining donor runs now"
+      },
+      {
+        "training priorities": "Use temporary donor tames efficiently",
+        "playstyle": "Choose the right pet for each type of content",
+        "looking ahead": "Level 51–60 finishes your toolkit"
+      }
+    ],
+    "06": [
+      {
+        "best pets at 60": "Cat or Raptor: main damage choices",
+        "important donors": "Bloodaxe Worg: high-rank Bite — Blackrock Spire",
+        "pvp / utility picks": "Spider: Web control"
+      },
+      {
+        "best pets at 60": "Carrion Bird: forgiving solo option",
+        "important donors": "Elder Shardtooth: high-rank Claw — Winterspring",
+        "pvp / utility picks": "Crocolisk: healing reduction"
+      },
+      {
+        "best pets at 60": "Wolf: optional group-support pick",
+        "important donors": "Finish Growl, Dash and Dive ranks",
+        "pvp / utility picks": "Bird of Prey: disarm"
+      },
+      {
+        "best pets at 60": "PvP pets depend on matchup and utility",
+        "important donors": "Use documented donors before farming rares",
+        "pvp / utility picks": "Bat or fast Cat: anti-caster pressure"
+      },
+      {
+        "final pet setup": "Keep a damage pet and a safer solo pet",
+        "endgame habits": "Turn Growl off in dungeons/raids with a tank",
+        "what to finish": "Complete remaining donor runs"
+      },
+      {
+        "final pet setup": "Add PvP/utility pet if you have room",
+        "endgame habits": "Match pet to the content you are doing",
+        "what to finish": "Lock in your long-term pet roster"
+      },
+      {
+        "final pet setup": "Make sure core ranks are current",
+        "endgame habits": "Rare pets are optional, not mandatory",
+        "what to finish": "Keep a screenshot of your donor plan"
+      },
+      {
+        "final pet setup": "Manage food, training points and stable space",
+        "endgame habits": "Well-trained pets beat perfect theory picks",
+        "what to finish": "Enter endgame with trained pets ready"
+      }
+    ]
+  }
+}

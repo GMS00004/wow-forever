@@ -1,5 +1,5 @@
 -- GuiaForever: janela J, a segunda camada do guia (o "agora" fica no painel Agora.lua).
--- 6 abas (Now, Pet, Talents, Combat, Professions, Help), busca, secoes recolhiveis, a fonte
+-- 7 abas (Now, Pet, Families, Talents, Combat, Professions, Help), busca, secoes recolhiveis, a fonte
 -- de cada linha no tooltip e a caixa "Show all". Tambem: botao do livro perto do minimapa e
 -- tecla J. Os dados vem de Dados.lua, Dicas.lua, Ajuda.lua, Profissoes*.lua e dos modulos
 -- Teclas, Zona e Treinadores; as funcoes compartilhadas ficam em `ns`.
@@ -11,6 +11,7 @@ local LARGURA, ALTURA = 760, 600
 local ABAS = {
   { id = "agora", rotulo = "Now" },
   { id = "pet", rotulo = "Pet" },
+  { id = "familias", rotulo = "Families" },
   { id = "talentos", rotulo = "Talents" },
   { id = "combate", rotulo = "Combat" },
   { id = "profissoes", rotulo = "Professions" },
@@ -198,6 +199,8 @@ construtores.pet = function(b)
     end
   end
 
+  if ns.blocosProximosRanks then ns.blocosProximosRanks(b) end
+
   if d.petTreino and #d.petTreino > 0 then
     local faltam = 0
     local linhas = {}
@@ -224,6 +227,10 @@ construtores.pet = function(b)
     end
     if not achou then L(b, "No pet tips for now. Tick Show all to see the rest.") end
   end
+end
+
+construtores.familias = function(b)
+  if ns.blocosFamilias then ns.blocosFamilias(b) else L(b, "Families module not loaded.") end
 end
 
 construtores.talentos = function(b)
@@ -766,7 +773,7 @@ local function criarJanela()
   local x = 10
   for _, aba in ipairs(ABAS) do
     local bt = CreateFrame("Button", nil, janela, "UIPanelButtonTemplate")
-    bt:SetSize(100, 24)
+    bt:SetSize(94, 24)
     bt:SetPoint("TOPLEFT", janela, "TOPLEFT", x, -38)
     bt:SetText(aba.rotulo)
     local id = aba.id
@@ -778,7 +785,7 @@ local function criarJanela()
       atualizar()
     end)
     botoesAba[id] = bt
-    x = x + 102
+    x = x + 96
   end
 
   -- Show all: volta PvP, grupo, fim de jogo e escolha de pet (ctx.tudo)

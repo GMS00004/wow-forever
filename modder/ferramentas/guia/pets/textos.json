@@ -1,0 +1,824 @@
+{
+  "regras": [
+    {
+      "t": "Step 1 to learn a rank: stable your main pet before you tame the donor.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Step 2: tame the donor beast, a wild creature at the level and zone listed for that rank.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Step 3: with the donor out, turn off its other abilities and fight until the new skill is learned.",
+      "f": "LudiDeo (beta)"
+    },
+    {
+      "t": "Step 4: once the skill is learned, let the donor go, since donor pets should be kept only as long as needed.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Step 5: take your main pet out of the stable and train the skill on it at Beast Training.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Every family can learn Bite or Claw, sometimes both, plus Dash or Dive. Those ranks never upgrade on their own: you must learn and teach each new one.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Beast Training is in the General tab of the spellbook, not in the Beast Mastery tab.",
+      "f": "Saltii"
+    },
+    {
+      "t": "You can skip ranks: a pet that meets the level for rank 4 does not need to learn rank 1 first.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Beast Lore unlocks at level 24 and lets you inspect a wild beast's skills before you tame it.",
+      "f": "Saltii"
+    },
+    {
+      "t": "A pet trainer teaches Growl, Great Stamina, Natural Armor and resistances; damage attacks, movement and many family skills come from temporary donor tames.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Growl costs no training points but still takes one of the four active ability slots.",
+      "f": "Saltii"
+    },
+    {
+      "t": "A newly tamed low-level pet needs experience to catch up, so keep stable space free for the skills you still need to learn.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Food closer to the pet's level works better, and each family eats only some foods, so check its diet before buying stock.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Claw has no cooldown and can spend focus fast, so cast a control skill like Web by hand when timing matters instead of letting the pet spend it all.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Pets now scale with your hunter gear: attack power, armor, stamina, hit and crit all feed the pet, so upgrading your own gear makes it stronger too.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Blizzard says pets are less durable than intended and plans a stat adjustment on November 10; the numbers are unconfirmed, so doubt tanky picks for now.",
+      "f": "Saltii"
+    },
+    {
+      "t": "At level 10, finishing both parts of the taming quest unlocks feeding and Beast Training. Busy players should tame something nearby, close to level 10.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Early pet by race (level range): Human Prowler (9-10, Elwynn Forest); Dwarf Scarred Crag Boar (9-10, Dun Morogh); Orc/Troll Elder Mottled Boar (9-10, Durotar).",
+      "f": "Saltii"
+    },
+    {
+      "t": "Night Elf Elder Nightsaber (about level 8, Teldrassil); Tauren Taloned Swoop (Mulgore) and Skyborne Windsong Crawler (Zephras Isle), no level given.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Keep a usable rank of Bite or Claw as your first priority.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Corehounds appear in some game data, but the speaker has not verified a tameable one on Forever, so do not plan a build around them.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Humar, Spiteflayer and Deathmaw are known for looks or attack interval, not guaranteed PvE damage; do not camp a rare for hours.",
+      "f": "Saltii"
+    },
+    {
+      "t": "A family damage modifier is not a damage meter result: focus, attack abilities, uptime and fight length change the outcome.",
+      "f": "Saltii"
+    },
+    {
+      "t": "The first raids open on December 9, so raid DPS rankings are not settled and any raid pet pick is provisional.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Common mistakes: skipping feeding, forgetting to teach new ranks, and leaving Growl on when another player is tanking.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Dismiss your pet before dangerous dungeon jumps, and do not chase every donor you see; pick only the upgrades you will actually use.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Training points equal pet level times (loyalty minus 1), and buying a higher rank refunds the points of the lower one.",
+      "f": "Petopia"
+    },
+    {
+      "t": "A pet can have four active abilities, while passive abilities have no cap.",
+      "f": "Petopia"
+    },
+    {
+      "t": "Stable slots: the first is free, the second costs 10 silver and the third 5 gold; LudiDeo says Blizzard promised more.",
+      "f": "LudiDeo (beta)"
+    },
+    {
+      "t": "Happy pets deal 125% damage, content 100% and unhappy 75%, so feed them often to keep happiness up.",
+      "f": "Saltii"
+    },
+    {
+      "t": "A rank has two levels: PET LVL is the minimum for your pet, BEAST LVL is the wild teacher you tame. Keep your own pet; the teacher is only borrowed.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Blizzard's 24/09 beta notes: Tame Beast stopped working on beasts above your level.",
+      "f": "Blizzard"
+    },
+    {
+      "t": "Same-family pets have normalized basic damage, so faster attacks hit weaker each time; speed can still matter for PvP pushback.",
+      "f": "Saltii"
+    },
+    {
+      "t": "Attack speed is normalized, so damage on paper is the same; a faster pet only gains on procs, such as Frenzy.",
+      "f": "LudiDeo (beta)"
+    },
+    {
+      "t": "Frenzy depends on pet speed; 3 points suit a 1.0 pet like Broken Tooth, while 1.2 sits at the limit.",
+      "f": "Gladius (beta)"
+    },
+    {
+      "t": "Blizzard's 03/11 beta notes: a pet no longer loses its inherent attack speed passive when it is untrained.",
+      "f": "Blizzard"
+    },
+    {
+      "t": "Rare pets are optional and not automatic PvE upgrades, though some, such as Broken Tooth at 1.0 seconds, attack fast.",
+      "f": "Saltii"
+    }
+  ],
+  "familias": {
+    "Cat": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling S, PvP A.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "+10% family damage, with Prowl as its signature ability; its best use is damage.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Its pick for fast everyday kills and fast leveling, with Raptor as the other damage option.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Offensive family with +10% damage, Claw and Bite, at the top for damage together with the raptor.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "The cat is the pick for damage-focused leveling and for end-game PvE, before the raptor.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "On a Night Elf he runs a nightsaber with Bite.",
+          "f": "Kargoz (beta)"
+        },
+        {
+          "t": "Broken Tooth, a level 37 Cat in Badlands with 1.0s attacks, is known as a PvP cat.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Leveling S: damage is king, with Bite, Claw and Prowl. PvP A because Prowl gives a strong opener, though he says it is not S in PvP.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Diet is simple (meat). He gives no number that would change either letter.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Raptor": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP B.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "+10% family damage, with Savage Rend as its signature ability; a damage family.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Close to the cat, with more armor and less health, at the top for damage.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "A damage alternative to the cat for dungeons; its raid ranking is still provisional.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Listed with the cat for stronger damage in levels 31 to 40 and for damage-focused leveling.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Savage Rend is a bleed that pays off when the enemy lives long enough to tick; the raptor stays a serious alternative to the cat on longer fights.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Second best DPS after cat, a weaker cat with Rend (18 s bleed, 50 focus, 1 min cooldown). PvP held back by the bleed and the cooldown.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "What would change: with a 30 s cooldown on Rend he says it would be A in PvP.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Wind Serpent": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling B*, PvP B. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "+7% family damage plus Lightning Breath; its best use is nature damage.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Among the defensive-damage families, with bat, bird of prey and spider.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Leveling B is a reading of his words: average solid pet, no downside, nothing crazy. PvP B is explicit, for its 20 yard range.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "He gives no number that would change either list.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Scorpid": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A*, PvP C. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Its signature ability is Scorpid Poison, and its best use is poison.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A tank family with low damage, so holding threat is hard.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "For Horde leveling against one target, the scorpid is the pick for a long fight.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Leveling A is a reading of his words: second best single target tank, better than bore in long fights as poison stacks to 125 damage at five.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP C is explicit: the only value is the poison, and it is a low-damage tank.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Boar": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP C*. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Its overall pick for a first pet, sturdy and accessible, with Charge as its signature.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Scarred Crag Boar in Dun Morogh for Dwarf; Elder Mottled Boar in Durotar for Orc and Troll.",
+          "f": "Saltii"
+        },
+        {
+          "t": "The single-target tank for leveling, because Charge holds the threat.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "A boar's Charge lets you jump with Bestial Swiftness.",
+          "f": "MetaGoblin (beta)"
+        },
+        {
+          "t": "Charge closes the distance, briefly holds the target and strengthens the next hit; boars eat many foods, so they are easy to feed.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Leveling A is explicit: Charge gives the most threat of any pet, so it is great for leveling. No Claw keeps it from S.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP C is a reading of his words: he calls the boar slightly better than bear (D), not on the level of the top PvP pets.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Carrion Bird": {
+      "notas": [
+        {
+          "t": "The safer solo pick for low-stress leveling, with Demoralizing Screech as its signature.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A balanced family, with Claw and Bite.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Demoralizing Screech no longer generates area threat since the beta.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Takes a carrion bird for survival, and uses Demoralizing Screech so the pet takes less damage.",
+          "f": "Gladius (beta)"
+        },
+        {
+          "t": "Spiteflayer, a fast Carrion Bird at level 52 in Blasted Lands, is a rare option.",
+          "f": "Saltii"
+        },
+        {
+          "t": "The best two-pet combo is a Cat with a Carrion Bird, for strong damage and forgiving solo play.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Demoralizing Screech damages the enemy and lowers the melee attack power of nearby enemies, which helps when several mobs hit you.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Strongest A in leveling. Demoralize was nerfed (it used to hold several targets), and it does less damage than the top PvP pets.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Ambiguous: at the end he thinks about S in leveling, then says no tank deserves S. Not decided; kept at A.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Bear": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP D.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "The multi-target pick, with Gorilla as the alternative.",
+          "f": "Saltii"
+        },
+        {
+          "t": "The area-farming pick, since Swipe hits 3 targets on a 5 second cooldown.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Swipe Rank 1 comes from Grizzled Black Bear in Loch Modan, or Giant Grizzled Bear in Silverpine.",
+          "f": "Saltii"
+        },
+        {
+          "t": "For Human and Dwarf in levels 11 to 20, look for a nearby boar, bear or cat.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Sturdier than most families, and its Swipe hits three nearby enemies, which suits area pulls.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A bear or gorilla is a utility pick, not a proven threat ranking; test threat side by side before relying on it.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Leveling A is explicit: Swipe multitanks up to three targets, but the -9 percent damage modifier keeps it from S.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP D is explicit: pretty bad in PvP, with nothing for it there. He says it would be S without the low damage modifiers.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Gorilla": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling B, PvP C.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "An AoE utility family with Thunderstomp, and the alternative to Bear for multi-target.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Thunderstomp Rank 1 comes from Mistvale Gorilla, level 32 to 33 in Stranglethorn Vale.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Grouped with the tanks, with low damage.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Like the bear, it is not proven as the best AoE tank; test threat with both side by side before choosing one.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Thunderstomp hits all enemies, but its 1 min cooldown, with aggro lasting about 20 s, holds it at B. No Claw either.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "With a 20 s cooldown he says A, maybe S; with 30 s, A. PvP C is explicit, for its use in revealing a rogue.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Turtle": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling C*, PvP D*. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "A strong defensive option, excellent against hard-hitting enemies and tough solo targets.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Shell Shield Rank 1 is donated by Kresh, level 20, in Wailing Caverns.",
+          "f": "Saltii"
+        },
+        {
+          "t": "The pick for a very heavy elite solo, since Shell Shield cuts damage taken by 50%.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Both letters are a reading of his words: 'it has a use over the crab' for leveling, and 'in PvP, nothing' for PvP.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Viable with a 1 minute cooldown instead of 3, he says. He also thinks it needs a buff.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Spider": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling S, PvP S*. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "The PvP control pick; Web roots runners for control and kiting.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Web Rank 1 comes from Moss Stalker in Silverpine or Cliff Lurker in Loch Modan, levels 12 to 14.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A balanced family, with Web rooting for 4 seconds.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Leveling S is explicit: a 4 s root with 40 s cooldown and low focus, with no downside beyond no Claw.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP S is a reading of his words: he calls the root amazing in PvP, with no question about it, but gives no letter.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Crab": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling D*, PvP C. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "For Skyborne characters, a crab first, then upgrades chosen by role.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Pinch slows movement for chasing or escape, and is listed with the hyena for kiting.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Leveling D is a reading of his words: he says the crab is the worst pet in the game for him, with no value beyond armor.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP C is explicit: a slow (Pinch, 50 percent for 9 s, 30 s cooldown), but he says the kit already has many slows.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Hyena": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling B, PvP B.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Its signature ability is Tendon Rip, a bleed with a slow.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A balanced family, along with the wolf and the fox.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Tendon Rip is listed with the crab for kiting, as a movement slow.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Tendon Rip: same slow as Pinch with a 9 s bleed at half the focus (25). Slightly less damage, but he says the bleed is a win.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Would be S in PvP without the slows and bleed already in the kit, he says.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Crocolisk": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP S.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "A healing-reduction pick; Dismember cuts healing by 25% for 6 seconds, for PvP against healers.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A tank family with low damage; in PvP, Dismember acts as a 25% mortal strike against healers.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Kargoz (beta) names the crocolisk as his pet, used with Mortal Strike.",
+          "f": "Kargoz (beta)"
+        },
+        {
+          "t": "Leveling A: no damage penalty, very high armor and Dismember; mobs with heals (shamans) make its healing cut useful in leveling.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP S is explicit: Dismember cuts healing (he says 25 percent), and he says there is no question about it.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Bat": {
+      "notas": [
+        {
+          "t": "The anti-caster pick, with Sonic Blast slowing enemy casting; plan around its cooldown.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A defensive-damage family, and the pick for PvP against casters.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "PvP S is explicit: a 20 s undispellable effect against healers, locks and mages. Leveling A: Sonic Blast is weak in the open world.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Diet is picky (fungus, fruit), which he counts against it. He names no value that would make it S in leveling.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Bird of Prey": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling C, PvP A.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Blizzard (30/09): the Owl became the Bird of Prey.",
+          "f": "Blizzard"
+        },
+        {
+          "t": "Its signature ability is Mine!, a 3 second disarm on a 90 second cooldown, used against melee.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A defensive-damage family, and the pick for PvP against melee.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Leveling C is explicit: Mine (3 s disarm) is one of the worst specials for leveling, and owls are hard to find.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP A is explicit: Claw is strong in PvP, and the disarm has a niche. He gives no number that would change either list.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Tallstrider": {
+      "notas": [
+        {
+          "t": "Its signature ability is Dust Cloud, which reduces armor.",
+          "f": "Saltii"
+        },
+        {
+          "t": "For Tauren in levels 11 to 20, the routes are Carrion Bird or Tallstrider.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Dust Cloud (1.3 s) cuts enemy armor. Solid with no downside beyond no Claw. It does not stack with Faerie Fire.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP B is explicit: armor reduction is good against squishy mages. He gives no number that would change either list.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Wolf": {
+      "notas": [
+        {
+          "t": "Melee support through Furious Howl, an optional group pick for suitable melee groups.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A survival pick, since Furious Howl is a battle shout for the hunter.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Deathmaw, a fast Wolf, is a rare level 53 pet in Burning Steppes.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Furious Howl was nerfed during beta and does not stack with Battle Shout, so check what the group already has before bringing a wolf.",
+          "f": "Saltii"
+        },
+        {
+          "t": "Leveling: S if you play Survival, A otherwise (his end-of-video condition). Furious Howl is a battle shout; no Claw.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP B is explicit: just an average pet, with no strong value in PvP.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Fox": {
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling D*, PvP B. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Blizzard (30/09): Fox is a new family, and its special ability is Trickster's Dance.",
+          "f": "Blizzard"
+        },
+        {
+          "t": "A dodge and speed family; its niche upgrade path uses Gray Fox in Duskwood.",
+          "f": "Saltii"
+        },
+        {
+          "t": "A balanced family, along with the hyena and the wolf.",
+          "f": "LudiDeo (beta)"
+        },
+        {
+          "t": "Leveling D is a reading of his words: 'I don't see a value' with current stats and a 3 min cooldown on Trickster's Dance. PvP B is explicit.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "He says maybe S with rank 2 or 3 (100 percent dodge at max rank, 50 percent attack speed), or sure with a 30 s cooldown.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    }
+  },
+  "habilidades": {
+    "Savage Rend": {
+      "t": "Raptor bleed that is more useful when the enemy survives long enough to tick; rank 1 comes from the Sunscale Screecher in the Barrens.",
+      "f": "Saltii"
+    },
+    "Trickster's Dance": {
+      "t": "Fox skill that improves dodge and attack speed for a short time; rank 1 comes from the Gray Fox in Duskwood.",
+      "f": "Saltii"
+    },
+    "Dive": {
+      "t": "Some families learn Dive in place of Dash; both are movement skills that improve pet uptime.",
+      "f": "Saltii"
+    },
+    "Claw": {
+      "t": "On a cat, turn Claw autocast off and use Bite on its cooldown, which LudiDeo says gives 1 to 2% more damage.",
+      "f": "LudiDeo (beta)"
+    },
+    "Bite": {
+      "t": "Claw costs 25 focus with no cooldown; Bite costs 35 focus with a 10 second cooldown and almost double the damage.",
+      "f": "LudiDeo (beta)"
+    },
+    "Growl": {
+      "t": "Growl costs no training points. Keep its rank current for solo play; in groups with a tank, turn it off.",
+      "f": "Saltii"
+    },
+    "Cower": {
+      "t": "In groups, leave Cower on to reduce threat, while Growl goes off.",
+      "f": "LudiDeo (beta)"
+    },
+    "Mend Pet": {
+      "t": "Use Mend Pet before things get risky, and early rather than late.",
+      "f": "Saltii"
+    },
+    "Dash": {
+      "t": "Dash and Dive improve pet uptime noticeably; Saltii puts Dash or Dive around level 30.",
+      "f": "Saltii"
+    },
+    "Swipe": {
+      "t": "Swipe hits 3 targets on a 5 second cooldown, so it suits farming in an area.",
+      "f": "LudiDeo (beta)"
+    },
+    "Thunderstomp": {
+      "t": "Do not break crowd control with Swipe or Thunderstomp.",
+      "f": "Saltii"
+    },
+    "Web": {
+      "t": "Web roots the target for control and kiting, and suits PvP against runners.",
+      "f": "Saltii"
+    },
+    "Pinch": {
+      "t": "Pinch slows movement, for chasing or for escape.",
+      "f": "Saltii"
+    },
+    "Dismember": {
+      "t": "Dismember cuts healing by 25% for 6 seconds, which suits PvP against healers.",
+      "f": "Saltii"
+    },
+    "Mine!": {
+      "t": "Mine! disarms a melee target for 3 seconds, on a 90 second cooldown.",
+      "f": "Saltii"
+    },
+    "Sonic Blast": {
+      "t": "Sonic Blast slows enemy casting, so plan around its cooldown.",
+      "f": "Saltii"
+    },
+    "Furious Howl": {
+      "t": "Furious Howl is a battle shout for the hunter, which makes the wolf a survival pick.",
+      "f": "LudiDeo (beta)"
+    },
+    "Shell Shield": {
+      "t": "Shell Shield cuts damage taken by 50%, which suits a very heavy elite solo.",
+      "f": "LudiDeo (beta)"
+    },
+    "Demoralizing Screech": {
+      "t": "Gladius uses Demoralizing Screech so the pet takes less damage.",
+      "f": "Gladius (beta)"
+    },
+    "Charge": {
+      "t": "A boar's Charge lets you jump with Bestial Swiftness.",
+      "f": "MetaGoblin (beta)"
+    },
+    "Beast Lore": {
+      "t": "Use Beast Lore before a long tame trip, to inspect the beast's skills.",
+      "f": "Saltii"
+    },
+    "Prowl": {
+      "t": "On a Night Elf, a cat with Prowl is a PvP option.",
+      "f": "LudiDeo (beta)"
+    }
+  },
+  "fontes": [
+    {
+      "id": "LudiDeo (beta)",
+      "nome": "LudiDeo, Hunter Pet MASTERCLASS (beta data)",
+      "url": "https://www.youtube.com/watch?v=pCgIGcumOss",
+      "data": "2026-11-02"
+    },
+    {
+      "id": "LudiDeo tier (beta)",
+      "nome": "LudiDeo, Hunter Pet Tier List (beta data)",
+      "url": "https://www.youtube.com/watch?v=ZIiXgHdTkBI",
+      "data": "2026-11-02"
+    },
+    {
+      "id": "Gladius (beta)",
+      "nome": "Gladius Gaming, Ultimate Hunter Guide",
+      "url": "https://www.youtube.com/watch?v=J1kDM4QI3Ks",
+      "data": "2026-11-02"
+    },
+    {
+      "id": "Kargoz (beta)",
+      "nome": "Kargoz, 1-60 Beast Mastery Hunter Leveling Guide",
+      "url": "https://www.youtube.com/watch?v=rn6Cjl8zQbc",
+      "data": "2026-10-05"
+    },
+    {
+      "id": "MetaGoblin (beta)",
+      "nome": "MetaGoblin, The NEW WAY to Level Hunter 1-60",
+      "url": "https://www.youtube.com/watch?v=F2dBd9PP8q0",
+      "data": "2026-11-02"
+    },
+    {
+      "id": "Method",
+      "nome": "Method, WoW Forever Hunter Leveling Guide",
+      "url": "https://www.method.gg/wow-forever/wow-forever-hunter-leveling-guide-and-talents",
+      "data": "2026-11-03"
+    },
+    {
+      "id": "Blizzard",
+      "nome": "Blizzard beta notes (Kaivax) and Class Deep Dive",
+      "url": "https://us.forums.blizzard.com/en/wow/t/2360696",
+      "data": "2026-11-03"
+    }
+  ]
+}

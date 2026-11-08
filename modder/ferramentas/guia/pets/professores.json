@@ -1,0 +1,7155 @@
+{
+  "geradoEm": "2026-11-08T03:10:28.821Z",
+  "fontes": {
+    "fhp": {
+      "repo": "https://github.com/Jazzman1976/Forever-Hunter-Pets",
+      "sha": "ff5eefb28b86bafaf8ee39d574473df81743eb69",
+      "licenca": "MIT",
+      "arquivo": "tools/data.json"
+    },
+    "petopia": {
+      "url": "https://www.wow-petopia.com/forever/abilities.php",
+      "velocidade": "https://www.wow-petopia.com/forever/attackspeed.php",
+      "lidoEm": "2026-11-08T03:09:30.717Z",
+      "licenca": "sem licença aberta; uso pessoal, marcado como fonte"
+    },
+    "questieDB": {
+      "repo": "https://github.com/Questie/QuestieDB",
+      "arquivo": "data/Forever/foreverNpcDB.lua"
+    },
+    "wago": {
+      "url": "https://wago.tools/db2/UiMap/csv?build=1.60.1.70862"
+    }
+  },
+  "ranks": {
+    "Arcane Resistance 1": {
+      "spellId": 24493,
+      "nivelPet": 20,
+      "pt": 5,
+      "professores": []
+    },
+    "Arcane Resistance 2": {
+      "spellId": 24497,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": []
+    },
+    "Arcane Resistance 3": {
+      "spellId": 24500,
+      "nivelPet": 40,
+      "pt": 45,
+      "professores": []
+    },
+    "Arcane Resistance 4": {
+      "spellId": 24501,
+      "nivelPet": 50,
+      "pt": 90,
+      "professores": []
+    },
+    "Bite 1": {
+      "spellId": 17253,
+      "nivelPet": 1,
+      "pt": 1,
+      "professores": [
+        {
+          "npcId": 3110,
+          "nome": "Dreadmaw Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 9,
+          "max": 11,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 30,
+          "nome": "Forest Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 5,
+          "max": 6,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1994,
+          "nome": "Githyiss the Vile",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": null,
+          "max": null,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1922,
+          "nome": "Gray Forest Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 7,
+          "max": 8,
+          "zona": "Elwynn Forest",
+          "velocidade": 1.7,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250873,
+          "nome": "Juvenile Vuldren",
+          "nomeIngles": true,
+          "familia": "Fox",
+          "min": 1,
+          "max": 1,
+          "zona": "Zephras Isle",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 471,
+          "nome": "Mother Fang",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 7,
+          "max": 7,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1688,
+          "nome": "Night Web Matriarch",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 5,
+          "max": 5,
+          "zona": "Tirisfal Glades",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1505,
+          "nome": "Night Web Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 3,
+          "max": 4,
+          "zona": "Tirisfal Glades",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2959,
+          "nome": "Prairie Stalker",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 7,
+          "max": 8,
+          "zona": "Mulgore",
+          "velocidade": 1.5,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2958,
+          "nome": "Prairie Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 5,
+          "max": 6,
+          "zona": "Mulgore",
+          "velocidade": 1.5,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1509,
+          "nome": "Ragged Scavenger",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 2,
+          "max": 3,
+          "zona": "Tirisfal Glades",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1138,
+          "nome": "Snow Tracker Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 6,
+          "max": 7,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 266851,
+          "nome": "Ukorsbane",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 8,
+          "max": 8,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250868,
+          "nome": "Vuldren",
+          "nomeIngles": true,
+          "familia": "Fox",
+          "min": 6,
+          "max": 6,
+          "zona": "Zephras Isle",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1999,
+          "nome": "Webwood Venomfang",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 7,
+          "max": 8,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1131,
+          "nome": "Winter Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 7,
+          "max": 8,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Bite 2": {
+      "spellId": 17255,
+      "nivelPet": 8,
+      "pt": 4,
+      "professores": [
+        {
+          "npcId": 268530,
+          "nome": "Bloodtalon Matriarch",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 9,
+          "max": 9,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 834,
+          "nome": "Coyote",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 10,
+          "max": 11,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 833,
+          "nome": "Coyote Packleader",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 11,
+          "max": 12,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 270693,
+          "nome": "Daggerfang",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 15,
+          "max": 15,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1195,
+          "nome": "Forest Lurker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 10,
+          "max": 10,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2001,
+          "nome": "Giant Webwood Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 10,
+          "max": 11,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 7319,
+          "nome": "Lady Sathrah",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 12,
+          "max": 12,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1693,
+          "nome": "Loch Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 14,
+          "max": 15,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3461,
+          "nome": "Oasis Snapjaw",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 15,
+          "max": 16,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2960,
+          "nome": "Prairie Wolf Alpha",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 9,
+          "max": 10,
+          "zona": "Mulgore",
+          "velocidade": 1.4,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 118,
+          "nome": "Prowler",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": null,
+          "max": null,
+          "zona": "Elwynn Forest",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 10359,
+          "nome": "Sri'Skulk",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 13,
+          "max": 13,
+          "zona": "Tirisfal Glades",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1133,
+          "nome": "Starving Winter Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 8,
+          "max": 9,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 442,
+          "nome": "Tarantula",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 15,
+          "max": 16,
+          "zona": "Redridge Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1132,
+          "nome": "Timber",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 10,
+          "max": 10,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": false
+        },
+        {
+          "npcId": 1555,
+          "nome": "Vicious Night Web Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 9,
+          "max": 10,
+          "zona": "Tirisfal Glades",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250874,
+          "nome": "Vuldren Alpha",
+          "nomeIngles": true,
+          "familia": "Fox",
+          "min": 10,
+          "max": 10,
+          "zona": "Zephras Isle",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 254589,
+          "nome": "Vulgara the Insatiable",
+          "nomeIngles": true,
+          "familia": "Fox",
+          "min": 8,
+          "max": 8,
+          "zona": "Zephras Isle",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2000,
+          "nome": "Webwood Silkspinner",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 8,
+          "max": 8,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1765,
+          "nome": "Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 10,
+          "max": 11,
+          "zona": "Silverpine Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Bite 3": {
+      "spellId": 17256,
+      "nivelPet": 16,
+      "pt": 7,
+      "professores": [
+        {
+          "npcId": 4824,
+          "nome": "Aku'mai Fisher",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 23,
+          "max": 24,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 11921,
+          "nome": "Besseleth",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 21,
+          "max": 21,
+          "zona": "Stonetalon Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1923,
+          "nome": "Bloodsnout Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 16,
+          "max": 17,
+          "zona": "Silverpine Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 616,
+          "nome": "Chatter",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 23,
+          "max": 23,
+          "zona": "Redridge Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14279,
+          "nome": "Creepthess",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 24,
+          "max": 24,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4005,
+          "nome": "Deepmoss Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 16,
+          "max": 17,
+          "zona": "Stonetalon Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4006,
+          "nome": "Deepmoss Webspinner",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 19,
+          "max": 20,
+          "zona": "Stonetalon Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2350,
+          "nome": "Forest Moss Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 20,
+          "max": 21,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3823,
+          "nome": "Ghostpaw Runner",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 19,
+          "max": 20,
+          "zona": "Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 505,
+          "nome": "Greater Tarantula",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 19,
+          "max": 20,
+          "zona": "Redridge Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 569,
+          "nome": "Green Recluse",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 22,
+          "max": 22,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3653,
+          "nome": "Kresh",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 20,
+          "max": 20,
+          "zona": "Wailing Caverns (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2476,
+          "nome": "Large Loch Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 22,
+          "max": 22,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 521,
+          "nome": "Lupos",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 23,
+          "max": 23,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14266,
+          "nome": "Shanda the Spinner",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 19,
+          "max": 19,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2172,
+          "nome": "Strider Clutchmother",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 20,
+          "max": 20,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1185,
+          "nome": "Wood Lurker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 18,
+          "max": 18,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Bite 4": {
+      "spellId": 17257,
+      "nivelPet": 24,
+      "pt": 10,
+      "professores": [
+        {
+          "npcId": 4825,
+          "nome": "Aku'mai Snapjaw",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 26,
+          "max": 27,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 628,
+          "nome": "Black Ravager",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 24,
+          "max": 25,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1258,
+          "nome": "Black Ravager Mastiff",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 25,
+          "max": 25,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14223,
+          "nome": "Cranky Benj",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 32,
+          "max": 32,
+          "zona": "Alterac Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2348,
+          "nome": "Elder Moss Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 26,
+          "max": 27,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4887,
+          "nome": "Ghamoo-ra",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 25,
+          "max": 25,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3825,
+          "nome": "Ghostpaw Alpha",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 27,
+          "max": 27,
+          "zona": "Ashenvale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2349,
+          "nome": "Giant Moss Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 24,
+          "max": 25,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2089,
+          "nome": "Giant Wetlands Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 25,
+          "max": 26,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 260803,
+          "nome": "Highland Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 27,
+          "max": 28,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 260809,
+          "nome": "Highland Tortoise",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 26,
+          "max": 26,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1112,
+          "nome": "Leech Widow",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 24,
+          "max": 24,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 574,
+          "nome": "Naraxis",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 27,
+          "max": 27,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2408,
+          "nome": "Snapjaw",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 30,
+          "max": 31,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3821,
+          "nome": "Wildthorn Lurker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 29,
+          "max": 29,
+          "zona": "Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Bite 5": {
+      "spellId": null,
+      "nivelPet": 32,
+      "pt": 13,
+      "professores": [
+        {
+          "npcId": 2727,
+          "nome": "Crag Coyote",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 35,
+          "max": 36,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4412,
+          "nome": "Darkfang Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 38,
+          "max": 39,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4411,
+          "nome": "Darkfang Lurker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 36,
+          "max": 37,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4413,
+          "nome": "Darkfang Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 35,
+          "max": 36,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4341,
+          "nome": "Drywallow Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 35,
+          "max": 36,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2565,
+          "nome": "Giant Plains Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 35,
+          "max": 36,
+          "zona": "Arathi Highlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4344,
+          "nome": "Mottled Drywallow Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 38,
+          "max": 39,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4396,
+          "nome": "Mudrock Tortoise",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 36,
+          "max": 37,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2563,
+          "nome": "Plains Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 32,
+          "max": 33,
+          "zona": "Arathi Highlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4143,
+          "nome": "Sparkleshell Snapper",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 34,
+          "max": 35,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Bite 6": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 17,
+      "professores": [
+        {
+          "npcId": 2753,
+          "nome": "Barnabus",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 38,
+          "max": 38,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4841,
+          "nome": "Deadmire",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 45,
+          "max": 45,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14339,
+          "nome": "Death Howl",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 49,
+          "max": 49,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 769,
+          "nome": "Deathstrike Tarantula",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 40,
+          "max": 41,
+          "zona": "Swamp of Sorrows",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4345,
+          "nome": "Drywallow Daggermaw",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 40,
+          "max": 41,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8959,
+          "nome": "Felpaw Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 47,
+          "max": 48,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5286,
+          "nome": "Longtooth Runner",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 40,
+          "max": 41,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4400,
+          "nome": "Mudrock Snapjaw",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 41,
+          "max": 42,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8211,
+          "nome": "Old Cliff Jumper",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 42,
+          "max": 42,
+          "zona": "The Hinterlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14233,
+          "nome": "Ripscale",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 39,
+          "max": 39,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1087,
+          "nome": "Sawtooth Snapper",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 41,
+          "max": 42,
+          "zona": "Swamp of Sorrows",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5356,
+          "nome": "Snarler",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 42,
+          "max": 42,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8762,
+          "nome": "Timberweb Recluse",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 47,
+          "max": 48,
+          "zona": "Azshara",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Bite 7": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 21,
+      "professores": [
+        {
+          "npcId": 8933,
+          "nome": "Cave Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 50,
+          "max": 52,
+          "zona": "Blackrock Depths (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1817,
+          "nome": "Diseased Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 53,
+          "max": 54,
+          "zona": "Western Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8961,
+          "nome": "Felpaw Ravager",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 51,
+          "max": 52,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8213,
+          "nome": "Ironback",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 51,
+          "max": 51,
+          "zona": "The Hinterlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1824,
+          "nome": "Plague Lurker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 54,
+          "max": 55,
+          "zona": "Western Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8277,
+          "nome": "Rekk'tilac",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 48,
+          "max": 48,
+          "zona": "Searing Gorge",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2505,
+          "nome": "Saltwater Snapjaw",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 49,
+          "max": 50,
+          "zona": "The Hinterlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3581,
+          "nome": "Sewer Beast",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 50,
+          "max": 50,
+          "zona": "Stormwind City",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 6585,
+          "nome": "Uhk'loc",
+          "nomeIngles": true,
+          "familia": "Gorilla",
+          "min": 52,
+          "max": 52,
+          "zona": "Un'Goro Crater",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2681,
+          "nome": "Vilebranch Raiding Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 50,
+          "max": 51,
+          "zona": "The Hinterlands",
+          "velocidade": 1.7,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Bite 8": {
+      "spellId": null,
+      "nivelPet": 56,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 9696,
+          "nome": "Bloodaxe Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 56,
+          "max": 57,
+          "zona": "Blackrock Spire (Dungeon)",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Charge 1": {
+      "spellId": 7371,
+      "nivelPet": 1,
+      "pt": 5,
+      "professores": [
+        {
+          "npcId": 2966,
+          "nome": "Battleboar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 3,
+          "max": 4,
+          "zona": "Mulgore",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2954,
+          "nome": "Bristleback Battleboar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 4,
+          "max": 5,
+          "zona": "Mulgore",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3225,
+          "nome": "Corrupted Mottled Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 11,
+          "max": 11,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1125,
+          "nome": "Crag Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 5,
+          "max": 6,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3099,
+          "nome": "Dire Mottled Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 6,
+          "max": 7,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1127,
+          "nome": "Elder Crag Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 7,
+          "max": 8,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3100,
+          "nome": "Elder Mottled Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 8,
+          "max": 9,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1126,
+          "nome": "Large Crag Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 6,
+          "max": 7,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 119,
+          "nome": "Longsnout",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 10,
+          "max": 11,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3098,
+          "nome": "Mottled Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 1,
+          "max": 2,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1190,
+          "nome": "Mountain Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 10,
+          "max": 10,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 390,
+          "nome": "Porcine Entourage",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 7,
+          "max": 7,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 330,
+          "nome": "Princess",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 9,
+          "max": 9,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 524,
+          "nome": "Rockhide Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 7,
+          "max": 8,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1689,
+          "nome": "Scarred Crag Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 9,
+          "max": 10,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 708,
+          "nome": "Small Crag Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 3,
+          "max": 3,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 113,
+          "nome": "Stonetusk Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 5,
+          "max": 6,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1985,
+          "nome": "Thistle Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 2,
+          "max": 3,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1984,
+          "nome": "Young Thistle Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 1,
+          "max": 2,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Charge 2": {
+      "spellId": 26177,
+      "nivelPet": 12,
+      "pt": 9,
+      "professores": [
+        {
+          "npcId": 1192,
+          "nome": "Elder Mountain Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 16,
+          "max": 17,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 157,
+          "nome": "Goretusk",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 14,
+          "max": 15,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 547,
+          "nome": "Great Goretusk",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 16,
+          "max": 17,
+          "zona": "Westfall; Redridge Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1191,
+          "nome": "Mangy Mountain Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 14,
+          "max": 15,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 454,
+          "nome": "Young Goretusk",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 12,
+          "max": 13,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Charge 3": {
+      "spellId": 26178,
+      "nivelPet": 24,
+      "pt": 13,
+      "professores": [
+        {
+          "npcId": 4511,
+          "nome": "Agam'ar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 24,
+          "max": 25,
+          "zona": "Razorfen Kraul (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 345,
+          "nome": "Bellygrub",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 24,
+          "max": 24,
+          "zona": "Redridge Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4514,
+          "nome": "Raging Agam'ar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 25,
+          "max": 26,
+          "zona": "Razorfen Kraul (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4512,
+          "nome": "Rotting Agam'ar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 27,
+          "max": 28,
+          "zona": "Razorfen Kraul (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Charge 4": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 17,
+      "professores": []
+    },
+    "Charge 5": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 21,
+      "professores": [
+        {
+          "npcId": 5992,
+          "nome": "Ashmane Boar",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 48,
+          "max": 49,
+          "zona": "Blasted Lands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8303,
+          "nome": "Grunter",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 50,
+          "max": 50,
+          "zona": "Blasted Lands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Charge 6": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 16117,
+          "nome": "Plagued Swine",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 60,
+          "max": 60,
+          "zona": "Eastern Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Claw 1": {
+      "spellId": 16827,
+      "nivelPet": 1,
+      "pt": 1,
+      "professores": [
+        {
+          "npcId": 1129,
+          "nome": "Black Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 7,
+          "max": 7,
+          "zona": "Dun Morogh",
+          "velocidade": 2.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250928,
+          "nome": "Highlands Ursera",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 7,
+          "max": 8,
+          "zona": "Zephras Isle",
+          "velocidade": 2.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1196,
+          "nome": "Ice Claw Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 7,
+          "max": 8,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3106,
+          "nome": "Pygmy Surf Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 5,
+          "max": 6,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3281,
+          "nome": "Sarkoth",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 4,
+          "max": 4,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3124,
+          "nome": "Scorpid Worker",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 3,
+          "max": 3,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 250926,
+          "nome": "Scrawny Ursera",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 3,
+          "max": 4,
+          "zona": "Zephras Isle",
+          "velocidade": 2.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1995,
+          "nome": "Strigid Owl",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 5,
+          "max": 6,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2970,
+          "nome": "Swoop",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 7,
+          "max": 8,
+          "zona": "Mulgore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 251115,
+          "nome": "Urs'anah",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 5,
+          "max": 5,
+          "zona": "Zephras Isle",
+          "velocidade": 2.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250937,
+          "nome": "Ursera Scavenger",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 4,
+          "max": 4,
+          "zona": "Zephras Isle",
+          "velocidade": 2.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Claw 2": {
+      "spellId": 16828,
+      "nivelPet": 8,
+      "pt": 4,
+      "professores": [
+        {
+          "npcId": 1130,
+          "nome": "Bjarn",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 12,
+          "max": 12,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 5823,
+          "nome": "Death Flayer",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 11,
+          "max": 11,
+          "zona": "Durotar",
+          "velocidade": 1.6,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 248299,
+          "nome": "Elmpaw",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 12,
+          "max": 12,
+          "zona": "Elwynn Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3108,
+          "nome": "Encrusted Surf Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 10,
+          "max": 10,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1778,
+          "nome": "Ferocious Grizzled Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": null,
+          "max": null,
+          "zona": "Silverpine Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1961,
+          "nome": "Mangeclaw",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 11,
+          "max": 11,
+          "zona": "Dun Morogh",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 276189,
+          "nome": "Matriarch Bristlefur",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 10,
+          "max": 10,
+          "zona": "Elwynn Forest",
+          "velocidade": 2.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250927,
+          "nome": "Shadowgale Ursera",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 10,
+          "max": 11,
+          "zona": "Zephras Isle",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1997,
+          "nome": "Strigid Hunter",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 8,
+          "max": 9,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2163,
+          "nome": "Thistle Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 11,
+          "max": 12,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2232,
+          "nome": "Tide Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 12,
+          "max": 14,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3127,
+          "nome": "Venomtail Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 9,
+          "max": 10,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 254588,
+          "nome": "Windsong Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 8,
+          "max": 9,
+          "zona": "Zephras Isle",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 822,
+          "nome": "Young Forest Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 8,
+          "max": 9,
+          "zona": "Elwynn Forest",
+          "velocidade": 2.5,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Claw 3": {
+      "spellId": 16829,
+      "nivelPet": 16,
+      "pt": 7,
+      "professores": [
+        {
+          "npcId": 3809,
+          "nome": "Ashenvale Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 21,
+          "max": 22,
+          "zona": "Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1189,
+          "nome": "Black Bear Patriarch",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 16,
+          "max": 17,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3812,
+          "nome": "Clattering Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 19,
+          "max": 19,
+          "zona": "Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 6788,
+          "nome": "Den Mother",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 19,
+          "max": 19,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3619,
+          "nome": "Ghost Saber",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 19,
+          "max": 20,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2351,
+          "nome": "Gray Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 21,
+          "max": 22,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1225,
+          "nome": "Ol' Sooty",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 20,
+          "max": 20,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1216,
+          "nome": "Shorecrawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 17,
+          "max": 18,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4821,
+          "nome": "Skittering Crustacean",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 22,
+          "max": 23,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4822,
+          "nome": "Snapping Crustacean",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 22,
+          "max": 23,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Claw 4": {
+      "spellId": 16830,
+      "nivelPet": 24,
+      "pt": 10,
+      "professores": [
+        {
+          "npcId": 4823,
+          "nome": "Barbed Crustacean",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 25,
+          "max": 26,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3810,
+          "nome": "Elder Ashenvale Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 25,
+          "max": 26,
+          "zona": "Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 4696,
+          "nome": "Scorpashi Snapper",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 30,
+          "max": 31,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4140,
+          "nome": "Scorpid Reaver",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 31,
+          "max": 32,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Claw 5": {
+      "spellId": null,
+      "nivelPet": 32,
+      "pt": 13,
+      "professores": [
+        {
+          "npcId": 4343,
+          "nome": "Drywallow Snapper",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 37,
+          "max": 38,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4697,
+          "nome": "Scorpashi Lasher",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 34,
+          "max": 35,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7022,
+          "nome": "Venomlash Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 39,
+          "max": 40,
+          "zona": "Uldaman (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5937,
+          "nome": "Vile Sting",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 35,
+          "max": 35,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Claw 6": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 17,
+      "professores": [
+        {
+          "npcId": 5268,
+          "nome": "Ironfur Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 41,
+          "max": 42,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 731,
+          "nome": "King Bangalash",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 43,
+          "max": 43,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.4,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1088,
+          "nome": "Monstrous Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 43,
+          "max": 44,
+          "zona": "Swamp of Sorrows",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5352,
+          "nome": "Old Grizzlegut",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 43,
+          "max": 43,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5422,
+          "nome": "Scorpid Hunter",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 40,
+          "max": 41,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 922,
+          "nome": "Silt Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 40,
+          "max": 41,
+          "zona": "Swamp of Sorrows",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Claw 7": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 21,
+      "professores": [
+        {
+          "npcId": 8958,
+          "nome": "Angerclaw Mauler",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 49,
+          "max": 50,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8301,
+          "nome": "Clack the Reaver",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 53,
+          "max": 53,
+          "zona": "Blasted Lands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 9695,
+          "nome": "Deathlash Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 54,
+          "max": 55,
+          "zona": "Burning Steppes",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1816,
+          "nome": "Diseased Grizzly",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 55,
+          "max": 56,
+          "zona": "Western Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7099,
+          "nome": "Ironbeak Hunter",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 50,
+          "max": 51,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5274,
+          "nome": "Ironfur Patriarch",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 48,
+          "max": 49,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14344,
+          "nome": "Mongress",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 50,
+          "max": 50,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14343,
+          "nome": "Olm the Wise",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 52,
+          "max": 52,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7444,
+          "nome": "Shardtooth Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 53,
+          "max": 54,
+          "zona": "Winterspring",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7455,
+          "nome": "Winterspring Owl",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 54,
+          "max": 56,
+          "zona": "Winterspring",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Claw 8": {
+      "spellId": null,
+      "nivelPet": 56,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 7445,
+          "nome": "Elder Shardtooth",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 57,
+          "max": 58,
+          "zona": "Winterspring",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7456,
+          "nome": "Winterspring Screecher",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 57,
+          "max": 59,
+          "zona": "Winterspring",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Cower 1": {
+      "spellId": 1742,
+      "nivelPet": 5,
+      "pt": 8,
+      "professores": [
+        {
+          "npcId": 3121,
+          "nome": "Durotar Tiger",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 7,
+          "max": 8,
+          "zona": "Durotar",
+          "velocidade": 1.3,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2957,
+          "nome": "Elder Plainstrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 8,
+          "max": 9,
+          "zona": "Mulgore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3035,
+          "nome": "Flatland Cougar",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 7,
+          "max": 8,
+          "zona": "Mulgore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3246,
+          "nome": "Fleeting Plainstrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 12,
+          "max": 13,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2321,
+          "nome": "Foreststrider Fledgling",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 11,
+          "max": 13,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1553,
+          "nome": "Greater Duskbat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 6,
+          "max": 7,
+          "zona": "Tirisfal Glades",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1199,
+          "nome": "Juvenile Snow Leopard",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 5,
+          "max": 6,
+          "zona": "Dun Morogh",
+          "velocidade": 1.5,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3068,
+          "nome": "Mazzranache",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 9,
+          "max": 9,
+          "zona": "Mulgore",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2070,
+          "nome": "Moonstalker Runt",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 10,
+          "max": 17,
+          "zona": "Darkshore",
+          "velocidade": 1.3,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2042,
+          "nome": "Nightsaber",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 5,
+          "max": 6,
+          "zona": "Teldrassil",
+          "velocidade": 1.4,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 251245,
+          "nome": "Prideclaw",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": null,
+          "max": null,
+          "zona": "Zephras Isle",
+          "velocidade": 1.4,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 276198,
+          "nome": "Shal'ma",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 9,
+          "max": 9,
+          "zona": "Durotar",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 253282,
+          "nome": "Shriekling Fledgling",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 8,
+          "max": 9,
+          "zona": "Zephras Isle",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Cower 2": {
+      "spellId": 1753,
+      "nivelPet": 15,
+      "pt": 10,
+      "professores": [
+        {
+          "npcId": 2323,
+          "nome": "Giant Foreststrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 17,
+          "max": 19,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2237,
+          "nome": "Moonstalker Sire",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 17,
+          "max": 18,
+          "zona": "Darkshore",
+          "velocidade": 1.3,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3245,
+          "nome": "Ornery Plainstrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 16,
+          "max": 17,
+          "zona": "The Barrens",
+          "velocidade": 1.3,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2384,
+          "nome": "Starving Mountain Lion",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 23,
+          "max": 24,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 1.2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4067,
+          "nome": "Twilight Runner",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 23,
+          "max": 24,
+          "zona": "Stonetalon Mountains",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Cower 3": {
+      "spellId": null,
+      "nivelPet": 25,
+      "pt": 12,
+      "professores": [
+        {
+          "npcId": 4126,
+          "nome": "Crag Stalker",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": null,
+          "max": null,
+          "zona": "Thousand Needles",
+          "velocidade": 1.6,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2385,
+          "nome": "Feral Mountain Lion",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 27,
+          "max": 28,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 1.2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4539,
+          "nome": "Greater Kraul Bat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 32,
+          "max": 32,
+          "zona": "Razorfen Kraul (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4538,
+          "nome": "Kraul Bat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 30,
+          "max": 31,
+          "zona": "Razorfen Kraul (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 736,
+          "nome": "Panther",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 32,
+          "max": 33,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 683,
+          "nome": "Young Panther",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 30,
+          "max": 31,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 681,
+          "nome": "Young Stranglethorn Tiger",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 30,
+          "max": 31,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Cower 4": {
+      "spellId": 1755,
+      "nivelPet": 35,
+      "pt": 14,
+      "professores": [
+        {
+          "npcId": 2732,
+          "nome": "Ridge Huntress",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 38,
+          "max": 39,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2731,
+          "nome": "Ridge Stalker",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 36,
+          "max": 37,
+          "zona": "Badlands",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3241,
+          "nome": "Savannah Patriarch",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 15,
+          "max": 16,
+          "zona": "The Barrens",
+          "velocidade": 1.3,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 4861,
+          "nome": "Shrike Bat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 38,
+          "max": 39,
+          "zona": "Uldaman (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Cower 5": {
+      "spellId": null,
+      "nivelPet": 45,
+      "pt": 16,
+      "professores": [
+        {
+          "npcId": 2522,
+          "nome": "Jaguero Stalker",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 50,
+          "max": 50,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8601,
+          "nome": "Noxious Plaguebat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 54,
+          "max": 56,
+          "zona": "Eastern Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8600,
+          "nome": "Plaguebat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 53,
+          "max": 55,
+          "zona": "Eastern Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Cower 6": {
+      "spellId": null,
+      "nivelPet": 55,
+      "pt": 18,
+      "professores": [
+        {
+          "npcId": 7430,
+          "nome": "Frostsaber Cub",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 55,
+          "max": 56,
+          "zona": "Winterspring",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8602,
+          "nome": "Monstrous Plaguebat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 56,
+          "max": 58,
+          "zona": "Eastern Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dash 1": {
+      "spellId": null,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 4688,
+          "nome": "Bonepaw Hyena",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 33,
+          "max": 35,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2850,
+          "nome": "Broken Tooth",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 37,
+          "max": 37,
+          "zona": "Badlands",
+          "velocidade": 1,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2727,
+          "nome": "Crag Coyote",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 35,
+          "max": 36,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2729,
+          "nome": "Elder Crag Coyote",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 39,
+          "max": 40,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2728,
+          "nome": "Feral Crag Coyote",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 37,
+          "max": 38,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 976,
+          "nome": "Kurzen War Tiger",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 32,
+          "max": 33,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4662,
+          "nome": "Magram Bonepaw",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 37,
+          "max": 38,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4724,
+          "nome": "Sandstrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 30,
+          "max": 31,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4304,
+          "nome": "Scarlet Tracking Hound",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 33,
+          "max": 34,
+          "zona": "Scarlet Monastery (Dungeon)",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 729,
+          "nome": "Sin'Dall",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 37,
+          "max": 37,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4950,
+          "nome": "Spot",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 35,
+          "max": 35,
+          "zona": "Dustwallow Marsh",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 682,
+          "nome": "Stranglethorn Tiger",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 32,
+          "max": 33,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 767,
+          "nome": "Swamp Jaguar",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 36,
+          "max": 37,
+          "zona": "Swamp of Sorrows",
+          "velocidade": 1.2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dash 2": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 20,
+      "professores": [
+        {
+          "npcId": 728,
+          "nome": "Bhag'thera",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 40,
+          "max": 40,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5426,
+          "nome": "Blisterpaw Hyena",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 44,
+          "max": 45,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1713,
+          "nome": "Elder Shadowmaw Panther",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 42,
+          "max": 43,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 731,
+          "nome": "King Bangalash",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 43,
+          "max": 43,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.4,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5286,
+          "nome": "Longtooth Runner",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 40,
+          "max": 41,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8208,
+          "nome": "Murderous Blisterpaw",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 43,
+          "max": 43,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8211,
+          "nome": "Old Cliff Jumper",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 42,
+          "max": 42,
+          "zona": "The Hinterlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5427,
+          "nome": "Rabid Blisterpaw",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 47,
+          "max": 48,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2730,
+          "nome": "Rabid Crag Coyote",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 42,
+          "max": 43,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2734,
+          "nome": "Ridge Stalker Patriarch",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 40,
+          "max": 41,
+          "zona": "Badlands",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2926,
+          "nome": "Silvermane Stalker",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 47,
+          "max": 48,
+          "zona": "The Hinterlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5425,
+          "nome": "Starving Blisterpaw",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 41,
+          "max": 42,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dash 3": {
+      "spellId": null,
+      "nivelPet": 50,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 7055,
+          "nome": "Blackrock Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 54,
+          "max": 55,
+          "zona": "Burning Steppes",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 9696,
+          "nome": "Bloodaxe Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 56,
+          "max": 57,
+          "zona": "Blackrock Spire (Dungeon)",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250619,
+          "nome": "Broodwidow",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 16,
+          "max": 16,
+          "zona": "Ruins of Lordaeron (Dungeon)",
+          "velocidade": 2.7,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7433,
+          "nome": "Frostsaber Huntress",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 58,
+          "max": 59,
+          "zona": "Winterspring",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7432,
+          "nome": "Frostsaber Stalker",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 59,
+          "max": 60,
+          "zona": "Winterspring",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8303,
+          "nome": "Grunter",
+          "nomeIngles": true,
+          "familia": "Boar",
+          "min": 50,
+          "max": 50,
+          "zona": "Blasted Lands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 10200,
+          "nome": "Rak'Shiri",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 57,
+          "max": 57,
+          "zona": "Winterspring",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8300,
+          "nome": "Ravage",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 51,
+          "max": 51,
+          "zona": "Blasted Lands",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 9416,
+          "nome": "Scarshield Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 53,
+          "max": 54,
+          "zona": "Blackrock Spire (Dungeon)",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2681,
+          "nome": "Vilebranch Raiding Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 50,
+          "max": 51,
+          "zona": "The Hinterlands",
+          "velocidade": 1.7,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 11365,
+          "nome": "Zulian Panther",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 60,
+          "max": 60,
+          "zona": "Zul'Gurub (Raid)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Demoralizing Screech 1": {
+      "spellId": 24423,
+      "nivelPet": 8,
+      "pt": 10,
+      "professores": [
+        {
+          "npcId": 154,
+          "nome": "Greater Fleshripper",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 16,
+          "max": 17,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2971,
+          "nome": "Taloned Swoop",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 9,
+          "max": 9,
+          "zona": "Mulgore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 199,
+          "nome": "Young Fleshripper",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 10,
+          "max": 11,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Demoralizing Screech 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 15,
+      "professores": []
+    },
+    "Demoralizing Screech 3": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 20,
+      "professores": []
+    },
+    "Demoralizing Screech 4": {
+      "spellId": null,
+      "nivelPet": 56,
+      "pt": 25,
+      "professores": []
+    },
+    "Dismember 1": {
+      "spellId": 1264758,
+      "nivelPet": 12,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 270693,
+          "nome": "Daggerfang",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 15,
+          "max": 15,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1693,
+          "nome": "Loch Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 14,
+          "max": 15,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1400,
+          "nome": "Wetlands Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 23,
+          "max": 24,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1417,
+          "nome": "Young Wetlands Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 21,
+          "max": 22,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Dismember 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 260797,
+          "nome": "Elder Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 27,
+          "max": 27,
+          "zona": "Excavation Site: Wetlands (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 260796,
+          "nome": "Marsh Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 26,
+          "max": 26,
+          "zona": "Excavation Site: Wetlands (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1150,
+          "nome": "River Crocolisk",
+          "nomeIngles": true,
+          "familia": "Crocolisk",
+          "min": 30,
+          "max": 31,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dismember 3": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 0,
+      "professores": []
+    },
+    "Dismember 4": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Dismember 5": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Dive 1": {
+      "spellId": null,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 4693,
+          "nome": "Dread Flyer",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 36,
+          "max": 37,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4539,
+          "nome": "Greater Kraul Bat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 32,
+          "max": 32,
+          "zona": "Razorfen Kraul (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4538,
+          "nome": "Kraul Bat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 30,
+          "max": 31,
+          "zona": "Razorfen Kraul (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2579,
+          "nome": "Mesa Buzzard",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 34,
+          "max": 35,
+          "zona": "Arathi Highlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4861,
+          "nome": "Shrike Bat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 38,
+          "max": 39,
+          "zona": "Uldaman (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 6013,
+          "nome": "Wayward Buzzard",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 35,
+          "max": 37,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2578,
+          "nome": "Young Mesa Buzzard",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 31,
+          "max": 32,
+          "zona": "Arathi Highlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dive 2": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 20,
+      "professores": [
+        {
+          "npcId": 5349,
+          "nome": "Arash-ethis",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 49,
+          "max": 49,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5429,
+          "nome": "Fire Roc",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 43,
+          "max": 45,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8207,
+          "nome": "Greater Firebird",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 46,
+          "max": 46,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7097,
+          "nome": "Ironbeak Owl",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 48,
+          "max": 49,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5428,
+          "nome": "Roc",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 42,
+          "max": 43,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5308,
+          "nome": "Rogue Vale Screecher",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 44,
+          "max": 46,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5430,
+          "nome": "Searing Roc",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 47,
+          "max": 49,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5307,
+          "nome": "Vale Screecher",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 41,
+          "max": 43,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dive 3": {
+      "spellId": null,
+      "nivelPet": 50,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 1809,
+          "nome": "Carrion Vulture",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 50,
+          "max": 52,
+          "zona": "Western Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8927,
+          "nome": "Dark Screecher",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 50,
+          "max": 52,
+          "zona": "Blackrock Depths (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7099,
+          "nome": "Ironbeak Hunter",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 50,
+          "max": 51,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7098,
+          "nome": "Ironbeak Screecher",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 52,
+          "max": 53,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14343,
+          "nome": "Olm the Wise",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 52,
+          "max": 52,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8600,
+          "nome": "Plaguebat",
+          "nomeIngles": true,
+          "familia": "Bat",
+          "min": 53,
+          "max": 55,
+          "zona": "Eastern Plaguelands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5708,
+          "nome": "Spawn of Hakkar",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 51,
+          "max": 51,
+          "zona": "The Temple of Atal'Hakkar (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8299,
+          "nome": "Spiteflayer",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 52,
+          "max": 52,
+          "zona": "Blasted Lands",
+          "velocidade": 1.2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7455,
+          "nome": "Winterspring Owl",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 54,
+          "max": 56,
+          "zona": "Winterspring",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7456,
+          "nome": "Winterspring Screecher",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 57,
+          "max": 59,
+          "zona": "Winterspring",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2931,
+          "nome": "Zaricotl",
+          "nomeIngles": true,
+          "familia": "Carrion Bird",
+          "min": 55,
+          "max": 55,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dust Cloud 1": {
+      "spellId": 1265899,
+      "nivelPet": 12,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 3246,
+          "nome": "Fleeting Plainstrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 12,
+          "max": 13,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2322,
+          "nome": "Foreststrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 14,
+          "max": 16,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2172,
+          "nome": "Strider Clutchmother",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 20,
+          "max": 20,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dust Cloud 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 4724,
+          "nome": "Sandstrider",
+          "nomeIngles": true,
+          "familia": "Tallstrider",
+          "min": 30,
+          "max": 31,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Dust Cloud 3": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 0,
+      "professores": []
+    },
+    "Dust Cloud 4": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Dust Cloud 5": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Fire Resistance 1": {
+      "spellId": 23992,
+      "nivelPet": 20,
+      "pt": 5,
+      "professores": []
+    },
+    "Fire Resistance 2": {
+      "spellId": 24439,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": []
+    },
+    "Fire Resistance 3": {
+      "spellId": 24444,
+      "nivelPet": 40,
+      "pt": 45,
+      "professores": []
+    },
+    "Fire Resistance 4": {
+      "spellId": 24445,
+      "nivelPet": 50,
+      "pt": 90,
+      "professores": []
+    },
+    "Frost Resistance 1": {
+      "spellId": 24446,
+      "nivelPet": 20,
+      "pt": 5,
+      "professores": []
+    },
+    "Frost Resistance 2": {
+      "spellId": 24447,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": []
+    },
+    "Frost Resistance 3": {
+      "spellId": 24448,
+      "nivelPet": 40,
+      "pt": 45,
+      "professores": []
+    },
+    "Frost Resistance 4": {
+      "spellId": 24449,
+      "nivelPet": 50,
+      "pt": 90,
+      "professores": []
+    },
+    "Furious Howl 1": {
+      "spellId": 24604,
+      "nivelPet": 10,
+      "pt": 10,
+      "professores": [
+        {
+          "npcId": 274300,
+          "nome": "Coldrasp",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 12,
+          "max": 12,
+          "zona": "Tirisfal Glades",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 833,
+          "nome": "Coyote Packleader",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 11,
+          "max": 12,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 10644,
+          "nome": "Mist Howler",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 22,
+          "max": 22,
+          "zona": "Ashenvale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1765,
+          "nome": "Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 10,
+          "max": 11,
+          "zona": "Silverpine Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Furious Howl 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 1258,
+          "nome": "Black Ravager Mastiff",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 25,
+          "max": 25,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2729,
+          "nome": "Elder Crag Coyote",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 39,
+          "max": 40,
+          "zona": "Badlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3825,
+          "nome": "Ghostpaw Alpha",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 27,
+          "max": 27,
+          "zona": "Ashenvale",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5287,
+          "nome": "Longtooth Howler",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 43,
+          "max": 44,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2925,
+          "nome": "Silvermane Howler",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 45,
+          "max": 46,
+          "zona": "The Hinterlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Furious Howl 3": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 20,
+      "professores": [
+        {
+          "npcId": 14339,
+          "nome": "Death Howl",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 49,
+          "max": 49,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8959,
+          "nome": "Felpaw Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 47,
+          "max": 48,
+          "zona": "Felwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5286,
+          "nome": "Longtooth Runner",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 40,
+          "max": 41,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2924,
+          "nome": "Silvermane Wolf",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 43,
+          "max": 44,
+          "zona": "The Hinterlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5356,
+          "nome": "Snarler",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 42,
+          "max": 42,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Furious Howl 4": {
+      "spellId": null,
+      "nivelPet": 56,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 9696,
+          "nome": "Bloodaxe Worg",
+          "nomeIngles": true,
+          "familia": "Wolf",
+          "min": 56,
+          "max": 57,
+          "zona": "Blackrock Spire (Dungeon)",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Great Stamina 1": {
+      "spellId": 4187,
+      "nivelPet": 1,
+      "pt": 5,
+      "professores": []
+    },
+    "Great Stamina 2": {
+      "spellId": 4188,
+      "nivelPet": 12,
+      "pt": 10,
+      "professores": []
+    },
+    "Great Stamina 3": {
+      "spellId": 4189,
+      "nivelPet": 18,
+      "pt": 15,
+      "professores": []
+    },
+    "Great Stamina 4": {
+      "spellId": 4190,
+      "nivelPet": 24,
+      "pt": 25,
+      "professores": []
+    },
+    "Great Stamina 5": {
+      "spellId": 4191,
+      "nivelPet": 30,
+      "pt": 50,
+      "professores": []
+    },
+    "Great Stamina 6": {
+      "spellId": 4192,
+      "nivelPet": 36,
+      "pt": 75,
+      "professores": []
+    },
+    "Great Stamina 7": {
+      "spellId": 4193,
+      "nivelPet": 42,
+      "pt": 100,
+      "professores": []
+    },
+    "Great Stamina 8": {
+      "spellId": 4194,
+      "nivelPet": 48,
+      "pt": 125,
+      "professores": []
+    },
+    "Great Stamina 9": {
+      "spellId": 5041,
+      "nivelPet": 54,
+      "pt": 150,
+      "professores": []
+    },
+    "Great Stamina 10": {
+      "spellId": 5042,
+      "nivelPet": 60,
+      "pt": 185,
+      "professores": []
+    },
+    "Growl 1": {
+      "spellId": 2649,
+      "nivelPet": 1,
+      "pt": 0,
+      "professores": []
+    },
+    "Growl 2": {
+      "spellId": 14916,
+      "nivelPet": 10,
+      "pt": 0,
+      "professores": []
+    },
+    "Growl 3": {
+      "spellId": 14917,
+      "nivelPet": 20,
+      "pt": 0,
+      "professores": []
+    },
+    "Growl 4": {
+      "spellId": 14918,
+      "nivelPet": 30,
+      "pt": 0,
+      "professores": []
+    },
+    "Growl 5": {
+      "spellId": 14919,
+      "nivelPet": 40,
+      "pt": 0,
+      "professores": []
+    },
+    "Growl 6": {
+      "spellId": 14920,
+      "nivelPet": 50,
+      "pt": 0,
+      "professores": []
+    },
+    "Growl 7": {
+      "spellId": 14921,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Lava Breath 1": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Lava Breath 2": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Lightning Breath 1": {
+      "spellId": null,
+      "nivelPet": 1,
+      "pt": 1,
+      "professores": []
+    },
+    "Lightning Breath 2": {
+      "spellId": 25008,
+      "nivelPet": 12,
+      "pt": 5,
+      "professores": [
+        {
+          "npcId": 3630,
+          "nome": "Deviate Coiler",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 15,
+          "max": 16,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5056,
+          "nome": "Deviate Dreadfang",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 20,
+          "max": 21,
+          "zona": "Wailing Caverns (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3631,
+          "nome": "Deviate Stinglash",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 16,
+          "max": 17,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5756,
+          "nome": "Deviate Venomwing",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 20,
+          "max": 21,
+          "zona": "Wailing Caverns (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3249,
+          "nome": "Greater Thunderhawk",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 23,
+          "max": 23,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3424,
+          "nome": "Thunderhawk Cloudscraper",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 20,
+          "max": 20,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3247,
+          "nome": "Thunderhawk Hatchling",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 18,
+          "max": 20,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Lightning Breath 3": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 10,
+      "professores": [
+        {
+          "npcId": 4117,
+          "nome": "Cloud Serpent",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 25,
+          "max": 26,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4119,
+          "nome": "Elder Cloud Serpent",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 27,
+          "max": 29,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4118,
+          "nome": "Venomous Cloud Serpent",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 26,
+          "max": 28,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3472,
+          "nome": "Washte Pawne",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 25,
+          "max": 25,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Lightning Breath 4": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 5308,
+          "nome": "Rogue Vale Screecher",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 44,
+          "max": 46,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5307,
+          "nome": "Vale Screecher",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 41,
+          "max": 43,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Lightning Breath 5": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 20,
+      "professores": [
+        {
+          "npcId": 5349,
+          "nome": "Arash-ethis",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 49,
+          "max": 49,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5291,
+          "nome": "Hakkari Frostwing",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 49,
+          "max": 50,
+          "zona": "The Temple of Atal'Hakkar (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8336,
+          "nome": "Hakkari Sapper",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 49,
+          "max": 50,
+          "zona": "The Temple of Atal'Hakkar (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5708,
+          "nome": "Spawn of Hakkar",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 51,
+          "max": 51,
+          "zona": "The Temple of Atal'Hakkar (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Lightning Breath 6": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 11357,
+          "nome": "Son of Hakkar",
+          "nomeIngles": true,
+          "familia": "Wind Serpent",
+          "min": 60,
+          "max": 60,
+          "zona": "Zul'Gurub (Raid)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Mine! 1": {
+      "spellId": 1265054,
+      "nivelPet": 10,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 270298,
+          "nome": "Child of Jai'vhanel",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 11,
+          "max": 12,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 270196,
+          "nome": "Jai'vhanel",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": 12,
+          "max": 12,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 276101,
+          "nome": "Nightscreech",
+          "nomeIngles": true,
+          "familia": "Bird of Prey",
+          "min": null,
+          "max": null,
+          "zona": "Teldrassil",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Mine! 2": {
+      "spellId": null,
+      "nivelPet": 20,
+      "pt": 0,
+      "professores": []
+    },
+    "Mine! 3": {
+      "spellId": null,
+      "nivelPet": 30,
+      "pt": 0,
+      "professores": []
+    },
+    "Mine! 4": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 0,
+      "professores": []
+    },
+    "Mine! 5": {
+      "spellId": null,
+      "nivelPet": 50,
+      "pt": 0,
+      "professores": []
+    },
+    "Natural Armor 1": {
+      "spellId": 24545,
+      "nivelPet": 1,
+      "pt": 1,
+      "professores": []
+    },
+    "Natural Armor 2": {
+      "spellId": 24549,
+      "nivelPet": 12,
+      "pt": 5,
+      "professores": []
+    },
+    "Natural Armor 3": {
+      "spellId": 24550,
+      "nivelPet": 18,
+      "pt": 10,
+      "professores": []
+    },
+    "Natural Armor 4": {
+      "spellId": 24551,
+      "nivelPet": 24,
+      "pt": 15,
+      "professores": []
+    },
+    "Natural Armor 5": {
+      "spellId": 24552,
+      "nivelPet": 30,
+      "pt": 25,
+      "professores": []
+    },
+    "Natural Armor 6": {
+      "spellId": 24553,
+      "nivelPet": 36,
+      "pt": 50,
+      "professores": []
+    },
+    "Natural Armor 7": {
+      "spellId": 24554,
+      "nivelPet": 42,
+      "pt": 75,
+      "professores": []
+    },
+    "Natural Armor 8": {
+      "spellId": 24555,
+      "nivelPet": 48,
+      "pt": 100,
+      "professores": []
+    },
+    "Natural Armor 9": {
+      "spellId": 24629,
+      "nivelPet": 54,
+      "pt": 125,
+      "professores": []
+    },
+    "Natural Armor 10": {
+      "spellId": 24630,
+      "nivelPet": 60,
+      "pt": 150,
+      "professores": []
+    },
+    "Nature Resistance 1": {
+      "spellId": 24492,
+      "nivelPet": 20,
+      "pt": 5,
+      "professores": []
+    },
+    "Nature Resistance 2": {
+      "spellId": 24502,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": []
+    },
+    "Nature Resistance 3": {
+      "spellId": 24503,
+      "nivelPet": 40,
+      "pt": 45,
+      "professores": []
+    },
+    "Nature Resistance 4": {
+      "spellId": 24504,
+      "nivelPet": 50,
+      "pt": 90,
+      "professores": []
+    },
+    "Pinch 1": {
+      "spellId": 1264735,
+      "nivelPet": 12,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 2236,
+          "nome": "Raging Reef Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 20,
+          "max": 21,
+          "zona": "Darkshore; Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 2235,
+          "nome": "Reef Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 15,
+          "max": 17,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 830,
+          "nome": "Sand Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 13,
+          "max": 14,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1216,
+          "nome": "Shorecrawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 17,
+          "max": 18,
+          "zona": "Westfall",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2232,
+          "nome": "Tide Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 12,
+          "max": 14,
+          "zona": "Darkshore",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Pinch 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 4823,
+          "nome": "Barbed Crustacean",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 25,
+          "max": 26,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 12347,
+          "nome": "Enraged Reef Crawler",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 30,
+          "max": 32,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Pinch 3": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 0,
+      "professores": []
+    },
+    "Pinch 4": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Pinch 5": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Prowl 1": {
+      "spellId": null,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 2406,
+          "nome": "Mountain Lion",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 32,
+          "max": 33,
+          "zona": "Alterac Mountains",
+          "velocidade": 1.4,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2731,
+          "nome": "Ridge Stalker",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 36,
+          "max": 37,
+          "zona": "Badlands",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 768,
+          "nome": "Shadow Panther",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 39,
+          "max": 40,
+          "zona": "Swamp of Sorrows",
+          "velocidade": 1.6,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 684,
+          "nome": "Shadowmaw Panther",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 37,
+          "max": 38,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Prowl 2": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 20,
+      "professores": [
+        {
+          "npcId": 1713,
+          "nome": "Elder Shadowmaw Panther",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 42,
+          "max": 43,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2734,
+          "nome": "Ridge Stalker Patriarch",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 40,
+          "max": 41,
+          "zona": "Badlands",
+          "velocidade": 1.3,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Prowl 3": {
+      "spellId": null,
+      "nivelPet": 50,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 7432,
+          "nome": "Frostsaber Stalker",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 59,
+          "max": 60,
+          "zona": "Winterspring",
+          "velocidade": 1.5,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2522,
+          "nome": "Jaguero Stalker",
+          "nomeIngles": true,
+          "familia": "Cat",
+          "min": 50,
+          "max": 50,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Savage Rend 1": {
+      "spellId": 1265065,
+      "nivelPet": 12,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 3255,
+          "nome": "Sunscale Screecher",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 13,
+          "max": 15,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Savage Rend 2": {
+      "spellId": 1265066,
+      "nivelPet": 24,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 1019,
+          "nome": "Elder Razormaw",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 29,
+          "max": 29,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1016,
+          "nome": "Highland Lashtail",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 24,
+          "max": 25,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1015,
+          "nome": "Highland Raptor",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 23,
+          "max": 24,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1018,
+          "nome": "Highland Razormaw",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 27,
+          "max": 28,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1017,
+          "nome": "Highland Scytheclaw",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 25,
+          "max": 26,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1023,
+          "nome": "Mottled Razormaw",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 26,
+          "max": 27,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1021,
+          "nome": "Mottled Screecher",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 24,
+          "max": 24,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 1022,
+          "nome": "Mottled Scytheclaw",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 25,
+          "max": 25,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 260800,
+          "nome": "Thicket Lurker",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 27,
+          "max": 27,
+          "zona": "Excavation Site: Wetlands (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 855,
+          "nome": "Young Stranglethorn Raptor",
+          "nomeIngles": true,
+          "familia": "Raptor",
+          "min": 30,
+          "max": 31,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Savage Rend 3": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 0,
+      "professores": []
+    },
+    "Savage Rend 4": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Savage Rend 5": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Scorpid Poison 1": {
+      "spellId": 24640,
+      "nivelPet": 8,
+      "pt": 10,
+      "professores": [
+        {
+          "npcId": 5823,
+          "nome": "Death Flayer",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 11,
+          "max": 11,
+          "zona": "Durotar",
+          "velocidade": 1.6,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3250,
+          "nome": "Silithid Creeper",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 21,
+          "max": 21,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3252,
+          "nome": "Sillithid Swarmer",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 21,
+          "max": 22,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 3127,
+          "nome": "Venomtail Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 9,
+          "max": 10,
+          "zona": "Durotar",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Scorpid Poison 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 7078,
+          "nome": "Cleft Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 35,
+          "max": 36,
+          "zona": "Uldaman (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4696,
+          "nome": "Scorpashi Snapper",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 30,
+          "max": 31,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4699,
+          "nome": "Scorpashi Venomlash",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 38,
+          "max": 39,
+          "zona": "Desolace",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4140,
+          "nome": "Scorpid Reaver",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 31,
+          "max": 32,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4139,
+          "nome": "Scorpid Terror",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 33,
+          "max": 34,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5937,
+          "nome": "Vile Sting",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 35,
+          "max": 35,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Scorpid Poison 3": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 20,
+      "professores": [
+        {
+          "npcId": 7405,
+          "nome": "Deadly Cleft Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 42,
+          "max": 43,
+          "zona": "Uldaman (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 9695,
+          "nome": "Deathlash Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 54,
+          "max": 55,
+          "zona": "Burning Steppes",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 8926,
+          "nome": "Deep Stinger",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 50,
+          "max": 52,
+          "zona": "Blackrock Depths (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 7803,
+          "nome": "Scorpid Duneburrower",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 46,
+          "max": 47,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5424,
+          "nome": "Scorpid Dunestalker",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 46,
+          "max": 47,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5422,
+          "nome": "Scorpid Hunter",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 40,
+          "max": 41,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5423,
+          "nome": "Scorpid Tail Lasher",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 43,
+          "max": 44,
+          "zona": "Tanaris",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5988,
+          "nome": "Scorpok Stinger",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 50,
+          "max": 51,
+          "zona": "Blasted Lands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 11735,
+          "nome": "Stonelash Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 54,
+          "max": 55,
+          "zona": "Silithus",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 9691,
+          "nome": "Venomtip Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 52,
+          "max": 53,
+          "zona": "Burning Steppes",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Scorpid Poison 4": {
+      "spellId": null,
+      "nivelPet": 56,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 9698,
+          "nome": "Firetail Scorpid",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 56,
+          "max": 57,
+          "zona": "Burning Steppes",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14476,
+          "nome": "Krellack",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 56,
+          "max": 56,
+          "zona": "Silithus",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 11737,
+          "nome": "Stonelash Flayer",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 58,
+          "max": 59,
+          "zona": "Silithus",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 11736,
+          "nome": "Stonelash Pincer",
+          "nomeIngles": true,
+          "familia": "Scorpid",
+          "min": 56,
+          "max": 57,
+          "zona": "Silithus",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Shadow Resistance 1": {
+      "spellId": 24488,
+      "nivelPet": 20,
+      "pt": 5,
+      "professores": []
+    },
+    "Shadow Resistance 2": {
+      "spellId": 24505,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": []
+    },
+    "Shadow Resistance 3": {
+      "spellId": 24506,
+      "nivelPet": 40,
+      "pt": 45,
+      "professores": []
+    },
+    "Shadow Resistance 4": {
+      "spellId": 24507,
+      "nivelPet": 40,
+      "pt": 90,
+      "professores": []
+    },
+    "Shell Shield 1": {
+      "spellId": null,
+      "nivelPet": 20,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 4824,
+          "nome": "Aku'mai Fisher",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 23,
+          "max": 24,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4825,
+          "nome": "Aku'mai Snapjaw",
+          "nomeIngles": true,
+          "familia": "Crab",
+          "min": 26,
+          "max": 27,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 14223,
+          "nome": "Cranky Benj",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 32,
+          "max": 32,
+          "zona": "Alterac Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4887,
+          "nome": "Ghamoo-ra",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 25,
+          "max": 25,
+          "zona": "Blackfathom Deeps (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3653,
+          "nome": "Kresh",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 20,
+          "max": 20,
+          "zona": "Wailing Caverns (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2408,
+          "nome": "Snapjaw",
+          "nomeIngles": true,
+          "familia": "Turtle",
+          "min": 30,
+          "max": 31,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Swipe 1": {
+      "spellId": 1264494,
+      "nivelPet": 12,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 1797,
+          "nome": "Giant Grizzled Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": null,
+          "max": null,
+          "zona": "Silverpine Forest",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": false
+        },
+        {
+          "npcId": 1188,
+          "nome": "Grizzled Black Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 13,
+          "max": 14,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 259388,
+          "nome": "Mystmane",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 13,
+          "max": 13,
+          "zona": "Zephras Isle",
+          "velocidade": 1.6,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Swipe 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 2356,
+          "nome": "Elder Gray Bear",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 25,
+          "max": 26,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 271334,
+          "nome": "Maddened Rotclaw",
+          "nomeIngles": true,
+          "familia": "Bear",
+          "min": 25,
+          "max": 26,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Swipe 3": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 0,
+      "professores": []
+    },
+    "Swipe 4": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Swipe 5": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Tendon Rip 1": {
+      "spellId": 1265038,
+      "nivelPet": 12,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 4127,
+          "nome": "Hecklefang Hyena",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 15,
+          "max": 16,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 4129,
+          "nome": "Hecklefang Snarler",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 18,
+          "max": 19,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4128,
+          "nome": "Hecklefang Stalker",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 22,
+          "max": 23,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4316,
+          "nome": "Kolkar Packhound",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 13,
+          "max": 13,
+          "zona": "The Barrens",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Tendon Rip 2": {
+      "spellId": null,
+      "nivelPet": 24,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 4248,
+          "nome": "Pesterhide Hyena",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 26,
+          "max": 27,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4249,
+          "nome": "Pesterhide Snarler",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 28,
+          "max": 29,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4548,
+          "nome": "Steelsnap",
+          "nomeIngles": true,
+          "familia": "Hyena",
+          "min": 30,
+          "max": 30,
+          "zona": "Thousand Needles",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Tendon Rip 3": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 0,
+      "professores": []
+    },
+    "Tendon Rip 4": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Tendon Rip 5": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Thunderstomp 1": {
+      "spellId": null,
+      "nivelPet": 30,
+      "pt": 15,
+      "professores": [
+        {
+          "npcId": 1114,
+          "nome": "Jungle Thunderer",
+          "nomeIngles": true,
+          "familia": "Gorilla",
+          "min": 37,
+          "max": 38,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1108,
+          "nome": "Mistvale Gorilla",
+          "nomeIngles": true,
+          "familia": "Gorilla",
+          "min": 32,
+          "max": 33,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Thunderstomp 2": {
+      "spellId": null,
+      "nivelPet": 40,
+      "pt": 20,
+      "professores": [
+        {
+          "npcId": 1557,
+          "nome": "Elder Mistvale Gorilla",
+          "nomeIngles": true,
+          "familia": "Gorilla",
+          "min": 40,
+          "max": 41,
+          "zona": "Stranglethorn Vale",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 5262,
+          "nome": "Groddoc Thunderer",
+          "nomeIngles": true,
+          "familia": "Gorilla",
+          "min": 49,
+          "max": 50,
+          "zona": "Feralas",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Thunderstomp 3": {
+      "spellId": null,
+      "nivelPet": 50,
+      "pt": 25,
+      "professores": [
+        {
+          "npcId": 9622,
+          "nome": "U'cha",
+          "nomeIngles": true,
+          "familia": "Gorilla",
+          "min": 55,
+          "max": 55,
+          "zona": "Un'Goro Crater",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 6516,
+          "nome": "Un'Goro Thunderer",
+          "nomeIngles": true,
+          "familia": "Gorilla",
+          "min": 52,
+          "max": 53,
+          "zona": "Un'Goro Crater",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        }
+      ]
+    },
+    "Thunderstomp 4": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    },
+    "Trickster's Dance 1": {
+      "spellId": 1310612,
+      "nivelPet": 20,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 277645,
+          "nome": "Gray Fox",
+          "nomeIngles": true,
+          "familia": "Fox",
+          "min": 22,
+          "max": 23,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Web 1": {
+      "spellId": 1265843,
+      "nivelPet": 12,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 4040,
+          "nome": "Cave Stalker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 21,
+          "max": 22,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1184,
+          "nome": "Cliff Lurker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 13,
+          "max": 14,
+          "zona": "Loch Modan",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        },
+        {
+          "npcId": 256040,
+          "nome": "Deep Widow",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 15,
+          "max": 16,
+          "zona": "Ruins of Lordaeron (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4263,
+          "nome": "Deepmoss Hatchling",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 14,
+          "max": 14,
+          "zona": "Stonetalon Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4264,
+          "nome": "Deepmoss Matriarch",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 22,
+          "max": 22,
+          "zona": "Stonetalon Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 4007,
+          "nome": "Deepmoss Venomspitter",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 17,
+          "max": 18,
+          "zona": "Stonetalon Mountains",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1111,
+          "nome": "Leech Stalker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 21,
+          "max": 21,
+          "zona": "Wetlands",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1781,
+          "nome": "Mist Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 13,
+          "max": 14,
+          "zona": "Silverpine Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 1780,
+          "nome": "Moss Stalker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 12,
+          "max": 13,
+          "zona": "Silverpine Forest",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 539,
+          "nome": "Pygmy Venom Web Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 18,
+          "max": 19,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 250484,
+          "nome": "Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 15,
+          "max": 16,
+          "zona": "Ruins of Lordaeron (Dungeon)",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 10359,
+          "nome": "Sri'Skulk",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 13,
+          "max": 13,
+          "zona": "Tirisfal Glades",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 217,
+          "nome": "Venom Web Spider",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 19,
+          "max": 20,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3819,
+          "nome": "Wildthorn Stalker",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 20,
+          "max": 21,
+          "zona": "Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Web 2": {
+      "spellId": 1265878,
+      "nivelPet": 24,
+      "pt": 0,
+      "professores": [
+        {
+          "npcId": 930,
+          "nome": "Black Widow Hatchling",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 24,
+          "max": 25,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 949,
+          "nome": "Carrion Recluse",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 21,
+          "max": 22,
+          "zona": "Duskwood",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 2349,
+          "nome": "Giant Moss Creeper",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 24,
+          "max": 25,
+          "zona": "Hillsbrad Foothills",
+          "velocidade": 2,
+          "fontes": [
+            "Petopia"
+          ],
+          "confirmado": null
+        },
+        {
+          "npcId": 3820,
+          "nome": "Wildthorn Venomspitter",
+          "nomeIngles": true,
+          "familia": "Spider",
+          "min": 24,
+          "max": 25,
+          "zona": "Ashenvale",
+          "velocidade": 2,
+          "fontes": [
+            "FHP",
+            "Petopia"
+          ],
+          "confirmado": true
+        }
+      ]
+    },
+    "Web 3": {
+      "spellId": null,
+      "nivelPet": 36,
+      "pt": 0,
+      "professores": []
+    },
+    "Web 4": {
+      "spellId": null,
+      "nivelPet": 48,
+      "pt": 0,
+      "professores": []
+    },
+    "Web 5": {
+      "spellId": null,
+      "nivelPet": 60,
+      "pt": 0,
+      "professores": []
+    }
+  }
+}

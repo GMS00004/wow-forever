@@ -1,0 +1,406 @@
+{
+  "fonte": {
+    "id": "LudiDeo tier (beta)",
+    "titulo": "ULTIMATE Hunter Pet Tier List — Every Pet RANKED | WoW Forever",
+    "url": "https://www.youtube.com/watch?v=ZIiXgHdTkBI",
+    "publicado": "2026-11-02"
+  },
+  "familias": {
+    "Bat": {
+      "leveling": "A",
+      "pvp": "S",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP S.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP S is explicit: a 20 s undispellable effect against healers, locks and mages. Leveling A: Sonic Blast is weak in the open world.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Diet is picky (fungus, fruit), which he counts against it. He names no value that would make it S in leveling.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Bear": {
+      "leveling": "A",
+      "pvp": "D",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP D.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling A is explicit: Swipe multitanks up to three targets, but the -9 percent damage modifier keeps it from S.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP D is explicit: pretty bad in PvP, with nothing for it there. He says it would be S without the low damage modifiers.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Bird of Prey": {
+      "leveling": "C",
+      "pvp": "A",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling C, PvP A.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling C is explicit: Mine (3 s disarm) is one of the worst specials for leveling, and owls are hard to find.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP A is explicit: Claw is strong in PvP, and the disarm has a niche. He gives no number that would change either list.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Boar": {
+      "leveling": "A",
+      "pvp": "C",
+      "explicita": {
+        "leveling": true,
+        "pvp": false
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP C*. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling A is explicit: Charge gives the most threat of any pet, so it is great for leveling. No Claw keeps it from S.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP C is a reading of his words: he calls the boar slightly better than bear (D), not on the level of the top PvP pets.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Carrion Bird": {
+      "leveling": "A",
+      "pvp": "B",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP B.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Strongest A in leveling. Demoralize was nerfed (it used to hold several targets), and it does less damage than the top PvP pets.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Ambiguous: at the end he thinks about S in leveling, then says no tank deserves S. Not decided; kept at A.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Cat": {
+      "leveling": "S",
+      "pvp": "A",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling S, PvP A.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling S: damage is king, with Bite, Claw and Prowl. PvP A because Prowl gives a strong opener, though he says it is not S in PvP.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Diet is simple (meat). He gives no number that would change either letter.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Crab": {
+      "leveling": "D",
+      "pvp": "C",
+      "explicita": {
+        "leveling": false,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling D*, PvP C. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling D is a reading of his words: he says the crab is the worst pet in the game for him, with no value beyond armor.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP C is explicit: a slow (Pinch, 50 percent for 9 s, 30 s cooldown), but he says the kit already has many slows.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Crocolisk": {
+      "leveling": "A",
+      "pvp": "S",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP S.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling A: no damage penalty, very high armor and Dismember; mobs with heals (shamans) make its healing cut useful in leveling.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP S is explicit: Dismember cuts healing (he says 25 percent), and he says there is no question about it.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Fox": {
+      "leveling": "D",
+      "pvp": "B",
+      "explicita": {
+        "leveling": false,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling D*, PvP B. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling D is a reading of his words: 'I don't see a value' with current stats and a 3 min cooldown on Trickster's Dance. PvP B is explicit.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "He says maybe S with rank 2 or 3 (100 percent dodge at max rank, 50 percent attack speed), or sure with a 30 s cooldown.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Gorilla": {
+      "leveling": "B",
+      "pvp": "C",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling B, PvP C.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Thunderstomp hits all enemies, but its 1 min cooldown, with aggro lasting about 20 s, holds it at B. No Claw either.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "With a 20 s cooldown he says A, maybe S; with 30 s, A. PvP C is explicit, for its use in revealing a rogue.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Hyena": {
+      "leveling": "B",
+      "pvp": "B",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling B, PvP B.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Tendon Rip: same slow as Pinch with a 9 s bleed at half the focus (25). Slightly less damage, but he says the bleed is a win.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Would be S in PvP without the slows and bleed already in the kit, he says.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Raptor": {
+      "leveling": "A",
+      "pvp": "B",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP B.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Second best DPS after cat, a weaker cat with Rend (18 s bleed, 50 focus, 1 min cooldown). PvP held back by the bleed and the cooldown.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "What would change: with a 30 s cooldown on Rend he says it would be A in PvP.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Scorpid": {
+      "leveling": "A",
+      "pvp": "C",
+      "explicita": {
+        "leveling": false,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A*, PvP C. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling A is a reading of his words: second best single target tank, better than bore in long fights as poison stacks to 125 damage at five.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP C is explicit: the only value is the poison, and it is a low-damage tank.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Spider": {
+      "leveling": "S",
+      "pvp": "S",
+      "explicita": {
+        "leveling": true,
+        "pvp": false
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling S, PvP S*. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling S is explicit: a 4 s root with 40 s cooldown and low focus, with no downside beyond no Claw.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP S is a reading of his words: he calls the root amazing in PvP, with no question about it, but gives no letter.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Tallstrider": {
+      "leveling": "B",
+      "pvp": "B",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling B, PvP B.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Dust Cloud (1.3 s) cuts enemy armor. Solid with no downside beyond no Claw. It does not stack with Faerie Fire.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP B is explicit: armor reduction is good against squishy mages. He gives no number that would change either list.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Turtle": {
+      "leveling": "C",
+      "pvp": "D",
+      "explicita": {
+        "leveling": false,
+        "pvp": false
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling C*, PvP D*. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Both letters are a reading of his words: 'it has a use over the crab' for leveling, and 'in PvP, nothing' for PvP.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Viable with a 1 minute cooldown instead of 3, he says. He also thinks it needs a buff.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Wind Serpent": {
+      "leveling": "B",
+      "pvp": "B",
+      "explicita": {
+        "leveling": false,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling B*, PvP B. (* no letter given; read from his words)",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling B is a reading of his words: average solid pet, no downside, nothing crazy. PvP B is explicit, for its 20 yard range.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "He gives no number that would change either list.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    },
+    "Wolf": {
+      "leveling": "A",
+      "pvp": "B",
+      "explicita": {
+        "leveling": true,
+        "pvp": true
+      },
+      "notas": [
+        {
+          "t": "Tier (LudiDeo): leveling A, PvP B.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "Leveling: S if you play Survival, A otherwise (his end-of-video condition). Furious Howl is a battle shout; no Claw.",
+          "f": "LudiDeo tier (beta)"
+        },
+        {
+          "t": "PvP B is explicit: just an average pet, with no strong value in PvP.",
+          "f": "LudiDeo tier (beta)"
+        }
+      ]
+    }
+  }
+}

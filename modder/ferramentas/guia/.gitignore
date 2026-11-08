@@ -1,3 +1,6 @@
 # Listas da API do Forever (Ketho/BlizzardInterfaceResources, branch forever), baixadas
 # pelo comando em api-forever-baixar.txt; o checar-combate.mjs le daqui.
 api-forever/
+
+# Cache dos geradores do guia de pets (CSV do wago, pagina da Petopia); os scripts baixam de novo
+pets/cache/

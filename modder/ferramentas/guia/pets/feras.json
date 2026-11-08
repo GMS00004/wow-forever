@@ -1,0 +1,6677 @@
+{
+  "geradoEm": "2026-11-08T03:10:28.821Z",
+  "fontes": {
+    "fhp": {
+      "repo": "https://github.com/Jazzman1976/Forever-Hunter-Pets",
+      "sha": "ff5eefb28b86bafaf8ee39d574473df81743eb69",
+      "licenca": "MIT",
+      "arquivo": "tools/data.json"
+    },
+    "petopia": {
+      "url": "https://www.wow-petopia.com/forever/abilities.php",
+      "velocidade": "https://www.wow-petopia.com/forever/attackspeed.php",
+      "lidoEm": "2026-11-08T03:09:30.717Z",
+      "licenca": "sem licença aberta; uso pessoal, marcado como fonte"
+    },
+    "questieDB": {
+      "repo": "https://github.com/Questie/QuestieDB",
+      "arquivo": "data/Forever/foreverNpcDB.lua"
+    },
+    "wago": {
+      "url": "https://wago.tools/db2/UiMap/csv?build=1.60.1.70862"
+    }
+  },
+  "feras": {
+    "30": {
+      "nome": "Forest Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 5,
+      "max": 6,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "69": {
+      "nome": "Timber Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 2,
+      "max": 2,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "113": {
+      "nome": "Stonetusk Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 5,
+      "max": 6,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "118": {
+      "nome": "Prowler",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": null,
+      "max": null,
+      "zona": "Elwynn Forest",
+      "velocidade": 1.5,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "119": {
+      "nome": "Longsnout",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 10,
+      "max": 11,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "154": {
+      "nome": "Greater Fleshripper",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 16,
+      "max": 17,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Demoralizing Screech 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "157": {
+      "nome": "Goretusk",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 14,
+      "max": 15,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "199": {
+      "nome": "Young Fleshripper",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 10,
+      "max": 11,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Demoralizing Screech 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "213": {
+      "nome": "Starving Dire Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 19,
+      "max": 20,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "217": {
+      "nome": "Venom Web Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 19,
+      "max": 20,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "299": {
+      "nome": "Young Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 1,
+      "max": 1,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "330": {
+      "nome": "Princess",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 9,
+      "max": 9,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "345": {
+      "nome": "Bellygrub",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 24,
+      "max": 24,
+      "zona": "Redridge Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "390": {
+      "nome": "Porcine Entourage",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 7,
+      "max": 7,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "442": {
+      "nome": "Tarantula",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 15,
+      "max": 16,
+      "zona": "Redridge Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "454": {
+      "nome": "Young Goretusk",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 12,
+      "max": 13,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "471": {
+      "nome": "Mother Fang",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 7,
+      "max": 7,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "505": {
+      "nome": "Greater Tarantula",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 19,
+      "max": 20,
+      "zona": "Redridge Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "521": {
+      "nome": "Lupos",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 23,
+      "max": 23,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "524": {
+      "nome": "Rockhide Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 7,
+      "max": 8,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "525": {
+      "nome": "Mangy Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 5,
+      "max": 6,
+      "zona": "Elwynn Forest",
+      "velocidade": 1.7,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "539": {
+      "nome": "Pygmy Venom Web Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 18,
+      "max": 19,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "547": {
+      "nome": "Great Goretusk",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 16,
+      "max": 17,
+      "zona": "Westfall; Redridge Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "565": {
+      "nome": "Rabid Dire Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 20,
+      "max": 21,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "569": {
+      "nome": "Green Recluse",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 22,
+      "max": 22,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "574": {
+      "nome": "Naraxis",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 27,
+      "max": 27,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "616": {
+      "nome": "Chatter",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 23,
+      "max": 23,
+      "zona": "Redridge Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "628": {
+      "nome": "Black Ravager",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 24,
+      "max": 25,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "681": {
+      "nome": "Young Stranglethorn Tiger",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 30,
+      "max": 31,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "682": {
+      "nome": "Stranglethorn Tiger",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 32,
+      "max": 33,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "683": {
+      "nome": "Young Panther",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 30,
+      "max": 31,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "684": {
+      "nome": "Shadowmaw Panther",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 37,
+      "max": 38,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.5,
+      "ensina": [
+        "Prowl 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "687": {
+      "nome": "Jungle Stalker",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 40,
+      "max": 41,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "704": {
+      "nome": "Ragged Timber Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 2,
+      "max": 2,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "705": {
+      "nome": "Ragged Young Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 1,
+      "max": 1,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "708": {
+      "nome": "Small Crag Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 3,
+      "max": 3,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "728": {
+      "nome": "Bhag'thera",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 40,
+      "max": 40,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.5,
+      "ensina": [
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "729": {
+      "nome": "Sin'Dall",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 37,
+      "max": 37,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "730": {
+      "nome": "Tethis",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 43,
+      "max": 43,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "731": {
+      "nome": "King Bangalash",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 43,
+      "max": 43,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.4,
+      "ensina": [
+        "Claw 6",
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "736": {
+      "nome": "Panther",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 32,
+      "max": 33,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "767": {
+      "nome": "Swamp Jaguar",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 36,
+      "max": 37,
+      "zona": "Swamp of Sorrows",
+      "velocidade": 1.2,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "768": {
+      "nome": "Shadow Panther",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 39,
+      "max": 40,
+      "zona": "Swamp of Sorrows",
+      "velocidade": 1.6,
+      "ensina": [
+        "Prowl 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "769": {
+      "nome": "Deathstrike Tarantula",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 40,
+      "max": 41,
+      "zona": "Swamp of Sorrows",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "822": {
+      "nome": "Young Forest Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 8,
+      "max": 9,
+      "zona": "Elwynn Forest",
+      "velocidade": 2.5,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "830": {
+      "nome": "Sand Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 13,
+      "max": 14,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Pinch 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "833": {
+      "nome": "Coyote Packleader",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 11,
+      "max": 12,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2",
+        "Furious Howl 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "834": {
+      "nome": "Coyote",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 10,
+      "max": 11,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "854": {
+      "nome": "Young Jungle Stalker",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 36,
+      "max": 37,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "855": {
+      "nome": "Young Stranglethorn Raptor",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 30,
+      "max": 31,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "922": {
+      "nome": "Silt Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 40,
+      "max": 41,
+      "zona": "Swamp of Sorrows",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "923": {
+      "nome": "Young Black Ravager",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 23,
+      "max": 24,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "930": {
+      "nome": "Black Widow Hatchling",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 24,
+      "max": 25,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Web 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "949": {
+      "nome": "Carrion Recluse",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 21,
+      "max": 22,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Web 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "976": {
+      "nome": "Kurzen War Tiger",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 32,
+      "max": 33,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1015": {
+      "nome": "Highland Raptor",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 23,
+      "max": 24,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1016": {
+      "nome": "Highland Lashtail",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 24,
+      "max": 25,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1017": {
+      "nome": "Highland Scytheclaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 25,
+      "max": 26,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1018": {
+      "nome": "Highland Razormaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 27,
+      "max": 28,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1019": {
+      "nome": "Elder Razormaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 29,
+      "max": 29,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1020": {
+      "nome": "Mottled Raptor",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 22,
+      "max": 23,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1021": {
+      "nome": "Mottled Screecher",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 24,
+      "max": 24,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1022": {
+      "nome": "Mottled Scytheclaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 25,
+      "max": 25,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1023": {
+      "nome": "Mottled Razormaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 26,
+      "max": 27,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1087": {
+      "nome": "Sawtooth Snapper",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 41,
+      "max": 42,
+      "zona": "Swamp of Sorrows",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1088": {
+      "nome": "Monstrous Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 43,
+      "max": 44,
+      "zona": "Swamp of Sorrows",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1108": {
+      "nome": "Mistvale Gorilla",
+      "nomeIngles": true,
+      "familia": "Gorilla",
+      "min": 32,
+      "max": 33,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [
+        "Thunderstomp 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1109": {
+      "nome": "Fleshripper",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 13,
+      "max": 14,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1111": {
+      "nome": "Leech Stalker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 21,
+      "max": 21,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1112": {
+      "nome": "Leech Widow",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 24,
+      "max": 24,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1114": {
+      "nome": "Jungle Thunderer",
+      "nomeIngles": true,
+      "familia": "Gorilla",
+      "min": 37,
+      "max": 38,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [
+        "Thunderstomp 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1125": {
+      "nome": "Crag Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 5,
+      "max": 6,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1126": {
+      "nome": "Large Crag Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 6,
+      "max": 7,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1127": {
+      "nome": "Elder Crag Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 7,
+      "max": 8,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1128": {
+      "nome": "Young Black Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 5,
+      "max": 6,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1129": {
+      "nome": "Black Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 7,
+      "max": 7,
+      "zona": "Dun Morogh",
+      "velocidade": 2.5,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1130": {
+      "nome": "Bjarn",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 12,
+      "max": 12,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1131": {
+      "nome": "Winter Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 7,
+      "max": 8,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1132": {
+      "nome": "Timber",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 10,
+      "max": 10,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1133": {
+      "nome": "Starving Winter Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 8,
+      "max": 9,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1138": {
+      "nome": "Snow Tracker Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 6,
+      "max": 7,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1150": {
+      "nome": "River Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 30,
+      "max": 31,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [
+        "Dismember 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1184": {
+      "nome": "Cliff Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 13,
+      "max": 14,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1185": {
+      "nome": "Wood Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 18,
+      "max": 18,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1186": {
+      "nome": "Elder Black Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 11,
+      "max": 11,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1188": {
+      "nome": "Grizzled Black Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 13,
+      "max": 14,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Swipe 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1189": {
+      "nome": "Black Bear Patriarch",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 16,
+      "max": 17,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1190": {
+      "nome": "Mountain Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 10,
+      "max": 10,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1191": {
+      "nome": "Mangy Mountain Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 14,
+      "max": 15,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1192": {
+      "nome": "Elder Mountain Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 16,
+      "max": 17,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1194": {
+      "nome": "Mountain Buzzard",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 15,
+      "max": 16,
+      "zona": "Loch Modan",
+      "velocidade": null,
+      "ensina": [],
+      "fontes": [
+        "FHP"
+      ]
+    },
+    "1195": {
+      "nome": "Forest Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 10,
+      "max": 10,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1196": {
+      "nome": "Ice Claw Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 7,
+      "max": 8,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1199": {
+      "nome": "Juvenile Snow Leopard",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 5,
+      "max": 6,
+      "zona": "Dun Morogh",
+      "velocidade": 1.5,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1201": {
+      "nome": "Snow Leopard",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 7,
+      "max": 8,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1216": {
+      "nome": "Shorecrawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 17,
+      "max": 18,
+      "zona": "Westfall",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3",
+        "Pinch 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1225": {
+      "nome": "Ol' Sooty",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 20,
+      "max": 20,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1258": {
+      "nome": "Black Ravager Mastiff",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 25,
+      "max": 25,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4",
+        "Furious Howl 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1400": {
+      "nome": "Wetlands Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 23,
+      "max": 24,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dismember 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1417": {
+      "nome": "Young Wetlands Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 21,
+      "max": 22,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dismember 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1505": {
+      "nome": "Night Web Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 3,
+      "max": 4,
+      "zona": "Tirisfal Glades",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1509": {
+      "nome": "Ragged Scavenger",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 2,
+      "max": 3,
+      "zona": "Tirisfal Glades",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1553": {
+      "nome": "Greater Duskbat",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 6,
+      "max": 7,
+      "zona": "Tirisfal Glades",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1555": {
+      "nome": "Vicious Night Web Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 9,
+      "max": 10,
+      "zona": "Tirisfal Glades",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1557": {
+      "nome": "Elder Mistvale Gorilla",
+      "nomeIngles": true,
+      "familia": "Gorilla",
+      "min": 40,
+      "max": 41,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [
+        "Thunderstomp 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1688": {
+      "nome": "Night Web Matriarch",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 5,
+      "max": 5,
+      "zona": "Tirisfal Glades",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1689": {
+      "nome": "Scarred Crag Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 9,
+      "max": 10,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1693": {
+      "nome": "Loch Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 14,
+      "max": 15,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2",
+        "Dismember 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1713": {
+      "nome": "Elder Shadowmaw Panther",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 42,
+      "max": 43,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 1.5,
+      "ensina": [
+        "Dash 2",
+        "Prowl 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1765": {
+      "nome": "Worg",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 10,
+      "max": 11,
+      "zona": "Silverpine Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2",
+        "Furious Howl 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1778": {
+      "nome": "Ferocious Grizzled Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": null,
+      "max": null,
+      "zona": "Silverpine Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1780": {
+      "nome": "Moss Stalker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 12,
+      "max": 13,
+      "zona": "Silverpine Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1781": {
+      "nome": "Mist Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 13,
+      "max": 14,
+      "zona": "Silverpine Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1797": {
+      "nome": "Giant Grizzled Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": null,
+      "max": null,
+      "zona": "Silverpine Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Swipe 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1809": {
+      "nome": "Carrion Vulture",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 50,
+      "max": 52,
+      "zona": "Western Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1816": {
+      "nome": "Diseased Grizzly",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 55,
+      "max": 56,
+      "zona": "Western Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1817": {
+      "nome": "Diseased Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 53,
+      "max": 54,
+      "zona": "Western Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1824": {
+      "nome": "Plague Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 54,
+      "max": 55,
+      "zona": "Western Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1922": {
+      "nome": "Gray Forest Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 7,
+      "max": 8,
+      "zona": "Elwynn Forest",
+      "velocidade": 1.7,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1923": {
+      "nome": "Bloodsnout Worg",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 16,
+      "max": 17,
+      "zona": "Silverpine Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "1961": {
+      "nome": "Mangeclaw",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 11,
+      "max": 11,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1984": {
+      "nome": "Young Thistle Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 1,
+      "max": 2,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1985": {
+      "nome": "Thistle Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 2,
+      "max": 3,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1986": {
+      "nome": "Webwood Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 3,
+      "max": 4,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1994": {
+      "nome": "Githyiss the Vile",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": null,
+      "max": null,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1995": {
+      "nome": "Strigid Owl",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 5,
+      "max": 6,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1996": {
+      "nome": "Strigid Screecher",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 7,
+      "max": 8,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1997": {
+      "nome": "Strigid Hunter",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 8,
+      "max": 9,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1998": {
+      "nome": "Webwood Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 5,
+      "max": 6,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "1999": {
+      "nome": "Webwood Venomfang",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 7,
+      "max": 8,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2000": {
+      "nome": "Webwood Silkspinner",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 8,
+      "max": 8,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2001": {
+      "nome": "Giant Webwood Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 10,
+      "max": 11,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2031": {
+      "nome": "Young Nightsaber",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 1,
+      "max": 1,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2032": {
+      "nome": "Mangy Nightsaber",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 2,
+      "max": 2,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2033": {
+      "nome": "Elder Nightsaber",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 8,
+      "max": 9,
+      "zona": "Teldrassil",
+      "velocidade": 1.4,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2034": {
+      "nome": "Feral Nightsaber",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 10,
+      "max": 11,
+      "zona": "Teldrassil",
+      "velocidade": 1.5,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2042": {
+      "nome": "Nightsaber",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 5,
+      "max": 6,
+      "zona": "Teldrassil",
+      "velocidade": 1.4,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2043": {
+      "nome": "Nightsaber Stalker",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 7,
+      "max": 8,
+      "zona": "Teldrassil",
+      "velocidade": 1.4,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2069": {
+      "nome": "Moonstalker",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 14,
+      "max": 15,
+      "zona": "Darkshore",
+      "velocidade": 1.3,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2070": {
+      "nome": "Moonstalker Runt",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 10,
+      "max": 17,
+      "zona": "Darkshore",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2071": {
+      "nome": "Moonstalker Matriarch",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 19,
+      "max": 20,
+      "zona": "Darkshore",
+      "velocidade": 1.3,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2089": {
+      "nome": "Giant Wetlands Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 25,
+      "max": 26,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2163": {
+      "nome": "Thistle Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 11,
+      "max": 12,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2165": {
+      "nome": "Grizzled Thistle Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 16,
+      "max": 17,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2172": {
+      "nome": "Strider Clutchmother",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 20,
+      "max": 20,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3",
+        "Dust Cloud 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2231": {
+      "nome": "Pygmy Tide Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 9,
+      "max": 10,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2232": {
+      "nome": "Tide Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 12,
+      "max": 14,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2",
+        "Pinch 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2233": {
+      "nome": "Encrusted Tide Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 18,
+      "max": 20,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2234": {
+      "nome": "Young Reef Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 10,
+      "max": 11,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2235": {
+      "nome": "Reef Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 15,
+      "max": 17,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Pinch 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2236": {
+      "nome": "Raging Reef Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 20,
+      "max": 21,
+      "zona": "Darkshore; Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Pinch 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2237": {
+      "nome": "Moonstalker Sire",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 17,
+      "max": 18,
+      "zona": "Darkshore",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2321": {
+      "nome": "Foreststrider Fledgling",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 11,
+      "max": 13,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2322": {
+      "nome": "Foreststrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 14,
+      "max": 16,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Dust Cloud 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2323": {
+      "nome": "Giant Foreststrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 17,
+      "max": 19,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2348": {
+      "nome": "Elder Moss Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 26,
+      "max": 27,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2349": {
+      "nome": "Giant Moss Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 24,
+      "max": 25,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4",
+        "Web 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2350": {
+      "nome": "Forest Moss Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 20,
+      "max": 21,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2351": {
+      "nome": "Gray Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 21,
+      "max": 22,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2356": {
+      "nome": "Elder Gray Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 25,
+      "max": 26,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 2,
+      "ensina": [
+        "Swipe 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2384": {
+      "nome": "Starving Mountain Lion",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 23,
+      "max": 24,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 1.2,
+      "ensina": [
+        "Cower 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2385": {
+      "nome": "Feral Mountain Lion",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 27,
+      "max": 28,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 1.2,
+      "ensina": [
+        "Cower 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2406": {
+      "nome": "Mountain Lion",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 32,
+      "max": 33,
+      "zona": "Alterac Mountains",
+      "velocidade": 1.4,
+      "ensina": [
+        "Prowl 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2408": {
+      "nome": "Snapjaw",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 30,
+      "max": 31,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4",
+        "Shell Shield 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2476": {
+      "nome": "Large Loch Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 22,
+      "max": 22,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2505": {
+      "nome": "Saltwater Snapjaw",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 49,
+      "max": 50,
+      "zona": "The Hinterlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2522": {
+      "nome": "Jaguero Stalker",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 50,
+      "max": 50,
+      "zona": "Stranglethorn Vale",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 5",
+        "Prowl 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2563": {
+      "nome": "Plains Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 32,
+      "max": 33,
+      "zona": "Arathi Highlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2565": {
+      "nome": "Giant Plains Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 35,
+      "max": 36,
+      "zona": "Arathi Highlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2578": {
+      "nome": "Young Mesa Buzzard",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 31,
+      "max": 32,
+      "zona": "Arathi Highlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2579": {
+      "nome": "Mesa Buzzard",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 34,
+      "max": 35,
+      "zona": "Arathi Highlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2681": {
+      "nome": "Vilebranch Raiding Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 50,
+      "max": 51,
+      "zona": "The Hinterlands",
+      "velocidade": 1.7,
+      "ensina": [
+        "Bite 7",
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2727": {
+      "nome": "Crag Coyote",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 35,
+      "max": 36,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5",
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2728": {
+      "nome": "Feral Crag Coyote",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 37,
+      "max": 38,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2729": {
+      "nome": "Elder Crag Coyote",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 39,
+      "max": 40,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 1",
+        "Furious Howl 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2730": {
+      "nome": "Rabid Crag Coyote",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 42,
+      "max": 43,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2731": {
+      "nome": "Ridge Stalker",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 36,
+      "max": 37,
+      "zona": "Badlands",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 4",
+        "Prowl 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2732": {
+      "nome": "Ridge Huntress",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 38,
+      "max": 39,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2734": {
+      "nome": "Ridge Stalker Patriarch",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 40,
+      "max": 41,
+      "zona": "Badlands",
+      "velocidade": 1.3,
+      "ensina": [
+        "Dash 2",
+        "Prowl 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2753": {
+      "nome": "Barnabus",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 38,
+      "max": 38,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2850": {
+      "nome": "Broken Tooth",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 37,
+      "max": 37,
+      "zona": "Badlands",
+      "velocidade": 1,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2924": {
+      "nome": "Silvermane Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 43,
+      "max": 44,
+      "zona": "The Hinterlands",
+      "velocidade": 2,
+      "ensina": [
+        "Furious Howl 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2925": {
+      "nome": "Silvermane Howler",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 45,
+      "max": 46,
+      "zona": "The Hinterlands",
+      "velocidade": 2,
+      "ensina": [
+        "Furious Howl 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2926": {
+      "nome": "Silvermane Stalker",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 47,
+      "max": 48,
+      "zona": "The Hinterlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2931": {
+      "nome": "Zaricotl",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 55,
+      "max": 55,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2954": {
+      "nome": "Bristleback Battleboar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 4,
+      "max": 5,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2956": {
+      "nome": "Adult Plainstrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 6,
+      "max": 7,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2957": {
+      "nome": "Elder Plainstrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 8,
+      "max": 9,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2958": {
+      "nome": "Prairie Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 5,
+      "max": 6,
+      "zona": "Mulgore",
+      "velocidade": 1.5,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2959": {
+      "nome": "Prairie Stalker",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 7,
+      "max": 8,
+      "zona": "Mulgore",
+      "velocidade": 1.5,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2960": {
+      "nome": "Prairie Wolf Alpha",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 9,
+      "max": 10,
+      "zona": "Mulgore",
+      "velocidade": 1.4,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2966": {
+      "nome": "Battleboar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 3,
+      "max": 4,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "2969": {
+      "nome": "Wiry Swoop",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 6,
+      "max": 7,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2970": {
+      "nome": "Swoop",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 7,
+      "max": 8,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "2971": {
+      "nome": "Taloned Swoop",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 9,
+      "max": 9,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [
+        "Demoralizing Screech 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3035": {
+      "nome": "Flatland Cougar",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 7,
+      "max": 8,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3068": {
+      "nome": "Mazzranache",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 9,
+      "max": 9,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3098": {
+      "nome": "Mottled Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 1,
+      "max": 2,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3099": {
+      "nome": "Dire Mottled Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 6,
+      "max": 7,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3100": {
+      "nome": "Elder Mottled Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 8,
+      "max": 9,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3106": {
+      "nome": "Pygmy Surf Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 5,
+      "max": 6,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3107": {
+      "nome": "Surf Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 7,
+      "max": 8,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3108": {
+      "nome": "Encrusted Surf Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 10,
+      "max": 10,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3110": {
+      "nome": "Dreadmaw Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 9,
+      "max": 11,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3121": {
+      "nome": "Durotar Tiger",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 7,
+      "max": 8,
+      "zona": "Durotar",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3122": {
+      "nome": "Bloodtalon Taillasher",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 6,
+      "max": 8,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3123": {
+      "nome": "Bloodtalon Scythemaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 8,
+      "max": 10,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3124": {
+      "nome": "Scorpid Worker",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 3,
+      "max": 3,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3125": {
+      "nome": "Clattering Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 5,
+      "max": 6,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3126": {
+      "nome": "Armored Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 7,
+      "max": 8,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3127": {
+      "nome": "Venomtail Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 9,
+      "max": 10,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2",
+        "Scorpid Poison 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3225": {
+      "nome": "Corrupted Mottled Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 11,
+      "max": 11,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3226": {
+      "nome": "Corrupted Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 10,
+      "max": 11,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3227": {
+      "nome": "Corrupted Bloodtalon Scythemaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 11,
+      "max": 11,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3228": {
+      "nome": "Corrupted Surf Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 10,
+      "max": 10,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3241": {
+      "nome": "Savannah Patriarch",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 15,
+      "max": 16,
+      "zona": "The Barrens",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 4"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3243": {
+      "nome": "Savannah Highmane",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 12,
+      "max": 12,
+      "zona": "The Barrens",
+      "velocidade": 1.5,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3244": {
+      "nome": "Greater Plainstrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 11,
+      "max": 12,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3245": {
+      "nome": "Ornery Plainstrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 16,
+      "max": 17,
+      "zona": "The Barrens",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3246": {
+      "nome": "Fleeting Plainstrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 12,
+      "max": 13,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 1",
+        "Dust Cloud 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3247": {
+      "nome": "Thunderhawk Hatchling",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 18,
+      "max": 20,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3249": {
+      "nome": "Greater Thunderhawk",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 23,
+      "max": 23,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3250": {
+      "nome": "Silithid Creeper",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 21,
+      "max": 21,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3252": {
+      "nome": "Sillithid Swarmer",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 21,
+      "max": 22,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3254": {
+      "nome": "Sunscale Lashtail",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 11,
+      "max": 13,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3255": {
+      "nome": "Sunscale Screecher",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 13,
+      "max": 15,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3256": {
+      "nome": "Sunscale Scytheclaw",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 16,
+      "max": 18,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3281": {
+      "nome": "Sarkoth",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 4,
+      "max": 4,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3415": {
+      "nome": "Savannah Huntress",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 11,
+      "max": 12,
+      "zona": "The Barrens",
+      "velocidade": 1.5,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3424": {
+      "nome": "Thunderhawk Cloudscraper",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 20,
+      "max": 20,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3425": {
+      "nome": "Savannah Prowler",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 14,
+      "max": 15,
+      "zona": "The Barrens",
+      "velocidade": 1.4,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3461": {
+      "nome": "Oasis Snapjaw",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 15,
+      "max": 16,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3472": {
+      "nome": "Washte Pawne",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 25,
+      "max": 25,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3566": {
+      "nome": "Flatland Prowler",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 9,
+      "max": 9,
+      "zona": "Mulgore",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3581": {
+      "nome": "Sewer Beast",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 50,
+      "max": 50,
+      "zona": "Stormwind City",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3619": {
+      "nome": "Ghost Saber",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 19,
+      "max": 20,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3630": {
+      "nome": "Deviate Coiler",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 15,
+      "max": 16,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3631": {
+      "nome": "Deviate Stinglash",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 16,
+      "max": 17,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3653": {
+      "nome": "Kresh",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 20,
+      "max": 20,
+      "zona": "Wailing Caverns (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3",
+        "Shell Shield 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "3809": {
+      "nome": "Ashenvale Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 21,
+      "max": 22,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3810": {
+      "nome": "Elder Ashenvale Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 25,
+      "max": 26,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 4"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3812": {
+      "nome": "Clattering Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 19,
+      "max": 19,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3814": {
+      "nome": "Spined Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 20,
+      "max": 21,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3819": {
+      "nome": "Wildthorn Stalker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 20,
+      "max": 21,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3820": {
+      "nome": "Wildthorn Venomspitter",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 24,
+      "max": 25,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Web 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3821": {
+      "nome": "Wildthorn Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 29,
+      "max": 29,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3823": {
+      "nome": "Ghostpaw Runner",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 19,
+      "max": 20,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3824": {
+      "nome": "Ghostpaw Howler",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 23,
+      "max": 23,
+      "zona": "Ashenvale",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "3825": {
+      "nome": "Ghostpaw Alpha",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 27,
+      "max": 27,
+      "zona": "Ashenvale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Bite 4",
+        "Furious Howl 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4005": {
+      "nome": "Deepmoss Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 16,
+      "max": 17,
+      "zona": "Stonetalon Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4006": {
+      "nome": "Deepmoss Webspinner",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 19,
+      "max": 20,
+      "zona": "Stonetalon Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4007": {
+      "nome": "Deepmoss Venomspitter",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 17,
+      "max": 18,
+      "zona": "Stonetalon Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4040": {
+      "nome": "Cave Stalker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 21,
+      "max": 22,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4067": {
+      "nome": "Twilight Runner",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 23,
+      "max": 24,
+      "zona": "Stonetalon Mountains",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4117": {
+      "nome": "Cloud Serpent",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 25,
+      "max": 26,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4118": {
+      "nome": "Venomous Cloud Serpent",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 26,
+      "max": 28,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4119": {
+      "nome": "Elder Cloud Serpent",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 27,
+      "max": 29,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4124": {
+      "nome": "Needles Cougar",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": null,
+      "max": null,
+      "zona": "Thousand Needles",
+      "velocidade": 1.2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4126": {
+      "nome": "Crag Stalker",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": null,
+      "max": null,
+      "zona": "Thousand Needles",
+      "velocidade": 1.6,
+      "ensina": [
+        "Cower 3"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4127": {
+      "nome": "Hecklefang Hyena",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 15,
+      "max": 16,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Tendon Rip 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4128": {
+      "nome": "Hecklefang Stalker",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 22,
+      "max": 23,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Tendon Rip 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4129": {
+      "nome": "Hecklefang Snarler",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 18,
+      "max": 19,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Tendon Rip 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4139": {
+      "nome": "Scorpid Terror",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 33,
+      "max": 34,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4140": {
+      "nome": "Scorpid Reaver",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 31,
+      "max": 32,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 4",
+        "Scorpid Poison 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4143": {
+      "nome": "Sparkleshell Snapper",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 34,
+      "max": 35,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4248": {
+      "nome": "Pesterhide Hyena",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 26,
+      "max": 27,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Tendon Rip 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4249": {
+      "nome": "Pesterhide Snarler",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 28,
+      "max": 29,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Tendon Rip 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4263": {
+      "nome": "Deepmoss Hatchling",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 14,
+      "max": 14,
+      "zona": "Stonetalon Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4264": {
+      "nome": "Deepmoss Matriarch",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 22,
+      "max": 22,
+      "zona": "Stonetalon Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4304": {
+      "nome": "Scarlet Tracking Hound",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 33,
+      "max": 34,
+      "zona": "Scarlet Monastery (Dungeon)",
+      "velocidade": 1.5,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4316": {
+      "nome": "Kolkar Packhound",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 13,
+      "max": 13,
+      "zona": "The Barrens",
+      "velocidade": 2,
+      "ensina": [
+        "Tendon Rip 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4341": {
+      "nome": "Drywallow Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 35,
+      "max": 36,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4343": {
+      "nome": "Drywallow Snapper",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 37,
+      "max": 38,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4344": {
+      "nome": "Mottled Drywallow Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 38,
+      "max": 39,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4345": {
+      "nome": "Drywallow Daggermaw",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 40,
+      "max": 41,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4396": {
+      "nome": "Mudrock Tortoise",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 36,
+      "max": 37,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4400": {
+      "nome": "Mudrock Snapjaw",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 41,
+      "max": 42,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4411": {
+      "nome": "Darkfang Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 36,
+      "max": 37,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4412": {
+      "nome": "Darkfang Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 38,
+      "max": 39,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4413": {
+      "nome": "Darkfang Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 35,
+      "max": 36,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4511": {
+      "nome": "Agam'ar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 24,
+      "max": 25,
+      "zona": "Razorfen Kraul (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4512": {
+      "nome": "Rotting Agam'ar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 27,
+      "max": 28,
+      "zona": "Razorfen Kraul (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4514": {
+      "nome": "Raging Agam'ar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 25,
+      "max": 26,
+      "zona": "Razorfen Kraul (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4538": {
+      "nome": "Kraul Bat",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 30,
+      "max": 31,
+      "zona": "Razorfen Kraul (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 3",
+        "Dive 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4539": {
+      "nome": "Greater Kraul Bat",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 32,
+      "max": 32,
+      "zona": "Razorfen Kraul (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 3",
+        "Dive 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4548": {
+      "nome": "Steelsnap",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 30,
+      "max": 30,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Tendon Rip 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4662": {
+      "nome": "Magram Bonepaw",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 37,
+      "max": 38,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4688": {
+      "nome": "Bonepaw Hyena",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 33,
+      "max": 35,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4692": {
+      "nome": "Dread Swoop",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 32,
+      "max": 33,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "4693": {
+      "nome": "Dread Flyer",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 36,
+      "max": 37,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4696": {
+      "nome": "Scorpashi Snapper",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 30,
+      "max": 31,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 4",
+        "Scorpid Poison 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4697": {
+      "nome": "Scorpashi Lasher",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 34,
+      "max": 35,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4699": {
+      "nome": "Scorpashi Venomlash",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 38,
+      "max": 39,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4724": {
+      "nome": "Sandstrider",
+      "nomeIngles": true,
+      "familia": "Tallstrider",
+      "min": 30,
+      "max": 31,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 1",
+        "Dust Cloud 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4821": {
+      "nome": "Skittering Crustacean",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 22,
+      "max": 23,
+      "zona": "Blackfathom Deeps (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4822": {
+      "nome": "Snapping Crustacean",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 22,
+      "max": 23,
+      "zona": "Blackfathom Deeps (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4823": {
+      "nome": "Barbed Crustacean",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 25,
+      "max": 26,
+      "zona": "Blackfathom Deeps (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 4",
+        "Pinch 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4824": {
+      "nome": "Aku'mai Fisher",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 23,
+      "max": 24,
+      "zona": "Blackfathom Deeps (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3",
+        "Shell Shield 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4825": {
+      "nome": "Aku'mai Snapjaw",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 26,
+      "max": 27,
+      "zona": "Blackfathom Deeps (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4",
+        "Shell Shield 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4841": {
+      "nome": "Deadmire",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 45,
+      "max": 45,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4861": {
+      "nome": "Shrike Bat",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 38,
+      "max": 39,
+      "zona": "Uldaman (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 4",
+        "Dive 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4887": {
+      "nome": "Ghamoo-ra",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 25,
+      "max": 25,
+      "zona": "Blackfathom Deeps (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4",
+        "Shell Shield 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "4950": {
+      "nome": "Spot",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 35,
+      "max": 35,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5056": {
+      "nome": "Deviate Dreadfang",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 20,
+      "max": 21,
+      "zona": "Wailing Caverns (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5262": {
+      "nome": "Groddoc Thunderer",
+      "nomeIngles": true,
+      "familia": "Gorilla",
+      "min": 49,
+      "max": 50,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Thunderstomp 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5268": {
+      "nome": "Ironfur Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 41,
+      "max": 42,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5274": {
+      "nome": "Ironfur Patriarch",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 48,
+      "max": 49,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5286": {
+      "nome": "Longtooth Runner",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 40,
+      "max": 41,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6",
+        "Dash 2",
+        "Furious Howl 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5287": {
+      "nome": "Longtooth Howler",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 43,
+      "max": 44,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Furious Howl 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5291": {
+      "nome": "Hakkari Frostwing",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 49,
+      "max": 50,
+      "zona": "The Temple of Atal'Hakkar (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5307": {
+      "nome": "Vale Screecher",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 41,
+      "max": 43,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2",
+        "Lightning Breath 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5308": {
+      "nome": "Rogue Vale Screecher",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 44,
+      "max": 46,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2",
+        "Lightning Breath 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5349": {
+      "nome": "Arash-ethis",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 49,
+      "max": 49,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2",
+        "Lightning Breath 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5352": {
+      "nome": "Old Grizzlegut",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 43,
+      "max": 43,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5356": {
+      "nome": "Snarler",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 42,
+      "max": 42,
+      "zona": "Feralas",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6",
+        "Furious Howl 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5422": {
+      "nome": "Scorpid Hunter",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 40,
+      "max": 41,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 6",
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5423": {
+      "nome": "Scorpid Tail Lasher",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 43,
+      "max": 44,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5424": {
+      "nome": "Scorpid Dunestalker",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 46,
+      "max": 47,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5425": {
+      "nome": "Starving Blisterpaw",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 41,
+      "max": 42,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5426": {
+      "nome": "Blisterpaw Hyena",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 44,
+      "max": 45,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5427": {
+      "nome": "Rabid Blisterpaw",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 47,
+      "max": 48,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5428": {
+      "nome": "Roc",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 42,
+      "max": 43,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5429": {
+      "nome": "Fire Roc",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 43,
+      "max": 45,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5430": {
+      "nome": "Searing Roc",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 47,
+      "max": 49,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5708": {
+      "nome": "Spawn of Hakkar",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 51,
+      "max": 51,
+      "zona": "The Temple of Atal'Hakkar (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 3",
+        "Lightning Breath 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5756": {
+      "nome": "Deviate Venomwing",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 20,
+      "max": 21,
+      "zona": "Wailing Caverns (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5823": {
+      "nome": "Death Flayer",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 11,
+      "max": 11,
+      "zona": "Durotar",
+      "velocidade": 1.6,
+      "ensina": [
+        "Claw 2",
+        "Scorpid Poison 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "5937": {
+      "nome": "Vile Sting",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 35,
+      "max": 35,
+      "zona": "Thousand Needles",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 5",
+        "Scorpid Poison 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5988": {
+      "nome": "Scorpok Stinger",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 50,
+      "max": 51,
+      "zona": "Blasted Lands",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "5992": {
+      "nome": "Ashmane Boar",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 48,
+      "max": 49,
+      "zona": "Blasted Lands",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "6013": {
+      "nome": "Wayward Buzzard",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 35,
+      "max": 37,
+      "zona": "Badlands",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "6516": {
+      "nome": "Un'Goro Thunderer",
+      "nomeIngles": true,
+      "familia": "Gorilla",
+      "min": 52,
+      "max": 53,
+      "zona": "Un'Goro Crater",
+      "velocidade": 2,
+      "ensina": [
+        "Thunderstomp 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "6585": {
+      "nome": "Uhk'loc",
+      "nomeIngles": true,
+      "familia": "Gorilla",
+      "min": 52,
+      "max": 52,
+      "zona": "Un'Goro Crater",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "6788": {
+      "nome": "Den Mother",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 19,
+      "max": 19,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7022": {
+      "nome": "Venomlash Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 39,
+      "max": 40,
+      "zona": "Uldaman (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7055": {
+      "nome": "Blackrock Worg",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 54,
+      "max": 55,
+      "zona": "Burning Steppes",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7078": {
+      "nome": "Cleft Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 35,
+      "max": 36,
+      "zona": "Uldaman (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7097": {
+      "nome": "Ironbeak Owl",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 48,
+      "max": 49,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7098": {
+      "nome": "Ironbeak Screecher",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 52,
+      "max": 53,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7099": {
+      "nome": "Ironbeak Hunter",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 50,
+      "max": 51,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7",
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7319": {
+      "nome": "Lady Sathrah",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 12,
+      "max": 12,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "7405": {
+      "nome": "Deadly Cleft Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 42,
+      "max": 43,
+      "zona": "Uldaman (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7430": {
+      "nome": "Frostsaber Cub",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 55,
+      "max": 56,
+      "zona": "Winterspring",
+      "velocidade": 1.5,
+      "ensina": [
+        "Cower 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7432": {
+      "nome": "Frostsaber Stalker",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 59,
+      "max": 60,
+      "zona": "Winterspring",
+      "velocidade": 1.5,
+      "ensina": [
+        "Dash 3",
+        "Prowl 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7433": {
+      "nome": "Frostsaber Huntress",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 58,
+      "max": 59,
+      "zona": "Winterspring",
+      "velocidade": 1.5,
+      "ensina": [
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7444": {
+      "nome": "Shardtooth Bear",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 53,
+      "max": 54,
+      "zona": "Winterspring",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7445": {
+      "nome": "Elder Shardtooth",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 57,
+      "max": 58,
+      "zona": "Winterspring",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 8"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7455": {
+      "nome": "Winterspring Owl",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 54,
+      "max": 56,
+      "zona": "Winterspring",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7",
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7456": {
+      "nome": "Winterspring Screecher",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 57,
+      "max": 59,
+      "zona": "Winterspring",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 8",
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "7803": {
+      "nome": "Scorpid Duneburrower",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 46,
+      "max": 47,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8207": {
+      "nome": "Greater Firebird",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 46,
+      "max": 46,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8208": {
+      "nome": "Murderous Blisterpaw",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 43,
+      "max": 43,
+      "zona": "Tanaris",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8211": {
+      "nome": "Old Cliff Jumper",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 42,
+      "max": 42,
+      "zona": "The Hinterlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6",
+        "Dash 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8213": {
+      "nome": "Ironback",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 51,
+      "max": 51,
+      "zona": "The Hinterlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8277": {
+      "nome": "Rekk'tilac",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 48,
+      "max": 48,
+      "zona": "Searing Gorge",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8299": {
+      "nome": "Spiteflayer",
+      "nomeIngles": true,
+      "familia": "Carrion Bird",
+      "min": 52,
+      "max": 52,
+      "zona": "Blasted Lands",
+      "velocidade": 1.2,
+      "ensina": [
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8300": {
+      "nome": "Ravage",
+      "nomeIngles": true,
+      "familia": "Hyena",
+      "min": 51,
+      "max": 51,
+      "zona": "Blasted Lands",
+      "velocidade": 1.3,
+      "ensina": [
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8301": {
+      "nome": "Clack the Reaver",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 53,
+      "max": 53,
+      "zona": "Blasted Lands",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8303": {
+      "nome": "Grunter",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 50,
+      "max": 50,
+      "zona": "Blasted Lands",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 5",
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8336": {
+      "nome": "Hakkari Sapper",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 49,
+      "max": 50,
+      "zona": "The Temple of Atal'Hakkar (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8600": {
+      "nome": "Plaguebat",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 53,
+      "max": 55,
+      "zona": "Eastern Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 5",
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8601": {
+      "nome": "Noxious Plaguebat",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 54,
+      "max": 56,
+      "zona": "Eastern Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 5"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8602": {
+      "nome": "Monstrous Plaguebat",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 56,
+      "max": 58,
+      "zona": "Eastern Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8762": {
+      "nome": "Timberweb Recluse",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 47,
+      "max": 48,
+      "zona": "Azshara",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8926": {
+      "nome": "Deep Stinger",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 50,
+      "max": 52,
+      "zona": "Blackrock Depths (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8927": {
+      "nome": "Dark Screecher",
+      "nomeIngles": true,
+      "familia": "Bat",
+      "min": 50,
+      "max": 52,
+      "zona": "Blackrock Depths (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8933": {
+      "nome": "Cave Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 50,
+      "max": 52,
+      "zona": "Blackrock Depths (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8958": {
+      "nome": "Angerclaw Mauler",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 49,
+      "max": 50,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8959": {
+      "nome": "Felpaw Wolf",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 47,
+      "max": 48,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6",
+        "Furious Howl 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "8961": {
+      "nome": "Felpaw Ravager",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 51,
+      "max": 52,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "9416": {
+      "nome": "Scarshield Worg",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 53,
+      "max": 54,
+      "zona": "Blackrock Spire (Dungeon)",
+      "velocidade": 1.5,
+      "ensina": [
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "9622": {
+      "nome": "U'cha",
+      "nomeIngles": true,
+      "familia": "Gorilla",
+      "min": 55,
+      "max": 55,
+      "zona": "Un'Goro Crater",
+      "velocidade": 2,
+      "ensina": [
+        "Thunderstomp 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "9691": {
+      "nome": "Venomtip Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 52,
+      "max": 53,
+      "zona": "Burning Steppes",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "9695": {
+      "nome": "Deathlash Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 54,
+      "max": 55,
+      "zona": "Burning Steppes",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7",
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "9696": {
+      "nome": "Bloodaxe Worg",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 56,
+      "max": 57,
+      "zona": "Blackrock Spire (Dungeon)",
+      "velocidade": 1.5,
+      "ensina": [
+        "Bite 8",
+        "Dash 3",
+        "Furious Howl 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "9698": {
+      "nome": "Firetail Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 56,
+      "max": 57,
+      "zona": "Burning Steppes",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "10200": {
+      "nome": "Rak'Shiri",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 57,
+      "max": 57,
+      "zona": "Winterspring",
+      "velocidade": 1.5,
+      "ensina": [
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "10359": {
+      "nome": "Sri'Skulk",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 13,
+      "max": 13,
+      "zona": "Tirisfal Glades",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2",
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "10644": {
+      "nome": "Mist Howler",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 22,
+      "max": 22,
+      "zona": "Ashenvale",
+      "velocidade": 1.3,
+      "ensina": [
+        "Furious Howl 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "10992": {
+      "nome": "Enraged Panther",
+      "nomeIngles": true,
+      "familia": null,
+      "min": null,
+      "max": null,
+      "zona": "Thousand Needles",
+      "velocidade": null,
+      "ensina": [],
+      "fontes": [
+        "FHP"
+      ]
+    },
+    "11357": {
+      "nome": "Son of Hakkar",
+      "nomeIngles": true,
+      "familia": "Wind Serpent",
+      "min": 60,
+      "max": 60,
+      "zona": "Zul'Gurub (Raid)",
+      "velocidade": 2,
+      "ensina": [
+        "Lightning Breath 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "11365": {
+      "nome": "Zulian Panther",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 60,
+      "max": 60,
+      "zona": "Zul'Gurub (Raid)",
+      "velocidade": 2,
+      "ensina": [
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "11735": {
+      "nome": "Stonelash Scorpid",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 54,
+      "max": 55,
+      "zona": "Silithus",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "11736": {
+      "nome": "Stonelash Pincer",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 56,
+      "max": 57,
+      "zona": "Silithus",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "11737": {
+      "nome": "Stonelash Flayer",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 58,
+      "max": 59,
+      "zona": "Silithus",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "11921": {
+      "nome": "Besseleth",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 21,
+      "max": 21,
+      "zona": "Stonetalon Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "12347": {
+      "nome": "Enraged Reef Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 30,
+      "max": 32,
+      "zona": "Desolace",
+      "velocidade": 2,
+      "ensina": [
+        "Pinch 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14223": {
+      "nome": "Cranky Benj",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 32,
+      "max": 32,
+      "zona": "Alterac Mountains",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4",
+        "Shell Shield 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14233": {
+      "nome": "Ripscale",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 39,
+      "max": 39,
+      "zona": "Dustwallow Marsh",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14266": {
+      "nome": "Shanda the Spinner",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 19,
+      "max": 19,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14279": {
+      "nome": "Creepthess",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 24,
+      "max": 24,
+      "zona": "Hillsbrad Foothills",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14339": {
+      "nome": "Death Howl",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 49,
+      "max": 49,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 6",
+        "Furious Howl 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14343": {
+      "nome": "Olm the Wise",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 52,
+      "max": 52,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7",
+        "Dive 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14344": {
+      "nome": "Mongress",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 50,
+      "max": 50,
+      "zona": "Felwood",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 7"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "14476": {
+      "nome": "Krellack",
+      "nomeIngles": true,
+      "familia": "Scorpid",
+      "min": 56,
+      "max": 56,
+      "zona": "Silithus",
+      "velocidade": 2,
+      "ensina": [
+        "Scorpid Poison 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "16117": {
+      "nome": "Plagued Swine",
+      "nomeIngles": true,
+      "familia": "Boar",
+      "min": 60,
+      "max": 60,
+      "zona": "Eastern Plaguelands",
+      "velocidade": 2,
+      "ensina": [
+        "Charge 6"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "248299": {
+      "nome": "Elmpaw",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 12,
+      "max": 12,
+      "zona": "Elwynn Forest",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250484": {
+      "nome": "Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 15,
+      "max": 16,
+      "zona": "Ruins of Lordaeron (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250619": {
+      "nome": "Broodwidow",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 16,
+      "max": 16,
+      "zona": "Ruins of Lordaeron (Dungeon)",
+      "velocidade": 2.7,
+      "ensina": [
+        "Dash 3"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250868": {
+      "nome": "Vuldren",
+      "nomeIngles": true,
+      "familia": "Fox",
+      "min": 6,
+      "max": 6,
+      "zona": "Zephras Isle",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250873": {
+      "nome": "Juvenile Vuldren",
+      "nomeIngles": true,
+      "familia": "Fox",
+      "min": 1,
+      "max": 1,
+      "zona": "Zephras Isle",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250874": {
+      "nome": "Vuldren Alpha",
+      "nomeIngles": true,
+      "familia": "Fox",
+      "min": 10,
+      "max": 10,
+      "zona": "Zephras Isle",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250926": {
+      "nome": "Scrawny Ursera",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 3,
+      "max": 4,
+      "zona": "Zephras Isle",
+      "velocidade": 2.5,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250927": {
+      "nome": "Shadowgale Ursera",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 10,
+      "max": 11,
+      "zona": "Zephras Isle",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250928": {
+      "nome": "Highlands Ursera",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 7,
+      "max": 8,
+      "zona": "Zephras Isle",
+      "velocidade": 2.5,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "250937": {
+      "nome": "Ursera Scavenger",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 4,
+      "max": 4,
+      "zona": "Zephras Isle",
+      "velocidade": 2.5,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "251115": {
+      "nome": "Urs'anah",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 5,
+      "max": 5,
+      "zona": "Zephras Isle",
+      "velocidade": 2.5,
+      "ensina": [
+        "Claw 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "251245": {
+      "nome": "Prideclaw",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": null,
+      "max": null,
+      "zona": "Zephras Isle",
+      "velocidade": 1.4,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "253282": {
+      "nome": "Shriekling Fledgling",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 8,
+      "max": 9,
+      "zona": "Zephras Isle",
+      "velocidade": 2,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "253529": {
+      "nome": "Schnaubschnauze der Borstennacken",
+      "nomeIngles": false,
+      "familia": "Boar",
+      "min": 42,
+      "max": 42,
+      "zona": null,
+      "velocidade": null,
+      "ensina": [],
+      "fontes": [
+        "FHP"
+      ]
+    },
+    "254588": {
+      "nome": "Windsong Crawler",
+      "nomeIngles": true,
+      "familia": "Crab",
+      "min": 8,
+      "max": 9,
+      "zona": "Zephras Isle",
+      "velocidade": 2,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "254589": {
+      "nome": "Vulgara the Insatiable",
+      "nomeIngles": true,
+      "familia": "Fox",
+      "min": 8,
+      "max": 8,
+      "zona": "Zephras Isle",
+      "velocidade": 1.5,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "256040": {
+      "nome": "Deep Widow",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 15,
+      "max": 16,
+      "zona": "Ruins of Lordaeron (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Web 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "259388": {
+      "nome": "Mystmane",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 13,
+      "max": 13,
+      "zona": "Zephras Isle",
+      "velocidade": 1.6,
+      "ensina": [
+        "Swipe 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "260157": {
+      "nome": "Elder Snow Leopard",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 9,
+      "max": 10,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "260796": {
+      "nome": "Marsh Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 26,
+      "max": 26,
+      "zona": "Excavation Site: Wetlands (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Dismember 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "260797": {
+      "nome": "Elder Crocolisk",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 27,
+      "max": 27,
+      "zona": "Excavation Site: Wetlands (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Dismember 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "260800": {
+      "nome": "Thicket Lurker",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 27,
+      "max": 27,
+      "zona": "Excavation Site: Wetlands (Dungeon)",
+      "velocidade": 2,
+      "ensina": [
+        "Savage Rend 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "260803": {
+      "nome": "Highland Spider",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 27,
+      "max": 28,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "260809": {
+      "nome": "Highland Tortoise",
+      "nomeIngles": true,
+      "familia": "Turtle",
+      "min": 26,
+      "max": 26,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 4"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "266849": {
+      "nome": "Ridgeshade Lurker",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 5,
+      "max": 6,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "266850": {
+      "nome": "Ridgeshade Creeper",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 5,
+      "max": 6,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "266851": {
+      "nome": "Ukorsbane",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 8,
+      "max": 8,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "268530": {
+      "nome": "Bloodtalon Matriarch",
+      "nomeIngles": true,
+      "familia": "Raptor",
+      "min": 9,
+      "max": 9,
+      "zona": "Durotar",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "269075": {
+      "nome": "Snow Leopard Prowler",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 6,
+      "max": 6,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "270196": {
+      "nome": "Jai'vhanel",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 12,
+      "max": 12,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Mine! 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "270298": {
+      "nome": "Child of Jai'vhanel",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": 11,
+      "max": 12,
+      "zona": "Darkshore",
+      "velocidade": 2,
+      "ensina": [
+        "Mine! 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "270693": {
+      "nome": "Daggerfang",
+      "nomeIngles": true,
+      "familia": "Crocolisk",
+      "min": 15,
+      "max": 15,
+      "zona": "Loch Modan",
+      "velocidade": 2,
+      "ensina": [
+        "Bite 2",
+        "Dismember 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "271334": {
+      "nome": "Maddened Rotclaw",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 25,
+      "max": 26,
+      "zona": "Wetlands",
+      "velocidade": 2,
+      "ensina": [
+        "Swipe 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "272096": {
+      "nome": "Befouled Webwood",
+      "nomeIngles": true,
+      "familia": "Spider",
+      "min": 11,
+      "max": 11,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "274300": {
+      "nome": "Coldrasp",
+      "nomeIngles": true,
+      "familia": "Wolf",
+      "min": 12,
+      "max": 12,
+      "zona": "Tirisfal Glades",
+      "velocidade": 1.5,
+      "ensina": [
+        "Furious Howl 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "276101": {
+      "nome": "Nightscreech",
+      "nomeIngles": true,
+      "familia": "Bird of Prey",
+      "min": null,
+      "max": null,
+      "zona": "Teldrassil",
+      "velocidade": 2,
+      "ensina": [
+        "Mine! 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "276111": {
+      "nome": "Ghostfang",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 10,
+      "max": 10,
+      "zona": "Dun Morogh",
+      "velocidade": 2,
+      "ensina": [],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    },
+    "276189": {
+      "nome": "Matriarch Bristlefur",
+      "nomeIngles": true,
+      "familia": "Bear",
+      "min": 10,
+      "max": 10,
+      "zona": "Elwynn Forest",
+      "velocidade": 2.5,
+      "ensina": [
+        "Claw 2"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "276198": {
+      "nome": "Shal'ma",
+      "nomeIngles": true,
+      "familia": "Cat",
+      "min": 9,
+      "max": 9,
+      "zona": "Durotar",
+      "velocidade": 1.3,
+      "ensina": [
+        "Cower 1"
+      ],
+      "fontes": [
+        "Petopia"
+      ]
+    },
+    "277645": {
+      "nome": "Gray Fox",
+      "nomeIngles": true,
+      "familia": "Fox",
+      "min": 22,
+      "max": 23,
+      "zona": "Duskwood",
+      "velocidade": 2,
+      "ensina": [
+        "Trickster's Dance 1"
+      ],
+      "fontes": [
+        "FHP",
+        "Petopia"
+      ]
+    }
+  }
+}

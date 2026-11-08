@@ -1,0 +1,2157 @@
+{
+  "build": "1.60.1.70862",
+  "geradoEm": "2026-11-08T03:07:05.973Z",
+  "fonte": "wago.tools DB2 (wowf 1.60.1.70862)",
+  "familias": [
+    {
+      "id": 1,
+      "nome": "Wolf",
+      "linha": 208,
+      "dieta": [
+        "Meat"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Furious Howl",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Cat",
+      "linha": 209,
+      "dieta": [
+        "Meat",
+        "Fish"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Claw",
+        "Dash",
+        "Prowl",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Spider",
+      "linha": 203,
+      "dieta": [
+        "Meat"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Web"
+      ]
+    },
+    {
+      "id": 4,
+      "nome": "Bear",
+      "linha": 210,
+      "dieta": [
+        "Meat",
+        "Fish",
+        "Cheese",
+        "Bread",
+        "Fungus",
+        "Fruit"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Claw",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Swipe"
+      ]
+    },
+    {
+      "id": 5,
+      "nome": "Boar",
+      "linha": 211,
+      "dieta": [
+        "Meat",
+        "Fish",
+        "Cheese",
+        "Bread",
+        "Fungus",
+        "Fruit"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Charge",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 6,
+      "nome": "Crocolisk",
+      "linha": 212,
+      "dieta": [
+        "Meat",
+        "Fish"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Dismember"
+      ]
+    },
+    {
+      "id": 7,
+      "nome": "Carrion Bird",
+      "linha": 213,
+      "dieta": [
+        "Meat",
+        "Fish"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Claw",
+        "Dive",
+        "Demoralizing Screech",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 8,
+      "nome": "Crab",
+      "linha": 214,
+      "dieta": [
+        "Fish",
+        "Bread",
+        "Fungus",
+        "Fruit"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Claw",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Pinch"
+      ]
+    },
+    {
+      "id": 9,
+      "nome": "Gorilla",
+      "linha": 215,
+      "dieta": [
+        "Fungus",
+        "Fruit"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Thunderstomp",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 11,
+      "nome": "Raptor",
+      "linha": 217,
+      "dieta": [
+        "Meat"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Claw",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Savage Rend"
+      ]
+    },
+    {
+      "id": 12,
+      "nome": "Tallstrider",
+      "linha": 218,
+      "dieta": [
+        "Cheese",
+        "Fungus",
+        "Fruit"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Dust Cloud"
+      ]
+    },
+    {
+      "id": 20,
+      "nome": "Scorpid",
+      "linha": 236,
+      "dieta": [
+        "Meat"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Claw",
+        "Dash",
+        "Scorpid Poison",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 21,
+      "nome": "Turtle",
+      "linha": 251,
+      "dieta": [
+        "Fish",
+        "Fungus",
+        "Fruit",
+        "Raw Fish"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Shell Shield",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 24,
+      "nome": "Bat",
+      "linha": 653,
+      "dieta": [
+        "Fungus",
+        "Fruit"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Summoning",
+        "Dive",
+        "Hunter Pet Scaling",
+        "Sonic Blast"
+      ]
+    },
+    {
+      "id": 25,
+      "nome": "Hyena",
+      "linha": 654,
+      "dieta": [
+        "Meat",
+        "Fruit"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Tendon Rip"
+      ]
+    },
+    {
+      "id": 26,
+      "nome": "Bird of Prey",
+      "linha": 655,
+      "dieta": [
+        "Meat"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Claw",
+        "Dive",
+        "Hunter Pet Scaling",
+        "Mine!"
+      ]
+    },
+    {
+      "id": 27,
+      "nome": "Wind Serpent",
+      "linha": 656,
+      "dieta": [
+        "Fish",
+        "Cheese",
+        "Bread"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dive",
+        "Lightning Breath",
+        "Hunter Pet Scaling"
+      ]
+    },
+    {
+      "id": 312,
+      "nome": "Core Hound",
+      "linha": 2897,
+      "dieta": [
+        "Meat"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Hunter Pet Scaling",
+        "Lava Breath"
+      ]
+    },
+    {
+      "id": 319,
+      "nome": "Fox",
+      "linha": 3016,
+      "dieta": [
+        "Meat"
+      ],
+      "habilidades": [
+        "Tamed Pet Passive (DND)",
+        "Bite",
+        "Dash",
+        "Hunter Pet Scaling",
+        "Trickster's Dance"
+      ]
+    }
+  ],
+  "geral": [
+    "Pet Hardiness",
+    "Pet Aggression",
+    "Pet Recovery",
+    "Pet Resistance",
+    "Intimidation",
+    "Fire Resistance",
+    "Frost Resistance",
+    "Arcane Resistance",
+    "Nature Resistance",
+    "Shadow Resistance",
+    "Great Stamina",
+    "Natural Armor",
+    "Cower",
+    "Growl"
+  ],
+  "habilidades": {
+    "Pet Hardiness": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 6280,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 6281,
+          "nivelPet": 0,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 6282,
+          "nivelPet": 0,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 6283,
+          "nivelPet": 0,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 6286,
+          "nivelPet": 0,
+          "pt": 0
+        }
+      ]
+    },
+    "Pet Aggression": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 6311,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 6314,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 6315,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 6316,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 6317,
+          "nivelPet": null,
+          "pt": 0
+        }
+      ]
+    },
+    "Pet Recovery": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 6328,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 6331,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 6332,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 6333,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 6334,
+          "nivelPet": null,
+          "pt": 0
+        }
+      ]
+    },
+    "Pet Resistance": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 6443,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 6444,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 6445,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 6446,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 6447,
+          "nivelPet": null,
+          "pt": 0
+        }
+      ]
+    },
+    "Tamed Pet Passive (DND)": {
+      "linhas": [
+        203,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        217,
+        218,
+        236,
+        251,
+        653,
+        654,
+        655,
+        656,
+        2897,
+        3016
+      ],
+      "familias": [
+        "Wolf",
+        "Cat",
+        "Spider",
+        "Bear",
+        "Boar",
+        "Crocolisk",
+        "Carrion Bird",
+        "Crab",
+        "Gorilla",
+        "Raptor",
+        "Tallstrider",
+        "Scorpid",
+        "Turtle",
+        "Bat",
+        "Hyena",
+        "Bird of Prey",
+        "Wind Serpent",
+        "Core Hound",
+        "Fox"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 7000,
+          "nivelPet": null,
+          "pt": 0
+        }
+      ]
+    },
+    "Bite": {
+      "linhas": [
+        203,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        215,
+        217,
+        218,
+        251,
+        653,
+        654,
+        656,
+        2897,
+        3016
+      ],
+      "familias": [
+        "Wolf",
+        "Cat",
+        "Spider",
+        "Bear",
+        "Boar",
+        "Crocolisk",
+        "Carrion Bird",
+        "Gorilla",
+        "Raptor",
+        "Tallstrider",
+        "Turtle",
+        "Bat",
+        "Hyena",
+        "Wind Serpent",
+        "Core Hound",
+        "Fox"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 17253,
+          "nivelPet": 1,
+          "pt": 1
+        },
+        {
+          "rank": 2,
+          "spellId": 17255,
+          "nivelPet": 8,
+          "pt": 4
+        },
+        {
+          "rank": 3,
+          "spellId": 17256,
+          "nivelPet": 16,
+          "pt": 7
+        },
+        {
+          "rank": 4,
+          "spellId": 17257,
+          "nivelPet": 24,
+          "pt": 10
+        },
+        {
+          "rank": 5,
+          "spellId": 17258,
+          "nivelPet": 32,
+          "pt": 13
+        },
+        {
+          "rank": 6,
+          "spellId": 17259,
+          "nivelPet": 40,
+          "pt": 17
+        },
+        {
+          "rank": 7,
+          "spellId": 17260,
+          "nivelPet": 48,
+          "pt": 21
+        },
+        {
+          "rank": 8,
+          "spellId": 17261,
+          "nivelPet": 56,
+          "pt": 25
+        }
+      ]
+    },
+    "Claw": {
+      "linhas": [
+        209,
+        210,
+        213,
+        214,
+        217,
+        236,
+        655
+      ],
+      "familias": [
+        "Cat",
+        "Bear",
+        "Carrion Bird",
+        "Crab",
+        "Raptor",
+        "Scorpid",
+        "Bird of Prey"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 16827,
+          "nivelPet": 1,
+          "pt": 1
+        },
+        {
+          "rank": 2,
+          "spellId": 16828,
+          "nivelPet": 8,
+          "pt": 4
+        },
+        {
+          "rank": 3,
+          "spellId": 16829,
+          "nivelPet": 16,
+          "pt": 7
+        },
+        {
+          "rank": 4,
+          "spellId": 16830,
+          "nivelPet": 24,
+          "pt": 10
+        },
+        {
+          "rank": 5,
+          "spellId": 16831,
+          "nivelPet": 32,
+          "pt": 13
+        },
+        {
+          "rank": 6,
+          "spellId": 16832,
+          "nivelPet": 40,
+          "pt": 17
+        },
+        {
+          "rank": 7,
+          "spellId": 3010,
+          "nivelPet": 48,
+          "pt": 21
+        },
+        {
+          "rank": 8,
+          "spellId": 3009,
+          "nivelPet": 56,
+          "pt": 25
+        }
+      ]
+    },
+    "Dash": {
+      "linhas": [
+        203,
+        208,
+        209,
+        210,
+        211,
+        212,
+        214,
+        215,
+        217,
+        218,
+        236,
+        251,
+        654,
+        3016
+      ],
+      "familias": [
+        "Wolf",
+        "Cat",
+        "Spider",
+        "Bear",
+        "Boar",
+        "Crocolisk",
+        "Crab",
+        "Gorilla",
+        "Raptor",
+        "Tallstrider",
+        "Scorpid",
+        "Turtle",
+        "Hyena",
+        "Fox"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 23099,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 2,
+          "spellId": 23109,
+          "nivelPet": 40,
+          "pt": 20
+        },
+        {
+          "rank": 3,
+          "spellId": 23110,
+          "nivelPet": 50,
+          "pt": 25
+        }
+      ]
+    },
+    "Summoning": {
+      "linhas": [
+        653
+      ],
+      "familias": [
+        "Bat"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1278934,
+          "nivelPet": null,
+          "pt": 15
+        }
+      ]
+    },
+    "Dive": {
+      "linhas": [
+        213,
+        653,
+        655,
+        656
+      ],
+      "familias": [
+        "Carrion Bird",
+        "Bat",
+        "Bird of Prey",
+        "Wind Serpent"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 23145,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 2,
+          "spellId": 23147,
+          "nivelPet": 40,
+          "pt": 20
+        },
+        {
+          "rank": 3,
+          "spellId": 23148,
+          "nivelPet": 50,
+          "pt": 25
+        }
+      ]
+    },
+    "Intimidation": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 19577,
+          "nivelPet": 30,
+          "pt": 0
+        }
+      ]
+    },
+    "Fire Resistance": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 23992,
+          "nivelPet": 20,
+          "pt": 5
+        },
+        {
+          "rank": 2,
+          "spellId": 24439,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24444,
+          "nivelPet": 40,
+          "pt": 45
+        },
+        {
+          "rank": 4,
+          "spellId": 24445,
+          "nivelPet": 50,
+          "pt": 90
+        }
+      ]
+    },
+    "Prowl": {
+      "linhas": [
+        209
+      ],
+      "familias": [
+        "Cat"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24450,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 2,
+          "spellId": 24452,
+          "nivelPet": 40,
+          "pt": 20
+        },
+        {
+          "rank": 3,
+          "spellId": 24453,
+          "nivelPet": 50,
+          "pt": 25
+        }
+      ]
+    },
+    "Frost Resistance": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24446,
+          "nivelPet": 20,
+          "pt": 5
+        },
+        {
+          "rank": 2,
+          "spellId": 24447,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24448,
+          "nivelPet": 40,
+          "pt": 45
+        },
+        {
+          "rank": 4,
+          "spellId": 24449,
+          "nivelPet": 50,
+          "pt": 90
+        }
+      ]
+    },
+    "Arcane Resistance": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24493,
+          "nivelPet": 20,
+          "pt": 5
+        },
+        {
+          "rank": 2,
+          "spellId": 24497,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24500,
+          "nivelPet": 40,
+          "pt": 45
+        },
+        {
+          "rank": 4,
+          "spellId": 24501,
+          "nivelPet": 50,
+          "pt": 90
+        }
+      ]
+    },
+    "Nature Resistance": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24492,
+          "nivelPet": 20,
+          "pt": 5
+        },
+        {
+          "rank": 2,
+          "spellId": 24502,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24503,
+          "nivelPet": 40,
+          "pt": 45
+        },
+        {
+          "rank": 4,
+          "spellId": 24504,
+          "nivelPet": 50,
+          "pt": 90
+        }
+      ]
+    },
+    "Shadow Resistance": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24488,
+          "nivelPet": 20,
+          "pt": 5
+        },
+        {
+          "rank": 2,
+          "spellId": 24505,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24506,
+          "nivelPet": 40,
+          "pt": 45
+        },
+        {
+          "rank": 4,
+          "spellId": 24507,
+          "nivelPet": 40,
+          "pt": 90
+        }
+      ]
+    },
+    "Great Stamina": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 4187,
+          "nivelPet": 1,
+          "pt": 5
+        },
+        {
+          "rank": 2,
+          "spellId": 4188,
+          "nivelPet": 12,
+          "pt": 10
+        },
+        {
+          "rank": 3,
+          "spellId": 4189,
+          "nivelPet": 18,
+          "pt": 15
+        },
+        {
+          "rank": 4,
+          "spellId": 4190,
+          "nivelPet": 24,
+          "pt": 25
+        },
+        {
+          "rank": 5,
+          "spellId": 4191,
+          "nivelPet": 30,
+          "pt": 50
+        },
+        {
+          "rank": 6,
+          "spellId": 4192,
+          "nivelPet": 36,
+          "pt": 75
+        },
+        {
+          "rank": 7,
+          "spellId": 4193,
+          "nivelPet": 42,
+          "pt": 100
+        },
+        {
+          "rank": 8,
+          "spellId": 4194,
+          "nivelPet": 48,
+          "pt": 125
+        },
+        {
+          "rank": 9,
+          "spellId": 5041,
+          "nivelPet": 54,
+          "pt": 150
+        },
+        {
+          "rank": 10,
+          "spellId": 5042,
+          "nivelPet": 60,
+          "pt": 185
+        }
+      ]
+    },
+    "Demoralizing Screech": {
+      "linhas": [
+        213
+      ],
+      "familias": [
+        "Carrion Bird"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24423,
+          "nivelPet": 8,
+          "pt": 10
+        },
+        {
+          "rank": 2,
+          "spellId": 24577,
+          "nivelPet": 24,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24578,
+          "nivelPet": 48,
+          "pt": 20
+        },
+        {
+          "rank": 4,
+          "spellId": 24579,
+          "nivelPet": 56,
+          "pt": 25
+        }
+      ]
+    },
+    "Scorpid Poison": {
+      "linhas": [
+        236
+      ],
+      "familias": [
+        "Scorpid"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24640,
+          "nivelPet": 8,
+          "pt": 10
+        },
+        {
+          "rank": 2,
+          "spellId": 24583,
+          "nivelPet": 24,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24586,
+          "nivelPet": 40,
+          "pt": 20
+        },
+        {
+          "rank": 4,
+          "spellId": 24587,
+          "nivelPet": 56,
+          "pt": 25
+        }
+      ]
+    },
+    "Natural Armor": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24545,
+          "nivelPet": 1,
+          "pt": 1
+        },
+        {
+          "rank": 2,
+          "spellId": 24549,
+          "nivelPet": 12,
+          "pt": 5
+        },
+        {
+          "rank": 3,
+          "spellId": 24550,
+          "nivelPet": 18,
+          "pt": 10
+        },
+        {
+          "rank": 4,
+          "spellId": 24551,
+          "nivelPet": 24,
+          "pt": 15
+        },
+        {
+          "rank": 5,
+          "spellId": 24552,
+          "nivelPet": 30,
+          "pt": 25
+        },
+        {
+          "rank": 6,
+          "spellId": 24553,
+          "nivelPet": 36,
+          "pt": 50
+        },
+        {
+          "rank": 7,
+          "spellId": 24554,
+          "nivelPet": 42,
+          "pt": 75
+        },
+        {
+          "rank": 8,
+          "spellId": 24555,
+          "nivelPet": 48,
+          "pt": 100
+        },
+        {
+          "rank": 9,
+          "spellId": 24629,
+          "nivelPet": 54,
+          "pt": 125
+        },
+        {
+          "rank": 10,
+          "spellId": 24630,
+          "nivelPet": 60,
+          "pt": 150
+        }
+      ]
+    },
+    "Cower": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1742,
+          "nivelPet": 5,
+          "pt": 8
+        },
+        {
+          "rank": 2,
+          "spellId": 1753,
+          "nivelPet": 15,
+          "pt": 10
+        },
+        {
+          "rank": 3,
+          "spellId": 1754,
+          "nivelPet": 25,
+          "pt": 12
+        },
+        {
+          "rank": 4,
+          "spellId": 1755,
+          "nivelPet": 35,
+          "pt": 14
+        },
+        {
+          "rank": 5,
+          "spellId": 1756,
+          "nivelPet": 45,
+          "pt": 16
+        },
+        {
+          "rank": 6,
+          "spellId": 16697,
+          "nivelPet": 55,
+          "pt": 18
+        }
+      ]
+    },
+    "Growl": {
+      "linhas": [
+        270
+      ],
+      "familias": [
+        "all"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 2649,
+          "nivelPet": 1,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 14916,
+          "nivelPet": 10,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 14917,
+          "nivelPet": 20,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 14918,
+          "nivelPet": 30,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 14919,
+          "nivelPet": 40,
+          "pt": 0
+        },
+        {
+          "rank": 6,
+          "spellId": 14920,
+          "nivelPet": 50,
+          "pt": 0
+        },
+        {
+          "rank": 7,
+          "spellId": 14921,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Furious Howl": {
+      "linhas": [
+        208
+      ],
+      "familias": [
+        "Wolf"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24604,
+          "nivelPet": 10,
+          "pt": 10
+        },
+        {
+          "rank": 2,
+          "spellId": 24605,
+          "nivelPet": 24,
+          "pt": 15
+        },
+        {
+          "rank": 3,
+          "spellId": 24603,
+          "nivelPet": 40,
+          "pt": 20
+        },
+        {
+          "rank": 4,
+          "spellId": 24597,
+          "nivelPet": 56,
+          "pt": 25
+        }
+      ]
+    },
+    "Lightning Breath": {
+      "linhas": [
+        656
+      ],
+      "familias": [
+        "Wind Serpent"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 24844,
+          "nivelPet": 1,
+          "pt": 1
+        },
+        {
+          "rank": 2,
+          "spellId": 25008,
+          "nivelPet": 12,
+          "pt": 5
+        },
+        {
+          "rank": 3,
+          "spellId": 25009,
+          "nivelPet": 24,
+          "pt": 10
+        },
+        {
+          "rank": 4,
+          "spellId": 25010,
+          "nivelPet": 36,
+          "pt": 15
+        },
+        {
+          "rank": 5,
+          "spellId": 25011,
+          "nivelPet": 48,
+          "pt": 20
+        },
+        {
+          "rank": 6,
+          "spellId": 25012,
+          "nivelPet": 60,
+          "pt": 25
+        }
+      ]
+    },
+    "Charge": {
+      "linhas": [
+        211
+      ],
+      "familias": [
+        "Boar"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 7371,
+          "nivelPet": 1,
+          "pt": 5
+        },
+        {
+          "rank": 2,
+          "spellId": 26177,
+          "nivelPet": 12,
+          "pt": 9
+        },
+        {
+          "rank": 3,
+          "spellId": 26178,
+          "nivelPet": 24,
+          "pt": 13
+        },
+        {
+          "rank": 4,
+          "spellId": 26179,
+          "nivelPet": 36,
+          "pt": 17
+        },
+        {
+          "rank": 5,
+          "spellId": 26201,
+          "nivelPet": 48,
+          "pt": 21
+        },
+        {
+          "rank": 6,
+          "spellId": 27685,
+          "nivelPet": 60,
+          "pt": 25
+        }
+      ]
+    },
+    "Shell Shield": {
+      "linhas": [
+        251
+      ],
+      "familias": [
+        "Turtle"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 26064,
+          "nivelPet": 20,
+          "pt": 15
+        }
+      ]
+    },
+    "Thunderstomp": {
+      "linhas": [
+        215
+      ],
+      "familias": [
+        "Gorilla"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 26090,
+          "nivelPet": 30,
+          "pt": 15
+        },
+        {
+          "rank": 2,
+          "spellId": 26187,
+          "nivelPet": 40,
+          "pt": 20
+        },
+        {
+          "rank": 3,
+          "spellId": 26188,
+          "nivelPet": 50,
+          "pt": 25
+        },
+        {
+          "rank": 4,
+          "spellId": 1264455,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Hunter Pet Scaling": {
+      "linhas": [
+        203,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        217,
+        218,
+        236,
+        251,
+        653,
+        654,
+        655,
+        656,
+        2897,
+        3016
+      ],
+      "familias": [
+        "Wolf",
+        "Cat",
+        "Spider",
+        "Bear",
+        "Boar",
+        "Crocolisk",
+        "Carrion Bird",
+        "Crab",
+        "Gorilla",
+        "Raptor",
+        "Tallstrider",
+        "Scorpid",
+        "Turtle",
+        "Bat",
+        "Hyena",
+        "Bird of Prey",
+        "Wind Serpent",
+        "Core Hound",
+        "Fox"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 415429,
+          "nivelPet": null,
+          "pt": 0
+        }
+      ]
+    },
+    "Lava Breath": {
+      "linhas": [
+        2897
+      ],
+      "familias": [
+        "Core Hound"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 444678,
+          "nivelPet": 48,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 444681,
+          "nivelPet": 48,
+          "pt": 0
+        }
+      ]
+    },
+    "Swipe": {
+      "linhas": [
+        210
+      ],
+      "familias": [
+        "Bear"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1264494,
+          "nivelPet": 12,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 1264497,
+          "nivelPet": 24,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 1264498,
+          "nivelPet": 36,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 1264501,
+          "nivelPet": 48,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 1264502,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Pinch": {
+      "linhas": [
+        214
+      ],
+      "familias": [
+        "Crab"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1264735,
+          "nivelPet": 12,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 1264736,
+          "nivelPet": 24,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 1264739,
+          "nivelPet": 36,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 1264741,
+          "nivelPet": 48,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 1264742,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Dismember": {
+      "linhas": [
+        212
+      ],
+      "familias": [
+        "Crocolisk"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1264758,
+          "nivelPet": 12,
+          "pt": 1
+        },
+        {
+          "rank": 2,
+          "spellId": 1264927,
+          "nivelPet": 24,
+          "pt": 1
+        },
+        {
+          "rank": 3,
+          "spellId": 1264929,
+          "nivelPet": 36,
+          "pt": 1
+        },
+        {
+          "rank": 4,
+          "spellId": 1264930,
+          "nivelPet": 48,
+          "pt": 1
+        },
+        {
+          "rank": 5,
+          "spellId": 1264933,
+          "nivelPet": 60,
+          "pt": 1
+        }
+      ]
+    },
+    "Tendon Rip": {
+      "linhas": [
+        654
+      ],
+      "familias": [
+        "Hyena"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1265038,
+          "nivelPet": 12,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 1265039,
+          "nivelPet": 24,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 1265040,
+          "nivelPet": 36,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 1265041,
+          "nivelPet": 48,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 1265042,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Mine!": {
+      "linhas": [
+        655
+      ],
+      "familias": [
+        "Bird of Prey"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1265054,
+          "nivelPet": 10,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 1265055,
+          "nivelPet": 20,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 1265056,
+          "nivelPet": 30,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 1265057,
+          "nivelPet": 40,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 1265058,
+          "nivelPet": 50,
+          "pt": 0
+        }
+      ]
+    },
+    "Savage Rend": {
+      "linhas": [
+        217
+      ],
+      "familias": [
+        "Raptor"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1265065,
+          "nivelPet": 12,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 1265066,
+          "nivelPet": 24,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 1265067,
+          "nivelPet": 36,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 1265068,
+          "nivelPet": 48,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 1265069,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Web": {
+      "linhas": [
+        203
+      ],
+      "familias": [
+        "Spider"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1265843,
+          "nivelPet": 12,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 1265878,
+          "nivelPet": 24,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 1265880,
+          "nivelPet": 36,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 1265881,
+          "nivelPet": 48,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 1265883,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Dust Cloud": {
+      "linhas": [
+        218
+      ],
+      "familias": [
+        "Tallstrider"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1265899,
+          "nivelPet": 12,
+          "pt": 0
+        },
+        {
+          "rank": 2,
+          "spellId": 1265901,
+          "nivelPet": 24,
+          "pt": 0
+        },
+        {
+          "rank": 3,
+          "spellId": 1265902,
+          "nivelPet": 36,
+          "pt": 0
+        },
+        {
+          "rank": 4,
+          "spellId": 1265903,
+          "nivelPet": 48,
+          "pt": 0
+        },
+        {
+          "rank": 5,
+          "spellId": 1265904,
+          "nivelPet": 60,
+          "pt": 0
+        }
+      ]
+    },
+    "Trickster's Dance": {
+      "linhas": [
+        3016
+      ],
+      "familias": [
+        "Fox"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1310612,
+          "nivelPet": 20,
+          "pt": 10
+        }
+      ]
+    },
+    "Sonic Blast": {
+      "linhas": [
+        653
+      ],
+      "familias": [
+        "Bat"
+      ],
+      "ranks": [
+        {
+          "rank": 1,
+          "spellId": 1264478,
+          "nivelPet": 12,
+          "pt": 1
+        },
+        {
+          "rank": 2,
+          "spellId": 1264479,
+          "nivelPet": 24,
+          "pt": 1
+        },
+        {
+          "rank": 3,
+          "spellId": 1264480,
+          "nivelPet": 36,
+          "pt": 1
+        },
+        {
+          "rank": 4,
+          "spellId": 1264481,
+          "nivelPet": 48,
+          "pt": 1
+        },
+        {
+          "rank": 5,
+          "spellId": 1264482,
+          "nivelPet": 60,
+          "pt": 1
+        }
+      ]
+    }
+  },
+  "tracosVelocidade": [
+    {
+      "spellId": 1263099,
+      "nome": "Faster Attack I"
+    },
+    {
+      "spellId": 1263100,
+      "nome": "Faster Attack II"
+    },
+    {
+      "spellId": 1263102,
+      "nome": "Faster Attack III"
+    },
+    {
+      "spellId": 1263104,
+      "nome": "Faster Attack IV"
+    },
+    {
+      "spellId": 1263107,
+      "nome": "Faster Attack V"
+    },
+    {
+      "spellId": 1263109,
+      "nome": "Faster Attack VI"
+    },
+    {
+      "spellId": 1263110,
+      "nome": "Faster Attack VII"
+    },
+    {
+      "spellId": 1263113,
+      "nome": "Slower Attack II"
+    },
+    {
+      "spellId": 1263114,
+      "nome": "Slower Attack III"
+    }
+  ],
+  "duplicados": [
+    {
+      "nome": "Tamed Pet Passive (DND)",
+      "rank": 1,
+      "mantido": {
+        "spellId": 7000,
+        "nivelPet": null,
+        "pt": 0
+      },
+      "descartados": [
+        {
+          "spellId": 8875,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17206,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17208,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17209,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17210,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17211,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17212,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17214,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17215,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17216,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17217,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17218,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17219,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17220,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17221,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17222,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 17223,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 19580,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 19581,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 19582,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 19589,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 19591,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 20782,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 20784,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 409365,
+          "nivelPet": null,
+          "pt": 0
+        },
+        {
+          "spellId": 444831,
+          "nivelPet": null,
+          "pt": 0
+        }
+      ]
+    },
+    {
+      "nome": "Intimidation",
+      "rank": 1,
+      "mantido": {
+        "spellId": 19577,
+        "nivelPet": 30,
+        "pt": 0
+      },
+      "descartados": [
+        {
+          "spellId": 24394,
+          "nivelPet": 40,
+          "pt": 0
+        }
+      ]
+    }
+  ]
+}

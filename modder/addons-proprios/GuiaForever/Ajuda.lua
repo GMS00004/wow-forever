@@ -44,8 +44,15 @@ GuiaForeverAjuda = {
       { texto = "Tame a wild pet that already knows the ability (the teacher).", fonte = "LudiDeo (beta)" },
       -- origem: comum\fontes\builds\ludideo-hunter-pets.md:52
       { texto = "Stable your main pet first, turn off the teacher's other abilities, and fight until it learns.", fonte = "LudiDeo (beta)" },
-      -- origem: comum\personagens\hexumlite-bull.md:152 (qual pet ensina: nao conferido)
-      { texto = "Which wild pet teaches it: not checked yet.", fonte = "you" },
+      -- origem: comum\fontes\builds\saltii-hunter-pets.md (cartao 12, Claw ranks 1 to 8), 2026-11-08
+      { texto = "Teacher: Strigid Hunter (8-9, Teldrassil); the pet needs level 8.", fonte = "Saltii" },
+      { texto = "Every rank and its teachers: J > Families, and Next ability upgrades in the Pet tab.", fonte = "Saltii" },
+    } },
+    { id = "proximorank", aba = "pet", pergunta = "When does my pet need a higher-level beast for a rank?", linhas = {
+      -- origem: comum\fontes\builds\saltii-hunter-pets.md (cartoes 11, 12 e 14) e ludideo-hunter-pets.md:52
+      { texto = "Never a new pet: you tame a teacher beast, learn the rank, let it go and teach your own pet.", fonte = "LudiDeo (beta)" },
+      { texto = "Each rank has a pet level (Bite and Claw: 1, 8, 16, 24, 32, 40, 48, 56) and a teacher level.", fonte = "Saltii" },
+      { texto = "The Pet tab lists the next rank of each ability and the teachers you can tame now.", fonte = "Saltii" },
     } },
     { id = "talento", aba = "talentos", pergunta = "Which talent now, and what is still open?", linhas = {
       -- origem: comum\personagens\hexumlite-bull.md:60 e :82 (lei das tres builds)

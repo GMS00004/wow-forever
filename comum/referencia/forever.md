@@ -82,6 +82,21 @@ Levantamento para o pedido do dono de um bestiário dentro do jogo (buscar qualq
 | O QuestieDB do Forever (1.0.12) traz, de cada NPC, nome, níveis, rank, spawns por zona, rotas, quests e facção; o loot dele cobre só itens de quest (`classicItemDrops.lua`, chances da Wowhead) | [local] | `QuestieDB\src\meta\npcMeta.lua` e `support\Forever\DropTables` |
 | A página de NPC da Wowhead Forever responde 403 ao cliente automático; o tooltip público (`nether.wowhead.com/forever/tooltip/npc/<id>`) responde com nome, nível, tipo, família e coordenadas | [local] | teste com `curl` em 2026-11-07 (npc 2032) |
 
+## Pets do caçador (lido em 2026-11-07 e 2026-11-08)
+
+Levantamento para o guia de habilidades de pet do GuiaForever (seção 10 do `ARQUITETURA.md` dele). Os dados gerados ficam em `modder\ferramentas\guia\pets\`.
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| O sistema continua o do Classic: domar a fera que sabe o rank, lutar até aprender, ensinar ao pet no Beast Training com pontos de treino; lealdade, felicidade, dieta e estábulo (2 guardados e 1 ativo) seguem | [página] | Petopia Forever (training.php), ForeverChanges (hunter-pets, 24/09), Warcraft Tavern |
+| Notas de beta da Blizzard: em 24/09, Tame Beast deixou de funcionar em fera acima do seu nível; em 01/10, algumas feras tinham rank alto demais para o nível (corrigido); em 16/10, Dismember, Sonic Blast e Mine! enfraquecidos; em 03/11, o pet não perde mais a passiva inata de velocidade ao destreinar | [página] | us.forums.blizzard.com/t/2360696 (Kaivax) |
+| Class Deep Dive de 30/09: família Fox com Trickster's Dance; Owl virou Bird of Prey; toda família aprende Bite ou Claw e Dash ou Dive; uma habilidade única por família; pet ganha atributo do equipamento do caçador e não recebe buff de jogador | [página] | worldofwarcraft.blizzard.com/news/24301515 |
+| "Class Tuning Incoming – November 10" (06/11): os pets aguentam menos que o pretendido como tanque, e a Blizzard vai ajustar para perto do Classic Era, sem números ainda | [página] | us.forums.blizzard.com/t/2404092 |
+| A velocidade de ataque é de cada fera (passiva inata Faster Attack I a VII ou Slower Attack II e III, base 2.0) e não se ensina | [página] | ForeverChanges, ConquestCapped (24/10) |
+| As tabelas do cliente (produto `wowf`, build 1.60.1.70862) dão família, dieta, habilidade, rank, nível do pet e pontos de treino: CreatureFamily, SkillLineAbility (os pontos de treino ficam na coluna sem nome `Field_5_5_4_67090_014_1`), SpellLevels (BaseLevel, ou SpellLevel quando 0), Spell e SpellName; Bite dá níveis 1/8/16/24/32/40/48/56 e pontos 1/4/7/10/13/17/21/25. O cliente tem 19 famílias, com Core Hound (que a Petopia diz não ter sido vista) | [local] | wago.tools, CSV por `https://wago.tools/db2/<Tabela>/csv?build=1.60.1.70862` |
+| Quem ensina cada rank não está no cliente (a tabela CreatureSpellData não existe no `wowf`); só em dados coletados por jogadores: o repositório Jazzman1976/Forever-Hunter-Pets (MIT, sha `ff5eefb`, de 07/11) e a Petopia Forever (sem licença aberta). Nos 76 ranks que as duas cobrem, nível do pet e custo batem | [local] | `modder\ferramentas\guia\pets\professores.json` |
+| Addons prontos com ranks e professores: Hunter's Field Guide (Alezyzz, 0.7.0 de 07/11, Forever e Era, 639 feras), Hunter Pet Atlas (1.2.0 de 06/10, com pontos de treino e pinos no mapa), vanThos Pet Compendium (1.0.4 de 06/11) e Forever Bestiary (Pet Hunter) (0.7.0 de 20/10, sem atualização depois do lançamento) | [página] | páginas de cada um na CurseForge |
+
 ## Fontes
 
 - Warcraft Wiki, Patch 1.60.1: https://warcraft.wiki.gg/wiki/Patch_1.60.1
