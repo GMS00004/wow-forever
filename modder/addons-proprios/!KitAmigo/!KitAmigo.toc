@@ -1,0 +1,8 @@
+## Interface: 16001
+## Title: Kit do Amigo
+## Notes: Leaves the friend's kit ready at the first login: Leatrix sells junk and repairs, auto loot on, welcome window in Portuguese (/kit).
+## Author: Bruno
+## Version: 1.0.0
+## SavedVariables: KitAmigoDB
+## SavedVariablesPerCharacter: KitAmigoCharDB
+KitAmigo.lua

@@ -55,6 +55,8 @@ modder\
     addon-fontes.ps1       consulta a fonte de um addon (só leitura)  T7
     addon-atualizar.ps1    atualiza os aprovados                      T7
     sessao-abrir.ps1       abertura de sessão                         T7
+    kit-amigo.ps1          monta o Kit-WoW-Forever.zip do amigo (só lê o jogo; grava no Drive)   2026-11-08
+    kit\                   instalar.ps1 (vira o INSTALAR.bat), guia.html e o PDF, mensagem-whatsapp.txt
     testes\
       _assert.ps1  _preparar.ps1                                      T4
       fixture\  fontes-fixture\  respostas\                          T4

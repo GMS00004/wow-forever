@@ -23,6 +23,8 @@ Método: sem ferramentas Claude in Chrome nesta sessão (ToolSearch "chrome" nã
 
 Perks Legacy de profissão (nomes; efeitos só em parte descritos): Working Overtime (+4 a 20% chance de skill-up), Dedicated Study (+1 skill na menor profissão, cast 25 s, recarga 23 h), Performance Bonus (5-15% de chance de dobrar Merchant's Favor de entregas de caixa), Bountiful Harvest, Bartering, Luremaster, Master Chef (chance de resultado extra ao cozinhar), Gourmand (comida dura mais). Fontes: classicwowforever.com/professions/ 27 Oct [página]; warcrafttavern professions/cooking [página].
 
+Pontos por craft (busca de 2026-11-07): nenhuma fonte achada diz que um craft dá mais de 1 ponto no Forever, nem que material de faixa acima rende mais; as guias descrevem as cores do Classic (laranja sempre, amarelo quase sempre, verde cada vez menos, cinza nunca). O addon SkillUp Forever (curseforge.com/wow/addons/skillup-forever) mostra na janela de profissões a chance de ponto e as faixas de cor de cada receita, e a calculadora do metabot.gg usa as chances do Classic, não as do Forever [busca].
+
 Níveis de profissão (Warcraft Tavern, sem data): Apprentice nível 1 (gathering) ou 5 (crafting/secundárias), skill até 75; Journeyman nível 10, skill mín. 50, até 150; Expert nível 20, mín. 125, até 225; Artisan nível 35, mín. 200, até 300 [página]. Nota: o resumo do classicwowforever (27 Oct) trazia números diferentes (50/125/200 como "skill" do trainer); o conquestcapped (23 Oct) fala em 75/150/225/300 por nível 1/10/20/35. Em essência: trilha de tiers com nível 10/20/35.
 
 ## (b) Logística entre alts

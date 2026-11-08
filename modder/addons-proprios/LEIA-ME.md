@@ -37,5 +37,6 @@ A Interface do `.toc` tem de bater com a do cliente (`/dump select(4, GetBuildIn
 |---|---|---|
 | `GuiaForever` | guia de jogo: talento e dicas por nível, profissões, treinadores, macros do caçador, perfil gráfico | `GuiaForever\LEIA-ME.md` |
 | `UIForever` | layout do ElvUI, teclas, barras por classe e minimapa grande, definidos no `Config.lua` | comentários do `UIForever\Config.lua` |
+| `!KitAmigo` | só para o kit do amigo (não roda no jogo do dono): deixa o Leatrix vendendo lixo e consertando, liga o saque automático e mostra boas-vindas em português (`/kit`) | `!KitAmigo\LEIA-ME.md` |
 
 Checagens sem interpretador Lua (sintaxe, ASCII, globais e os dados do GuiaForever): `..\ferramentas\guia\` (rodar `npm install` uma vez ali; os comandos estão no LEIA-ME do GuiaForever).
