@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs';
 const require = createRequire(import.meta.url);
 const luaparse = require('luaparse'); // instale uma vez: npm install, nesta pasta
 
-const CLASSES = ['HUNTER', 'SHAMAN'];
+const CLASSES = ['HUNTER', 'SHAMAN', 'PALADIN']; // PALADIN permitida, nao obrigatoria (tarefa T1)
 const ABAS = ['agora', 'pet', 'talentos', 'combate', 'profissoes', 'ajuda'];
 const CAMPOS_PERGUNTA = ['id', 'aba', 'pergunta', 'linhas'];
 const CAMPOS_LINHA = ['texto', 'fonte'];
@@ -23,6 +23,11 @@ const FONTES = [
   'leak',
   'Saltii', // guia de pets do Saltii (comum\fontes\builds\saltii-hunter-pets.md), 2026-11-08
   'you', // decisao do proprio dono (ficha), como nas teclas (Teclas.lua, f = "you")
+  'Perfect Gaming Weather', // fontes do Ignatius Stonejaw (comum\fontes\builds\), 2026-11-08 (tarefa T1)
+  'Deadmanfred',
+  'Jurdi',
+  'DwarfLord (beta)',
+  'Blizzard', // nota oficial de 03/11 (ficha do Ignatius Stonejaw)
 ];
 const PERGUNTA_MAX = 90;
 const TEXTO_MAX = 160;

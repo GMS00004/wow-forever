@@ -8,7 +8,8 @@ ns.abasConstrutores = ns.abasConstrutores or {}
 local AB = ns.abasConstrutores
 
 local ICONE_PADRAO = "Interface\\Icons\\Ability_Marksmanship"
-local FONTES_TEXTO = { "Method", "Kargoz", "MetaGoblin", "DoubleZug", "Gladius", "LudiDeo" }
+local FONTES_TEXTO = { "Method", "Kargoz", "MetaGoblin", "DoubleZug", "Gladius", "LudiDeo",
+                       "Perfect Gaming Weather", "Deadmanfred", "Jurdi", "DwarfLord" }
 
 -- Utilidades --------------------------------------------------------------------------------
 
@@ -289,7 +290,15 @@ AB.agora = function(b, ctx)
     local e = plano and plano[l]
     if e then
       local it = { nivel = l }
-      if e.tbd then
+      local rs, rsub, rdica
+      if e.opcoes and ns.arvore and ns.arvore.resumoOpcoes then
+        local ok, a, b2, c2 = pcall(ns.arvore.resumoOpcoes, e)
+        if ok then rs, rsub, rdica = a, b2, c2 end
+      end
+      if rs then
+        it.s, it.sub, it.dica = cortar(semFonte("Talent: " .. rs), 60), rsub, rdica
+        it.icone = iconeTalento(e.opcoes[1] and e.opcoes[1].nome)
+      elseif e.tbd then
         it.s, it.icone = "Talent: your pick, sources differ", ICONE_PADRAO
         it.dica = "The sources differ on this point. Open the Talents tab for the options."
       else
@@ -304,6 +313,14 @@ AB.agora = function(b, ctx)
     for _, e in ipairs(d.magias) do
       if e.nivel and e.nivel > n and e.nivel <= ate and relev(e, "agora", ctx) then
         local s, sub, dica = dividir("New spell: " .. tostring(e.texto))
+        prox[#prox + 1] = { nivel = e.nivel, s = s, sub = sub, dica = dica, icone = e.id or ICONE_PADRAO }
+      end
+    end
+  end
+  if d and type(d.marcos) == "table" then
+    for _, e in ipairs(d.marcos) do
+      if type(e) == "table" and type(e.nivel) == "number" and e.nivel > n and e.nivel <= ate and e.texto then
+        local s, sub, dica = dividir("Milestone: " .. tostring(e.texto))
         prox[#prox + 1] = { nivel = e.nivel, s = s, sub = sub, dica = dica, icone = e.id or ICONE_PADRAO }
       end
     end
@@ -480,6 +497,20 @@ AB.talentos = function(b, ctx)
   if ini < MIN then ini = MIN end
   local nAgora = prox and livres or (podeGastar and (livres or 1)) or 0
 
+  -- opcoes lado a lado (12.3): so existem quando a classe tem dados.opcoes
+  local decisoes = {}
+  local planoOp
+  if type(dados.opcoes) == "table" and ns.arvore then
+    if ns.arvore.decisoes then
+      local ok, r = pcall(ns.arvore.decisoes)
+      if ok and type(r) == "table" then decisoes = r end
+    end
+    if ns.arvore.plano then
+      local ok, r = pcall(ns.arvore.plano)
+      if ok and type(r) == "table" then planoOp = r end
+    end
+  end
+
   sec(b, "Next points", "talentos:prox")
   local k = 0
   for l = ini, MAX do
@@ -487,7 +518,16 @@ AB.talentos = function(b, ctx)
     local v = dados.ordem and dados.ordem[l]
     if v then
       local it = { t = "item", nivel = l, estado = (k < nAgora) and "agora" or "depois" }
-      if v == "TBD" then
+      local e = planoOp and planoOp[l]
+      local rs, rsub, rdica
+      if v == "TBD" and e and e.opcoes and ns.arvore.resumoOpcoes then
+        local ok, a, b2, c2 = pcall(ns.arvore.resumoOpcoes, e)
+        if ok then rs, rsub, rdica = a, b2, c2 end
+      end
+      if rs then
+        it.s, it.sub, it.dica = cortar(semFonte(rs), 60), rsub, rdica
+        it.icone = iconeTalento(e.opcoes[1] and e.opcoes[1].nome)
+      elseif v == "TBD" then
         it.s, it.icone = "Your pick: sources differ", ICONE_PADRAO
         it.dica = { "The sources differ on this point.", "See Open (below) for the options, then choose in the talent tree." }
       else
@@ -499,6 +539,43 @@ AB.talentos = function(b, ctx)
     end
   end
   if k == 0 then vazio(b, "Nothing to show (guide max level).") end
+
+  -- Your pick: uma secao por decisao com nivel ainda por gastar, colunas lado a lado (12.3)
+  for _, dec in ipairs(decisoes) do
+    local niveis = {}
+    for l in pairs(dec.niveis or {}) do
+      if type(l) == "number" and ((ctx and ctx.tudo) or l >= ini) then niveis[#niveis + 1] = l end
+    end
+    table.sort(niveis)
+    if #niveis > 0 then
+      sec(b, cortar("Your pick: " .. tostring(dec.s), 60), "talentos:op:" .. tostring(dec.id), true)
+      for _, c in ipairs(dec.colunas or {}) do
+        local texto1
+        for _, l in ipairs(niveis) do
+          texto1 = texto1 or (dec.niveis[l] and dec.niveis[l][c.id])
+        end
+        local nome1 = texto1 and (texto1:match("^(.-)%s+%d+/%d+$") or texto1)
+        add(b, {
+          t = "item", icone = iconeTalento(nome1),
+          s = cortar(tostring(c.id) .. ": " .. tostring(c.s), 60),
+          sub = c.sub and cortar(c.sub, 80) or nil,
+        })
+      end
+      local colunas, linhas = { { s = "Level", largura = 50 } }, {}
+      for _, c in ipairs(dec.colunas or {}) do
+        colunas[#colunas + 1] = { s = tostring(c.id) .. " " .. tostring(c.s) }
+      end
+      for _, l in ipairs(niveis) do
+        local celulas = { tostring(l) }
+        for _, c in ipairs(dec.colunas or {}) do
+          celulas[#celulas + 1] = (dec.niveis[l] and dec.niveis[l][c.id]) or ""
+        end
+        linhas[#linhas + 1] = { celulas = celulas }
+      end
+      add(b, { t = "tabela", id = "talentos:op:" .. tostring(dec.id) .. ":tab", limite = 6,
+               colunas = colunas, linhas = linhas })
+    end
+  end
 
   local d = ns.dicas and ns.dicas()
   local ate = n + ((ctx and ctx.tudo) and 10 or 2)
@@ -812,6 +889,11 @@ AB.ajuda = function(b, ctx)
     add(b, { t = "item", s = colorido("dourado", "ALL"), sub = "Talent tree: the talent is in your Core list." })
     add(b, { t = "item", s = colorido("dourado", "?"), sub = "Talent tree: the plan has no fixed pick; see Open." })
     add(b, { t = "item", s = colorido("dourado", "Numbers"), sub = "Talent tree: levels that take the remaining ranks; a check is done." })
+    local classeS = ns.dados and ns.dados()
+    if classeS and type(classeS.opcoes) == "table" then
+      add(b, { t = "item", s = colorido("dourado", "A B C"),
+               sub = "Talent tree: options side by side; pick one, see Talents." })
+    end
   end
 end
 

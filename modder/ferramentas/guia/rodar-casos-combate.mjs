@@ -10,6 +10,7 @@ const casos = {
   'bom': [[], null, null],
   'r1': [[], 'R1', null], 'r2': [[], 'R2', null], 'r3': [[], 'R3', null], 'r4': [[], 'R4', null],
   'r5': [[], 'R5', null], 'r6': [[], 'R6', null], 'r7': [[], 'R7', null], 'r8': [[], 'R8', null], 'r9': [[], 'R9', null],
+  'r2-aura-ok': [[], null, null], 'r2-aura-sem-guarda': [[], 'R2', null], 'r2-aura-sem-secreto': [[], 'R2', null],
   'r6-aviso': [[], null, 'R6'],
   'prefixos': [['--prefixos', 'MeuExtra'], null, null],
   'toc': [['--toc'], 'TOC', null],

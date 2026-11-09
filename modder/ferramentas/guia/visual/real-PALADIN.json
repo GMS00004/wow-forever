@@ -1,0 +1,3179 @@
+{
+ "gerado": "2026-11-08T23:41:30.639Z",
+ "estrito": true,
+ "personagem": {
+  "nome": "Ignatius Stonejaw",
+  "classe": "Paladin",
+  "nivel": 2
+ },
+ "entradas": [
+  {
+   "chave": "agora",
+   "id": "agora",
+   "sub": null,
+   "modo": "novo"
+  },
+  {
+   "chave": "pet",
+   "id": "pet",
+   "sub": null,
+   "modo": "novo"
+  },
+  {
+   "chave": "familias",
+   "id": "familias",
+   "sub": null,
+   "modo": "novo"
+  },
+  {
+   "chave": "talentos",
+   "id": "talentos",
+   "sub": null,
+   "modo": "novo"
+  },
+  {
+   "chave": "combate-rotacao",
+   "id": "combate",
+   "sub": "rotacao",
+   "modo": "novo"
+  },
+  {
+   "chave": "combate-teclas",
+   "id": "combate",
+   "sub": "teclas",
+   "modo": "novo"
+  },
+  {
+   "chave": "combate-armas",
+   "id": "combate",
+   "sub": "armas",
+   "modo": "novo"
+  },
+  {
+   "chave": "combate-atributos",
+   "id": "combate",
+   "sub": "atributos",
+   "modo": "novo"
+  },
+  {
+   "chave": "profissoes-minhas",
+   "id": "profissoes",
+   "sub": "minhas",
+   "modo": "novo"
+  },
+  {
+   "chave": "profissoes-zona",
+   "id": "profissoes",
+   "sub": "zona",
+   "modo": "novo"
+  },
+  {
+   "chave": "profissoes-treinos",
+   "id": "profissoes",
+   "sub": "treinos",
+   "modo": "novo"
+  },
+  {
+   "chave": "ajuda-perguntas",
+   "id": "ajuda",
+   "sub": "perguntas",
+   "modo": "novo"
+  },
+  {
+   "chave": "ajuda-addons",
+   "id": "ajuda",
+   "sub": "addons",
+   "modo": "novo"
+  },
+  {
+   "chave": "ajuda-sinais",
+   "id": "ajuda",
+   "sub": "sinais",
+   "modo": "novo"
+  }
+ ],
+ "meta": {
+  "abas": [
+   {
+    "icone": "Interface\\Icons\\INV_Misc_Book_09",
+    "id": "agora",
+    "rotulo": "Now",
+    "subs": []
+   },
+   {
+    "icone": "Interface\\Icons\\Ability_Hunter_BeastCall",
+    "id": "pet",
+    "rotulo": "Pet",
+    "subs": []
+   },
+   {
+    "icone": "Interface\\Icons\\Ability_Hunter_BeastTaming",
+    "id": "familias",
+    "rotulo": "Families",
+    "subs": []
+   },
+   {
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "id": "talentos",
+    "rotulo": "Talents",
+    "subs": []
+   },
+   {
+    "icone": "Interface\\Icons\\Ability_ImpalingBolt",
+    "id": "combate",
+    "rotulo": "Combat",
+    "subs": [
+     {
+      "id": "rotacao",
+      "rotulo": "Rotation"
+     },
+     {
+      "id": "teclas",
+      "rotulo": "Keys"
+     },
+     {
+      "id": "armas",
+      "rotulo": "Weapons"
+     },
+     {
+      "id": "atributos",
+      "rotulo": "Stats"
+     }
+    ]
+   },
+   {
+    "icone": "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+    "id": "profissoes",
+    "rotulo": "Professions",
+    "subs": [
+     {
+      "id": "minhas",
+      "rotulo": "Mine"
+     },
+     {
+      "id": "zona",
+      "rotulo": "Zone"
+     },
+     {
+      "id": "treinos",
+      "rotulo": "Trainers"
+     }
+    ]
+   },
+   {
+    "icone": "Interface\\Icons\\INV_Misc_QuestionMark",
+    "id": "ajuda",
+    "rotulo": "Help",
+    "subs": [
+     {
+      "id": "perguntas",
+      "rotulo": "Questions"
+     },
+     {
+      "id": "addons",
+      "rotulo": "Addons"
+     },
+     {
+      "id": "sinais",
+      "rotulo": "Signs"
+     }
+    ]
+   }
+  ],
+  "estado": [
+   {
+    "aba": "talentos",
+    "cor": "laranja",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "n": 1,
+    "s": "Talent"
+   },
+   {
+    "aba": "profissoes",
+    "cor": "laranja",
+    "icone": "Interface\\Icons\\Trade_Mining",
+    "n": "75/75",
+    "s": "Mining",
+    "sub": "minhas"
+   }
+  ],
+  "semConstrutor": []
+ },
+ "blocos": {
+  "agora": [
+   {
+    "t": "sec",
+    "id": "agora:itens",
+    "qtd": 0,
+    "s": "Now"
+   },
+   {
+    "t": "vazio",
+    "s": "Nothing needs you right now."
+   },
+   {
+    "t": "sec",
+    "id": "agora:prox",
+    "qtd": "levels 3-4",
+    "s": "Coming up"
+   },
+   {
+    "t": "item",
+    "dica": "New spell: Judgement: off the GCD and no longer uses the seal. Press it whenever it is ready.",
+    "icone": 20271,
+    "nivel": 4,
+    "s": "New spell: Judgement: off the GCD and no longer uses the..."
+   },
+   {
+    "t": "item",
+    "icone": 19740,
+    "nivel": "",
+    "s": "New spell: Blessing of Might."
+   },
+   {
+    "t": "item",
+    "icone": 20271,
+    "nivel": "",
+    "s": "judge_Start: starts auto attack and casts Judgement",
+    "sub": "New key",
+    "tecla": "2"
+   },
+   {
+    "t": "item",
+    "icone": 19740,
+    "nivel": "",
+    "s": "Blessing of Might",
+    "sub": "New key",
+    "tecla": "S4"
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "agora:ocultos",
+    "s": "Hidden"
+   },
+   {
+    "t": "vazio",
+    "s": "Nothing hidden."
+   }
+  ],
+  "pet": [
+   {
+    "t": "vazio",
+    "s": "This class has no pet."
+   }
+  ],
+  "familias": [
+   {
+    "t": "duas",
+    "atual": "Cat",
+    "detalhe": [
+     {
+      "t": "titulo",
+      "etiquetas": [
+       "Damage",
+       "unique: Prowl",
+       "Tier: leveling S, PvP A"
+      ],
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Cat",
+      "s": "Cat"
+     },
+     {
+      "t": "etiquetas",
+      "lista": [
+       "Meat",
+       "Fish"
+      ],
+      "rotulo": "Eats"
+     },
+     {
+      "t": "sec",
+      "id": "fam:regua",
+      "s": "Ranks by pet level"
+     },
+     {
+      "t": "regua",
+      "atual": 2,
+      "linhas": [
+       {
+        "icone": 17253,
+        "marcas": [
+         {
+          "dica": [
+           "Rank 1: pet level 1, 1 TP",
+           "Prairie Wolf (5-6, Mulgore)",
+           "Juvenile Vuldren (1, Zephras Isle)",
+           "Ragged Scavenger (2-3, Tirisfal Glades)",
+           "Night Web Spider (3-4, Tirisfal Glades)"
+          ],
+          "estado": "depois",
+          "nivel": 1,
+          "rank": 1
+         },
+         {
+          "dica": [
+           "Rank 2: pet level 8, 4 TP",
+           "Prowler (9-10, Elwynn Forest)",
+           "Starving Winter Wolf (8-9, Dun Morogh)",
+           "Vulgara the Insatiable (8, Zephras Isle)",
+           "Webwood Silkspinner (8, Teldrassil)"
+          ],
+          "estado": "depois",
+          "nivel": 8,
+          "rank": 2
+         },
+         {
+          "dica": [
+           "Rank 3: pet level 16, 7 TP",
+           "Bloodsnout Worg (16-17, Silverpine Forest)",
+           "Deepmoss Creeper (16-17, Stonetalon Mountains)",
+           "Wood Lurker (18, Loch Modan)",
+           "Deepmoss Webspinner (19-20, Stonetalon Mountains)"
+          ],
+          "estado": "depois",
+          "nivel": 16,
+          "rank": 3
+         },
+         {
+          "dica": [
+           "Rank 4: pet level 24, 10 TP",
+           "Black Ravager (24-25, Duskwood)",
+           "Giant Moss Creeper (24-25, Hillsbrad Foothills)",
+           "Leech Widow (24, Wetlands)",
+           "Black Ravager Mastiff (25, Duskwood)"
+          ],
+          "estado": "depois",
+          "nivel": 24,
+          "rank": 4
+         },
+         {
+          "dica": [
+           "Rank 5: pet level 32, 13 TP",
+           "Plains Creeper (32-33, Arathi Highlands)",
+           "Sparkleshell Snapper (34-35, Thousand Needles)",
+           "Crag Coyote (35-36, Badlands)",
+           "Darkfang Spider (35-36, Dustwallow Marsh)"
+          ],
+          "estado": "depois",
+          "nivel": 32,
+          "rank": 5
+         },
+         {
+          "dica": [
+           "Rank 6: pet level 40, 17 TP",
+           "Longtooth Runner (40-41, Feralas)",
+           "Barnabus (38, Badlands)",
+           "Ripscale (39, Dustwallow Marsh)",
+           "Deathstrike Tarantula (40-41, Swamp of Sorrows)"
+          ],
+          "estado": "depois",
+          "nivel": 40,
+          "rank": 6
+         },
+         {
+          "dica": [
+           "Rank 7: pet level 48, 21 TP",
+           "Saltwater Snapjaw (49-50, The Hinterlands)",
+           "Rekk'tilac (48, Searing Gorge)",
+           "Cave Creeper (50-52, Blackrock Depths (Dungeon))",
+           "Sewer Beast (50, Stormwind City)"
+          ],
+          "estado": "depois",
+          "nivel": 48,
+          "rank": 7
+         },
+         {
+          "dica": [
+           "Rank 8: pet level 56, 25 TP",
+           "Bloodaxe Worg (56-57, Blackrock Spire (Dungeon))"
+          ],
+          "estado": "depois",
+          "nivel": 56,
+          "rank": 8
+         }
+        ],
+        "nome": "Bite"
+       },
+       {
+        "icone": 16827,
+        "marcas": [
+         {
+          "dica": [
+           "Rank 1: pet level 1, 1 TP",
+           "Strigid Owl (5-6, Teldrassil)",
+           "Scorpid Worker (3, Durotar)",
+           "Scrawny Ursera (3-4, Zephras Isle)",
+           "Sarkoth (4, Durotar)"
+          ],
+          "estado": "depois",
+          "nivel": 1,
+          "rank": 1
+         },
+         {
+          "dica": [
+           "Rank 2: pet level 8, 4 TP",
+           "Strigid Hunter (8-9, Teldrassil)",
+           "Windsong Crawler (8-9, Zephras Isle)",
+           "Young Forest Bear (8-9, Elwynn Forest)",
+           "Venomtail Scorpid (9-10, Durotar)"
+          ],
+          "estado": "depois",
+          "nivel": 8,
+          "rank": 2
+         },
+         {
+          "dica": [
+           "Rank 3: pet level 16, 7 TP",
+           "Black Bear Patriarch (16-17, Loch Modan)",
+           "Shorecrawler (17-18, Westfall)",
+           "Clattering Crawler (19, Ashenvale)",
+           "Den Mother (19, Darkshore)"
+          ],
+          "estado": "depois",
+          "nivel": 16,
+          "rank": 3
+         },
+         {
+          "dica": [
+           "Rank 4: pet level 24, 10 TP",
+           "Elder Ashenvale Bear (25-26, Ashenvale)",
+           "Barbed Crustacean (25-26, Blackfathom Deeps (Dungeon))",
+           "Scorpashi Snapper (30-31, Desolace)",
+           "Scorpid Reaver (31-32, Thousand Needles)"
+          ],
+          "estado": "depois",
+          "nivel": 24,
+          "rank": 4
+         },
+         {
+          "dica": [
+           "Rank 5: pet level 32, 13 TP",
+           "Scorpashi Lasher (34-35, Desolace)",
+           "Vile Sting (35, Thousand Needles)",
+           "Drywallow Snapper (37-38, Dustwallow Marsh)",
+           "Venomlash Scorpid (39-40, Uldaman (Dungeon))"
+          ],
+          "estado": "depois",
+          "nivel": 32,
+          "rank": 5
+         },
+         {
+          "dica": [
+           "Rank 6: pet level 40, 17 TP",
+           "Ironfur Bear (41-42, Feralas)",
+           "Scorpid Hunter (40-41, Tanaris)",
+           "Silt Crawler (40-41, Swamp of Sorrows)",
+           "King Bangalash (43, Stranglethorn Vale)"
+          ],
+          "estado": "depois",
+          "nivel": 40,
+          "rank": 6
+         },
+         {
+          "dica": [
+           "Rank 7: pet level 48, 21 TP",
+           "Ironfur Patriarch (48-49, Feralas)",
+           "Angerclaw Mauler (49-50, Felwood)",
+           "Ironbeak Hunter (50-51, Felwood)",
+           "Mongress (50, Felwood)"
+          ],
+          "estado": "depois",
+          "nivel": 48,
+          "rank": 7
+         },
+         {
+          "dica": [
+           "Rank 8: pet level 56, 25 TP",
+           "Elder Shardtooth (57-58, Winterspring)",
+           "Winterspring Screecher (57-59, Winterspring)"
+          ],
+          "estado": "depois",
+          "nivel": 56,
+          "rank": 8
+         }
+        ],
+        "nome": "Claw"
+       },
+       {
+        "icone": 23099,
+        "marcas": [
+         {
+          "dica": [
+           "Rank 1: pet level 30, 15 TP",
+           "Sandstrider (30-31, Desolace)",
+           "Kurzen War Tiger (32-33, Stranglethorn Vale)",
+           "Stranglethorn Tiger (32-33, Stranglethorn Vale)",
+           "Bonepaw Hyena (33-35, Desolace)"
+          ],
+          "estado": "depois",
+          "nivel": 30,
+          "rank": 1
+         },
+         {
+          "dica": [
+           "Rank 2: pet level 40, 20 TP",
+           "Bhag'thera (40, Stranglethorn Vale)",
+           "Longtooth Runner (40-41, Feralas)",
+           "Ridge Stalker Patriarch (40-41, Badlands)",
+           "Starving Blisterpaw (41-42, Tanaris)"
+          ],
+          "estado": "depois",
+          "nivel": 40,
+          "rank": 2
+         },
+         {
+          "dica": [
+           "Rank 3: pet level 50, 25 TP",
+           "Broodwidow (16, Ruins of Lordaeron (Dungeon))",
+           "Grunter (50, Blasted Lands)",
+           "Vilebranch Raiding Wolf (50-51, The Hinterlands)",
+           "Ravage (51, Blasted Lands)"
+          ],
+          "estado": "depois",
+          "nivel": 50,
+          "rank": 3
+         }
+        ],
+        "nome": "Dash"
+       },
+       {
+        "icone": 24450,
+        "marcas": [
+         {
+          "dica": [
+           "Rank 1: pet level 30, 15 TP",
+           "Mountain Lion (32-33, Alterac Mountains)",
+           "Ridge Stalker (36-37, Badlands)",
+           "Shadowmaw Panther (37-38, Stranglethorn Vale)",
+           "Shadow Panther (39-40, Swamp of Sorrows)"
+          ],
+          "estado": "depois",
+          "nivel": 30,
+          "rank": 1
+         },
+         {
+          "dica": [
+           "Rank 2: pet level 40, 20 TP",
+           "Ridge Stalker Patriarch (40-41, Badlands)",
+           "Elder Shadowmaw Panther (42-43, Stranglethorn Vale)"
+          ],
+          "estado": "depois",
+          "nivel": 40,
+          "rank": 2
+         },
+         {
+          "dica": [
+           "Rank 3: pet level 50, 25 TP",
+           "Jaguero Stalker (50, Stranglethorn Vale)",
+           "Frostsaber Stalker (59-60, Winterspring)"
+          ],
+          "estado": "depois",
+          "nivel": 50,
+          "rank": 3
+         }
+        ],
+        "nome": "Prowl"
+       },
+       {
+        "icone": 1742,
+        "marcas": [
+         {
+          "dica": [
+           "Rank 1: pet level 5, 8 TP",
+           "Juvenile Snow Leopard (5-6, Dun Morogh)",
+           "Nightsaber (5-6, Teldrassil)",
+           "Greater Duskbat (6-7, Tirisfal Glades)",
+           "Durotar Tiger (7-8, Durotar)"
+          ],
+          "estado": "depois",
+          "nivel": 5,
+          "rank": 1
+         },
+         {
+          "dica": [
+           "Rank 2: pet level 15, 10 TP",
+           "Ornery Plainstrider (16-17, The Barrens)",
+           "Giant Foreststrider (17-19, Darkshore)",
+           "Moonstalker Sire (17-18, Darkshore)",
+           "Starving Mountain Lion (23-24, Hillsbrad Foothills)"
+          ],
+          "estado": "depois",
+          "nivel": 15,
+          "rank": 2
+         },
+         {
+          "dica": [
+           "Rank 3: pet level 25, 12 TP",
+           "Feral Mountain Lion (27-28, Hillsbrad Foothills)",
+           "Kraul Bat (30-31, Razorfen Kraul (Dungeon))",
+           "Young Panther (30-31, Stranglethorn Vale)",
+           "Young Stranglethorn Tiger (30-31, Stranglethorn Vale)"
+          ],
+          "estado": "depois",
+          "nivel": 25,
+          "rank": 3
+         },
+         {
+          "dica": [
+           "Rank 4: pet level 35, 14 TP",
+           "Savannah Patriarch (15-16, The Barrens)",
+           "Ridge Stalker (36-37, Badlands)",
+           "Ridge Huntress (38-39, Badlands)",
+           "Shrike Bat (38-39, Uldaman (Dungeon))"
+          ],
+          "estado": "depois",
+          "nivel": 35,
+          "rank": 4
+         },
+         {
+          "dica": [
+           "Rank 5: pet level 45, 16 TP",
+           "Jaguero Stalker (50, Stranglethorn Vale)",
+           "Plaguebat (53-55, Eastern Plaguelands)",
+           "Noxious Plaguebat (54-56, Eastern Plaguelands)"
+          ],
+          "estado": "depois",
+          "nivel": 45,
+          "rank": 5
+         },
+         {
+          "dica": [
+           "Rank 6: pet level 55, 18 TP",
+           "Frostsaber Cub (55-56, Winterspring)",
+           "Monstrous Plaguebat (56-58, Eastern Plaguelands)"
+          ],
+          "estado": "depois",
+          "nivel": 55,
+          "rank": 6
+         }
+        ],
+        "nome": "Cower"
+       }
+      ],
+      "max": 60,
+      "min": 1,
+      "rotuloAtual": "you 2"
+     },
+     {
+      "t": "sec",
+      "id": "fam:notas",
+      "qtd": "8",
+      "s": "Notes"
+     },
+     {
+      "t": "nota",
+      "s": "+10% family damage, with Prowl as its signature ability; its best use is damage."
+     },
+     {
+      "t": "nota",
+      "s": "Its pick for fast everyday kills and fast leveling, with Raptor as the other damage option."
+     },
+     {
+      "t": "nota",
+      "s": "Offensive family with +10% damage, Claw and Bite, at the top for damage together with the raptor."
+     }
+    ],
+    "id": "familias",
+    "lista": [
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Cat",
+      "id": "Cat",
+      "s": "Cat",
+      "sub": "Damage"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Raptor",
+      "id": "Raptor",
+      "s": "Raptor",
+      "sub": "Damage"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_WindSerpent",
+      "id": "Wind Serpent",
+      "s": "Wind Serpent",
+      "sub": "Nature damage"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Scorpid",
+      "id": "Scorpid",
+      "s": "Scorpid",
+      "sub": "Poison"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Boar",
+      "id": "Boar",
+      "s": "Boar",
+      "sub": "Early leveling"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Vulture",
+      "id": "Carrion Bird",
+      "s": "Carrion Bird",
+      "sub": "Safer solo"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Bear",
+      "id": "Bear",
+      "s": "Bear",
+      "sub": "AoE"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Gorilla",
+      "id": "Gorilla",
+      "s": "Gorilla",
+      "sub": "AoE"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Turtle",
+      "id": "Turtle",
+      "s": "Turtle",
+      "sub": "Defense"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Spider",
+      "id": "Spider",
+      "s": "Spider",
+      "sub": "PvP control"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Crab",
+      "id": "Crab",
+      "s": "Crab",
+      "sub": "Slow"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Hyena",
+      "id": "Hyena",
+      "s": "Hyena",
+      "sub": "Bleed + slow"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Crocolisk",
+      "id": "Crocolisk",
+      "s": "Crocolisk",
+      "sub": "Anti-heal"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Bat",
+      "id": "Bat",
+      "s": "Bat",
+      "sub": "Anti-caster"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Owl",
+      "id": "Bird of Prey",
+      "s": "Bird of Prey",
+      "sub": "Disarm"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_TallStrider",
+      "id": "Tallstrider",
+      "s": "Tallstrider",
+      "sub": "Armor reduction"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Wolf",
+      "id": "Wolf",
+      "s": "Wolf",
+      "sub": "Melee support"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_Wolf",
+      "id": "Fox",
+      "s": "Fox",
+      "sub": "Dodge / speed"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_Pet_CoreHound",
+      "id": "Core Hound",
+      "s": "Core Hound"
+     },
+     {
+      "icone": "Interface\\Icons\\INV_Misc_Book_09",
+      "id": "@regras",
+      "s": "How abilities work"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_BeastCall",
+      "id": "@habilidades",
+      "s": "All abilities"
+     },
+     {
+      "icone": "Interface\\Icons\\Ability_Hunter_BeastTraining",
+      "id": "@treinador",
+      "s": "Pet trainer"
+     }
+    ]
+   }
+  ],
+  "talentos": [
+   {
+    "t": "sec",
+    "id": "talentos:prox",
+    "s": "Next points"
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 10,
+    "s": "Benediction 1/5"
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 11,
+    "s": "Benediction 2/5"
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 12,
+    "s": "Benediction 3/5"
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 13,
+    "s": "Benediction 4/5"
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 14,
+    "s": "Benediction 5/5"
+   },
+   {
+    "t": "sec",
+    "aberta": true,
+    "id": "talentos:op:ret",
+    "s": "Your pick: Order from 15 to 19"
+   },
+   {
+    "t": "item",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "s": "B: Improved Judgement first"
+   },
+   {
+    "t": "item",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "s": "C: Sanctified Judgement first"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "largura": 50,
+      "s": "Level"
+     },
+     {
+      "s": "B Improved Judgement first"
+     },
+     {
+      "s": "C Sanctified Judgement first"
+     }
+    ],
+    "id": "talentos:op:ret:tab",
+    "limite": 6,
+    "linhas": [
+     {
+      "celulas": [
+       "15",
+       "Improved Judgement 1/2",
+       "Sanctified Judgement 1/3"
+      ]
+     },
+     {
+      "celulas": [
+       "16",
+       "Improved Judgement 2/2",
+       "Sanctified Judgement 2/3"
+      ]
+     },
+     {
+      "celulas": [
+       "17",
+       "Sanctified Judgement 1/3",
+       "Sanctified Judgement 3/3"
+      ]
+     },
+     {
+      "celulas": [
+       "18",
+       "Sanctified Judgement 2/3",
+       "Improved Judgement 1/2"
+      ]
+     },
+     {
+      "celulas": [
+       "19",
+       "Sanctified Judgement 3/3",
+       "Improved Judgement 2/2"
+      ]
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "aberta": true,
+    "id": "talentos:op:prot",
+    "s": "Your pick: 6 free Protection points"
+   },
+   {
+    "t": "item",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "s": "A: Defense",
+    "sub": "Sacred Duty 2, Toughness 2, Anticipation 2"
+   },
+   {
+    "t": "item",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "s": "B: Mana",
+    "sub": "Sacred Duty 2, Divine Intellect 4"
+   },
+   {
+    "t": "item",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "s": "C: More mana",
+    "sub": "Divine Intellect 5, Toughness 1"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "largura": 50,
+      "s": "Level"
+     },
+     {
+      "s": "A Defense"
+     },
+     {
+      "s": "B Mana"
+     },
+     {
+      "s": "C More mana"
+     }
+    ],
+    "id": "talentos:op:prot:tab",
+    "limite": 6,
+    "linhas": [
+     {
+      "celulas": [
+       "27",
+       "Precision 1/3",
+       "Precision 1/3",
+       "Divine Intellect 1/5"
+      ]
+     },
+     {
+      "celulas": [
+       "28",
+       "Precision 2/3",
+       "Precision 2/3",
+       "Divine Intellect 2/5"
+      ]
+     },
+     {
+      "celulas": [
+       "29",
+       "Precision 3/3",
+       "Precision 3/3",
+       "Divine Intellect 3/5"
+      ]
+     },
+     {
+      "celulas": [
+       "30",
+       "Sacred Duty 1/2",
+       "Sacred Duty 1/2",
+       "Divine Intellect 4/5"
+      ]
+     },
+     {
+      "celulas": [
+       "31",
+       "Sacred Duty 2/2",
+       "Sacred Duty 2/2",
+       "Divine Intellect 5/5"
+      ]
+     },
+     {
+      "celulas": [
+       "32",
+       "Shield Specialization 1/2",
+       "Templar's Bulwark 1/1",
+       "Precision 1/3"
+      ]
+     },
+     {
+      "celulas": [
+       "33",
+       "Shield Specialization 2/2",
+       "Shield Specialization 1/2",
+       "Precision 2/3"
+      ]
+     },
+     {
+      "celulas": [
+       "34",
+       "Templar's Bulwark 1/1",
+       "Shield Specialization 2/2",
+       "Precision 3/3"
+      ]
+     },
+     {
+      "celulas": [
+       "35",
+       "Toughness 1/5",
+       "Divine Intellect 1/5",
+       "Shield Specialization 1/2"
+      ]
+     },
+     {
+      "celulas": [
+       "36",
+       "Toughness 2/5",
+       "Divine Intellect 2/5",
+       "Shield Specialization 2/2"
+      ]
+     },
+     {
+      "celulas": [
+       "37",
+       "Swift Judgement 1/1",
+       "Swift Judgement 1/1",
+       "Improved Righteous Fury 1/3"
+      ]
+     },
+     {
+      "celulas": [
+       "38",
+       "Improved Righteous Fury 1/3",
+       "Improved Righteous Fury 1/3",
+       "Improved Righteous Fury 2/3"
+      ]
+     },
+     {
+      "celulas": [
+       "39",
+       "Improved Righteous Fury 2/3",
+       "Improved Righteous Fury 2/3",
+       "Improved Righteous Fury 3/3"
+      ]
+     },
+     {
+      "celulas": [
+       "40",
+       "Improved Righteous Fury 3/3",
+       "Improved Righteous Fury 3/3",
+       "Templar's Bulwark 1/1"
+      ]
+     },
+     {
+      "celulas": [
+       "41",
+       "Anticipation 1/5",
+       "Divine Intellect 3/5",
+       "Swift Judgement 1/1"
+      ]
+     },
+     {
+      "celulas": [
+       "47",
+       "Reckoning 5/5",
+       "Iron Creed 1/3",
+       "Reckoning 5/5"
+      ]
+     },
+     {
+      "celulas": [
+       "48",
+       "Iron Creed 1/3",
+       "Iron Creed 2/3",
+       "Iron Creed 1/3"
+      ]
+     },
+     {
+      "celulas": [
+       "49",
+       "Iron Creed 2/3",
+       "Iron Creed 3/3",
+       "Iron Creed 2/3"
+      ]
+     },
+     {
+      "celulas": [
+       "50",
+       "Iron Creed 3/3",
+       "Reckoning 5/5",
+       "Iron Creed 3/3"
+      ]
+     },
+     {
+      "celulas": [
+       "51",
+       "Anticipation 2/5",
+       "Divine Intellect 4/5",
+       "Toughness 1/5"
+      ]
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "talentos:magias",
+    "s": "New spells"
+   },
+   {
+    "t": "item",
+    "dica": "Judgement: off the GCD and no longer uses the seal. Press it whenever it is ready.",
+    "icone": 20271,
+    "nivel": 4,
+    "s": "Judgement: off the GCD and no longer uses the seal...."
+   },
+   {
+    "t": "item",
+    "icone": 19740,
+    "nivel": "",
+    "s": "Blessing of Might."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "talentos:lei",
+    "qtd": "definitely in",
+    "s": "Core"
+   },
+   {
+    "t": "nota",
+    "s": "Benediction 5/5 from 10 to 14 (Retribution)"
+   },
+   {
+    "t": "nota",
+    "s": "Improved Judgement 2/2 and Sanctified Judgement 3/3 from 15 to 19"
+   },
+   {
+    "t": "nota",
+    "s": "Pursuit of Justice 2/2 at 20 and 21"
+   },
+   {
+    "t": "nota",
+    "s": "Redoubt 5/5 from 22: Protection starts here, with a one-hander and shield"
+   },
+   {
+    "t": "nota",
+    "s": "Precision 3/3, Shield Specialization 2/2, Templar's Bulwark, Swift Judgement and Improved Righteous Fury 3/3 from 27 to 41"
+   },
+   {
+    "t": "nota",
+    "s": "Holy Shield at 42"
+   },
+   {
+    "t": "nota",
+    "s": "Reckoning 5/5 and Iron Creed 3/3 from 43 to 50"
+   },
+   {
+    "t": "nota",
+    "s": "Shieldsworn at 52 (31 points in Protection)"
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "talentos:aberto",
+    "qtd": "your pick",
+    "s": "Open"
+   },
+   {
+    "t": "item",
+    "dica": [
+     "A, defense: Sacred Duty 2, Toughness 2, Anticipation 2",
+     "B, mana: Sacred Duty 2, Divine Intellect 4",
+     "C, more mana: Divine Intellect 5, Toughness 1"
+    ],
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "s": "The 6 free Protection points (27 to 51)",
+    "sub": "A, defense: Sacred Duty 2, Toughness 2, Anticipation 2 | B, mana: Sacred..."
+   },
+   {
+    "t": "item",
+    "dica": [
+     "A: Anticipation 5/5, Sanctified Judgement 3/3, Sacred Arbiter, Toughness 3/5",
+     "B: Conviction 3/3, Sacred Arbiter and 4 free points (Divine Intellect and Toughness, or Deflection)",
+     "C: respec into an endgame build at 60"
+    ],
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "s": "From 53 to 60",
+    "sub": "A: Anticipation 5/5, Sanctified Judgement 3/3, Sacred Arbiter, Toughness 3/5..."
+   }
+  ],
+  "combate-rotacao": [
+   {
+    "t": "segs",
+    "aba": "combate",
+    "atual": "rotacao",
+    "opcoes": [
+     {
+      "id": "rotacao",
+      "s": "Rotation"
+     },
+     {
+      "id": "teclas",
+      "s": "Keys"
+     },
+     {
+      "id": "armas",
+      "s": "Weapons"
+     },
+     {
+      "id": "atributos",
+      "s": "Stats"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "combate:rotacao",
+    "s": "Rotation"
+   },
+   {
+    "t": "vazio",
+    "s": "No rotation tip for this range."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "combate:notas",
+    "qtd": 4,
+    "s": "Notes"
+   },
+   {
+    "t": "nota",
+    "s": "Blessing of Kings is the leveling blessing for Protection."
+   },
+   {
+    "t": "nota",
+    "s": "Removed on 03/11: Salvation, Blessing of Light, Improved Seal of Fury and One-Handed Weapon Specialization."
+   },
+   {
+    "t": "nota",
+    "s": "Curse of the Elements (warlock) raises all magic damage, the holy damage of the paladin too."
+   },
+   {
+    "t": "nota",
+    "s": "Blacksmithing has gear for all three specs, with a lot of spell power."
+   }
+  ],
+  "combate-teclas": [
+   {
+    "t": "segs",
+    "aba": "combate",
+    "atual": "teclas",
+    "opcoes": [
+     {
+      "id": "rotacao",
+      "s": "Rotation"
+     },
+     {
+      "id": "teclas",
+      "s": "Keys"
+     },
+     {
+      "id": "armas",
+      "s": "Weapons"
+     },
+     {
+      "id": "atributos",
+      "s": "Stats"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "teclas-tuas",
+    "qtd": "level 2",
+    "s": "Your keys"
+   },
+   {
+    "t": "grade",
+    "teclas": [
+     {
+      "dica": "strike_Holy: starts auto attack and casts Holy Strike",
+      "estado": "travado",
+      "icone": 679,
+      "k": "1",
+      "nivel": 6,
+      "nome": "strike_Holy"
+     },
+     {
+      "dica": "judge_Start: starts auto attack and casts Judgement",
+      "estado": "travado",
+      "icone": 20271,
+      "k": "2",
+      "nivel": 4,
+      "nome": "judge_Start"
+     },
+     {
+      "dica": "Seal of Fury",
+      "estado": "travado",
+      "icone": 1311649,
+      "k": "3",
+      "nivel": 10,
+      "nome": "Seal of Fury"
+     },
+     {
+      "dica": "Consecration",
+      "estado": "travado",
+      "icone": 26573,
+      "k": "4",
+      "nivel": 20,
+      "nome": "Consecration"
+     },
+     {
+      "dica": "Exorcism",
+      "estado": "travado",
+      "icone": 879,
+      "k": "5",
+      "nivel": 20,
+      "nome": "Exorcism"
+     },
+     {
+      "dica": "Hammer of Wrath",
+      "estado": "travado",
+      "icone": 24275,
+      "k": "6",
+      "nivel": 44,
+      "nome": "Hammer of Wrath"
+     },
+     false,
+     {
+      "dica": "Hammer of Justice",
+      "estado": "travado",
+      "icone": 853,
+      "k": "Q",
+      "nivel": 8,
+      "nome": "Hammer of Justice"
+     },
+     {
+      "dica": "Holy Shield (talent)",
+      "estado": "travado",
+      "icone": 20927,
+      "k": "E",
+      "nivel": 42,
+      "nome": "Holy Shield"
+     },
+     {
+      "dica": "Flash of Light",
+      "estado": "travado",
+      "icone": 19750,
+      "k": "R",
+      "nivel": 20,
+      "nome": "Flash of Light"
+     },
+     {
+      "dica": "attack_Start: starts auto attack",
+      "icone": "Interface\\Icons\\Ability_MeleeDamage",
+      "k": "F",
+      "nome": "attack_Start"
+     },
+     {
+      "dica": "Lay on Hands",
+      "estado": "travado",
+      "icone": 633,
+      "k": "T",
+      "nivel": 10,
+      "nome": "Lay on Hands"
+     },
+     {
+      "dica": "bubble_Cancel: Divine Shield; press again to cancel it (careful in the open world)",
+      "estado": "travado",
+      "icone": 642,
+      "k": "G",
+      "nivel": 34,
+      "nome": "bubble_Cancel"
+     }
+    ],
+    "titulo": "Main bar"
+   },
+   {
+    "t": "grade",
+    "teclas": [
+     {
+      "dica": "Righteous Fury",
+      "estado": "travado",
+      "icone": 25780,
+      "k": "S1",
+      "nivel": 10,
+      "nome": "Righteous Fury"
+     },
+     {
+      "dica": "Retribution Aura",
+      "estado": "travado",
+      "icone": 7294,
+      "k": "S2",
+      "nivel": 16,
+      "nome": "Retribution Aura"
+     },
+     {
+      "dica": "Blessing of Kings",
+      "estado": "travado",
+      "icone": 20217,
+      "k": "S3",
+      "nivel": 20,
+      "nome": "Blessing of Kings"
+     },
+     {
+      "dica": "Blessing of Might",
+      "estado": "travado",
+      "icone": 19740,
+      "k": "S4",
+      "nivel": 4,
+      "nome": "Blessing of Might"
+     },
+     {
+      "dica": "Holy Light",
+      "estado": "travado",
+      "icone": 639,
+      "k": "S5",
+      "nivel": 6,
+      "nome": "Holy Light"
+     },
+     {
+      "dica": "Devotion Aura",
+      "icone": 465,
+      "k": "S6",
+      "nome": "Devotion Aura"
+     },
+     false,
+     {
+      "dica": "Divine Protection",
+      "estado": "travado",
+      "icone": 498,
+      "k": "SQ",
+      "nivel": 6,
+      "nome": "Divine Protection"
+     },
+     {
+      "dica": "Seal of the Crusader",
+      "estado": "travado",
+      "icone": 21082,
+      "k": "SE",
+      "nivel": 6,
+      "nome": "Seal of the Crusader"
+     },
+     {
+      "dica": "Seal of Righteousness",
+      "estado": "travado",
+      "icone": 20287,
+      "k": "SR",
+      "nivel": 10,
+      "nome": "Seal of Righteousness"
+     },
+     {
+      "dica": "Redemption",
+      "estado": "travado",
+      "icone": 7328,
+      "k": "SF",
+      "nivel": 12,
+      "nome": "Redemption"
+     },
+     {
+      "dica": "Seal of Light",
+      "estado": "travado",
+      "icone": 20165,
+      "k": "ST",
+      "nivel": 30,
+      "nome": "Seal of Light"
+     },
+     {
+      "dica": "Divine Intervention",
+      "estado": "travado",
+      "icone": 19752,
+      "k": "SG",
+      "nivel": 30,
+      "nome": "Divine Intervention"
+     }
+    ],
+    "titulo": "Shift bar"
+   },
+   {
+    "t": "grade",
+    "teclas": [
+     {
+      "dica": "Blessing of Wisdom",
+      "estado": "travado",
+      "icone": 19742,
+      "k": "Z",
+      "nivel": 14,
+      "nome": "Blessing of Wisdom"
+     },
+     {
+      "dica": "cleanse_Mouse: Purify on mouseover (Cleanse from 42) Complete at 42.",
+      "estado": "travado",
+      "icone": 1152,
+      "k": "X",
+      "nivel": 8,
+      "nome": "cleanse_Mouse"
+     },
+     {
+      "dica": "RXPTargeting: targets the NPC or mob of the current RestedXP step",
+      "icone": "Interface\\Icons\\INV_Misc_Map_01",
+      "k": "V",
+      "nome": "RXPTargeting"
+     },
+     false,
+     {
+      "dica": "Seal of Justice",
+      "estado": "travado",
+      "icone": 20164,
+      "k": "C1",
+      "nivel": 22,
+      "nome": "Seal of Justice"
+     },
+     {
+      "dica": "Concentration Aura",
+      "estado": "travado",
+      "icone": 19746,
+      "k": "C2",
+      "nivel": 22,
+      "nome": "Concentration Aura"
+     },
+     {
+      "dica": "Turn Undead",
+      "estado": "travado",
+      "icone": 2878,
+      "k": "C3",
+      "nivel": 24,
+      "nome": "Turn Undead"
+     },
+     {
+      "dica": "Seal of Wisdom",
+      "estado": "travado",
+      "icone": 20166,
+      "k": "C4",
+      "nivel": 38,
+      "nome": "Seal of Wisdom"
+     },
+     false,
+     {
+      "dica": "bop_Mouse: Blessing of Protection on mouseover, else target or you; press again to cancel yours",
+      "estado": "travado",
+      "icone": 1022,
+      "k": "M4",
+      "nivel": 10,
+      "nome": "bop_Mouse"
+     },
+     {
+      "dica": "bof_Mouse: Blessing of Freedom on mouseover, else target or you",
+      "estado": "travado",
+      "icone": 1044,
+      "k": "M5",
+      "nivel": 18,
+      "nome": "bof_Mouse"
+     }
+    ],
+    "titulo": "Bar 2 and mouse"
+   },
+   {
+    "t": "sec",
+    "id": "teclas-proximas",
+    "qtd": "up to level 8",
+    "s": "Coming next"
+   },
+   {
+    "t": "item",
+    "dica": "judge_Start: starts auto attack and casts Judgement",
+    "icone": 20271,
+    "nivel": 4,
+    "s": "judge_Start",
+    "tecla": "2"
+   },
+   {
+    "t": "item",
+    "dica": "Blessing of Might",
+    "icone": 19740,
+    "nivel": "",
+    "s": "Blessing of Might",
+    "tecla": "S4"
+   },
+   {
+    "t": "item",
+    "dica": "strike_Holy: starts auto attack and casts Holy Strike",
+    "icone": 679,
+    "nivel": 6,
+    "s": "strike_Holy",
+    "tecla": "1"
+   },
+   {
+    "t": "item",
+    "dica": "Holy Light",
+    "icone": 639,
+    "nivel": "",
+    "s": "Holy Light",
+    "tecla": "S5"
+   },
+   {
+    "t": "item",
+    "dica": "Divine Protection",
+    "icone": 498,
+    "nivel": "",
+    "s": "Divine Protection",
+    "tecla": "SQ"
+   },
+   {
+    "t": "item",
+    "dica": "Seal of the Crusader",
+    "icone": 21082,
+    "nivel": "",
+    "s": "Seal of the Crusader",
+    "tecla": "SE"
+   },
+   {
+    "t": "item",
+    "dica": "Hammer of Justice",
+    "icone": 853,
+    "nivel": 8,
+    "s": "Hammer of Justice",
+    "tecla": "Q"
+   },
+   {
+    "t": "item",
+    "dica": "cleanse_Mouse: Purify on mouseover (Cleanse from 42) Complete at 42.",
+    "icone": 1152,
+    "nivel": "",
+    "s": "cleanse_Mouse",
+    "tecla": "X"
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "teclas-outras",
+    "qtd": "6",
+    "s": "Other keys"
+   },
+   {
+    "t": "item",
+    "nivel": "",
+    "s": "strafe left / right",
+    "tecla": "A / D"
+   },
+   {
+    "t": "item",
+    "nivel": "",
+    "s": "sit / stand (moves down in water)",
+    "tecla": "Ctrl+X"
+   },
+   {
+    "t": "item",
+    "nivel": "",
+    "s": "reply to whisper",
+    "tecla": "Ctrl+R"
+   },
+   {
+    "t": "item",
+    "nivel": "",
+    "s": "nameplates on / off",
+    "tecla": "Ctrl+V"
+   },
+   {
+    "t": "item",
+    "nivel": "",
+    "s": "big minimap on / off",
+    "tecla": "Shift+M"
+   },
+   {
+    "t": "item",
+    "nivel": "",
+    "s": "this guide",
+    "tecla": "J"
+   }
+  ],
+  "combate-armas": [
+   {
+    "t": "segs",
+    "aba": "combate",
+    "atual": "armas",
+    "opcoes": [
+     {
+      "id": "rotacao",
+      "s": "Rotation"
+     },
+     {
+      "id": "teclas",
+      "s": "Keys"
+     },
+     {
+      "id": "armas",
+      "s": "Weapons"
+     },
+     {
+      "id": "atributos",
+      "s": "Stats"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "combate:armas",
+    "qtd": 4,
+    "s": "Weapons"
+   },
+   {
+    "t": "item",
+    "nivel": "1-21",
+    "s": "Level with a two-handed weapon until 21."
+   },
+   {
+    "t": "item",
+    "dica": "The weapon is the biggest jump: spell power and high damage. Rhahk'Zor's Hammer and Scepter of the Abandoned come first.",
+    "nivel": "1-60",
+    "s": "The weapon is the biggest jump",
+    "sub": "spell power and high damage. Rhahk'Zor's Hammer and Scepter of the Abandoned..."
+   },
+   {
+    "t": "item",
+    "dica": "For Protection, a fast one-hander (1.5 to 1.8 speed) gives more Seal of Fury hits.",
+    "nivel": "1-60",
+    "s": "For Protection, a fast one-hander (1.5 to 1.8 speed)..."
+   },
+   {
+    "t": "item",
+    "nivel": "1-60",
+    "s": "Exception: a weapon with a lot of spell power can be slower."
+   }
+  ],
+  "combate-atributos": [
+   {
+    "t": "segs",
+    "aba": "combate",
+    "atual": "atributos",
+    "opcoes": [
+     {
+      "id": "rotacao",
+      "s": "Rotation"
+     },
+     {
+      "id": "teclas",
+      "s": "Keys"
+     },
+     {
+      "id": "armas",
+      "s": "Weapons"
+     },
+     {
+      "id": "atributos",
+      "s": "Stats"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "combate:atributos",
+    "s": "Stats"
+   },
+   {
+    "t": "nota",
+    "s": "For Protection, spell power comes first in the leveling order."
+   },
+   {
+    "t": "nota",
+    "s": "Leveling: stamina and spell power first, then intellect and defensive stats."
+   },
+   {
+    "t": "nota",
+    "s": "Before 30, Blacksmithing is the only mail with spell power. Acolyte set beats Crusader and Protector for leveling."
+   }
+  ],
+  "profissoes-minhas": [
+   {
+    "t": "segs",
+    "aba": "profissoes",
+    "atual": "minhas",
+    "opcoes": [
+     {
+      "id": "minhas",
+      "s": "Mine"
+     },
+     {
+      "id": "zona",
+      "s": "Zone"
+     },
+     {
+      "id": "treinos",
+      "s": "Trainers"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "profissoes:minhas",
+    "qtd": 2,
+    "s": "Mine"
+   },
+   {
+    "t": "perfil",
+    "barras": [
+     {
+      "cor": "laranja",
+      "max": 75,
+      "s": "75/75",
+      "valor": 75
+     }
+    ],
+    "icone": "Interface\\Icons\\Trade_Mining",
+    "sub": [
+     "Now: Ores: Tin Ore, Copper Ore, Silver Ore. Zones: Wetlands (best),..."
+    ],
+    "titulo": "Mining"
+   },
+   {
+    "t": "perfil",
+    "barras": [
+     {
+      "cor": "verde",
+      "max": 100,
+      "s": "55/100",
+      "valor": 55
+     }
+    ],
+    "icone": "Interface\\Icons\\Trade_BlackSmithing",
+    "sub": [
+     "Now: Coarse Grinding Stone x36",
+     "Needs: 72 Coarse Stone"
+    ],
+    "titulo": "Blacksmithing"
+   },
+   {
+    "t": "sec",
+    "id": "profissoes:rota:Mining",
+    "qtd": "4 steps to go",
+    "s": "Mining route"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "alinha": "centro",
+      "largura": 70,
+      "s": "Skill"
+     },
+     {
+      "s": "What to gather"
+     }
+    ],
+    "id": "profissoes:rota:Mining:tab",
+    "limite": 4,
+    "linhas": [
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "estado": "agora",
+        "numero": true,
+        "s": "65-125"
+       },
+       "Ores: Tin Ore, Copper Ore, Silver Ore. Zones: Wetlands (best), Westfall,..."
+      ],
+      "dica": "Ores: Tin Ore, Copper Ore, Silver Ore. Zones: Wetlands (best), Westfall, Hillsbrad Foothills, The Barrens, Ashenvale, Stonetalon, Silverpine"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "125-175"
+       },
+       "Ores: Iron Ore, Tin Ore, Gold Ore. Zones: Arathi Highlands, Thousand Needles..."
+      ],
+      "dica": "Ores: Iron Ore, Tin Ore, Gold Ore. Zones: Arathi Highlands, Thousand Needles (safest for level ~30), Desolace"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "175-245"
+       },
+       "Ores: Mithril Ore, Truesilver Ore. Zones: The Hinterlands, Tanaris"
+      ],
+      "dica": "Ores: Mithril Ore, Truesilver Ore. Zones: The Hinterlands, Tanaris"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "245-275"
+       },
+       "Ores: Mithril Ore, Truesilver Ore, Thorium Ore. Zones: Un'Goro Crater,..."
+      ],
+      "dica": "Ores: Mithril Ore, Truesilver Ore, Thorium Ore. Zones: Un'Goro Crater, Blasted Lands (Alliance does not mine inside the Garrison Armory), Felwood"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "275-300"
+       },
+       "Ores: Thorium Ore, Mithril Ore, Rich Thorium Veins. Zones: Un'Goro Crater,..."
+      ],
+      "dica": "Ores: Thorium Ore, Mithril Ore, Rich Thorium Veins. Zones: Un'Goro Crater, Eastern Plaguelands, Winterspring, Burning Steppes"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "profissoes:rota:Blacksmithing",
+    "qtd": "19 steps to go",
+    "s": "Blacksmithing route"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "alinha": "centro",
+      "largura": 70,
+      "s": "Skill"
+     },
+     {
+      "s": "Make"
+     },
+     {
+      "s": "Materials"
+     }
+    ],
+    "id": "profissoes:rota:Blacksmithing:tab",
+    "limite": 4,
+    "linhas": [
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "estado": "agora",
+        "numero": true,
+        "s": "50-67"
+       },
+       "Coarse Grinding Stone x36",
+       {
+        "cor": "cinza",
+        "s": "72 Coarse Stone"
+       }
+      ],
+      "dica": "Coarse Grinding Stone (36x): 72 Coarse Stone"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "67-75"
+       },
+       "Runed Copper Gauntlets x8",
+       {
+        "cor": "cinza",
+        "s": "64 Copper Bar, 16 Rough Grinding Stone"
+       }
+      ],
+      "dica": "Runed Copper Gauntlets (8x): 64 Copper Bar, 16 Rough Grinding Stone"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "75-80"
+       },
+       "Runed Copper Belt x5",
+       {
+        "cor": "cinza",
+        "s": "50 Copper Bar (alt.: Silver Rod, 5x, 1..."
+       }
+      ],
+      "dica": "Runed Copper Belt (5x): 50 Copper Bar (alt.: Silver Rod, 5x, 1 Silver Bar and 2 Rough Grinding Stone each)"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "80-95"
+       },
+       "Rough Bronze Leggings x15",
+       {
+        "cor": "cinza",
+        "s": "90 Bronze Bar"
+       }
+      ],
+      "dica": "Rough Bronze Leggings (15x): 90 Bronze Bar"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "95-100"
+       },
+       "Patterned Bronze Bracers x5",
+       {
+        "cor": "cinza",
+        "s": "25 Bronze Bar, 10 Coarse Grinding Stone"
+       }
+      ],
+      "dica": "Patterned Bronze Bracers (5x): 25 Bronze Bar, 10 Coarse Grinding Stone"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "100-112"
+       },
+       "Heavy Grinding Stone x20",
+       {
+        "cor": "cinza",
+        "s": "60 Heavy Stone"
+       }
+      ],
+      "dica": "Heavy Grinding Stone (20x): 60 Heavy Stone"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "112-125"
+       },
+       "Patterned Bronze Bracers x13",
+       {
+        "cor": "cinza",
+        "s": "65 Bronze Bar, 26 Coarse Grinding Stone"
+       }
+      ],
+      "dica": "Patterned Bronze Bracers (13x): 65 Bronze Bar, 26 Coarse Grinding Stone"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "125-140"
+       },
+       "Bronze Shortsword x24",
+       {
+        "cor": "cinza",
+        "s": "120 Bronze Bar, 96 Weak Flux, 48 Medium..."
+       }
+      ],
+      "dica": "Bronze Shortsword (24x): 120 Bronze Bar, 96 Weak Flux, 48 Medium Leather"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "140-150"
+       },
+       "Bronze Warhammer x10",
+       {
+        "cor": "cinza",
+        "s": "80 Bronze Bar, 10 Strong Flux, 10 Medium..."
+       }
+      ],
+      "dica": "Bronze Warhammer (10x): 80 Bronze Bar, 10 Strong Flux, 10 Medium Leather"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "150-165"
+       },
+       "Bronze Warhammer x19",
+       {
+        "cor": "cinza",
+        "s": "152 Bronze Bar, 19 Strong Flux, 19 Medium..."
+       }
+      ],
+      "dica": "Bronze Warhammer (19x): 152 Bronze Bar, 19 Strong Flux, 19 Medium Leather"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "165-175"
+       },
+       "Green Iron Bracers x15",
+       {
+        "cor": "cinza",
+        "s": "90 Iron Bar, 15 Green Dye"
+       }
+      ],
+      "dica": "Green Iron Bracers (15x): 90 Iron Bar, 15 Green Dye"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "175-185"
+       },
+       "Golden Scale Bracers x10",
+       {
+        "cor": "cinza",
+        "s": "50 Steel Bar, 20 Heavy Grinding Stone..."
+       }
+      ],
+      "dica": "Golden Scale Bracers (10x): 50 Steel Bar, 20 Heavy Grinding Stone (with Mining 165 you smelt Steel Bar from Iron Bar and Coal)"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "185-215"
+       },
+       "Mithril Plate Pants x36",
+       {
+        "cor": "cinza",
+        "s": "432 Mithril Bar (alt. 185-200: Steel..."
+       }
+      ],
+      "dica": "Mithril Plate Pants (36x): 432 Mithril Bar (alt. 185-200: Steel Breastplate; alt. 200-215: Steel Plate Helm)"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "215-225"
+       },
+       "Heavy Mithril Breastplate x10",
+       {
+        "cor": "cinza",
+        "s": "160 Mithril Bar (alt.: Mithril Spurs, 10x,..."
+       }
+      ],
+      "dica": "Heavy Mithril Breastplate (10x): 160 Mithril Bar (alt.: Mithril Spurs, 10x, 40 Mithril Bar, 30 Solid Grinding Stone)"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "225-230"
+       },
+       "Dense Sharpening Stone x5",
+       {
+        "cor": "cinza",
+        "s": "5 Dense Stone"
+       }
+      ],
+      "dica": "Dense Sharpening Stone (5x): 5 Dense Stone"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "230-240"
+       },
+       "Heavy Mithril Boots x16",
+       {
+        "cor": "cinza",
+        "s": "224 Mithril Bar, 64 Thick Leather"
+       }
+      ],
+      "dica": "Heavy Mithril Boots (16x): 224 Mithril Bar, 64 Thick Leather"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "240-245"
+       },
+       "Imperial Plate Belt x5",
+       {
+        "cor": "cinza",
+        "s": "110 Thorium Bar, 30 Rugged Leather, 5..."
+       }
+      ],
+      "dica": "Imperial Plate Belt (5x): 110 Thorium Bar, 30 Rugged Leather, 5 Aquamarine (quest in Tanaris, level 50, 20 Thorium Bar)"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "245-270"
+       },
+       "Imperial Plate Bracers x27",
+       {
+        "cor": "cinza",
+        "s": "540 Thorium Bar, 27 Star Ruby (quest,..."
+       }
+      ],
+      "dica": "Imperial Plate Bracers (27x): 540 Thorium Bar, 27 Star Ruby (quest, requires 20 Thorium Bar)"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "270-290"
+       },
+       "Imperial Plate Boots x20",
+       {
+        "cor": "cinza",
+        "s": "680 Thorium Bar, 20 Star Ruby, 20..."
+       }
+      ],
+      "dica": "Imperial Plate Boots (20x): 680 Thorium Bar, 20 Star Ruby, 20 Aquamarine (quest, requires 40 Thorium Bar)"
+     },
+     {
+      "apagado": false,
+      "celulas": [
+       {
+        "numero": true,
+        "s": "290-300"
+       },
+       "Imperial Plate Leggings x10",
+       {
+        "cor": "cinza",
+        "s": "440 Thorium Bar, 20 Star Ruby (quest,..."
+       }
+      ],
+      "dica": "Imperial Plate Leggings (10x): 440 Thorium Bar, 20 Star Ruby (quest, requires 60 Thorium Bar)"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "aberta": true,
+    "id": "profissoes:rota:Blacksmithing:tot:Apprentice",
+    "qtd": "Blacksmithing 55-75 (from your skill)",
+    "s": "Apprentice materials"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     },
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     }
+    ],
+    "id": "profissoes:rota:Blacksmithing:tot:Apprentice:tab",
+    "limite": 6,
+    "linhas": [
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "72"
+       },
+       "Coarse Stone",
+       {
+        "numero": true,
+        "s": "64"
+       },
+       "Copper Bar"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "16"
+       },
+       "Rough Grinding Stone",
+       "",
+       ""
+      ]
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "aberta": true,
+    "id": "profissoes:rota:Blacksmithing:tot:Journeyman",
+    "qtd": "Blacksmithing 75-150",
+    "s": "Journeyman materials"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     },
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     }
+    ],
+    "id": "profissoes:rota:Blacksmithing:tot:Journeyman:tab",
+    "limite": 6,
+    "linhas": [
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "50"
+       },
+       "Copper Bar",
+       {
+        "numero": true,
+        "s": "380"
+       },
+       "Bronze Bar"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "36"
+       },
+       "Coarse Grinding Stone",
+       {
+        "numero": true,
+        "s": "60"
+       },
+       "Heavy Stone"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "96"
+       },
+       "Weak Flux",
+       {
+        "numero": true,
+        "s": "58"
+       },
+       "Medium Leather"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "10"
+       },
+       "Strong Flux",
+       "",
+       ""
+      ]
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "profissoes:rota:Blacksmithing:tot:Expert",
+    "qtd": "Blacksmithing 150-225",
+    "s": "Expert materials"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     },
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     }
+    ],
+    "id": "profissoes:rota:Blacksmithing:tot:Expert:tab",
+    "limite": 6,
+    "linhas": [
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "152"
+       },
+       "Bronze Bar",
+       {
+        "numero": true,
+        "s": "19"
+       },
+       "Strong Flux"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "19"
+       },
+       "Medium Leather",
+       {
+        "numero": true,
+        "s": "90"
+       },
+       "Iron Bar"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "15"
+       },
+       "Green Dye",
+       {
+        "numero": true,
+        "s": "50"
+       },
+       "Steel Bar"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "20"
+       },
+       "Heavy Grinding Stone",
+       {
+        "numero": true,
+        "s": "592"
+       },
+       "Mithril Bar"
+      ]
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "profissoes:rota:Blacksmithing:tot:Artisan",
+    "qtd": "Blacksmithing 225-300",
+    "s": "Artisan materials"
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     },
+     {
+      "alinha": "dir",
+      "largura": 50,
+      "s": "Qty"
+     },
+     {
+      "s": "Material"
+     }
+    ],
+    "id": "profissoes:rota:Blacksmithing:tot:Artisan:tab",
+    "limite": 6,
+    "linhas": [
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "5"
+       },
+       "Dense Stone",
+       {
+        "numero": true,
+        "s": "224"
+       },
+       "Mithril Bar"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "64"
+       },
+       "Thick Leather",
+       {
+        "numero": true,
+        "s": "1770"
+       },
+       "Thorium Bar"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "30"
+       },
+       "Rugged Leather",
+       {
+        "numero": true,
+        "s": "25"
+       },
+       "Aquamarine"
+      ]
+     },
+     {
+      "celulas": [
+       {
+        "numero": true,
+        "s": "67"
+       },
+       "Star Ruby",
+       "",
+       ""
+      ]
+     }
+    ]
+   }
+  ],
+  "profissoes-zona": [
+   {
+    "t": "segs",
+    "aba": "profissoes",
+    "atual": "zona",
+    "opcoes": [
+     {
+      "id": "minhas",
+      "s": "Mine"
+     },
+     {
+      "id": "zona",
+      "s": "Zone"
+     },
+     {
+      "id": "treinos",
+      "s": "Trainers"
+     }
+    ]
+   },
+   {
+    "t": "item",
+    "icone": "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+    "s": "unknown zone",
+    "sub": "Skinning 0/?"
+   },
+   {
+    "t": "item",
+    "dica": "Trainers: see the Trainers sub-tab.",
+    "s": "You do not have Skinning yet"
+   },
+   {
+    "t": "item",
+    "apagado": true,
+    "nivel": 10,
+    "s": "Journeyman needs skill 50",
+    "sub": "goes to 150"
+   },
+   {
+    "t": "item",
+    "apagado": true,
+    "nivel": 20,
+    "s": "Expert needs skill 125",
+    "sub": "goes to 225"
+   },
+   {
+    "t": "item",
+    "apagado": true,
+    "nivel": 35,
+    "s": "Artisan needs skill 200",
+    "sub": "goes to 300"
+   },
+   {
+    "t": "vazio",
+    "s": "QuestieDB is not loaded."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "zona-diario",
+    "s": "Journal"
+   },
+   {
+    "t": "nota",
+    "s": "0 colors, 0 skill gains, 0 learned creatures. Ranges marked estimated are to be confirmed."
+   }
+  ],
+  "profissoes-treinos": [
+   {
+    "t": "segs",
+    "aba": "profissoes",
+    "atual": "treinos",
+    "opcoes": [
+     {
+      "id": "minhas",
+      "s": "Mine"
+     },
+     {
+      "id": "zona",
+      "s": "Zone"
+     },
+     {
+      "id": "treinos",
+      "s": "Trainers"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "treinos-lista",
+    "s": "Trainers"
+   },
+   {
+    "t": "nota",
+    "s": "Each Arrow points the TomTom arrow at the nearest trainer of your faction."
+   },
+   {
+    "t": "item",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Arrow"
+    },
+    "icone": "Interface\\Icons\\INV_Misc_Book_09",
+    "s": "Paladin trainer"
+   },
+   {
+    "t": "item",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Arrow"
+    },
+    "dica": [
+     "Starter (up to skill 75): Kelsey Fargo (Elwynn Forest), Sally Swiftwrench (Dun Morogh), Fanorran Stilloak (Aldrassil), Yarr Hammerstone, Dank Drizzlecut",
+     "Journeyman Mining (skill 50): trainer. Stormwind: Gelman Stonehand. Ironforge: Geofram Bouldertoe. Darnassus has no trainer; the closest is Kurdram Stonehammer, in Auberdine",
+     "Smelt Silver: taught by the trainer at skill 105",
+     "Expert Mining (skill 125): trainer; level not known yet",
+     "Smelt Gold: taught by the trainer at skill 155",
+     "Artisan Mining (skill 200): trainer; required to train beyond 225",
+     "Train at 75, 150 and 225, or at 50, 125 and 200 (unclear). Check in game"
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+    "s": "Mining trainer"
+   },
+   {
+    "t": "item",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Arrow"
+    },
+    "dica": [
+     "Apprentice (up to 75): Dane Lindgren (Stormwind City), Groum Stonebeard (Ironforge), Smith Argus (Elwynn Forest), Tognus Flintfire (Dun Morogh), Delfrum Flintbeard (Auberdine, for Teldrassil/Darnassus), Daeann Steelwind (Valanaar) or Aedi Thriceforged (Shen'dar Village, Zephras Isle); next tier (Journeyman): Therum Deepforge (Stormwind) or Rotgath Stonebeard (Ironforge), requires skill 50 and level 10",
+     "Journeyman (up to 150): next tier (Expert): Bengus Deepforge (Ironforge), requires skill 125, level 20 and 50 silver",
+     "Expert (up to 215): next tier (Artisan): Brikk Keencraft (Booty Bay, Stranglethorn Vale), requires skill 200 and level 35",
+     "Artisan (up to 300): Brikk Keencraft (Booty Bay); no next tier given"
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+    "s": "Blacksmithing trainer"
+   },
+   {
+    "t": "item",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Arrow"
+    },
+    "dica": [
+     "Apprentice and Journeyman (skill 1-150): level not known yet. Stephen Ryback (kitchen of the Pig and Whistle Tavern, Old Town, Stormwind)",
+     "Apprentice and Journeyman: Daryl Riknussun (building left of the Great Forge, Ironforge)",
+     "Apprentice and Journeyman: Alegorn (Craftsmen's Terrace, Darnassus)",
+     "Apprentice and Journeyman: Tomas (Eastvale Logging Camp, Elwynn Forest)",
+     "Apprentice and Journeyman: Crystal Boughman (Lakeshire, Redridge Mountains)",
+     "Apprentice and Journeyman: Greta Fairsmith (Menethil Harbor, Wetlands)",
+     "Expert (skill 150): level 20+, any big-city Alliance trainer (e.g. Stephen Ryback or Daryl Riknussun)",
+     "Artisan (skill 225): level 35+, no trainer; buy the Expert Cookbook from Shandrina (Mystral Lake, Ashenvale)"
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+    "s": "Cooking trainer"
+   },
+   {
+    "t": "item",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Arrow"
+    },
+    "dica": [
+     "Apprentice and Journeyman (skill 1-150): Shaina Fuller (inside the cathedral, Stormwind City)",
+     "Apprentice and Journeyman: Nissa Firestone (Great Forge area, Ironforge)",
+     "Apprentice and Journeyman: Byancie (Craftsmen's Terrace, Darnassus)",
+     "Apprentice and Journeyman: Fremal Doohickey (main building, Menethil Harbor, Wetlands)",
+     "Apprentice and Journeyman: Michelle Belle (upstairs in the Goldshire Inn, Elwynn Forest)",
+     "Apprentice and Journeyman: Doctor Gregory Victor (barracks, Theramore Isle, Dustwallow Marsh)",
+     "Journeyman: skill 50 and level 10 (route step 40-75)",
+     "Expert (skill 125 or 150, unclear; level 20+): book Expert First Aid - Under the Bandage, bought from Deneb Walker (Stromgarde Keep, Arathi Highlands)",
+     "Artisan (skill 225, level 35+): complete the quest Alliance Trauma Triage, given by Doctor Gustaf VanHowzen (barracks, Theramore Isle, Dustwallow Marsh)",
+     "Alliance Skyborne: Medic Alyssa (Shen'dar Village, Zephras Isle) teaches the first tiers"
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+    "s": "First Aid trainer"
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "treinos-mapa",
+    "s": "On the map"
+   },
+   {
+    "t": "nota",
+    "s": "Questie: class trainer and your known-profession trainer icons (right-click the Questie icon to change this)."
+   },
+   {
+    "t": "nota",
+    "s": "Minimap: class and profession trainer tracking (right-click the minimap)."
+   },
+   {
+    "t": "nota",
+    "s": "Ctrl+click a Questie icon also sets the TomTom arrow."
+   },
+   {
+    "t": "nota",
+    "s": "|cff999999Undo: /guia trainers undo|r"
+   }
+  ],
+  "ajuda-perguntas": [
+   {
+    "t": "segs",
+    "aba": "ajuda",
+    "atual": "perguntas",
+    "opcoes": [
+     {
+      "id": "perguntas",
+      "s": "Questions"
+     },
+     {
+      "id": "addons",
+      "s": "Addons"
+     },
+     {
+      "id": "sinais",
+      "s": "Signs"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:prot-quando",
+    "s": "When do I switch to Protection, and when do I get a shield?"
+   },
+   {
+    "t": "nota",
+    "s": "Protection from 22, your pick: Redoubt 5/5, with a one-hander and shield."
+   },
+   {
+    "t": "nota",
+    "s": "Two-hander until 21; from 22 a one-hander and shield, with the first Redoubt point."
+   },
+   {
+    "t": "nota",
+    "s": "Other guides advise DPS until 40 and a tank dual spec; you chose 22 instead."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:judge-agora",
+    "s": "How do I use Judgement now?"
+   },
+   {
+    "t": "nota",
+    "s": "Judgement is off the GCD and does not use up the seal: press it whenever it is ready."
+   },
+   {
+    "t": "nota",
+    "s": "With Seal of Fury, Judgement taunts for 3 s at up to 10 yards."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:consecration",
+    "s": "How much should I use Consecration?"
+   },
+   {
+    "t": "nota",
+    "s": "It costs a lot of mana: use it in moderation, and hold it when threat is already safe."
+   },
+   {
+    "t": "nota",
+    "s": "Full damage only on the first four enemies."
+   },
+   {
+    "t": "nota",
+    "s": "At 30, rank 2 costs almost double the mana, for a little more damage."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:selo-aura-bencao",
+    "s": "Which seal, aura and blessing do I use while leveling?"
+   },
+   {
+    "t": "nota",
+    "s": "Seal of Fury all the time: it is the tank seal from 10."
+   },
+   {
+    "t": "nota",
+    "s": "Retribution Aura is the leveling aura from 16 on."
+   },
+   {
+    "t": "nota",
+    "s": "Blessing of Kings is the leveling blessing for Protection."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:nivel-12-20-40",
+    "s": "What do I do at 12, 20 and 40?"
+   },
+   {
+    "t": "nota",
+    "s": "At 12, do the class quest right away, in the Cathedral of Light (Redemption)."
+   },
+   {
+    "t": "nota",
+    "s": "At 20, the Tome of Valor gives Bastion of Stormwind, a paladin shield."
+   },
+   {
+    "t": "nota",
+    "s": "At 40, the mount and the dual spec open."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:arma-atributos",
+    "s": "Which weapon and stats should I look for?"
+   },
+   {
+    "t": "nota",
+    "s": "The weapon is the biggest jump: spell power and high damage. Rhahk'Zor's Hammer and Scepter of the Abandoned come first."
+   },
+   {
+    "t": "nota",
+    "s": "For Protection, a fast one-hander (1.5 to 1.8 speed) gives more Seal of Fury hits."
+   },
+   {
+    "t": "nota",
+    "s": "For Protection, spell power comes first in the leveling order."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:bolha-tecla",
+    "s": "Why does pressing the bubble key twice remove the bubble?"
+   },
+   {
+    "t": "nota",
+    "s": "The bubble macro casts Divine Shield and then cancels it, so a second press takes the bubble off."
+   },
+   {
+    "t": "nota",
+    "s": "Pressing it twice in the open world is risky: the bubble is gone."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "ajuda:q:duo-warlock",
+    "s": "What helps the tank and warlock duo?"
+   },
+   {
+    "t": "nota",
+    "s": "Curse of the Elements from the warlock raises all magic damage, the holy damage of the paladin too."
+   },
+   {
+    "t": "nota",
+    "s": "No source covers the tank and warlock duo as such."
+   }
+  ],
+  "ajuda-addons": [
+   {
+    "t": "segs",
+    "aba": "ajuda",
+    "atual": "addons",
+    "opcoes": [
+     {
+      "id": "perguntas",
+      "s": "Questions"
+     },
+     {
+      "id": "addons",
+      "s": "Addons"
+     },
+     {
+      "id": "sinais",
+      "s": "Signs"
+     }
+    ]
+   },
+   {
+    "t": "tabela",
+    "colunas": [
+     {
+      "largura": 160,
+      "s": "Addon"
+     },
+     {
+      "s": "What it gives you"
+     },
+     {
+      "largura": 190,
+      "s": "Open"
+     }
+    ],
+    "id": "ajuda:addons",
+    "limite": 6,
+    "linhas": [
+     {
+      "celulas": [
+       "GuiaForever",
+       "the guide: your next steps, pet, talents, combat and professions",
+       "J, /guia or the book button by the minimap"
+      ]
+     },
+     {
+      "celulas": [
+       "Naowh Training Planner",
+       "what to train now, its cost and the nearest trainer; right-click a spell to skip it...",
+       "/nftraining"
+      ],
+      "dica": [
+       "what to train now, its cost and the nearest trainer; right-click a spell to skip it and see the gold you save"
+      ]
+     },
+     {
+      "celulas": [
+       "Naowh Forever",
+       "options of the Naowh modules; its profession window replaces the game's",
+       "/nf"
+      ]
+     },
+     {
+      "celulas": [
+       "RestedXP Guides",
+       "the step-by-step route (window at the top left); when a quest lets you choose a...",
+       "/rxp"
+      ],
+      "dica": [
+       "the step-by-step route (window at the top left); when a quest lets you choose a reward, a vendor icon marks the one that sells for most and the RestedXP logo marks its upgrade pick (it may disagree with Pawn)"
+      ]
+     },
+     {
+      "celulas": [
+       "Questie",
+       "quests, trainers and services on the map and minimap",
+       "M (map); /questie for options"
+      ]
+     },
+     {
+      "celulas": [
+       "Forever Quests",
+       "marks Forever's new quests in Questie's tooltips",
+       "automatic"
+      ]
+     },
+     {
+      "celulas": [
+       "Baganator",
+       "all your bags in one window, with search",
+       "B"
+      ]
+     },
+     {
+      "celulas": [
+       "Syndicator",
+       "your other characters' items in Baganator's search",
+       "automatic"
+      ]
+     },
+     {
+      "celulas": [
+       "Auctionator",
+       "prices and quick selling at the auction house; item tooltips show the vendor and the...",
+       "opens with the auctioneer; /atr"
+      ],
+      "dica": [
+       "prices and quick selling at the auction house; item tooltips show the vendor and the auction price (auction only for items it has already seen)"
+      ]
+     },
+     {
+      "celulas": [
+       "TomTom",
+       "arrow to a map coordinate",
+       "/way 57 61"
+      ]
+     },
+     {
+      "celulas": [
+       "GatherMate2",
+       "gathering nodes you have already seen, on the map",
+       "M (map); /gathermate"
+      ]
+     },
+     {
+      "celulas": [
+       "Leatrix Plus",
+       "sells junk, repairs and loots fast (already on)",
+       "/ltp"
+      ]
+     },
+     {
+      "celulas": [
+       "Pawn",
+       "green arrow in the tooltip when an item is an upgrade",
+       "hover an item; /pawn"
+      ]
+     },
+     {
+      "celulas": [
+       "Deadly Boss Mods",
+       "boss alerts and timers",
+       "automatic in dungeons; /dbm"
+      ]
+     },
+     {
+      "celulas": [
+       "Forever Guide",
+       "dungeon loot tables (bosses with 3D model, trash, drop chances), where any item drops,...",
+       "/fguide (or the compass button); /flfind <item>"
+      ],
+      "dica": [
+       "dungeon loot tables (bosses with 3D model, trash, drop chances), where any item drops, rares with alerts"
+      ]
+     },
+     {
+      "celulas": [
+       "BugSack",
+       "addon errors",
+       "/bugsack"
+      ]
+     },
+     {
+      "celulas": [
+       "UIForever",
+       "this layout, keys, rotation cooldown bar under your character, number fonts",
+       "automatic on login"
+      ]
+     }
+    ]
+   }
+  ],
+  "ajuda-sinais": [
+   {
+    "t": "segs",
+    "aba": "ajuda",
+    "atual": "sinais",
+    "opcoes": [
+     {
+      "id": "perguntas",
+      "s": "Questions"
+     },
+     {
+      "id": "addons",
+      "s": "Addons"
+     },
+     {
+      "id": "sinais",
+      "s": "Signs"
+     }
+    ]
+   },
+   {
+    "t": "sec",
+    "id": "ajuda:cores",
+    "s": "Panel colors"
+   },
+   {
+    "t": "item",
+    "s": "|cffe63333Red|r",
+    "sub": "Something is hurting you right now."
+   },
+   {
+    "t": "item",
+    "s": "|cffff8c1aOrange|r",
+    "sub": "An errand in town."
+   },
+   {
+    "t": "item",
+    "s": "|cffffd91aYellow|r",
+    "sub": "Do it when convenient."
+   },
+   {
+    "t": "item",
+    "s": "|cff4d99ffBlue|r",
+    "sub": "Information."
+   },
+   {
+    "t": "sec",
+    "id": "ajuda:marcas",
+    "s": "Marks in the game windows"
+   },
+   {
+    "t": "item",
+    "s": "|cffffd100NOW|r",
+    "sub": "Talent tree: the next point to spend."
+   },
+   {
+    "t": "item",
+    "s": "|cffffd100PLAN|r",
+    "sub": "Pet trainer: the next pet ability to train."
+   },
+   {
+    "t": "item",
+    "s": "|cffffd100ALL|r",
+    "sub": "Talent tree: the talent is in your Core list."
+   },
+   {
+    "t": "item",
+    "s": "|cffffd100?|r",
+    "sub": "Talent tree: the plan has no fixed pick; see Open."
+   },
+   {
+    "t": "item",
+    "s": "|cffffd100Numbers|r",
+    "sub": "Talent tree: levels that take the remaining ranks; a check is done."
+   },
+   {
+    "t": "item",
+    "s": "|cffffd100A B C|r",
+    "sub": "Talent tree: options side by side; pick one, see Talents."
+   }
+  ]
+ }
+}

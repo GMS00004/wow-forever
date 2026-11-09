@@ -17,7 +17,7 @@ Objetivo da 1.0: o guia aparece onde o dono já está olhando, na hora certa, co
 | 2 | Cada arquivo começa com `local _, ns = ...` e publica só em `ns`. Global nova só com prefixo `GuiaForever`, `SLASH_GUIAFOREVER` ou `BINDING_`. |
 | 3 | Nenhum arquivo depende de outro arquivo novo existir: toda chamada entre módulos é guardada (`if ns.agora and ns.agora.provedor then ... end`). O jogo só relê a lista do `.toc` ao abrir. Um `/reload` feito com o jogo aberto desde antes da 1.0 carrega o código novo dos arquivos antigos, mas não os arquivos novos. |
 | 4 | Em combate, nada de `CreateMacro`, `EditMacro`, `DeleteMacro`, `SetBinding*`, `SaveBindings`, `PickupAction`, `PlaceAction`, `SetCVar`, `SetAttribute` ou `SetUIPanelLayoutAttribute`: use `ns.foraDeCombate`. A função que chama um deles começa com `if ns.emCombate() then ... return end` ou tem o comentário `-- fora-de-combate` na linha de cima (o `checar-combate.mjs` cobra). |
-| 5 | Nunca ler API que vira secreta: `UnitAttackSpeed`, `UnitRangedDamage`, `UnitRangedAttackPower`, `GetUnitSpeed`, `C_Spell.GetSpellCooldown`, `GetSpellCharges`, `C_UnitAuras.*`. Nada de evento quente (`COMBAT_LOG_EVENT_UNFILTERED`, `UNIT_AURA`, `SPELL_UPDATE_COOLDOWN`). Em tooltip, sair cedo se `InCombatLockdown()`, ou se `issecretvalue` existir e disser que o dado é secreto. |
+| 5 | Nunca ler API que vira secreta: `UnitAttackSpeed`, `UnitRangedDamage`, `UnitRangedAttackPower`, `GetUnitSpeed`, `C_Spell.GetSpellCooldown`, `GetSpellCharges`, `C_UnitAuras.*` (exceção única desde a 1.3: o buff do jogador fora de combate, seção 12.4). Nada de evento quente (`COMBAT_LOG_EVENT_UNFILTERED`, `UNIT_AURA`, `SPELL_UPDATE_COOLDOWN`). Em tooltip, sair cedo se `InCombatLockdown()`, ou se `issecretvalue` existir e disser que o dado é secreto. |
 | 6 | Quadro da Blizzard só por `hooksecurefunc`, `HookScript`, `EventRegistry:RegisterCallback` e `TooltipDataProcessor.AddTooltipPostCall`. Nunca `SetScript` em quadro alheio. Nunca campo novo em tabela da Blizzard: use tabela fraca própria, `setmetatable({}, { __mode = "k" })`. Nunca carregar addon da Blizzard (`LoadAddOn`, `C_AddOns.LoadAddOn`) nem abrir janela protegida pelo código. |
 | 7 | O guia marca e o dono clica: são proibidos `C_Traits.PurchaseRank`, `C_Traits.CommitConfig`, `BuyTrainerService`, `CastSpell*` e `UseContainerItem` (decisão do dono, 2026-11-06). |
 | 8 | Nome de API do Forever: confira em `ferramentas\guia\api-forever\GlobalAPI.lua` (funções), `Events.lua` (eventos), `FrameXML.lua` (funções da interface) e `Templates.lua` (templates). Assinatura e retorno ficam em `Interface/AddOns/Blizzard_APIDocumentationGenerated/` do espelho `Ketho/wow-ui-source-forever` (branch `forever`): `gh api "repos/Ketho/wow-ui-source-forever/contents/<caminho>?ref=forever" -H "Accept: application/vnd.github.raw"`. No Forever **não existem** `IsPlayerSpell` nem `UnitCharacterPoints`. Função fora dessas listas, ou de outro addon, só com checagem de existência antes. |
@@ -444,3 +444,120 @@ Executado em três ondas (contrato e esqueletos na sessão principal; T1 a T3; T
 | Banco de prova | `--pular` (cenário do treino pulado: some, não volta com outro treinador, volta só com magia nova, aparece em Hidden, desfaz); `--abrir` (abre a janela, cada aba e sub-aba, os ids antigos e a busca "boar"); o `real.html` respeita o `limite` e põe "Show N more" |
 
 Resultado do portão final: `checar-lua`, `checar-combate`, `checar-dicas`, `checar-ajuda`, `checar-guia`, os 16 e os 13 casos, e `rodar-janela.mjs --estrito --abrir --desenhar` com 14 abas e sub-abas, 29 passos de abertura e `RESUMO erros=0 avisos=0`. Nada disso rodou no jogo ainda.
+
+## 12. Paladino (1.3, 2026-11-08, noite)
+
+Pedido do dono: integrar o guia do Ignatius Stonejaw (Human, Paladin Protection, tanque da dupla com um warlock), pelo GuiaForever e pelo UIForever, como o Hexumlite. Única fonte de gameplay: `comum\personagens\ignatius-stonejaw.md`. Decisões do dono (ficha, "Decisões do dono"): Prot no 22, Sanctified Judgement 3/3; os 6 pontos livres de Prot (decisão 3) e o 53 a 60 (decisão 4) ficam abertos; teclas = as do caçador, com o layout da seção 12.6. O personagem foi recriado em 2026-11-08 às 19h59 e está no nível 1 (Northshire). As regras da seção 1 valem por inteiro; a regra 5 ganha a exceção da 12.4. Nada desta seção pode mudar o que o Hexumlite (HUNTER), o Rurik (SHAMAN) ou o Fingolfin (DRUID) veem: todo caminho novo só liga quando os dados da classe têm o campo novo.
+
+### 12.1 Talentos com opções lado a lado (`Dados.lua`, escrito pela sessão principal)
+
+`GuiaForeverDados.PALADIN` tem `ordem`, `lei` e `aberto` como o caçador, mais o campo opcional `opcoes`: uma lista de decisões `{ id, s, colunas = { { id, s, sub } }, niveis = { [nivel] = { [colunaId] = "Nome r/max" } } }`. Todo nível de `niveis` está em `ordem` como "TBD" (assim o código antigo mostra "your pick"). Cada nível pertence a no máximo uma decisão. Colunas de `ret`: B e C (15 a 19); de `prot`: A, B e C (27 a 41 e 47 a 51). O 53 a 60 é "TBD" sem `opcoes` (decisão 4 aberta, como o "TBD" do caçador).
+
+### 12.2 `Arvore.lua`
+
+| API | Contrato |
+|---|---|
+| `ns.arvore.plano()` | como hoje; num nível "TBD" com `opcoes`, a entrada é `{ tbd = true, decisao = <id>, decisaoS = <s>, opcoes = { { id, s, sub, nome, rank, max, texto } } }`, na ordem das `colunas` (o `lerEntrada` de cada texto) |
+| `ns.arvore.proximo()` | como hoje (copia `opcoes` e `decisao` junto) |
+| `ns.arvore.resumoOpcoes(e)` | para uma entrada com `opcoes`: devolve `s`, `sub`, `dica`. `s` = os textos distintos ligados por " or " ("Precision 1/3 or Divine Intellect 1/5"); `sub` = grupos "A, B: Precision 1/3" separados por " / " (até 80 caracteres); `dica` = lista: "Your pick: <decisaoS>" e uma linha por coluna "A (Defense): Precision 1/3". Sem `opcoes`, nil |
+| `ns.arvore.decisoes()` | `dados.opcoes` da classe, ou `{}` |
+
+Marcas na árvore, só quando a classe tem `opcoes` (o caçador não muda):
+
+| Caso | Marca e tooltip |
+|---|---|
+| nó que está nas opções do próximo ponto (`proximo().opcoes`) | letras douradas das colunas que o escolhem agora ("A B"); tooltip linha 1 = "Now, level N: " .. `sub`; linha 2 = colunas e rótulos ("A Defense, B Mana, C More mana") |
+| nó que está em opções de níveis seguintes, ainda abaixo do maior rank que alguma coluna planeja | letras cinza das colunas com nível pendente; linha 1 = "Options: A 27-29, B 27-29, C 32-34" (`formatarNiveis` por coluna) |
+| nó já no maior rank planejado por alguma coluna | o check, como hoje |
+| nó da lei (`ordem` com texto) | como hoje; quando a lei já está feita e ainda há opção pendente com rank maior (Reckoning 5/5 no 47 ou 50), vale a linha anterior |
+
+O quadro da marca passa a 56 de largura para caber "A B C". A faixa no alto, com `opcoes` no próximo ponto: "Plan now (level N): " .. `sub`, com 640 de largura.
+
+### 12.3 `Abas.lua` e o provedor de talento (`Agora.lua`)
+
+| Lugar | Com `opcoes` (sem elas, como hoje) |
+|---|---|
+| Talents > Next points | item com `s` e `sub` de `resumoOpcoes`, `dica` dela, ícone do talento da primeira opção |
+| Talents, seção nova logo depois de Next points | para cada decisão com nível ainda por gastar (nível maior ou igual ao primeiro ponto livre; com `ctx.tudo`, todos): `sec` "Your pick: <s>" (id `talentos:op:<id>`, aberta), um `item` por coluna (`s` = "A: Defense", `sub` = `sub` da coluna) e uma `tabela` (id `talentos:op:<id>:tab`, `limite = 6`) com as colunas "Level" (50) e uma por coluna ("A Defense"), uma linha por nível |
+| Now > Coming up | "Talent: " .. `s`, com o `sub` de `resumoOpcoes` |
+| Now > Coming up | os `marcos` da classe (12.4) com `nivel` no intervalo, `s` = "Milestone: " .. texto (dividido), ícone `id` |
+| Help > Signs | item "A B C" ("Talent tree: options side by side; pick one, see Talents") só quando a classe tem `opcoes` |
+| `FONTES_TEXTO` | mais "Perfect Gaming Weather", "Deadmanfred", "Jurdi", "DwarfLord" |
+| Provedor `talento` | `texto` = "Talent point: " .. `s`; `dica` = a de `resumoOpcoes` mais "Compare A, B and C in the Talents tab (J)." |
+
+### 12.4 `Lembretes.lua` (arquivo novo, depois do `Agora.lua` no `.toc`)
+
+Dados novos em `GuiaForeverDicas[CLASSE]`, ambos opcionais:
+
+    lembretes = { { nivel, magia, id, texto, fonte } },   -- buff que tem de estar ligado fora de combate
+    marcos = { { nivel, ate, texto, fonte, id, magia, missao, npc, mapa, x, y } },
+
+`marcos`: `nivel`, `texto` e `fonte` são obrigatórios. Feito: com `magia`, quando `ns.conhece(magia)`; com `missao`, quando `ns.missao(missao) == "feita"`. Sem `magia` nem `missao`, aparece só do `nivel` ao `ate` (padrão: o próprio `nivel`). Com `magia` ou `missao`, aparece do `nivel` ao `ate` (padrão 60) enquanto não estiver feito.
+
+| Peça | Contrato |
+|---|---|
+| Provedor `lembretes` | um item por entrada com `nivel` <= nível, `ns.conhece(magia)` e o buff ausente: `chave = "lembrete:<magia>"`, `prio = 15`, `cor = "vermelho"`, `icone = id`, `texto`, `dica = { "Checked out of combat only.", "Key: <tecla>" }` (tecla por `ns.teclaDe(magia)`), `aba = "teclas"`, botão com a tecla (ou "Keys") que abre Combat > Keys, `aoOcultar` = some até o próximo `/reload` (tabela local, não no DB) |
+| Leitura do buff | `local function auraAtiva(nome)`: começa com `if ns.emCombate() then return nil end`; `pcall(C_UnitAuras.GetAuraDataBySpellName, "player", nome, "HELPFUL")`; se `issecretvalue` existir e disser que o resultado é secreto, nil; senão `resultado ~= nil`. nil = não sei, e não há item |
+| Verificação | só para classe com `lembretes`: `C_Timer.NewTicker(4, ...)` criado no `PLAYER_LOGIN`; fora de combate, recalcula e chama `ns.agora.atualizar()` só quando o estado de alguma entrada mudou; também no `PLAYER_REGEN_ENABLED` (1 s depois) e no `SPELLS_CHANGED`. Nada de `UNIT_AURA` |
+| Provedor `marcos` | um item por marco visível: `chave = "marco:<nivel>:<i>"`; com `magia` ou `missao`, `prio = 30`, `cor = "laranja"`; sem, `prio = 90`, `cor = "azul"`; `icone = id` (ou o livro); `aba = "agora"`; com `mapa`, `x` e `y`, botão "Arrow" que chama `ns.seta(mapa, x, y, npc or texto)`. Eventos: `PLAYER_LEVEL_UP`, `SPELLS_CHANGED`, `QUEST_TURNED_IN`, `PLAYER_ENTERING_WORLD` |
+| Macros por magia | para cada `GuiaForeverMacros[classe].gerenciadas` (`{ nome, magias, modelo }`): a primeira magia conhecida de `magias` entra no `%s` do `modelo` (`string.format`); sem nenhuma conhecida, nada. Chama `ns.macroGerenciada(nome, ns.iconeMagia(magia) or 134400, corpo)` (Pet.lua) por `ns.foraDeCombate`, com debounce `ns.agendar`, no `PLAYER_LOGIN` (+9 s) e no `SPELLS_CHANGED` |
+
+Exceção à regra 5 (só esta): `C_UnitAuras.GetAuraDataBySpellName` e `C_UnitAuras.GetPlayerAuraBySpellID` podem ser lidas numa função que começa pela guarda de combate (a mesma do R1) e que chama `issecretvalue`. O `checar-combate.mjs` aceita só esse caso; qualquer outro `C_UnitAuras.*` continua erro R2. Motivo: fora de combate o buff do jogador não é secreto, e o lembrete nunca decide nada em combate.
+
+### 12.5 Dados (`Dicas.lua`, `Ajuda.lua`, `Dados.lua`)
+
+`GuiaForeverDicas.PALADIN` (`personagem = "Ignatius Stonejaw"`): `magias` (os níveis da tabela "O que chega" da ficha, com `id` e `magia` do Naowh), `armas`, `pets = {}`, `rotacao`, `atributos`, `notas`, `marcos`, `lembretes`. `GuiaForeverAjuda.PALADIN`: perguntas tiradas da ficha. Fontes novas permitidas nos checadores: "Perfect Gaming Weather", "Deadmanfred", "Jurdi", "DwarfLord (beta)" e "Blizzard" (nota oficial). PALADIN entra como classe permitida, não obrigatória, no `checar-dicas.mjs` e no `checar-ajuda.mjs`. `GuiaForeverProfissoesPlanejadas.PALADIN` = Mining, Blacksmithing, Cooking, First Aid. `GuiaForeverMacros.PALADIN` (6 macros e a `cleanse_Mouse` gerenciada) já está no `Dados.lua`.
+
+### 12.6 UIForever 0.7.0
+
+Layout do paladino (`barras.PALADIN`); as teclas são as mesmas do caçador (`UIForeverConfig.teclas` não muda). Nível = Naowh (`TrainingData.lua`, bloco [2]).
+
+| Tecla (slot) | Conteúdo | Nível |
+|---|---|---|
+| 1 (1) | macro `strike_Holy`, reserva Holy Strike | 6 |
+| 2 (2) | macro `judge_Start`, reserva Judgement | 4 |
+| 3 (3) | Seal of Fury | 10 |
+| 4 (4) | Consecration | 20 |
+| 5 (5) | Exorcism | 20 |
+| 6 (6) | Hammer of Wrath | 44 |
+| Q (7) | Hammer of Justice | 8 |
+| E (8) | Holy Shield (talento) | 42 |
+| R (9) | Flash of Light | 20 |
+| F (10) | macro `attack_Start` | 1 |
+| T (11) | Lay on Hands | 10 |
+| G (12) | macro `bubble_Cancel`, reserva Divine Shield | 34 |
+| Z (13) | Blessing of Wisdom | 14 |
+| X (14) | macro `cleanse_Mouse`, reserva Purify | 8 (Cleanse 42) |
+| V (15) | macro `RXPTargeting` | 1 |
+| Ctrl+1 (16) | Seal of Justice | 22 |
+| Ctrl+2 (17) | Concentration Aura | 22 |
+| Ctrl+3 (18) | Turn Undead | 24 |
+| Ctrl+4 (19) | Seal of Wisdom | 38 |
+| Mouse 4 (20) | macro `bop_Mouse`, reserva Blessing of Protection | 10 |
+| Mouse 5 (21) | macro `bof_Mouse`, reserva Blessing of Freedom | 18 |
+| Shift+1 a Shift+6 (25 a 30) | Righteous Fury, Retribution Aura, Blessing of Kings, Blessing of Might, Holy Light, Devotion Aura | 10, 16, 20, 4, 6, 1 |
+| Shift+Q, E, R, F, T, G (31 a 36) | Divine Protection, Seal of the Crusader, Seal of Righteousness, Redemption, Seal of Light, Divine Intervention | 6, 6, 10, 12, 30, 30 |
+
+Barra 5 (`barraRecargas.PALADIN`): Judgement, Holy Strike, Hammer of Justice, Consecration, Exorcism, Holy Shield, Hammer of Wrath. Barra 6: sem plano.
+
+| Peça nova | Contrato |
+|---|---|
+| `UIForeverConfig.cvarsClasse = { PALADIN = { { "AutoPushSpellToActionBar", "0" } } }` | gravada como as `cvars` (uma vez por personagem, fora de combate, com o diário), só para a classe do personagem. Essa CVar é por personagem (`CVars.lua`: account = false, character = true): o jogo deixa de pôr magia nova sozinho na barra do paladino, e o UIForever põe no slot do plano. O caçador não muda |
+| `/uif bars` (e `/uiforever bars`) | aplica o layout uma vez, fora de combate e com o cursor vazio: cada slot gerenciado com plano recebe a ação do plano quando ela existe (macro criada ou magia conhecida), trocando o que estiver lá, e fica marcado como do UIForever; slot com plano cuja ação ainda não existe é esvaziado e fica sem dono (recebe a ação quando ela existir); slot sem plano não muda. No chat e no diário: quantos foram postos e esvaziados e os nomes do que saiu de um slot sem voltar a outro. Em combate: "in combat, try again". `/uif` sem argumento lista os comandos |
+| Dica no login | quando a classe tem plano, o personagem nunca teve slot do UIForever (`UIForeverCharDB.slots` vazio) e pelo menos um slot com plano e ação disponível está ocupado por outra coisa: uma linha no chat, uma vez por personagem (`UIForeverCharDB.dicaLayout = true`): "type /uif bars to apply the <classe> layout" |
+
+### 12.7 Como ficou (2026-11-08, noite, depois da execução)
+
+Executado em duas ondas: na primeira, dados (T1), opções na árvore e na janela (T2), `Lembretes.lua` e a exceção do checador (T3), layout e teclas (T5a) e o comando do UIForever (T5b); na segunda, o cenário do paladino no banco (T4). O que difere do texto acima ou foi acrescentado:
+
+| Onde | O quê |
+|---|---|
+| `Arvore.lua` | o quadro da marca tem 56 de largura sempre (o texto e o check são ancorados à direita, então o caçador não muda); a linha 2 do tooltip "Now" lista só as colunas que escolhem aquele nó; sem ponto livre, a faixa mantém o texto antigo; o `s` de opção é cortado em 60 caracteres (níveis 32 e 33 terminam em "...") |
+| `Lembretes.lua` | o item de marco usa o `texto` sem prefixo (o "Milestone: " é só do Coming up); debounce do login e do `SPELLS_CHANGED` em chaves separadas; sem tecla nas barras, a dica diz "Key: not on your bars" e o botão "Keys"; o caminho do ícone de reserva saiu com barra simples e foi corrigido no portão |
+| `checar-combate.mjs` | função `excecaoAura`: aceita as duas leituras de aura só dentro de função que passa no `guardaR1` e chama `issecretvalue`; casos `r2-aura-ok`, `r2-aura-sem-guarda` e `r2-aura-sem-secreto` |
+| `checar-dicas.mjs`, `checar-ajuda.mjs` | PALADIN permitida e não obrigatória; listas `marcos` e `lembretes`; casos `bom-paladin.lua` e `ruim-marco-sem-texto.lua` |
+| UIForever | `montarPlano` e `resolverAcao` extraídos (o laço de posse do `aplicarBarras` ficou igual); `/uif bars` recusa com o cursor cheio e marca `dicaLayout`; campo novo `espera = true` no plano (sessão principal): a macro só entra quando a magia de reserva é conhecida, usado nas cinco macros de magia do paladino |
+| Dados | o marco do 20 diz, pela fonte, que o Test of Righteousness dá a Verigan's Fist e o Tome of Valor dá o Bastion of Stormwind; o Righteous Fury ganhou o que faz (+33% de ameaça, +90% na sagrada); a missão 1650 é a reserva de "feito" do Tome of Valor (inferência: a cadeia segue depois dela) |
+| Banco | `--classe PALADIN` (Elwynn, Mining e Blacksmithing), `--nivel`, `--livres`, `--com-furia`, `--sem`, `--paladino` (a a e numa chamada, o caçador num processo filho); Cleanse no 42 vem de uma tabela do banco, porque não está nas `magias` do paladino |
+
+Portão final: `checar-lua` e `checar-combate --toc` com 0 erro nos dois addons; `checar-dicas` (PALADIN com 22 magias, 4 marcos e 1 lembrete) e `checar-ajuda` (8 perguntas) ok; 18 e 16 casos; o banco do caçador com `RESUMO erros=0 avisos=0` e o `real.json` igual ao de antes da 1.3 (fora a data); o do paladino com `PALADINO falhas=0` (e limpo também no nível 2, o atual dele); `--pular` com 0 falha. Nada disso rodou no jogo ainda.

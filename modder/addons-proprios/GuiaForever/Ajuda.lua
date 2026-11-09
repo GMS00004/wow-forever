@@ -119,4 +119,66 @@ GuiaForeverAjuda = {
       { texto = "Off the route, click the right step in the list above.", fonte = "RestedXP" },
     } },
   },
+  -- Paladino (Ignatius Stonejaw): perguntas tiradas da ficha comum\personagens\ignatius-stonejaw.md;
+  -- cada linha leva a linha da ficha (ou do arquivo da fonte) em "origem".
+  PALADIN = {
+    { id = "prot-quando", aba = "talentos", pergunta = "When do I switch to Protection, and when do I get a shield?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:86 (decisao 1 do dono: Prot no 22)
+      { texto = "Protection from 22, your pick: Redoubt 5/5, with a one-hander and shield.", fonte = "you" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:45 (duas maos ate o 21; Deadmanfred)
+      { texto = "Two-hander until 21; from 22 a one-hander and shield, with the first Redoubt point.", fonte = "Deadmanfred" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:86 (coluna C: DPS ate o 40 e dual spec)
+      { texto = "Other guides advise DPS until 40 and a tank dual spec; you chose 22 instead.", fonte = "Jurdi" },
+    } },
+    { id = "judge-agora", aba = "combate", pergunta = "How do I use Judgement now?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:95 (Judgement fora do GCD, sem consumir o seal)
+      { texto = "Judgement is off the GCD and does not use up the seal: press it whenever it is ready.", fonte = "Perfect Gaming Weather" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:95 (taunt a 10 jardas, 3 s)
+      { texto = "With Seal of Fury, Judgement taunts for 3 s at up to 10 yards.", fonte = "Perfect Gaming Weather" },
+    } },
+    { id = "consecration", aba = "combate", pergunta = "How much should I use Consecration?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:95 (moderacao; a fonte e a linha da ficha)
+      { texto = "It costs a lot of mana: use it in moderation, and hold it when threat is already safe.", fonte = "Jurdi" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:105 (dano cheio nos quatro primeiros)
+      { texto = "Full damage only on the first four enemies.", fonte = "Perfect Gaming Weather" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:106 (rank 2 no 30)
+      { texto = "At 30, rank 2 costs almost double the mana, for a little more damage.", fonte = "DwarfLord (beta)" },
+    } },
+    { id = "selo-aura-bencao", aba = "agora", pergunta = "Which seal, aura and blessing do I use while leveling?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:102 (Seal of Fury, tanque, do 10)
+      { texto = "Seal of Fury all the time: it is the tank seal from 10.", fonte = "Perfect Gaming Weather" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:104 (Retribution Aura do 16)
+      { texto = "Retribution Aura is the leveling aura from 16 on.", fonte = "Perfect Gaming Weather" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:111 (bencao de leveling do Prot)
+      { texto = "Blessing of Kings is the leveling blessing for Protection.", fonte = "Perfect Gaming Weather" },
+    } },
+    { id = "nivel-12-20-40", aba = "agora", pergunta = "What do I do at 12, 20 and 40?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:103 (quest de classe do 12)
+      { texto = "At 12, do the class quest right away, in the Cathedral of Light (Redemption).", fonte = "Deadmanfred" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:105 (quest de classe do 20)
+      { texto = "At 20, the Tome of Valor gives Bastion of Stormwind, a paladin shield.", fonte = "Perfect Gaming Weather" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:108 (montaria e dual spec no 40)
+      { texto = "At 40, the mount and the dual spec open.", fonte = "Perfect Gaming Weather" },
+    } },
+    { id = "arma-atributos", aba = "combate", pergunta = "Which weapon and stats should I look for?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:115 (arma: spell power e dano alto)
+      { texto = "The weapon is the biggest jump: spell power and high damage. Rhahk'Zor's Hammer and Scepter of the Abandoned come first.", fonte = "Perfect Gaming Weather" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:115 (uma mao rapida, 1.5 a 1.8)
+      { texto = "For Protection, a fast one-hander (1.5 to 1.8 speed) gives more Seal of Fury hits.", fonte = "Deadmanfred" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:119 (ordem de atributos do Prot)
+      { texto = "For Protection, spell power comes first in the leveling order.", fonte = "Perfect Gaming Weather" },
+    } },
+    { id = "bolha-tecla", aba = "combate", pergunta = "Why does pressing the bubble key twice remove the bubble?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:132-134 (macro de bolha e aviso do Jurdi)
+      { texto = "The bubble macro casts Divine Shield and then cancels it, so a second press takes the bubble off.", fonte = "Jurdi" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:134 (aviso do Jurdi: mundo aberto)
+      { texto = "Pressing it twice in the open world is risky: the bubble is gone.", fonte = "Jurdi" },
+    } },
+    { id = "duo-warlock", aba = "ajuda", pergunta = "What helps the tank and warlock duo?", linhas = {
+      -- origem: comum\personagens\ignatius-stonejaw.md:148 (Curse of the Elements, so o DwarfLord fala)
+      { texto = "Curse of the Elements from the warlock raises all magic damage, the holy damage of the paladin too.", fonte = "DwarfLord (beta)" },
+      -- origem: comum\personagens\ignatius-stonejaw.md:148 (sem fonte para a dupla como tal: decisao do dono)
+      { texto = "No source covers the tank and warlock duo as such.", fonte = "you" },
+    } },
+  },
 }

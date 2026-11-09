@@ -4,8 +4,21 @@
 // aba e sub-aba, confere os blocos contra o contrato (tipos, campos, C1, C2, C5, C6) e grava
 // visual\real.json e visual\real.html.
 //
-// Uso: node rodar-janela.mjs [--estrito] [--desenhar] [--abrir] [--abas a,b/c]
+// Uso: node rodar-janela.mjs [--estrito] [--desenhar] [--abrir] [--abas a,b/c] [--pular]
+//        [--classe HUNTER|PALADIN] [--nivel N] [--livres K] [--com-furia] [--sem "<magia>"]... [--paladino]
 // --abrir: abre a janela e cada aba, sub-aba e id antigo, faz a busca "boar" e fecha (erro de Lua = erro).
+// --classe: o personagem simulado. HUNTER (padrao) = cacador Night Elf, nivel 16, 0 pontos livres, javali, Skinning/
+//   Leatherworking, Darkshore. PALADIN = Ignatius Stonejaw, Human, nivel 27, 1 ponto livre, sem pet, Elwynn Forest
+//   (mapa 1429), Mining 75/75 e Blacksmithing 55/100; grava visual\real-PALADIN.json e .html (o real.json e .html
+//   continuam sendo do cacador). Com PALADIN o banco tambem simula C_UnitAuras, issecretvalue e as APIs de macro.
+// --nivel N / --livres K: nivel e pontos de talento livres do personagem simulado (padroes acima).
+// --com-furia: o buff Righteous Fury ativo (GetAuraDataBySpellName devolve a aura).
+// --sem "<magia>" (repetivel): tira a magia do livro de magias simulado.
+// --paladino (so com --classe PALADIN): cenario do paladino 1.3 (ARQUITETURA.md 12.2 a 12.4). Imprime uma linha por
+//   verificacao (PAL ok/FALHA a..e) e "PALADINO falhas=N". As verificacoes a, b, c e d rodam no mesmo processo,
+//   trocando o simulado (nivel, livro, furia) e redisparando PLAYER_LEVEL_UP e SPELLS_CHANGED; a verificacao e
+//   (o cacador sem item "lembrete:"/"marco:" e sem macro cleanse_Mouse) roda num processo filho sem --classe.
+// --pular: cenario do treino pulado (a classe simulada e a escolhida).
 // Saida: 0 sem erro; 1 com erro de contrato, de construtor ou de desenho; 2 se um arquivo nem carregou.
 //
 // Lua 5.3 nao e o 5.1 do jogo: o ambiente poe unpack, table.getn, strtrim, tinsert, wipe etc. Diferencas que o
@@ -15,6 +28,7 @@ import { createRequire } from "node:module";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 
 const require = createRequire(import.meta.url);
 const aqui = dirname(fileURLToPath(import.meta.url));
@@ -32,6 +46,20 @@ let filtroAbas = null;
   const i = args.indexOf("--abas");
   if (i >= 0) filtroAbas = String(args[i + 1] || "").split(",").map((s) => s.trim()).filter(Boolean);
 }
+const valorDe = (nome) => { const i = args.indexOf(nome); return i >= 0 ? args[i + 1] : undefined; };
+const CLASSE = String(valorDe("--classe") || "HUNTER").toUpperCase();
+if (CLASSE !== "HUNTER" && CLASSE !== "PALADIN") { console.error("--classe: HUNTER ou PALADIN"); process.exit(2); }
+const PAL = CLASSE === "PALADIN";
+const NIVEL_CFG = Number(valorDe("--nivel") ?? (PAL ? 27 : 16));
+const LIVRES_CFG = Number(valorDe("--livres") ?? (PAL ? 1 : 0));
+const COM_FURIA = args.includes("--com-furia");
+const SEM = args.flatMap((a, i) => (a === "--sem" && args[i + 1] !== undefined ? [args[i + 1]] : []));
+const SO_MACROS = args.includes("--macros"); // uso interno do processo filho do cacador (verificacao e)
+const CASO_FILHO = args.includes("--filho-cacador");
+if (args.includes("--paladino") && !PAL) { console.error("--paladino exige --classe PALADIN"); process.exit(2); }
+if (![NIVEL_CFG, LIVRES_CFG].every(Number.isInteger)) { console.error("--nivel e --livres: numeros inteiros"); process.exit(2); }
+const luaStr = (s) => JSON.stringify(String(s));
+const CFG_LUA = `__CFG = { classe = ${luaStr(CLASSE)}, nivel = ${NIVEL_CFG}, livres = ${LIVRES_CFG}, furia = ${COM_FURIA}, novas = ${PAL || SO_MACROS}, sem = { ${SEM.map(luaStr).join(", ")} } }\n`;
 
 // ---------- o ambiente Lua ----------
 const PRELUDIO = String.raw`
@@ -300,15 +328,27 @@ Enum = {
 }
 
 -- ---------- o personagem ----------
+local PALADINO = __CFG.classe == "PALADIN"
 local PERSONAGEM, PET = "Hexumlite Bull", "Boar"
-local NIVEL = 16
-function UnitClass(u) if u == "player" then return "Hunter", "HUNTER", 3 end end
-function UnitRace(u) if u == "player" then return "Night Elf", "NightElf", 4 end end
+if PALADINO then PERSONAGEM, PET = "Ignatius Stonejaw", nil end
+local NIVEL = __CFG.nivel
+function UnitClass(u)
+  if u == "player" then
+    if PALADINO then return "Paladin", "PALADIN", 2 end
+    return "Hunter", "HUNTER", 3
+  end
+end
+function UnitRace(u)
+  if u == "player" then
+    if PALADINO then return "Human", "Human", 1 end
+    return "Night Elf", "NightElf", 4
+  end
+end
 function UnitFactionGroup(u) if u == "player" then return "Alliance", "Alliance" end end
 function UnitName(u) if u == "player" then return PERSONAGEM end if u == "pet" then return PET end end
 function UnitFullName(u) if u == "player" then return PERSONAGEM, "Forever" end if u == "pet" then return PET end end
 function UnitLevel(u) if u == "player" or u == "pet" then return NIVEL end return 0 end
-function UnitExists(u) return u == "player" or u == "pet" end
+function UnitExists(u) return u == "player" or (u == "pet" and not PALADINO) end
 function UnitIsDead() return false end
 function UnitIsPlayer(u) return u == "player" end
 function UnitGUID(u) if u == "player" then return "Player-1-00000001" end if u == "pet" then return "Pet-0-0-0-0-1-0000000001" end end
@@ -325,35 +365,40 @@ function IsInRaid() return false end
 function GetNumGroupMembers() return 0 end
 function GetRealmName() return "Forever" end
 function GetNormalizedRealmName() return "Forever" end
-function GetRealZoneText() return "Darkshore" end
-function GetZoneText() return "Darkshore" end
+function GetRealZoneText() return PALADINO and "Elwynn Forest" or "Darkshore" end
+function GetZoneText() return PALADINO and "Elwynn Forest" or "Darkshore" end
 
 C_ClassColor = {
   GetClassColor = function(token)
     local r, g, b = 0.67, 0.83, 0.45
+    local hex = "ffaad372"
+    if PALADINO then r, g, b, hex = 0.96, 0.55, 0.73, "fff48cba" end
     local o = { r = r, g = g, b = b }
     function o.GetRGB() return r, g, b end
-    function o.GenerateHexColor() return "ffaad372" end
+    function o.GenerateHexColor() return hex end
     return o
   end,
 }
 
 -- ---------- livros de magia ----------
 local magiasJogador, magiasPet
+-- Cleanse chega no nivel 42 (Naowh, TrainingData.lua) e nao esta em Dicas.magias nem nas teclas: entra aqui.
+local EXTRAS_PALADINO = { { 42, "Cleanse" } }
 local function montarJogador()
   if magiasJogador then return magiasJogador end
   local lista, vistos = {}, {}
   local function add(nome)
+    for _, x in ipairs(__CFG.sem) do if string.lower(x) == string.lower(tostring(nome)) then return end end
     if type(nome) == "string" and nome ~= "" and not vistos[nome] then
       vistos[nome] = true
       lista[#lista + 1] = { id = 100000 + #lista + 1, name = nome }
     end
   end
   local dicas = rawget(G, "GuiaForeverDicas")
-  local h = dicas and dicas.HUNTER
+  local h = dicas and dicas[__CFG.classe]
   if h and h.magias then for _, e in ipairs(h.magias) do if e.magia and (e.nivel or 0) <= NIVEL then add(e.magia) end end end
   local teclas = rawget(G, "GuiaForeverTeclas")
-  local t = teclas and teclas.HUNTER
+  local t = teclas and teclas[__CFG.classe]
   if t then
     for _, e in ipairs(t) do
       if (e.n or 99) <= NIVEL and type(e.s) == "string" then
@@ -371,11 +416,13 @@ local function montarJogador()
       end
     end
   end
+  if PALADINO then for _, x in ipairs(EXTRAS_PALADINO) do if x[1] <= NIVEL then add(x[2]) end end end
   magiasJogador = lista
   return lista
 end
 local function montarPet()
   if magiasPet then return magiasPet end
+  if PALADINO then magiasPet = {} return magiasPet end
   local g = rawget(G, "GuiaForeverPetGuia")
   local lista = {}
   for i, nome in ipairs({ "Bite", "Charge", "Growl", "Great Stamina" }) do
@@ -432,11 +479,16 @@ mkapi("C_PetInfo", {
 mkapi("C_ClassTalents", { GetActiveConfigID = function() return 1 end })
 mkapi("C_Traits", {
   GetConfigInfo = function() return { treeIDs = { 1 } } end,
-  GetTreeCurrencyInfo = function() return { { quantity = 0 } } end,
+  GetTreeCurrencyInfo = function() return { { quantity = __CFG.livres } } end,
 })
 mkapi("C_SkillInfo", {
   GetNumSkillLines = function() return 2 end,
   GetSkillLineInfo = function(i)
+    if PALADINO then
+      if i == 1 then return { name = "Mining", rank = 75, maxRank = 75, isHeader = false } end
+      if i == 2 then return { name = "Blacksmithing", rank = 55, maxRank = 100, isHeader = false } end
+      return nil
+    end
     if i == 1 then return { name = "Skinning", rank = 75, maxRank = 75, isHeader = false } end
     if i == 2 then return { name = "Leatherworking", rank = 55, maxRank = 100, isHeader = false } end
   end,
@@ -448,8 +500,14 @@ mkapi("C_QuestLog", {
   IsOnQuest = function() return false end,
 })
 mkapi("C_Map", {
-  GetBestMapForUnit = function() return 1439 end,
+  GetBestMapForUnit = function() return PALADINO and 1429 or 1439 end,
   GetMapInfo = function(id)
+    if PALADINO then
+      if id == 1429 then return { mapID = 1429, name = "Elwynn Forest", mapType = Enum.UIMapType.Zone, parentMapID = 1415 } end
+      if id == 1415 then return { mapID = 1415, name = "Eastern Kingdoms", mapType = Enum.UIMapType.Continent, parentMapID = 947 } end
+      if id == 947 then return { mapID = 947, name = "Azeroth", mapType = Enum.UIMapType.World, parentMapID = 0 } end
+      return nil
+    end
     if id == 1439 then return { mapID = 1439, name = "Darkshore", mapType = Enum.UIMapType.Zone, parentMapID = 1414 } end
     if id == 1414 then return { mapID = 1414, name = "Kalimdor", mapType = Enum.UIMapType.Continent, parentMapID = 947 } end
     if id == 947 then return { mapID = 947, name = "Azeroth", mapType = Enum.UIMapType.World, parentMapID = 0 } end
@@ -477,6 +535,48 @@ mkapi("C_AddOns", { IsAddOnLoaded = function() return false end })
 mkapi("C_Trainer", { GetTrainerType = function() return nil end })
 mkapi("C_TooltipInfo", { GetItemByID = function() return nil end })
 
+-- APIs que so o paladino 1.3 (Lembretes.lua, ns.macroGerenciada) usa; o cacador fica como antes
+-- (sem elas, a macro de comida do pet nem e criada). __CFG.novas liga no paladino e no filho do cacador.
+__macros = {}
+if __CFG.novas then
+  mkapi("C_UnitAuras", {
+    GetAuraDataBySpellName = function(unidade, nome)
+      if __CFG.furia and unidade == "player" and nome == "Righteous Fury" then return { name = "Righteous Fury", spellId = 25780 } end
+      return nil
+    end,
+  })
+  function issecretvalue() return false end
+  function GetNumMacros() return 0, #__macros end
+  function GetMacroIndexByName(nome)
+    for i, m in ipairs(__macros) do if m.nome == nome then return i end end
+    return 0
+  end
+  function GetMacroInfo(i)
+    local m = __macros[i]
+    if m then return m.nome, m.icone, m.corpo end
+  end
+  function CreateMacro(nome, icone, corpo)
+    __macros[#__macros + 1] = { nome = nome, icone = icone, corpo = corpo }
+    return #__macros
+  end
+  function EditMacro(i, nome, icone, corpo)
+    local m = __macros[i]
+    if not m then return nil end
+    if nome then m.nome = nome end
+    if icone then m.icone = icone end
+    if corpo then m.corpo = corpo end
+    return i
+  end
+end
+
+-- cenario do paladino: trocar o simulado no meio da rodada (nivel, livro, furia)
+function __redefinir(nivel, sem, furia)
+  NIVEL = nivel
+  __CFG.nivel = nivel
+  __CFG.sem = sem or {}
+  __CFG.furia = furia and true or false
+  magiasJogador = nil
+end
 -- ---------- avisa o que o codigo le e nao existe ----------
 setmetatable(G, { __index = function(_, k)
   if type(k) == "string" then __acessados[k] = true end
@@ -596,7 +696,7 @@ end
 
 function __construir(id, sub, modo, nomeFn, desenhar)
   local b = {}
-  local ctx = { nivel = 16, classe = "HUNTER", tudo = false, sub = sub, largura = 626, atualizar = function() end, abrir = function() end }
+  local ctx = { nivel = __CFG.nivel, classe = __CFG.classe, tudo = false, sub = sub, largura = 626, atualizar = function() end, abrir = function() end }
   local res = { blocos = b }
   local fn
   if modo == "novo" then fn = (__ns.abasConstrutores or {})[id] else fn = __ns[nomeFn] end
@@ -688,7 +788,7 @@ function __pular()
   local p = A.pulados()
   if #p ~= 2 then falha("pulados = " .. #p .. " (esperado 2)") end
   local b = {}
-  local okH = pcall(ns.abasConstrutores.agora, b, { nivel = 16, classe = "HUNTER", tudo = false, atualizar = function() end, abrir = function() end })
+  local okH = pcall(ns.abasConstrutores.agora, b, { nivel = __CFG.nivel, classe = __CFG.classe, tudo = false, atualizar = function() end, abrir = function() end })
   local achou = false
   for _, x in ipairs(b) do if x.t == "item" and tostring(x.s):find("^Skipped training: 2 spells") then achou = true end end
   if not okH or not achou then falha("J > Now > Hidden sem 'Skipped training: 2 spells'") end
@@ -698,6 +798,106 @@ function __pular()
   rawset(_G, "NaowhForever", antigo)
   A.desfazerPulo(); __esvaziar()
   return json({ falhas = falhas })
+end
+
+-- Cenario do paladino 1.3 (ARQUITETURA.md 12.2 a 12.4). Devolve { linhas = { { id, ok, msg } } }.
+function __paladino()
+  local ns = __ns
+  local A = ns.agora
+  local linhas = {}
+  local function v(id, ok, msg) linhas[#linhas + 1] = { id = id, ok = ok and true or false, msg = msg } end
+  local function chaves(prefixo)
+    local r = {}
+    for _, it in ipairs(A.itens() or {}) do
+      if string.sub(tostring(it.chave), 1, #prefixo) == prefixo then r[#r + 1] = it end
+    end
+    return r
+  end
+  local function macro(nome)
+    for _, m in ipairs(__macros) do if m.nome == nome then return m end end
+  end
+  local function plano1(txt) return (string.gsub(txt, "\n", " | ")) end
+  -- troca o simulado e redispara o que o addon escuta (nivel, livro de magias, timers)
+  local function mudar(nivel, sem, furia)
+    __redefinir(nivel, sem, furia)
+    __disparar("PLAYER_LEVEL_UP", nivel); __esvaziar()
+    __disparar("SPELLS_CHANGED"); __esvaziar()
+    A.atualizar(); __esvaziar()
+  end
+  local cfg0 = { nivel = __CFG.nivel, sem = __CFG.sem, furia = __CFG.furia }
+
+  -- a. talentos com opcoes lado a lado (nivel 27, 1 ponto livre)
+  mudar(27, {}, false)
+  local plano = ns.arvore.plano()
+  local e27 = plano[27]
+  v("a1", e27 and e27.opcoes and #e27.opcoes == 3 and e27.opcoes[1].id == "A" and e27.opcoes[2].id == "B" and e27.opcoes[3].id == "C",
+    "plano()[27].opcoes tem 3 colunas A, B, C")
+  local prox = ns.arvore.proximo()
+  v("a2", prox and prox.nivel == 27 and type(prox.opcoes) == "table" and #prox.opcoes > 0,
+    "proximo().nivel == 27 com opcoes (nivel " .. tostring(prox and prox.nivel) .. ")")
+  local rs = e27 and ns.arvore.resumoOpcoes(e27)
+  v("a3", type(rs) == "string" and string.find(rs, " or ", 1, true) ~= nil, "resumoOpcoes(plano()[27]).s tem ' or ': " .. tostring(rs))
+  local b = {}
+  local ok, err = xpcall(function() ns.abasConstrutores.talentos(b, { nivel = 27, classe = "PALADIN", tudo = false, atualizar = function() end, abrir = function() end }) end, traco)
+  local achou = false
+  for _, x in ipairs(b) do if x.t == "tabela" and x.id == "talentos:op:prot:tab" then achou = true end end
+  v("a4", ok and achou, "aba Talents com a tabela talentos:op:prot:tab" .. (ok and "" or (": " .. tostring(err))))
+  local e53 = plano[53]
+  v("a5", e53 and e53.tbd and e53.opcoes == nil, "plano()[53] e tbd sem opcoes")
+
+  -- b. lembrete de Righteous Fury (fora de combate)
+  A.atualizar(); __esvaziar()
+  local l = chaves("lembrete:Righteous Fury")
+  v("b1", #l == 1 and l[1].prio == 15 and l[1].cor == "vermelho",
+    "sem furia: item lembrete:Righteous Fury (prio 15, vermelho); itens = " .. #l)
+  -- d. (nivel 27) macro com Purify, depois dos timers do login
+  local m27 = macro("cleanse_Mouse")
+  v("d1", m27 and string.find(m27.corpo, "Purify", 1, true) ~= nil and string.find(m27.corpo, "Cleanse", 1, true) == nil,
+    "nivel 27: macro cleanse_Mouse com Purify: " .. tostring(m27 and plano1(m27.corpo)))
+  mudar(27, {}, true)
+  __disparar("PLAYER_REGEN_ENABLED"); __esvaziar() -- o caminho real de reavaliar (verificar -> agora.atualizar)
+  v("b2", #chaves("lembrete:") == 0, "com furia: nenhum item lembrete: (" .. #chaves("lembrete:") .. ")")
+  mudar(27, {}, false)
+  __disparar("PLAYER_REGEN_ENABLED"); __esvaziar()
+  v("b3", #chaves("lembrete:Righteous Fury") == 1, "furia caiu: o item volta")
+
+  -- c. marcos
+  mudar(12, { "Redemption" }, false)
+  v("c1", #chaves("marco:12:") >= 1, "nivel 12 sem Redemption: item marco:12: (" .. #chaves("marco:12:") .. ")")
+  mudar(12, {}, false)
+  v("c2", #chaves("marco:12:") == 0, "nivel 12 com Redemption: sem marco:12: (" .. #chaves("marco:12:") .. ")")
+  mudar(22, {}, false)
+  v("c3", #chaves("marco:22:") >= 1, "nivel 22: marco:22: (" .. #chaves("marco:22:") .. ")")
+  mudar(23, {}, false)
+  v("c4", #chaves("marco:22:") == 0, "nivel 23: sem marco:22: (" .. #chaves("marco:22:") .. ")")
+
+  -- d. com Cleanse no livro (nivel 42), a macro e editada
+  mudar(42, {}, false)
+  local m42 = macro("cleanse_Mouse")
+  v("d2", m42 and string.find(m42.corpo, "Cleanse", 1, true) ~= nil, "nivel 42: macro cleanse_Mouse com Cleanse: " .. tostring(m42 and plano1(m42.corpo)))
+  local nCl = 0
+  for _, m in ipairs(__macros) do if m.nome == "cleanse_Mouse" then nCl = nCl + 1 end end
+  v("d3", nCl == 1, "editada no lugar: uma so cleanse_Mouse no registro (" .. nCl .. " de " .. #__macros .. " macros)")
+
+  mudar(cfg0.nivel, cfg0.sem, cfg0.furia)
+  return json({ linhas = linhas })
+end
+
+-- Verificacao e: o cacador (rodado sem --classe) nao tem lembrete, marco nem a macro cleanse_Mouse.
+function __cacador()
+  local A = __ns.agora
+  local linhas = {}
+  A.atualizar(); __esvaziar()
+  local n = 0
+  for _, it in ipairs(A.itens() or {}) do
+    local c = tostring(it.chave)
+    if string.sub(c, 1, 9) == "lembrete:" or string.sub(c, 1, 6) == "marco:" then n = n + 1 end
+  end
+  linhas[#linhas + 1] = { id = "e1", ok = n == 0, msg = "cacador: itens lembrete:/marco: = " .. n }
+  local tem = false
+  for _, m in ipairs(__macros) do if m.nome == "cleanse_Mouse" then tem = true end end
+  linhas[#linhas + 1] = { id = "e2", ok = not tem, msg = "cacador: sem macro cleanse_Mouse (macros no registro: " .. #__macros .. ")" }
+  return json({ linhas = linhas })
 end
 
 function __final()
@@ -729,7 +929,7 @@ function pcallLua(nomeFn, ...argv) {
 }
 
 {
-  const pre = to_luastring(PRELUDIO);
+  const pre = to_luastring(CFG_LUA + PRELUDIO);
   let st = lauxlib.luaL_loadbuffer(L, pre, pre.length, to_luastring("=prelude"));
   if (st === 0) st = lua.lua_pcall(L, 0, 0, 0);
   if (st !== 0) {
@@ -753,6 +953,11 @@ for (const nome of arquivos) {
 }
 console.log(`CARGA ${arquivos.length - (falhouCarga ? 1 : 0)} de ${arquivos.length} arquivos do .toc (ver acima se houver falha)`);
 pcallLua("__sequencia");
+if (CASO_FILHO) { // processo filho da verificacao e do --paladino: so confere o cacador e sai
+  const r = pcallLua("__cacador");
+  for (const x of r.linhas) console.log("PAL " + x.id + " " + (x.ok ? "ok   " : "FALHA") + " " + x.msg);
+  process.exit(0);
+}
 
 // ---------- conferencia ----------
 const TIPOS = new Set(["sec", "card", "item", "nota", "vazio", "tabela", "passos", "checklist", "grade", "regua", "perfil", "titulo", "etiquetas", "segs", "duas", "botao"]);
@@ -902,6 +1107,19 @@ if (args.includes("--pular")) {
   console.log(`PULAR falhas=${(pu.falhas || []).length}`);
 }
 
+if (args.includes("--paladino")) {
+  let falhasPal = 0;
+  const mostrar = (ls) => { for (const x of ls) { if (!x.ok) falhasPal++; console.log("PAL " + x.id + " " + (x.ok ? "ok   " : "FALHA") + " " + x.msg); } };
+  try { mostrar(pcallLua("__paladino").linhas); }
+  catch (ex) { falhasPal++; console.log("PAL FALHA cenario: " + String(ex.message).split("\n")[0]); }
+  const filho = spawnSync(process.execPath, [fileURLToPath(import.meta.url), "--filho-cacador", "--macros"], { encoding: "utf8" });
+  const linhasE = (filho.stdout || "").split(/\r?\n/).filter((l) => l.startsWith("PAL e"));
+  if (filho.status !== 0 || linhasE.length < 2) { falhasPal++; console.log("PAL e FALHA processo do cacador saiu " + filho.status + ": " + (filho.stderr || filho.stdout || "").split("\n")[0]); }
+  else for (const l of linhasE) { if (l.includes(" FALHA ")) falhasPal++; console.log(l); }
+  console.log("PALADINO falhas=" + falhasPal);
+  if (falhasPal) problemas.push({ sev: "erro", aba: "paladino", idx: "-", regra: "PALADINO", texto: falhasPal + " verificacao(oes) falharam" });
+}
+
 const fim = pcallLua("__final");
 for (const m of fim.erros) problemas.push({ sev: "aviso", aba: "-", idx: "-", regra: "EVENTO", texto: "erro de Lua em evento ou timer: " + m.split("\n").slice(0, 3).join(" | ") });
 problemas.forEach(conta);
@@ -945,18 +1163,19 @@ mkdirSync(pastaVisual, { recursive: true });
 const dados = {
   gerado: new Date().toISOString(),
   estrito: ESTRITO,
-  personagem: { nome: "Hexumlite Bull", classe: "Hunter", nivel: 16 },
+  personagem: PAL ? { nome: "Ignatius Stonejaw", classe: "Paladin", nivel: NIVEL_CFG } : { nome: "Hexumlite Bull", classe: "Hunter", nivel: 16 },
   entradas: listaEntradas,
   meta: plano.meta,
   blocos: saidaAbas,
 };
-writeFileSync(join(pastaVisual, "real.json"), JSON.stringify(dados, null, 1));
+const sufixo = PAL ? "-PALADIN" : "";
+writeFileSync(join(pastaVisual, "real" + sufixo + ".json"), JSON.stringify(dados, null, 1));
 
 const quadros = readFileSync(join(pastaVisual, "quadros.html"), "utf8");
 const css = (quadros.match(/<style>([\s\S]*?)<\/style>/) || [, ""])[1];
 const embutido = JSON.stringify(dados).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
 const html = MODELO_HTML(css, embutido);
-writeFileSync(join(pastaVisual, "real.html"), html);
+writeFileSync(join(pastaVisual, "real" + sufixo + ".html"), html);
 
 process.exit(falhouCarga ? 2 : erros > 0 ? 1 : 0);
 

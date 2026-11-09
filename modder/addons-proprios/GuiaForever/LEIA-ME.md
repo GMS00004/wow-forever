@@ -1,6 +1,20 @@
 # GuiaForever
 
-Addon próprio do dono, versão 1.2.0 (2026-11-08, tarde: a janela J refeita no estilo do ElvUI, organizada por tipo de informação; ver "O que mudou na 1.2"). Antes: 1.1.0 (2026-11-08, madrugada: guia de habilidades de pet por família, aba Families e seção Next ability upgrades na aba Pet) e 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+Addon próprio do dono, versão 1.3.0 (2026-11-08, noite: o paladino Ignatius Stonejaw, com talentos em opções lado a lado, lembrete de Righteous Fury, marcos de nível e macros; ver "O que mudou na 1.3"). Antes: 1.2.0 (2026-11-08, tarde: a janela J refeita no estilo do ElvUI, organizada por tipo de informação; ver "O que mudou na 1.2"), 1.1.0 (2026-11-08, madrugada: guia de habilidades de pet por família, aba Families e seção Next ability upgrades na aba Pet) e 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+
+## O que mudou na 1.3
+
+Pedido do dono, 2026-11-08, noite: integrar o guia do paladino Ignatius Stonejaw (Human, Protection, tanque da dupla com um warlock) como o do Hexumlite. A única fonte de gameplay é a ficha `..\..\..\comum\personagens\ignatius-stonejaw.md`, com as decisões do dono da mesma noite (Prot no 22, Sanctified Judgement; os 6 pontos livres de Prot e o 53 a 60 abertos). Contrato na seção 12 do `ARQUITETURA.md`. Nada muda para o Hexumlite, o Rurik e o Fingolfin: todo caminho novo só liga com os campos novos nos dados da classe (o banco de prova do caçador saiu idêntico ao de antes).
+
+| Peça | O que faz |
+|---|---|
+| Talentos com opções lado a lado | onde as fontes divergem e o dono não escolheu, o plano guarda uma coluna por opção (A defesa, B mana, C mais mana; do 15 ao 19, B e C na ordem de Improved e Sanctified Judgement). A árvore marca com letras ("A B" dourado no ponto de agora, cinza nos seguintes, check no feito); a faixa do alto diz "Plan now (level N): ..."; a aba Talents ganha "Your pick" com a tabela nível a nível; o painel e o Coming up mostram "Precision 1/3 or Divine Intellect 1/5" |
+| Lembrete de Righteous Fury | linha vermelha no painel quando o Righteous Fury está desligado, conferida só fora de combate (a cada 4 s e ao sair de combate); o botão mostra a tecla (Shift+1); o botão direito esconde até o próximo `/reload` |
+| Marcos de nível | missão de classe do 12 (The Tome of Divinity, Duthorian Rall, catedral de Stormwind, até aprender Redemption) e do 20 (Test of Righteousness e The Tome of Valor), troca para uma mão e escudo no 22, montaria e dual spec no 40; os de missão com botão Arrow |
+| Macros | `strike_Holy` e `judge_Start` com /startattack, `bubble_Cancel` (lança e cancela), `attack_Start`, `bop_Mouse` e `bof_Mouse` (mouseover), criadas no login; `cleanse_Mouse` refeita sozinha: Purify no 8, Cleanse no 42 |
+| Dados | dicas de magia, rotação, armas, atributos e notas do paladino; 8 perguntas na aba Help; mapa de teclas na aba Keys (o layout do caçador, com o conteúdo do paladino) |
+
+Arquivo novo no `.toc`: `Lembretes.lua`. Por isso o jogo precisa ser reiniciado para o lembrete, os marcos e a `cleanse_Mouse`; o resto vale com `/reload`.
 
 ## O que mudou na 1.2
 
@@ -70,6 +84,7 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 | `Teclas.lua` | `GuiaForeverTeclas[CLASSE]`. Desde a 1.0, a lista confere cada tecla contra a barra real e avisa quando o botão está vazio ou o pet ainda não sabe a habilidade |
 | `Rastreador.lua` | rastreador de profissões embaixo do minimapa (fonte 13 na 1.0), "Skin here" no tooltip e a linha do painel quando a profissão trava no teto do treino |
 | `Agora.lua` | o painel Agora e os provedores de talento, de treino de classe (pelo Naowh) e de teclas novas |
+| `Lembretes.lua` | 1.3: provedores de lembrete de buff fora de combate (`lembretes`) e de marcos de nível (`marcos`), e as macros refeitas pela magia conhecida (`GuiaForeverMacros[classe].gerenciadas`) |
 | `Familias.lua` | aba Families e Next ability upgrades (1.1): `ns.petRanks`, `ns.blocosProximosRanks`, `ns.blocosFamilias` |
 | `Pet.lua` | provedor do pet (ausente, fome, comida, missão, treino, autocast do Growl), macro `feed_Pet` e as marcas no treinador de pet |
 | `Arvore.lua` | plano de talentos (`ns.arvore.plano`, `ns.arvore.proximo`) e as marcas na árvore de talentos do Forever |
@@ -77,7 +92,7 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 | `Abas.lua` | construtores das abas (1.2): Now, Pet, Families (repasse), Talents, Combat, Professions e Help, mais `ns.abasEstado` e `ns.abaVisivel` |
 | `Bindings.xml` | a ação `GUIAFOREVER_JANELA` |
 
-Classes com dados: HUNTER (Hexumlite Bull) e SHAMAN (Rurik Thunderfist). O painel, o pet e as marcas são do caçador; as outras classes usam a janela.
+Classes com dados: HUNTER (Hexumlite Bull), SHAMAN (Rurik Thunderfist) e, desde a 1.3, PALADIN (Ignatius Stonejaw). O pet é do caçador; o painel, as marcas na árvore, as teclas e as macros valem para o caçador e o paladino; o xamã usa a janela.
 
 ## No jogo
 
@@ -130,7 +145,8 @@ A linha "Skinning: needs N" do tooltip e a seção da zona na aba Professions us
    - `node checar-dicas.mjs ..\..\addons-proprios\GuiaForever\Dicas.lua` e `node checar-ajuda.mjs ..\..\addons-proprios\GuiaForever\Ajuda.lua`: esquema dos dados.
    - `node checar-combate.mjs ..\..\addons-proprios\GuiaForever --toc`: chamada protegida sem guarda de combate, API que vira secreta, função ou evento que não existe no Forever, template inexistente, chamada proibida (compra, magia, gastar ponto) e `.toc` diferente dos arquivos.
    - `node rodar-casos.mjs` e `node rodar-casos-combate.mjs`: os casos de teste dos checadores.
-   - `node rodar-janela.mjs --estrito --abrir --desenhar` (1.2): roda o addon fora do jogo no fengari, num estado fixo (caçador 16, javali 16), monta cada aba e sub-aba, confere os blocos contra a seção 11 do `ARQUITETURA.md` (tipos, campos, fonte na tela, códigos de texto, tamanho), abre a janela e passa tudo pelo desenhista; `--pular` roda o cenário do treino pulado; `RESUMO erros=0` é o pronto. Ele grava `ferramentasguiaisualeal.html`, e `node visualenderizar.mjs --html real.html agora pet` fotografa as abas em `visualpngeal-*.png` (prévia aproximada; quem desenha no jogo é o `Visual.lua`).
+   - `node rodar-janela.mjs --estrito --abrir --desenhar` (1.2): roda o addon fora do jogo no fengari, num estado fixo (caçador 16, javali 16), monta cada aba e sub-aba, confere os blocos contra a seção 11 do `ARQUITETURA.md` (tipos, campos, fonte na tela, códigos de texto, tamanho), abre a janela e passa tudo pelo desenhista; `--pular` roda o cenário do treino pulado; `RESUMO erros=0` é o pronto. Ele grava `ferramentas\guia\visual\real.html`, e `node visual\renderizar.mjs --html real.html agora pet` fotografa as abas em `visual\png\real-*.png` (prévia aproximada; quem desenha no jogo é o `Visual.lua`).
+   - `node rodar-janela.mjs --classe PALADIN --estrito --abrir --desenhar --paladino` (1.3): o mesmo banco como o Ignatius (Human, nível 27, 1 ponto livre, sem pet; `--nivel`, `--livres`, `--com-furia` e `--sem "<magia>"` mudam o estado). O `--paladino` confere as opções lado a lado, o lembrete de Righteous Fury (some com o buff e volta sem ele), os marcos do 12 e do 22, a `cleanse_Mouse` (Purify no 27, Cleanse no 42) e, num processo filho, que o caçador não ganha nada disso; `PALADINO falhas=0` é o pronto. Grava `visual\real-PALADIN.json` e `.html` (o `real.json` continua do caçador).
 3. Função nova do cliente: confira nas listas de `api-forever\` e, para a assinatura, no espelho `Ketho/wow-ui-source-forever`; o caminho está em `..\..\..\comum\referencia\api-forever.md`, seções 3 e 3e.
 4. Mudou só `.lua` que já existia: `/reload`. Arquivo novo ou `.toc` mudado: reiniciar o jogo.
 5. Guia de pets (1.1), a partir de `modder\ferramentas\guia\pets\` (o cache fica em `cache\`, fora do git):
@@ -142,6 +158,8 @@ A linha "Skinning: needs N" do tooltip e a seção da zona na aba Professions us
    Depois, `checar-lua.mjs` e `checar-combate.mjs` na pasta do addon, e `/reload` no jogo (o `PetGuia.lua` já está no `.toc`).
 
 ## Pendente
+
+**Teste da 1.3 no jogo (paladino).** Sair e entrar no jogo (arquivo novo no `.toc`). Depois, no Ignatius: `/uif bars` uma vez (UIForever 0.7.0) e conferir os botões; painel Now (os marcos aparecem no 12, 20, 22 e 40; o lembrete de Righteous Fury, a partir do 10); macros na janela de macro (`/macro`, aba do personagem); J > Talents com "Your pick" quando chegar ao 15; a árvore com as letras A, B e C; BugSack sem erro do GuiaForever nem do UIForever. A conferir no jogo: o `GetAuraDataBySpellName` fora de combate, a macro que entra no botão só quando a magia dela é aprendida (`espera`, UIForever 0.7.0) e o ícone `Ability_MeleeDamage` da `attack_Start`.
 
 **Teste da 1.2 no jogo.** Reiniciar o jogo (dois arquivos novos no `.toc`). Depois: J abre a janela nova; trocar de aba e de sub-aba; arrastar a alça do canto; Families com o javali marcado e a régua; Combat > Keys com a grade; Professions > Mine com o roteiro de Leatherworking; buscar "boar"; Esc fecha; BugSack sem erro do GuiaForever. A conferir no jogo: as texturas de estado (marca, x, cadeado), a skin do ElvUI nos controles, o retrato do pet e os ícones de talento por `C_Traits`.
 

@@ -19,20 +19,80 @@ local function lerEntrada(texto)
   return { nome = texto, texto = texto }
 end
 
--- [nivel] = entrada, a partir de GuiaForeverDados[classe].ordem.
+local function dadosClasse()
+  local classe = (ns.estado and ns.estado.classe) or (ns.classe and ns.classe())
+  return classe and GuiaForeverDados and GuiaForeverDados[classe] or nil
+end
+
+-- Lista de decisoes com opcoes lado a lado (ARQUITETURA.md, 12.1); {} quando a classe nao tem.
+function A.decisoes()
+  local dados = dadosClasse()
+  if dados and type(dados.opcoes) == "table" then return dados.opcoes end
+  return {}
+end
+
+-- [nivel] = entrada, a partir de GuiaForeverDados[classe].ordem. Num nivel "TBD" que pertence a uma
+-- decisao de opcoes, a entrada leva as colunas:
+-- { tbd, decisao, decisaoS, opcoes = { { id, s, sub, nome, rank, max, texto } } }.
 function A.plano()
   local plano = {}
-  local classe = (ns.estado and ns.estado.classe) or (ns.classe and ns.classe())
-  local dados = classe and GuiaForeverDados and GuiaForeverDados[classe]
+  local dados = dadosClasse()
   local ordem = dados and dados.ordem
   if type(ordem) ~= "table" then return plano end
+  local deNivel = {}
+  if type(dados.opcoes) == "table" then
+    for _, d in ipairs(dados.opcoes) do
+      for nivel in pairs(d.niveis or {}) do deNivel[nivel] = d end
+    end
+  end
   for nivel, texto in pairs(ordem) do
     if type(nivel) == "number" then
       local e = lerEntrada(texto)
-      if e then plano[nivel] = e end
+      if e then
+        local d = e.tbd and deNivel[nivel]
+        if d then
+          e.decisao, e.decisaoS, e.opcoes = d.id, d.s, {}
+          for _, c in ipairs(d.colunas or {}) do
+            local t = d.niveis[nivel][c.id]
+            local x = t and lerEntrada(t)
+            if x and not x.tbd then
+              x.id, x.s, x.sub = c.id, c.s, c.sub
+              e.opcoes[#e.opcoes + 1] = x
+            end
+          end
+        end
+        plano[nivel] = e
+      end
     end
   end
   return plano
+end
+
+local function cortarTxt(t, max)
+  if string.len(t) <= max then return t end
+  return string.sub(t, 1, max - 3) .. "..."
+end
+
+-- Resumo de uma entrada com opcoes: s ("X or Y"), sub ("A, B: X / C: Y", ate 80) e dica (lista).
+-- Sem opcoes, nil.
+function A.resumoOpcoes(e)
+  if type(e) ~= "table" or type(e.opcoes) ~= "table" or #e.opcoes == 0 then return nil end
+  local textos, letras = {}, {}
+  for _, o in ipairs(e.opcoes) do
+    local t = o.texto or o.nome
+    if t then
+      if not letras[t] then letras[t] = {}; textos[#textos + 1] = t end
+      table.insert(letras[t], tostring(o.id))
+    end
+  end
+  if #textos == 0 then return nil end
+  local partes = {}
+  for _, t in ipairs(textos) do partes[#partes + 1] = table.concat(letras[t], ", ") .. ": " .. t end
+  local dica = { "Your pick: " .. tostring(e.decisaoS or "") }
+  for _, o in ipairs(e.opcoes) do
+    dica[#dica + 1] = tostring(o.id) .. (o.s and (" (" .. o.s .. ")") or "") .. ": " .. tostring(o.texto or o.nome)
+  end
+  return table.concat(textos, " or "), cortarTxt(table.concat(partes, " / "), 80), dica
 end
 
 -- O proximo ponto a gastar: gastos = (nivel - 9) - pontos livres; a entrada e a do nivel 10 + gastos.
@@ -112,9 +172,38 @@ local function grupos(plano)
   return g
 end
 
-local function dadosClasse()
-  local classe = (ns.estado and ns.estado.classe) or (ns.classe and ns.classe())
-  return classe and GuiaForeverDados and GuiaForeverDados[classe] or nil
+-- chave minuscula do talento -> { max, cols = { { id, s, entradas = { { nivel, rank, max } } } } }
+-- (as opcoes, por coluna).
+local function indiceOpcoes(dados)
+  local idx = {}
+  for _, d in ipairs(dados.opcoes or {}) do
+    local niveis = {}
+    for nivel in pairs(d.niveis or {}) do niveis[#niveis + 1] = nivel end
+    table.sort(niveis)
+    for _, nivel in ipairs(niveis) do
+      for _, c in ipairs(d.colunas or {}) do
+        local t = d.niveis[nivel][c.id]
+        local x = t and lerEntrada(t)
+        if x and x.nome and not x.tbd then
+          local k = minuscula(x.nome)
+          local no = idx[k]
+          if not no then no = { max = 0, cols = {}, porId = {} }; idx[k] = no end
+          local col = no.porId[c.id]
+          if not col then
+            col = { id = c.id, s = c.s, entradas = {} }
+            no.porId[c.id] = col
+            no.cols[#no.cols + 1] = col
+          end
+          col.entradas[#col.entradas + 1] = { nivel = nivel, rank = x.rank, max = x.max }
+          if (x.rank or 1) > no.max then no.max = x.rank or 1 end
+        end
+      end
+    end
+  end
+  for _, no in pairs(idx) do
+    table.sort(no.cols, function(a, b) return tostring(a.id) < tostring(b.id) end)
+  end
+  return idx
 end
 
 -- Nomes do talento de um no (entrada ativa ou primeira; nome da magia e nome proprio) e rank atual.
@@ -147,7 +236,7 @@ local function obterMarca(botao)
   local m = marcas[botao]
   if m then return m end
   local q = CreateFrame("Frame", nil, botao)
-  q:SetSize(40, 16)
+  q:SetSize(56, 16)
   q:SetPoint("TOPRIGHT", botao, "TOPRIGHT", 6, 6)
   q:SetFrameLevel((botao:GetFrameLevel() or 1) + 20)
   local t = q:CreateFontString(nil, "OVERLAY")
@@ -190,9 +279,13 @@ local function talentos()
   return pv and pv.TalentsFrame or nil
 end
 
--- Texto da faixa; nil quando nao ha plano.
+-- Texto da faixa; nil quando nao ha plano. Segundo valor: true no caso de opcoes (faixa mais larga).
 local function textoFaixa(plano, prox)
   if prox then
+    if prox.opcoes then
+      local _, sub = A.resumoOpcoes(prox)
+      if sub then return "Plan now (level " .. prox.nivel .. "): " .. sub, true end
+    end
     local agora = prox.tbd and "your pick (sources differ)" or prox.texto
     local fim = "Plan: " .. tostring(agora) .. " now"
     local niveis = {}
@@ -227,8 +320,9 @@ local function atualizarFaixa(quadro, plano, prox)
     faixa.texto:SetPoint("CENTER", faixa, "CENTER", 0, 0)
     faixa.texto:SetTextColor(COR_NOW[1], COR_NOW[2], COR_NOW[3])
   end
-  local t = textoFaixa(plano, prox)
+  local t, largo = textoFaixa(plano, prox)
   if t then
+    faixa:SetWidth(largo and 640 or 420)
     faixa.texto:SetText(t)
     faixa:Show()
   else
@@ -259,6 +353,51 @@ local function enganchar(botao)
   botao:HookScript("OnEnter", function(self) seguro(aoEntrar, self) end)
 end
 
+-- Marcas dos nos que estao nas opcoes lado a lado. Devolve true quando marcou.
+local function marcarOpcao(botao, info, op, ctx, d)
+  if info.rank >= op.max then
+    mostrarCheck(botao)
+    return true
+  end
+  local agora, letrasAgora, rotulos = {}, {}, {}
+  local prox = ctx.prox
+  if prox and prox.opcoes then
+    for _, o in ipairs(prox.opcoes) do
+      for _, n in ipairs(info.nomes) do
+        if minuscula(n) == minuscula(o.nome) then agora[o.id] = true end
+      end
+    end
+  end
+  for _, col in ipairs(op.cols) do
+    if agora[col.id] then
+      letrasAgora[#letrasAgora + 1] = tostring(col.id)
+      rotulos[#rotulos + 1] = tostring(col.id) .. (col.s and (" " .. col.s) or "")
+    end
+  end
+  if #letrasAgora > 0 then
+    local _, sub = A.resumoOpcoes(prox)
+    d.plano = "Now, level " .. prox.nivel .. ": " .. tostring(sub)
+    d.aberto = table.concat(rotulos, ", ")
+    mostrarTexto(botao, table.concat(letrasAgora, " "), COR_NOW)
+    return true
+  end
+  local letras, partes = {}, {}
+  for _, col in ipairs(op.cols) do
+    local niveis = {}
+    for _, e in ipairs(col.entradas) do
+      if (e.rank or 1) > info.rank then niveis[#niveis + 1] = e.nivel end
+    end
+    if #niveis > 0 then
+      letras[#letras + 1] = tostring(col.id)
+      partes[#partes + 1] = tostring(col.id) .. " " .. formatarNiveis(niveis)
+    end
+  end
+  if #letras == 0 then return false end
+  d.plano = "Options: " .. table.concat(partes, ", ")
+  mostrarTexto(botao, table.concat(letras, " "), COR_NIVEL)
+  return true
+end
+
 local function marcarBotao(botao, cfg, ctx)
   local id = botao.GetNodeID and botao:GetNodeID()
   if not id then return end
@@ -280,11 +419,23 @@ local function marcarBotao(botao, cfg, ctx)
     d.aberto = "Sources differ: " .. txt
   end
 
+  local op
+  if ctx.op then
+    for _, n in ipairs(info.nomes) do
+      local k = minuscula(n)
+      if not op and k and ctx.op[k] then op = ctx.op[k] end
+    end
+  end
+
   if grupo then
     local pend, ultimo = {}, grupo.entradas[#grupo.entradas]
     for _, e in ipairs(grupo.entradas) do
       local feito = (e.rank and info.rank >= e.rank) or (not e.rank and info.rank >= 1)
       if not feito then pend[#pend + 1] = e end
+    end
+    -- lei feita e opcao pendente com rank maior (Reckoning 5/5): vale a marca das opcoes
+    if #pend == 0 and op and info.rank < op.max and marcarOpcao(botao, info, op, ctx, d) then
+      return
     end
     if #pend > 0 then
       local p = pend[1]
@@ -308,6 +459,8 @@ local function marcarBotao(botao, cfg, ctx)
       for _, e in ipairs(pend) do niveis[#niveis + 1] = e.nivel end
       mostrarTexto(botao, formatarNiveis(niveis), COR_NIVEL)
     end
+  elseif op and marcarOpcao(botao, info, op, ctx, d) then
+    return
   elseif ab then
     mostrarTexto(botao, "?", COR_ABERTO)
   elseif ctx.temTbd then
@@ -345,6 +498,10 @@ local function atualizar()
     if a.ponto then ctx.abertos[minuscula(a.ponto)] = a end
   end
   ctx.nomeProx = prox and prox.nome and minuscula(prox.nome) or nil
+  if type(dados.opcoes) == "table" then
+    ctx.op = indiceOpcoes(dados)
+    ctx.prox = prox
+  end
 
   for botao in quadro:EnumerateAllTalentButtons() do
     seguro(marcarBotao, botao, cfg, ctx)

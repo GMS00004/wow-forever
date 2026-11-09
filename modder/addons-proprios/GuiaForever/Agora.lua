@@ -459,7 +459,25 @@ A.provedor{
     local p = ns.arvore and ns.arvore.proximo and ns.arvore.proximo()
     if not p then return {} end
     local texto, dica
-    if p.tbd then
+    local rs, rdica
+    if p.opcoes and ns.arvore and ns.arvore.resumoOpcoes then
+      local ok, a, _, c = pcall(ns.arvore.resumoOpcoes, p)
+      if ok then rs, rdica = a, c end
+    end
+    if rs then
+      texto = "Talent point: " .. rs
+      dica = {}
+      for i, ln in ipairs(rdica or {}) do dica[i] = ln end
+      local letras = {}
+      for _, o in ipairs(p.opcoes) do letras[#letras + 1] = tostring(o.id) end
+      local junto
+      if #letras > 1 then
+        junto = table.concat(letras, ", ", 1, #letras - 1) .. " and " .. letras[#letras]
+      else
+        junto = letras[1] or ""
+      end
+      dica[#dica + 1] = "Compare " .. junto .. " in the Talents tab (J)."
+    elseif p.tbd then
       texto = "Talent point: your pick, sources differ"
       dica = { "Your plan has no fixed pick for level " .. p.nivel .. " yet.", "Open the Talents tab (J) for the sources." }
     else

@@ -6,7 +6,8 @@ import { readFileSync } from 'node:fs';
 const require = createRequire(import.meta.url);
 const luaparse = require('luaparse'); // instale uma vez: npm install, nesta pasta
 
-const CLASSES = ['HUNTER', 'SHAMAN'];
+const CLASSES = ['HUNTER', 'SHAMAN', 'PALADIN']; // classes permitidas
+const OBRIGATORIAS = ['HUNTER', 'SHAMAN']; // PALADIN e permitida, nao obrigatoria (tarefa T1)
 const LISTAS = ['magias', 'armas', 'pets', 'rotacao', 'atributos', 'notas'];
 const CAMPOS = {
   magias: ['nivel', 'texto', 'fonte'],
@@ -17,12 +18,18 @@ const CAMPOS = {
   notas: ['texto', 'fonte'],
   // v2: lista por classe, com as mesmas regras de nivel das outras listas por nivel
   petTreino: ['de', 'ate', 'habilidade', 'texto', 'fonte'],
+  // marcos e lembretes (ARQUITETURA.md 12.4): listas opcionais por classe
+  marcos: ['nivel', 'texto', 'fonte'],
+  lembretes: ['nivel', 'magia', 'texto', 'fonte'],
 };
 // Campos opcionais (v2, ARQUITETURA.md secao 7): aceitos em toda entrada das listas de LISTAS;
 // "magia" e "id" (id de magia do cliente, para o icone; ARQUITETURA.md 11.6) so em magias;
 // petTreino nao tem opcionais.
 const OPCIONAIS = ['tags', 'raca', 'zona', 'requer', 'prio'];
 const TAGS = ['pvp', 'grupo', 'fimdejogo', 'escolhapet'];
+// campos opcionais de marcos (ARQUITETURA.md 12.4) e de lembretes
+const OPCIONAIS_MARCOS = ['ate', 'id', 'magia', 'missao', 'npc', 'mapa', 'x', 'y', 'tags', 'raca'];
+const OPCIONAIS_LEMBRETES = ['id'];
 const FONTES = [
   'Method',
   'DoubleZug',
@@ -35,9 +42,16 @@ const FONTES = [
   'leak',
   'Saltii', // guia de pets do Saltii (comum\fontes\builds\saltii-hunter-pets.md), 2026-11-08
   'you', // decisao do proprio dono (ficha), como nas teclas (Teclas.lua, f = "you")
+  'Perfect Gaming Weather', // fontes do Ignatius Stonejaw (comum\fontes\builds\), 2026-11-08 (tarefa T1)
+  'Deadmanfred',
+  'Jurdi',
+  'DwarfLord (beta)',
+  'Blizzard', // nota oficial de 03/11 (ficha do Ignatius Stonejaw)
 ];
 const permitidos = (lista) => {
   if (lista === 'petTreino') return CAMPOS[lista];
+  if (lista === 'marcos') return [...CAMPOS[lista], ...OPCIONAIS_MARCOS];
+  if (lista === 'lembretes') return [...CAMPOS[lista], ...OPCIONAIS_LEMBRETES];
   return [...CAMPOS[lista], ...OPCIONAIS, ...(lista === 'magias' ? ['magia', 'id'] : [])];
 };
 const TEXTO_MAX = 160;
@@ -55,7 +69,8 @@ function sair(resultadoOk, contagens) {
   if (problemas.length === 0) {
     console.log('ok');
     for (const [classe, c] of Object.entries(contagens)) {
-      const listas = c.petTreino !== undefined ? [...LISTAS, 'petTreino'] : LISTAS;
+      const extras = ['petTreino', 'marcos', 'lembretes'].filter((l) => c[l] !== undefined);
+      const listas = [...LISTAS, ...extras];
       console.log(`${classe}: ${listas.map((l) => `${l} ${c[l]}`).join(', ')}`);
     }
     process.exit(0);
@@ -130,7 +145,7 @@ for (const campo of atrib.init[0].fields) {
   const nome = nomeChave(campo);
   const onde = `linha ${campo.loc.start.line}`;
   if (nome === null) {
-    erro(onde, 'item sem chave (esperado HUNTER ou SHAMAN)');
+    erro(onde, 'item sem chave (esperado HUNTER, SHAMAN ou PALADIN)');
     continue;
   }
   if (!CLASSES.includes(nome)) {
@@ -143,7 +158,7 @@ for (const campo of atrib.init[0].fields) {
   }
   topo[nome] = campo.value;
 }
-for (const classe of CLASSES) {
+for (const classe of OBRIGATORIAS) {
   if (!topo[classe]) erro('GuiaForeverDicas', `falta a classe ${classe}`);
 }
 
@@ -151,6 +166,12 @@ const inteiroEntre = (node, min, max) => {
   if (!node || node.type !== 'NumericLiteral') return null;
   const v = node.value;
   return Number.isInteger(v) && v >= min && v <= max ? v : null;
+};
+// numero (inteiro ou nao) entre min e max, para x e y de marcos
+const numeroEntre = (node, min, max) => {
+  if (!node || node.type !== 'NumericLiteral') return null;
+  const v = node.value;
+  return v >= min && v <= max ? v : null;
 };
 
 function checarEntrada(onde, node, lista) {
@@ -222,7 +243,7 @@ function checarEntrada(onde, node, lista) {
   const pr = campos.prio;
   if (pr && inteiroEntre(pr, 1, 3) === null) erro(onde, 'prio deve ser inteiro de 1 a 3');
   // texto livre nao vazio
-  for (const nome of ['raca', 'zona', 'requer', 'magia']) {
+  for (const nome of ['raca', 'zona', 'requer', 'magia', 'npc']) {
     const v = campos[nome];
     if (v && (v.type !== 'StringLiteral' || v.value.trim() === '')) erro(onde, `${nome} deve ser texto nao vazio`);
   }
@@ -268,6 +289,22 @@ const contarLista = (classe, lista, node) => {
         if (anterior !== null && de < anterior) erro(onde, `de ${de} fora de ordem (anterior ${anterior})`);
         anterior = de;
       }
+    } else if (lista === 'marcos') {
+      // nivel e ate de 1 a 60, ate >= nivel; mapa inteiro; x e y entre 0 e 1 (ARQUITETURA.md 12.4)
+      const nv = inteiroEntre(campos.nivel, 1, 60);
+      if (campos.nivel && nv === null) erro(onde, 'nivel deve ser inteiro de 1 a 60');
+      const at = inteiroEntre(campos.ate, 1, 60);
+      if (campos.ate && at === null) erro(onde, 'ate deve ser inteiro de 1 a 60');
+      if (nv !== null && at !== null && at < nv) erro(onde, `ate (${at}) menor que nivel (${nv})`);
+      if (campos.mapa && inteiroEntre(campos.mapa, 0, 99999) === null) erro(onde, 'mapa deve ser inteiro');
+      for (const eixo of ['x', 'y']) {
+        if (campos[eixo] && numeroEntre(campos[eixo], 0, 1) === null) erro(onde, `${eixo} deve ser numero de 0 a 1`);
+      }
+      if (campos.id && inteiroEntre(campos.id, 1, 99999999) === null) erro(onde, 'id deve ser inteiro positivo');
+    } else if (lista === 'lembretes') {
+      const nv = inteiroEntre(campos.nivel, 1, 60);
+      if (campos.nivel && nv === null) erro(onde, 'nivel deve ser inteiro de 1 a 60');
+      if (campos.id && inteiroEntre(campos.id, 1, 99999999) === null) erro(onde, 'id deve ser inteiro positivo');
     }
   });
   contagens[classe] = contagens[classe] || {};
@@ -310,6 +347,8 @@ for (const classe of CLASSES) {
   }
   // petTreino (opcional por classe); se existir, nao pode ser vazia
   if ('petTreino' in campos) contarLista(classe, 'petTreino', campos.petTreino);
+  if ('marcos' in campos) contarLista(classe, 'marcos', campos.marcos);
+  if ('lembretes' in campos) contarLista(classe, 'lembretes', campos.lembretes);
 }
 
 sair(true, contagens);

@@ -1,6 +1,8 @@
 // Checador estatico de combate e de API para addons do WoW Forever (Lua 5.1, sem interpretador).
 // Uso: node checar-combate.mjs <pasta do addon> [--toc] [--prefixos A,B]
 // Regras R1..R9 e --toc: ver ARQUITETURA.md (secoes 1 e 2) e o cabecalho de cada regra abaixo.
+// R2 (API secreta, todo C_UnitAuras.*) tem uma excecao unica, a da secao 12.4: GetAuraDataBySpellName e GetPlayerAuraBySpellID
+// numa funcao com a guarda do R1 que chama issecretvalue.
 import { createRequire } from 'node:module';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -213,6 +215,16 @@ function guardaExistencia(texto, chamada, pais) {
   return false;
 }
 
+// Excecao unica do R2 (ARQUITETURA.md 12.4): leitura de aura do jogador fora de combate, numa funcao com a guarda do R1
+// que tambem chama issecretvalue.
+const AURAS_EXCECAO = new Set(['C_UnitAuras.GetAuraDataBySpellName', 'C_UnitAuras.GetPlayerAuraBySpellID']);
+function excecaoAura(ast, no, pais) {
+  if (!guardaR1(ast, no, pais)) return false;
+  const g = funcaoGuardadora(pais);
+  const corpo = g.f ? g.f.body : ast.body;
+  return contem(corpo, x => ehCall(x) && (caminho(x.base) || {}).texto === 'issecretvalue');
+}
+
 // ---------- analise ----------
 for (const { arq, ast } of asts) {
   const R = (nivel, no, regra, msg) => reporta(nivel, arq, no.loc.start.line, regra, msg);
@@ -273,7 +285,9 @@ for (const { arq, ast } of asts) {
       if (((u.cam.global && PROTEGIDAS.has(t)) || ehSetAttr) && !guardaR1(ast, usoNo, pais))
         R('ERRO', usoNo, 'R1', `chamada protegida sem guarda de combate: ${t}`);
       if (u.cam.global) {
-        if (SECRETAS.has(t) || t.startsWith('C_UnitAuras.')) R('ERRO', usoNo, 'R2', `API que devolve valor secreto: ${t}`);
+        if (SECRETAS.has(t) || t.startsWith('C_UnitAuras.')) {
+          if (!(AURAS_EXCECAO.has(t) && excecaoAura(ast, usoNo, pais))) R('ERRO', usoNo, 'R2', `API que devolve valor secreto: ${t}`);
+        }
         if (PROIBIDAS.has(t)) R('ERRO', usoNo, 'R9', `chamada proibida pelo contrato: ${t}`);
       }
     }

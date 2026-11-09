@@ -113,6 +113,107 @@ GuiaForeverDados = {
       [60] = "Flurry 3/5 (and respec at 60)",
     },
   },
+
+  -- Ignatius Stonejaw (Protection, tanque da dupla). Fonte: comum\personagens\ignatius-stonejaw.md,
+  -- secoes "Lei" e "As tres ordens, nivel a nivel" (2026-11-08), com as decisoes do dono da mesma
+  -- noite: Prot no 22 (decisao 1) e Sanctified Judgement 3/3 (decisao 2). A decisao 3 (os 6 pontos
+  -- livres de Prot ate o 52) e a 4 (53 a 60) estao abertas. Colunas: A = Perfect Gaming Weather,
+  -- B = Deadmanfred, C = Jurdi (Method); a janela nunca mostra o nome da fonte (ARQUITETURA.md C1).
+  -- Nomes conferidos no SpellName do cliente (wago.tools, build 1.60.1.70862) em 2026-11-08.
+  PALADIN = {
+    personagem = "Ignatius Stonejaw",
+    ordem = {
+      [10] = "Benediction 1/5",
+      [11] = "Benediction 2/5",
+      [12] = "Benediction 3/5",
+      [13] = "Benediction 4/5",
+      [14] = "Benediction 5/5",
+      [15] = "TBD", [16] = "TBD", [17] = "TBD", [18] = "TBD", [19] = "TBD",  -- opcoes "ret" (B ou C)
+      [20] = "Pursuit of Justice 1/2",
+      [21] = "Pursuit of Justice 2/2",
+      [22] = "Redoubt 1/5",
+      [23] = "Redoubt 2/5",
+      [24] = "Redoubt 3/5",
+      [25] = "Redoubt 4/5",
+      [26] = "Redoubt 5/5",
+      [27] = "TBD", [28] = "TBD", [29] = "TBD", [30] = "TBD", [31] = "TBD",  -- opcoes "prot" (A, B ou C)
+      [32] = "TBD", [33] = "TBD", [34] = "TBD", [35] = "TBD", [36] = "TBD",
+      [37] = "TBD", [38] = "TBD", [39] = "TBD", [40] = "TBD", [41] = "TBD",
+      [42] = "Holy Shield 1/1",
+      [43] = "Reckoning 1/5",
+      [44] = "Reckoning 2/5",
+      [45] = "Reckoning 3/5",
+      [46] = "Reckoning 4/5",
+      [47] = "TBD", [48] = "TBD", [49] = "TBD", [50] = "TBD", [51] = "TBD",  -- opcoes "prot"
+      [52] = "Shieldsworn 1/1",
+      [53] = "TBD", [54] = "TBD", [55] = "TBD", [56] = "TBD",                 -- decisao 4, aberta
+      [57] = "TBD", [58] = "TBD", [59] = "TBD", [60] = "TBD",
+    },
+    lei = {
+      "Benediction 5/5 from 10 to 14 (Retribution)",
+      "Improved Judgement 2/2 and Sanctified Judgement 3/3 from 15 to 19",
+      "Pursuit of Justice 2/2 at 20 and 21",
+      "Redoubt 5/5 from 22: Protection starts here, with a one-hander and shield",
+      "Precision 3/3, Shield Specialization 2/2, Templar's Bulwark, Swift Judgement and Improved Righteous Fury 3/3 from 27 to 41",
+      "Holy Shield at 42",
+      "Reckoning 5/5 and Iron Creed 3/3 from 43 to 50",
+      "Shieldsworn at 52 (31 points in Protection)",
+    },
+    aberto = {
+      { ponto = "The 6 free Protection points (27 to 51)",
+        opcoes = { "A, defense: Sacred Duty 2, Toughness 2, Anticipation 2",
+                   "B, mana: Sacred Duty 2, Divine Intellect 4",
+                   "C, more mana: Divine Intellect 5, Toughness 1" } },
+      { ponto = "From 53 to 60",
+        opcoes = { "A: Anticipation 5/5, Sanctified Judgement 3/3, Sacred Arbiter, Toughness 3/5",
+                   "B: Conviction 3/3, Sacred Arbiter and 4 free points (Divine Intellect and Toughness, or Deflection)",
+                   "C: respec into an endgame build at 60" } },
+    },
+    -- Opcoes lado a lado (ARQUITETURA.md secao 12.1): cada nivel "TBD" acima com uma decisao aqui
+    -- mostra as colunas lado a lado ate o dono escolher. Rank = o ponto daquele nivel.
+    opcoes = {
+      { id = "ret", s = "Order from 15 to 19",
+        colunas = {
+          { id = "B", s = "Improved Judgement first" },
+          { id = "C", s = "Sanctified Judgement first" },
+        },
+        niveis = {
+          [15] = { B = "Improved Judgement 1/2", C = "Sanctified Judgement 1/3" },
+          [16] = { B = "Improved Judgement 2/2", C = "Sanctified Judgement 2/3" },
+          [17] = { B = "Sanctified Judgement 1/3", C = "Sanctified Judgement 3/3" },
+          [18] = { B = "Sanctified Judgement 2/3", C = "Improved Judgement 1/2" },
+          [19] = { B = "Sanctified Judgement 3/3", C = "Improved Judgement 2/2" },
+        } },
+      { id = "prot", s = "6 free Protection points",
+        colunas = {
+          { id = "A", s = "Defense", sub = "Sacred Duty 2, Toughness 2, Anticipation 2" },
+          { id = "B", s = "Mana", sub = "Sacred Duty 2, Divine Intellect 4" },
+          { id = "C", s = "More mana", sub = "Divine Intellect 5, Toughness 1" },
+        },
+        niveis = {
+          [27] = { A = "Precision 1/3", B = "Precision 1/3", C = "Divine Intellect 1/5" },
+          [28] = { A = "Precision 2/3", B = "Precision 2/3", C = "Divine Intellect 2/5" },
+          [29] = { A = "Precision 3/3", B = "Precision 3/3", C = "Divine Intellect 3/5" },
+          [30] = { A = "Sacred Duty 1/2", B = "Sacred Duty 1/2", C = "Divine Intellect 4/5" },
+          [31] = { A = "Sacred Duty 2/2", B = "Sacred Duty 2/2", C = "Divine Intellect 5/5" },
+          [32] = { A = "Shield Specialization 1/2", B = "Templar's Bulwark 1/1", C = "Precision 1/3" },
+          [33] = { A = "Shield Specialization 2/2", B = "Shield Specialization 1/2", C = "Precision 2/3" },
+          [34] = { A = "Templar's Bulwark 1/1", B = "Shield Specialization 2/2", C = "Precision 3/3" },
+          [35] = { A = "Toughness 1/5", B = "Divine Intellect 1/5", C = "Shield Specialization 1/2" },
+          [36] = { A = "Toughness 2/5", B = "Divine Intellect 2/5", C = "Shield Specialization 2/2" },
+          [37] = { A = "Swift Judgement 1/1", B = "Swift Judgement 1/1", C = "Improved Righteous Fury 1/3" },
+          [38] = { A = "Improved Righteous Fury 1/3", B = "Improved Righteous Fury 1/3", C = "Improved Righteous Fury 2/3" },
+          [39] = { A = "Improved Righteous Fury 2/3", B = "Improved Righteous Fury 2/3", C = "Improved Righteous Fury 3/3" },
+          [40] = { A = "Improved Righteous Fury 3/3", B = "Improved Righteous Fury 3/3", C = "Templar's Bulwark 1/1" },
+          [41] = { A = "Anticipation 1/5", B = "Divine Intellect 3/5", C = "Swift Judgement 1/1" },
+          [47] = { A = "Reckoning 5/5", B = "Iron Creed 1/3", C = "Reckoning 5/5" },
+          [48] = { A = "Iron Creed 1/3", B = "Iron Creed 2/3", C = "Iron Creed 1/3" },
+          [49] = { A = "Iron Creed 2/3", B = "Iron Creed 3/3", C = "Iron Creed 2/3" },
+          [50] = { A = "Iron Creed 3/3", B = "Reckoning 5/5", C = "Iron Creed 3/3" },
+          [51] = { A = "Anticipation 2/5", B = "Divine Intellect 4/5", C = "Toughness 1/5" },
+        } },
+    },
+  },
 }
 
 -- Macros do personagem, criadas no login de cada personagem da classe quando a
@@ -178,6 +279,39 @@ GuiaForeverMacros = {
         corpo = "#showtooltip\n/petattack\n/castsequence reset=target Hunter's Mark, null\n/cast Concussive Shot" },
     },
   },
+
+  -- Ignatius Stonejaw. Fonte: comum\personagens\ignatius-stonejaw.md, secao "Macros" (2026-11-08):
+  -- lei do Jurdi e do Deadmanfred (/startattack no Holy Strike e no Judgement, bolha que lanca e
+  -- cancela; texto do Libram do Jurdi nas duas primeiras e na bolha); tecla so de ataque e
+  -- /cancelaura na Blessing of Protection (Deadmanfred); mouseover (Jurdi). Botoes e teclas:
+  -- UIForever\Config.lua, barras.PALADIN (layout aprovado pelo dono em 2026-11-08, noite).
+  -- A bolha e a BoP: o /cancelaura roda antes de a aura chegar, entao o 1o aperto lanca e o 2o
+  -- tira (o Jurdi avisa: apertar duas vezes tira a bolha).
+  PALADIN = {
+    versao = 1,
+    fonte = "Jurdi and Deadmanfred",
+    lista = {
+      { nome = "strike_Holy", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Holy Strike\n/startattack\n/cast Holy Strike" },
+      { nome = "judge_Start", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Judgement\n/startattack\n/cast Judgement" },
+      { nome = "bubble_Cancel", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip\n/cast Divine Shield\n/cancelaura Divine Shield" },
+      { nome = "attack_Start", icone = "Ability_MeleeDamage",
+        corpo = "/startattack" },
+      { nome = "bop_Mouse", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Blessing of Protection\n/cast [@mouseover,help][] Blessing of Protection\n/cancelaura Blessing of Protection" },
+      { nome = "bof_Mouse", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Blessing of Freedom\n/cast [@mouseover,help][] Blessing of Freedom" },
+    },
+    -- Macros refeitas pelo jogo conforme o que o personagem sabe (Lembretes.lua, ARQUITETURA.md 12.4):
+    -- a primeira magia conhecida de `magias` entra no %s do `modelo`. Purify no 8, Cleanse no 42
+    -- (Naowh, TrainingData.lua linhas 119 e 193).
+    gerenciadas = {
+      { nome = "cleanse_Mouse", magias = { "Cleanse", "Purify" },
+        modelo = "#showtooltip\n/cast [@mouseover,help][] %s" },
+    },
+  },
 }
 
 -- Perfil grafico (aplicado uma vez no login). Fonte: video da Bellular
@@ -199,7 +333,7 @@ GuiaForeverProfissoesPlanejadas = {
   HUNTER = { "Leatherworking", "Skinning", "Cooking", "First Aid" },  -- Hexumlite Bull
   SHAMAN = { "Herbalism", "Enchanting", "Cooking", "First Aid" },     -- Rurik Thunderfist
   DRUID = { "Alchemy", "Tailoring" },                                -- Fingolfin Ironjaw (alt)
-  PALADIN = { "Mining", "Blacksmithing" },                           -- alt sem nome
+  PALADIN = { "Mining", "Blacksmithing", "Cooking", "First Aid" },   -- Ignatius Stonejaw
 }
 
 -- Rastreador de profissoes (Rastreador.lua), embaixo do minimapa: a pericia de

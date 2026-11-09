@@ -295,7 +295,8 @@ UIForeverConfig.teclas = {
 -- barra 6 (acima do chat da direita, so clique) = 61 a 66.
 -- { macro = "nome" } usa a macro se ela existir; { magia = "nome" } usa a magia
 -- se o personagem ja a conhece (nome em ingles, cliente enUS). Os dois juntos:
--- a macro vence. Magia aprendida depois entra sozinha no slot dela, se o slot
+-- a macro vence; com espera = true (0.7.0), a macro so entra quando a magia ja e
+-- conhecida (antes disso o slot fica vazio, sem o icone "?"). Magia aprendida depois entra sozinha no slot dela, se o slot
 -- estiver vazio. Desde a 0.2.0 o que o dono pos ou tirou de um slot fica: o
 -- UIForever so mexe no slot enquanto ele tiver o que o proprio UIForever pos.
 UIForeverConfig.gerenciados = { { 1, 12 }, { 13, 21 }, { 25, 36 }, { 49, 59 }, { 61, 66 } }
@@ -350,6 +351,49 @@ UIForeverConfig.barras = {
     [65] = { magia = "Beast Lore" },
     [66] = { macro = "Attack_Speed" },
   },
+  -- Ignatius Stonejaw (Human, Paladin Protection). Magias e niveis: tabela 12.6 do
+  -- GuiaForever\ARQUITETURA.md (Naowh). Macros: GuiaForeverMacros.PALADIN (Jurdi e
+  -- Deadmanfred). Teclas: as do cacador (UIForeverConfig.teclas, sem mudanca).
+  PALADIN = {
+    -- barra 1: 1 2 3 4 5 6 Q E R F T G
+    [1] = { macro = "strike_Holy", magia = "Holy Strike", espera = true },  -- macro do GuiaForever (Jurdi, 2026-11-08)
+    [2] = { macro = "judge_Start", magia = "Judgement", espera = true },  -- macro do GuiaForever (Jurdi, 2026-11-08)
+    [3] = { magia = "Seal of Fury" },
+    [4] = { magia = "Consecration" },
+    [5] = { magia = "Exorcism" },
+    [6] = { magia = "Hammer of Wrath" },
+    [7] = { magia = "Hammer of Justice" },
+    [8] = { magia = "Holy Shield" },
+    [9] = { magia = "Flash of Light" },
+    [10] = { macro = "attack_Start" },  -- so ataque (Deadmanfred, 2026-11-08)
+    [11] = { magia = "Lay on Hands" },
+    [12] = { macro = "bubble_Cancel", magia = "Divine Shield", espera = true },  -- bolha que lanca e cancela (Jurdi, 2026-11-08)
+    -- barra 2 (rodape): Z X V Ctrl+1 Ctrl+2 Ctrl+3 Ctrl+4 mouse4 mouse5
+    [13] = { magia = "Blessing of Wisdom" },
+    [14] = { macro = "cleanse_Mouse", magia = "Purify" },  -- Purify no 8; Cleanse no 42 (macro refeita pelo Lembretes)
+    [15] = { macro = "RXPTargeting" },
+    [16] = { magia = "Seal of Justice" },
+    [17] = { magia = "Concentration Aura" },
+    [18] = { magia = "Turn Undead" },
+    [19] = { magia = "Seal of Wisdom" },
+    [20] = { macro = "bop_Mouse", magia = "Blessing of Protection", espera = true },
+    [21] = { macro = "bof_Mouse", magia = "Blessing of Freedom", espera = true },
+    -- barra 3: Shift + 1 2 3 4 5 6 Q E R F T G
+    [25] = { magia = "Righteous Fury" },
+    [26] = { magia = "Retribution Aura" },
+    [27] = { magia = "Blessing of Kings" },
+    [28] = { magia = "Blessing of Might" },
+    [29] = { magia = "Holy Light" },
+    [30] = { magia = "Devotion Aura" },
+    [31] = { magia = "Divine Protection" },
+    [32] = { magia = "Seal of the Crusader" },
+    [33] = { magia = "Seal of Righteousness" },
+    [34] = { magia = "Redemption" },
+    [35] = { magia = "Seal of Light" },
+    [36] = { magia = "Divine Intervention" },
+    -- barra 5 (recargas da rotacao, sem tecla): sem slots 49 a 59 fixos; as magias vem de
+    -- UIForeverConfig.barraRecargas.PALADIN. Sem barra 6 (clique).
+  },
 }
 
 -- 4b. Barra 5 compacta (0.6.0). Para cada classe, as magias na ordem do nivel em
@@ -361,6 +405,7 @@ UIForeverConfig.barras = {
 UIForeverConfig.barraRecargas = {
   HUNTER = { "Raptor Strike", "Arcane Shot", "Concussive Shot", "Mongoose Bite", "Immolation Trap",
     "Multi-Shot", "Aimed Shot", "Summon Hawk", "Rapid Fire", "Intimidation", "Bestial Wrath" },
+  PALADIN = { "Judgement", "Holy Strike", "Hammer of Justice", "Consecration", "Exorcism", "Holy Shield", "Hammer of Wrath" },
 }
 
 -- 4c. Margem das janelas do jogo (0.6.0, dono, 2026-11-06). O RestedXP fica no
@@ -408,6 +453,15 @@ UIForeverConfig.cvars = {
   -- (QuestLogOwnerMixin:HandleUserActionMaximizeSelf); o botao de minimizar
   -- volta para a janela e fica, porque esta linha so e gravada uma vez.
   { "miniWorldMap", "0" },
+}
+
+-- 5b. CVars por classe (pedido do dono em 2026-11-08, para o layout do paladino;
+-- decisao do modder). CVar por personagem (CVars.lua do Forever: account false,
+-- character true). Com ela em 0 o jogo deixa de por magia nova sozinho na barra do
+-- paladino, e o UIForever poe no slot do plano (/uif bars). Gravada uma vez por
+-- personagem, so para a classe da linha.
+UIForeverConfig.cvarsClasse = {
+  PALADIN = { { "AutoPushSpellToActionBar", "0" } },
 }
 
 -- 6. Barra de experiencia com a cara original da Blizzard (pedido do dono em

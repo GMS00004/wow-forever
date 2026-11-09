@@ -26,6 +26,8 @@ const TABELA = [
   { checador: 'dicas', arquivo: 'ruim-tags-string.lua', erroEsperado: /tags deve ser lista de textos/ },
   { checador: 'dicas', arquivo: 'ruim-prio-4.lua', erroEsperado: /prio deve ser inteiro de 1 a 3/ },
   { checador: 'dicas', arquivo: 'ruim-pettreino-sem-habilidade.lua', erroEsperado: /falta o campo "habilidade"/ },
+  { checador: 'dicas', arquivo: 'bom-paladin.lua', erroEsperado: null },
+  { checador: 'dicas', arquivo: 'ruim-marco-sem-texto.lua', erroEsperado: /falta o campo "texto"/ },
   // Ajuda.lua (checar-ajuda.mjs), na subpasta casos/ajuda/
   { checador: 'ajuda', arquivo: 'ajuda/bom.lua', erroEsperado: null },
   { checador: 'ajuda', arquivo: 'ajuda/ruim-id-repetido.lua', erroEsperado: /id "pet-feed" repetido/ },

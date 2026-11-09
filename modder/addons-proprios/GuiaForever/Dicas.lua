@@ -151,4 +151,74 @@ GuiaForeverDicas = {
       { texto = "Ghost Wolf on long stretches without mobs; with mobs on the way, kill them as you go.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:80
     },
   },
+  -- Ignatius Stonejaw (Protection, tanque da dupla). Fontes: comum\personagens\ignatius-stonejaw.md
+  -- (linhas em "origem"); a ficha so cita fonte por nivel na tabela "O que chega", entao cada
+  -- linha leva a fonte que a propria ficha ou o arquivo da fonte dao. "Naowh" so vale para o nivel.
+  PALADIN = {
+    personagem = "Ignatius Stonejaw",
+    magias = {   -- em ordem crescente de nivel
+      { nivel = 4, id = 20271, texto = "Judgement: off the GCD and no longer uses the seal. Press it whenever it is ready.", fonte = "Perfect Gaming Weather", magia = "Judgement" },  -- origem: ignatius-stonejaw.md:99
+      { nivel = 4, id = 19740, texto = "Blessing of Might.", fonte = "Naowh", magia = "Blessing of Might" },  -- origem: ignatius-stonejaw.md:99
+      { nivel = 6, id = 679, texto = "Holy Strike: press it whenever it is ready.", fonte = "Perfect Gaming Weather", magia = "Holy Strike" },  -- origem: ignatius-stonejaw.md:100
+      { nivel = 6, id = 21082, texto = "Arrives at 6. The tank seal is Seal of Fury, from 10.", fonte = "Perfect Gaming Weather", magia = "Seal of the Crusader" },  -- origem: ignatius-stonejaw.md:100
+      { nivel = 6, id = 498, texto = "In trouble: Divine Protection, then heal.", fonte = "Perfect Gaming Weather", magia = "Divine Protection" },  -- origem: ignatius-stonejaw.md:100
+      { nivel = 8, id = 853, texto = "Hammer of Justice.", fonte = "Naowh", magia = "Hammer of Justice" },  -- origem: ignatius-stonejaw.md:101
+      { nivel = 8, id = 1152, texto = "Arrives at 8. Cleanse comes at 42; the macro uses whichever you know.", fonte = "Naowh", magia = "Purify" },  -- origem: ignatius-stonejaw.md:101
+      { nivel = 10, id = 1311649, texto = "The tank seal. Judgement taunts for 3 s at 10 yards; with a shield it absorbs half that damage.", fonte = "Perfect Gaming Weather", magia = "Seal of Fury" },  -- origem: ignatius-stonejaw.md:102
+      { nivel = 10, id = 25780, texto = "Righteous Fury: +33% threat and +90% on holy threat. Keep it on; since 03/11 it comes at 10.", fonte = "Perfect Gaming Weather", magia = "Righteous Fury" },  -- origem: ignatius-stonejaw.md:102
+      { nivel = 10, id = 633, texto = "Lay on Hands: 20 min cooldown, the emergency heal.", fonte = "Perfect Gaming Weather", magia = "Lay on Hands" },  -- origem: ignatius-stonejaw.md:102
+      { nivel = 10, id = 1022, texto = "On others. A mouseover macro is the easiest way to cast it.", fonte = "Jurdi", magia = "Blessing of Protection" },  -- origem: ignatius-stonejaw.md:102
+      { nivel = 12, id = 7328, texto = "Class quest: do it right away, in the Cathedral of Light.", fonte = "Deadmanfred", magia = "Redemption" },  -- origem: ignatius-stonejaw.md:103
+      { nivel = 16, id = 7294, texto = "The best aura for leveling from 16 on.", fonte = "Perfect Gaming Weather", magia = "Retribution Aura" },  -- origem: ignatius-stonejaw.md:104
+      { nivel = 20, id = 26573, texto = "Full damage only on the first 4 enemies. It costs a lot of mana: use it in moderation.", fonte = "Perfect Gaming Weather", magia = "Consecration" },  -- origem: ignatius-stonejaw.md:105
+      { nivel = 20, id = 879, texto = "Only on undead and demons.", fonte = "Perfect Gaming Weather", magia = "Exorcism" },  -- origem: ignatius-stonejaw.md:105
+      { nivel = 20, id = 19750, texto = "Flash of Light, for every paladin.", fonte = "Perfect Gaming Weather", magia = "Flash of Light" },  -- origem: ignatius-stonejaw.md:105
+      { nivel = 20, id = 20217, texto = "The leveling blessing for Protection.", fonte = "Perfect Gaming Weather", magia = "Blessing of Kings" },  -- origem: ignatius-stonejaw.md:105
+      { nivel = 30, id = 20165, texto = "Arrives at 30. The tank seal stays Seal of Fury.", fonte = "Perfect Gaming Weather", magia = "Seal of Light" },  -- origem: ignatius-stonejaw.md:106
+      { nivel = 30, id = 19752, texto = "Divine Intervention.", fonte = "Perfect Gaming Weather", magia = "Divine Intervention" },  -- origem: ignatius-stonejaw.md:106
+      { nivel = 30, id = 26573, texto = "Rank 2 costs almost double the mana, for a little more damage.", fonte = "DwarfLord (beta)", magia = "Consecration" },  -- origem: ignatius-stonejaw.md:106
+      { nivel = 34, id = 642, texto = "Now cuts the damage taken by half.", fonte = "Perfect Gaming Weather", magia = "Divine Shield" },  -- origem: ignatius-stonejaw.md:107
+      { nivel = 44, id = 24275, texto = "Finishes a target below 20% health.", fonte = "Perfect Gaming Weather", magia = "Hammer of Wrath" },  -- origem: ignatius-stonejaw.md:109
+    },
+    armas = {
+      { de = 1, ate = 21, texto = "Level with a two-handed weapon until 21.", fonte = "Deadmanfred" },  -- origem: ignatius-stonejaw.md:45
+      { de = 1, ate = 60, texto = "The weapon is the biggest jump: spell power and high damage. Rhahk'Zor's Hammer and Scepter of the Abandoned come first.", fonte = "Perfect Gaming Weather" },  -- origem: ignatius-stonejaw.md:115
+      { de = 1, ate = 60, texto = "For Protection, a fast one-hander (1.5 to 1.8 speed) gives more Seal of Fury hits.", fonte = "Deadmanfred" },  -- origem: ignatius-stonejaw.md:115
+      { de = 1, ate = 60, texto = "Exception: a weapon with a lot of spell power can be slower.", fonte = "Deadmanfred" },  -- origem: ignatius-stonejaw.md:115
+      { de = 10, ate = 60, texto = "Seal of Fury absorbs damage only with a shield.", fonte = "Perfect Gaming Weather" },  -- origem: ignatius-stonejaw.md:45
+      { de = 22, ate = 60, texto = "From 22: a one-hander and shield, with the first Redoubt point.", fonte = "Deadmanfred" },  -- origem: ignatius-stonejaw.md:45
+    },
+    pets = {},
+    rotacao = {
+      { de = 4, ate = 60, texto = "Judgement is off the GCD and does not use up the seal: press it whenever it is ready.", fonte = "Perfect Gaming Weather", requer = "Judgement", prio = 1 },  -- origem: ignatius-stonejaw.md:95
+      { de = 6, ate = 60, texto = "Holy Strike whenever it is ready.", fonte = "Perfect Gaming Weather", requer = "Holy Strike", prio = 1 },  -- origem: ignatius-stonejaw.md:95
+      { de = 10, ate = 60, texto = "Before every pull: Righteous Fury on.", fonte = "Perfect Gaming Weather", requer = "Righteous Fury", prio = 1 },  -- origem: ignatius-stonejaw.md:95
+      { de = 10, ate = 60, texto = "Seal of Fury all the time. Renew it only when its 30 s run out.", fonte = "Perfect Gaming Weather", requer = "Seal of Fury", prio = 1 },  -- origem: ignatius-stonejaw.md:95
+      { de = 10, ate = 60, texto = "Judgement at 10 yards with Seal of Fury is the taunt: 3 s hold, on the mob coming to you.", fonte = "Perfect Gaming Weather", requer = "Seal of Fury", prio = 1 },  -- origem: ignatius-stonejaw.md:95
+      { de = 16, ate = 60, texto = "Before a pull: Retribution Aura on, with a blessing up.", fonte = "Perfect Gaming Weather", requer = "Retribution Aura", prio = 1 },  -- origem: ignatius-stonejaw.md:95
+      { de = 20, ate = 60, texto = "Consecration on melee while mana allows: only the first 4 enemies take full damage.", fonte = "Perfect Gaming Weather", requer = "Consecration" },  -- origem: ignatius-stonejaw.md:95
+      { de = 20, ate = 60, texto = "Exorcism on undead and demons only.", fonte = "Perfect Gaming Weather", requer = "Exorcism" },  -- origem: ignatius-stonejaw.md:95
+      { de = 42, ate = 60, texto = "Holy Shield on cooldown, whenever you have it.", fonte = "Jurdi", requer = "Holy Shield", prio = 1 },  -- origem: ignatius-stonejaw.md:95
+      { de = 44, ate = 60, texto = "Hammer of Wrath to finish a target below 20% health.", fonte = "Perfect Gaming Weather", requer = "Hammer of Wrath" },  -- origem: ignatius-stonejaw.md:95
+    },
+    atributos = {
+      { texto = "For Protection, spell power comes first in the leveling order.", fonte = "Perfect Gaming Weather" },  -- origem: ignatius-stonejaw.md:119
+      { texto = "Leveling: stamina and spell power first, then intellect and defensive stats.", fonte = "Deadmanfred" },  -- origem: ignatius-stonejaw.md:119
+      { texto = "Before 30, Blacksmithing is the only mail with spell power. Acolyte set beats Crusader and Protector for leveling.", fonte = "Jurdi" },  -- origem: ignatius-stonejaw.md:120
+      { texto = "Endgame: defense up to 440, then stamina, hit up to 8%, expertise, spell power, block, crit.", fonte = "Jurdi", tags = { "fimdejogo" } },  -- origem: ignatius-stonejaw.md:119
+    },
+    notas = {
+      { texto = "Blessing of Kings is the leveling blessing for Protection.", fonte = "Perfect Gaming Weather" },  -- origem: ignatius-stonejaw.md:111
+      { texto = "Removed on 03/11: Salvation, Blessing of Light, Improved Seal of Fury and One-Handed Weapon Specialization.", fonte = "Blizzard" },  -- origem: ignatius-stonejaw.md:111
+      { texto = "Curse of the Elements (warlock) raises all magic damage, the holy damage of the paladin too.", fonte = "DwarfLord (beta)" },  -- origem: ignatius-stonejaw.md:148
+      { texto = "Blacksmithing has gear for all three specs, with a lot of spell power.", fonte = "Perfect Gaming Weather" },  -- origem: ignatius-stonejaw.md:152
+    },
+    lembretes = { { nivel = 10, magia = "Righteous Fury", id = 25780, texto = "Righteous Fury is off: turn it on before you pull.", fonte = "Jurdi" } },  -- origem: ignatius-stonejaw.md:144
+    marcos = {   -- formato da ARQUITETURA.md, secao 12.4
+      { nivel = 12, id = 7328, magia = "Redemption", npc = "Duthorian Rall", mapa = 1453, x = 0.5048, y = 0.4749, texto = "Class quest: The Tome of Divinity, from Duthorian Rall in the Stormwind cathedral. It teaches Redemption: do it now.", fonte = "Deadmanfred" },  -- origem: ignatius-stonejaw.md:103; NPC e coordenadas: RXPGuides Alliance-1-13_Human.lua:4767-4771 e QuestieDB (quest 1641, NPC 6171, Stormwind 50.48 47.49)
+      { nivel = 20, ate = 30, missao = 1650, npc = "Duthorian Rall", mapa = 1453, x = 0.5048, y = 0.4749, texto = "Class quests at 20: Test of Righteousness gives Verigan's Fist, a two-handed mace; The Tome of Valor (Duthorian Rall) gives Bastion of Stormwind, a shield.", fonte = "Perfect Gaming Weather" },  -- origem: ignatius-stonejaw.md:105; RXPGuides Alliance-11-20.lua:5740-5750, QuestieDB 1649 e 1650
+      { nivel = 22, texto = "Switch to a one-hander and shield now, with your first Redoubt point.", fonte = "Deadmanfred" },  -- origem: ignatius-stonejaw.md:45
+      { nivel = 40, ate = 41, texto = "Mount: learned free at the class trainer. Dual spec also opens at 40.", fonte = "Perfect Gaming Weather" },  -- origem: ignatius-stonejaw.md:108
+    },
+  },
 }

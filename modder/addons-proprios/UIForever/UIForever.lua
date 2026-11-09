@@ -301,6 +301,41 @@ local function ajustarBarraRecargas(n)
   registrar("barra 5: " .. alvo .. " botoes")
 end
 
+-- Plano da classe com a barra 5 compacta (0.6.0): os slots 49 a 59 nao tem plano
+-- fixo. As magias conhecidas de cfg.barraRecargas[classe], na ordem, ocupam os
+-- slots seguidos a partir do 49; os outros ficam sem plano (a regra do botao do
+-- dono vale). Devolve o plano e o numero de magias da barra 5 (nil sem lista).
+local function montarPlano(classe, magias)
+  local plano = cfg.barras[classe]
+  local lista = cfg.barraRecargas and cfg.barraRecargas[classe]
+  local nRecargas
+  if lista then
+    local copia = {}
+    for slot, entrada in pairs(plano) do
+      if slot < 49 or slot > 59 then copia[slot] = entrada end
+    end
+    plano = copia
+    nRecargas = 0
+    for _, nome in ipairs(lista) do
+      if magias[nome] and nRecargas < 11 then
+        nRecargas = nRecargas + 1
+        plano[48 + nRecargas] = { magia = nome }
+      end
+    end
+  end
+  return plano, nRecargas
+end
+
+-- Acao do plano que existe agora (a macro vence a magia): tipo, nome, id.
+local function resolverAcao(entrada, magias)
+  if not entrada then return nil end
+  local idx = entrada.macro and GetMacroIndexByName and GetMacroIndexByName(entrada.macro) or 0
+  -- espera (0.7.0): a macro so entra quando a magia de reserva ja e conhecida
+  if entrada.espera and not (entrada.magia and magias[entrada.magia]) then idx = 0 end
+  if idx and idx > 0 then return "macro", entrada.macro, idx end
+  if entrada.magia and magias[entrada.magia] then return "magia", entrada.magia, magias[entrada.magia] end
+end
+
 local function aplicarBarras()
   barrasAgendadas = false
   local _, classe = UnitClass("player")
@@ -323,25 +358,8 @@ local function aplicarBarras()
   local magias = magiasConhecidas()
   local colocados, limpos, falhas = 0, 0, {}
 
-  -- Barra 5 compacta (0.6.0): os slots 49 a 59 nao tem plano fixo. As magias
-  -- conhecidas de cfg.barraRecargas[classe], na ordem, ocupam os slots seguidos
-  -- a partir do 49; os outros ficam sem plano (a regra do botao do dono vale).
-  local lista = cfg.barraRecargas and cfg.barraRecargas[classe]
   local nRecargas
-  if lista then
-    local copia = {}
-    for slot, entrada in pairs(plano) do
-      if slot < 49 or slot > 59 then copia[slot] = entrada end
-    end
-    plano = copia
-    nRecargas = 0
-    for _, nome in ipairs(lista) do
-      if magias[nome] and nRecargas < 11 then
-        nRecargas = nRecargas + 1
-        plano[48 + nRecargas] = { magia = nome }
-      end
-    end
-  end
+  plano, nRecargas = montarPlano(classe, magias)
 
   -- fora-de-combate (o aplicarBarras sai no comeco quando ha combate)
   local function colocar(slot, querTipo, querNome, querId)
@@ -357,12 +375,33 @@ local function aplicarBarras()
     return false
   end
 
+  -- Dica de login (0.7.0): personagem que o UIForever nunca preencheu, com o
+  -- jogo ja tendo posto outra coisa nos botoes do plano. Conta antes do laco.
+  if next(meus) == nil and not UIForeverCharDB.dicaLayout then
+    for _, faixa in ipairs(cfg.gerenciados) do
+      for slot = faixa[1], faixa[2] do
+        local qt, qn = resolverAcao(plano[slot], magias)
+        if qt then
+          local tipo, nome = acaoNoSlot(slot)
+          if tipo and (tipo ~= qt or nome ~= qn) then
+            UIForeverCharDB.dicaLayout = true
+            msg("type /uif bars to apply the " .. classe .. " layout (it replaces what is on the planned buttons)")
+            break
+          end
+        end
+      end
+      if UIForeverCharDB.dicaLayout then break end
+    end
+  end
+
   for _, faixa in ipairs(cfg.gerenciados) do
     for slot = faixa[1], faixa[2] do
       local entrada = plano[slot]
       local querTipo, querNome, querId
       if entrada then
         local idx = entrada.macro and GetMacroIndexByName and GetMacroIndexByName(entrada.macro) or 0
+        -- espera (0.7.0): a macro so entra quando a magia de reserva ja e conhecida
+        if entrada.espera and not (entrada.magia and magias[entrada.magia]) then idx = 0 end
         if idx and idx > 0 then
           querTipo, querNome, querId = "macro", entrada.macro, idx
         elseif entrada.magia and magias[entrada.magia] then
@@ -411,6 +450,99 @@ local function agendarBarras()
   if barrasAgendadas then return end
   barrasAgendadas = true
   depois(1, aplicarBarras)
+end
+
+-- fora-de-combate (so o aplicarLayout chama, e ele sai em combate)
+local function colocarNoSlot(slot, tipo, id)
+  ClearCursor()
+  if tipo == "macro" then PickupMacro(id) else pegarMagia(id) end
+  if GetCursorInfo and GetCursorInfo() then
+    PlaceAction(slot)
+    ClearCursor()
+    return true
+  end
+  return false
+end
+
+-- /uif bars: aplica o layout da classe uma vez, trocando o que estiver nos
+-- botoes do plano (o dono pediu; e o unico caminho que passa por cima).
+local function aplicarLayout()
+  if emCombate() then msg("in combat, try again out of combat"); return end
+  local _, classe = UnitClass("player")
+  if not cfg.barras[classe] then msg("no layout for " .. tostring(classe)); return end
+  if GetCursorInfo and GetCursorInfo() then msg("empty the cursor first, then try again"); return end
+  if not (GetActionInfo and PlaceAction and PickupAction and ClearCursor) then
+    registrar("API de barra indisponivel")
+    return
+  end
+  UIForeverCharDB.slots = UIForeverCharDB.slots or {}
+  local meus = UIForeverCharDB.slots
+  local magias = magiasConhecidas()
+  local plano, nRecargas = montarPlano(classe, magias)
+  local colocados, limpos = 0, 0
+  local saiu, ficou, falhas = {}, {}, {}
+
+  for _, faixa in ipairs(cfg.gerenciados) do
+    for slot = faixa[1], faixa[2] do
+      local entrada = plano[slot]
+      if entrada then
+        local querTipo, querNome, querId = resolverAcao(entrada, magias)
+        local quer = querTipo and (querTipo .. ":" .. querNome)
+        local tipo, nome = acaoNoSlot(slot)
+        local atual = tipo and (tostring(tipo) .. ":" .. tostring(nome))
+        if quer then
+          ficou[querNome] = true
+          if atual ~= quer then
+            if colocarNoSlot(slot, querTipo, querId) then
+              colocados = colocados + 1
+              meus[slot] = quer
+              if atual then saiu[#saiu + 1] = nome or tostring(tipo) end
+            else
+              falhas[#falhas + 1] = querNome
+            end
+          else
+            meus[slot] = quer
+          end
+        else
+          if atual then
+            saiu[#saiu + 1] = nome or tostring(tipo)
+            limparSlot(slot); limpos = limpos + 1
+          end
+          meus[slot] = nil
+        end
+      end
+    end
+  end
+
+  local perdidos, visto = {}, {}
+  for _, nome in ipairs(saiu) do
+    if not ficou[nome] and not visto[nome] then
+      visto[nome] = true
+      perdidos[#perdidos + 1] = nome
+    end
+  end
+  local linha = "layout (" .. classe .. "): " .. colocados .. " placed, " .. limpos .. " cleared"
+  msg(linha)
+  registrar(linha)
+  if #perdidos > 0 then
+    local lista = table.concat(perdidos, ", ")
+    msg("left the planned buttons (drag back from the spellbook if you want): " .. lista)
+    registrar("layout: saiu dos botoes: " .. lista)
+  end
+  if #falhas > 0 then registrar("layout: nao consegui pegar " .. table.concat(falhas, ", ")) end
+  UIForeverCharDB.dicaLayout = true
+  if nRecargas and next(magias) ~= nil then ajustarBarraRecargas(nRecargas) end
+end
+
+SLASH_UIFOREVER1 = "/uif"
+SLASH_UIFOREVER2 = "/uiforever"
+SlashCmdList.UIFOREVER = function(texto)
+  local comando = string.lower(string.match(texto or "", "^%s*(%S*)") or "")
+  if comando == "bars" then
+    aplicarLayout()
+  else
+    msg("commands: /uif bars (apply the class button layout once)")
+  end
 end
 
 ---------------------------------------------------------------------------
@@ -501,7 +633,11 @@ local function lerCVar(nome)
 end
 
 local function aplicarCVars()
-  if not cfg.cvars then return end
+  local _, classe = UnitClass("player")
+  local lista = {}
+  for _, par in ipairs(cfg.cvars or {}) do lista[#lista + 1] = par end
+  for _, par in ipairs(cfg.cvarsClasse and cfg.cvarsClasse[classe] or {}) do lista[#lista + 1] = par end
+  if #lista == 0 then return end
   if emCombate() then cvarsPendentes = true; return end
   cvarsPendentes = false
   local gravar = (C_CVar and C_CVar.SetCVar) or SetCVar
@@ -512,7 +648,7 @@ local function aplicarCVars()
   UIForeverCharDB.cvars = UIForeverCharDB.cvars or {}
   local reg = UIForeverCharDB.cvars
   local feitas, falhas = {}, {}
-  for _, par in ipairs(cfg.cvars) do
+  for _, par in ipairs(lista) do
     local nome, valor = par[1], tostring(par[2])
     if reg[nome] ~= valor then
       local antes = lerCVar(nome)
