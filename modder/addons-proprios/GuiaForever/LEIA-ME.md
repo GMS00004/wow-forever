@@ -141,7 +141,7 @@ A linha "Skinning: needs N" do tooltip e a seção da zona na aba Professions us
 
 1. Edite os dados (`Dicas.lua`, `Dados.lua`, `Ajuda.lua`) com a fonte e a origem de cada linha. Macro nova: acrescente na lista e suba a `versao` do conjunto.
 2. Valide, a partir de `modder\ferramentas\guia\` (na primeira vez, `npm install` ali e as listas da API pelo comando em `api-forever-baixar.txt`):
-   - `node checar-lua.mjs ..\..\addons-proprios\GuiaForever --globais`: sintaxe Lua 5.1 e ASCII.
+   - `node checar-lua.mjs ..\..\addons-proprios\GuiaForever --globais`: sintaxe Lua 5.1 e ASCII; desde 2026-11-08, também escape inválido em string entre aspas (o Lua 5.1 aceita `"\I"` e guarda só o `I`, então um caminho com barra simples quebra sem erro).
    - `node checar-dicas.mjs ..\..\addons-proprios\GuiaForever\Dicas.lua` e `node checar-ajuda.mjs ..\..\addons-proprios\GuiaForever\Ajuda.lua`: esquema dos dados.
    - `node checar-combate.mjs ..\..\addons-proprios\GuiaForever --toc`: chamada protegida sem guarda de combate, API que vira secreta, função ou evento que não existe no Forever, template inexistente, chamada proibida (compra, magia, gastar ponto) e `.toc` diferente dos arquivos.
    - `node rodar-casos.mjs` e `node rodar-casos-combate.mjs`: os casos de teste dos checadores.
