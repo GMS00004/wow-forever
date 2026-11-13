@@ -2,7 +2,7 @@ tema: leveling
 fonte: RestedXP (addon RXPGuides, rotas grátis do Forever)
 url: https://github.com/RestedXP/RXPGuides
 data: 2026-11-04
-seguir: as rotas grátis do Forever até o nível 20/21; no 21 o dono decide o que segue (o guia pago, de US$ 30 por facção segundo um site de guia `[busca]`, não será assinado por ora). Ignorar os guias de talento do addon, que no Forever carregam as builds do Classic Era.
+seguir: as rotas grátis do Forever até o nível 20/21 e, depois, o guia pago, comprado pelo dono em 2026-11-13 (ativação abaixo; quais rotas vieram e por qual facção se confere depois da importação). Ignorar os guias de talento do addon, que no Forever carregam as builds do Classic Era.
 
 # RestedXP: rotas grátis do Forever
 
@@ -16,6 +16,10 @@ O `GuideList-forever.xml` só carrega no Forever (`[AllowLoadGameType camelot]` 
 |---|---|
 | Hexumlite Bull (Night Elf Hunter) | `Alliance-1-10_NightElf`, depois `Alliance-11-20` |
 | Rurik Thunderfist (Dwarf Shaman) | `Alliance-1-14_DwarfGnome`, depois `Alliance-11-20` |
+
+## Guia pago (comprado em 2026-11-13)
+
+A compra não traz addon novo nem zip: o guia chega como um código de importação (import string) gerado no site para o Battle.net do dono e colado no RestedXP já instalado (passos e fontes em `..\..\referencia\forever.md`, seção Addons). As rotas importadas ficam nas SavedVariables da conta (`RXPDB`), então o backup do WTF as guarda. Pendente: importar no jogo e anotar aqui quais rotas apareceram.
 
 ## Cuidado com os talentos do addon
 
