@@ -29,6 +29,6 @@ Vídeo de 8:30, publicado em 2026-11-07, gravado no segundo dia do Forever com u
 ## Conflitos com as decisões do dono
 
 1. Skinning em todo personagem contra a regra do dono de 2026-11-04 de não repetir profissão entre os personagens da conta (`..\..\jogador.md`): o Rurik, o Fingolfin e o paladino têm outras profissões.
-2. Vender todo o couro contra o Leatherworking do Hexumlite, que consome o couro pelo roteiro da Gfinity (`..\profissoes\roteiros.md`, metas de 75, 100 e 150 por área). O autor não tem profissão de produção, por isso a dica não considera esse caso.
+2. Vender todo o couro contra o Leatherworking do Hexumlite, que consome o couro pelo roteiro de Leatherworking (desde 2026-11-13 o do ReptilioPlays, `..\profissoes\reptilio-leatherworking.md`, que substituiu o da Gfinity; metas de 75, 100 e 125 por área em `..\profissoes\roteiros.md`). O autor não tem profissão de produção, por isso a dica não considera esse caso.
 
 Decisão do dono em 2026-11-07, para os dois conflitos: valem as decisões dele (profissões sem repetir e o couro do Hexumlite para o Leatherworking).

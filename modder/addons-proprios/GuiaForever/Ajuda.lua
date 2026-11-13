@@ -99,10 +99,12 @@ GuiaForeverAjuda = {
     { id = "prof", aba = "profissoes", pergunta = "How far should I level Skinning and Leatherworking here?", linhas = {
       -- origem: comum\personagens\hexumlite-bull.md:160 (decididas pelo dono)
       { texto = "You chose Leatherworking and Skinning (2026-11-04); Cooking and First Aid are secondary.", fonte = "you" },
-      -- origem: comum\personagens\hexumlite-bull.md:160 (A Method diz o Leatherworking)
-      { texto = "Leatherworking gives blue Agility gear from level 10.", fonte = "Method" },
-      -- origem: modder\estado\estado.md, alteracao de 2026-11-06 (GuiaForever 0.6.0: metas aprovadas pelo dono) e Dados.lua (GuiaForeverRastreador)
-      { texto = "Your goals by area: levels 1-10 Skinning 75 and Leatherworking 75; 10-20 Skinning 125, LW 100; 20-30 both 150.", fonte = "you" },
+      -- origem: comum\fontes\profissoes\reptilio-leatherworking.md (Merchant's Favor; desde 2026-11-13
+      -- substitui a linha da Method "blue Agility gear from level 10", que divergia do nivel 12)
+      { texto = "Your first blue Leatherworking pieces are the Merchant's Favor belts: skill 60, level 12 to wear, 30 Favor each.", fonte = "ReptilioPlays" },
+      -- origem: modder\estado\estado.md, alteracao de 2026-11-06 (GuiaForever 0.6.0: metas aprovadas pelo dono) e Dados.lua (GuiaForeverRastreador);
+      -- LW 125 em 20-30 desde 2026-11-13 (rota do ReptilioPlays: Heavy Hide a partir do 125)
+      { texto = "Your goals by area: levels 1-10 Skinning 75 and Leatherworking 75; 10-20 Skinning 125, LW 100; 20-30 Skinning 150, LW 125.", fonte = "you" },
       -- origem: Dados.lua (GuiaForeverRastreador); a ligacao zona -> faixa e do agente, a conferir
       { texto = "The tracker under the minimap shows your skill against the goal of this area (zone mapping not checked).", fonte = "you" },
     } },

@@ -52,11 +52,11 @@ Níveis de profissão (Warcraft Tavern, sem data): Apprentice nível 1 (gatherin
 2. Economy Hold: duração, o que bloqueia exatamente, e se fecha o correio entre os próprios alts.
 3. Se receitas, padrões de Merchant's Favor ou itens são compartilhados entre personagens (parece que não).
 4. Warband bank / banco de conta e coleções de conta: não encontrado nada do Forever. Só uma fonte (conquestcapped) afirma "sem banco de conta"; sem fonte Blizzard.
-5. Quais conjuntos de Leatherworking de nível 12/20/35 servem a Hunter vs Enhancement (stats): não achei mapeamento. Method diz só "alto Agility" para Hunter. Precisa checar no Wowhead Forever.
+5. Quais conjuntos de Leatherworking de nível 12/20/35 servem a Hunter vs Enhancement (stats): não achei mapeamento. Method diz só "alto Agility" para Hunter. Precisa checar no Wowhead Forever. Em parte resolvido em 2026-11-13: o vídeo do ReptilioPlays mostra os atributos de cada peça (seção "Leatherworking pelo vídeo do ReptilioPlays" abaixo); qual serve a qual classe continua sem fonte.
 6. Se Polished Driftwood Icon é BoP e de onde vem a fórmula (Fextralife: fonte não confirmada; mais uma fonte diz 45 Merchant's Favor).
 7. Perks Legacy de profissão: efeitos exatos não descritos; Legacy points de ofícios só por Alchemy/Blacksmithing/Enchanting/Engineering/Leatherworking/Tailoring.
 8. Blizzard oficial: só a nota "Gather Around the Campfire" (sem data no texto) foi lida; nenhuma nota de patch com Legacy/Merchant's Favor/banco. Icy Veins e Mobalytics não lidos diretamente.
-9. Números de tier por nível (50/125/200 vs 75/150/225/300) aparecem com formulações conflitantes entre sites.
+9. Números de tier por nível (50/125/200 vs 75/150/225/300) aparecem com formulações conflitantes entre sites. Para Leatherworking, resolvido em 2026-11-13 pelo vídeo do ReptilioPlays: as duas formulações são o mesmo fato (perícia pedida 50/125/200, teto 150/225/300; ver a seção abaixo).
 10. Tudo marcado beta pode ter mudado no lançamento (builds de 15/10 a 3/11).
 
 ## Conferido pela sessão principal em 2026-11-04
@@ -82,3 +82,17 @@ Levantamento de um subagente (WebFetch, que devolve resumo de modelo) e da sess�
 | Materiais novos: Pristine Leather, Pristine Hide e Pristine Scale existem; nível e chance não estão em fonte aberta | [página] | warcrafttavern.com/forever/guides/skinning/; wow-professions |
 | Bichos esfoláveis: o banco aberto cmangos/classic-db (`Full_DB/ClassicDB_1_12_1_z2815.sql.gz`, commit 37eeeeb de 03/11/2026, GPL-3.0) tem 924 criaturas com `SkinningLootId` maior que zero; o vmangos (release `db_latest`, 28/09/2026) tem 896. Young Nightsaber (2031), Webwood Spider (1986) e Strigid Owl (1995) não são esfoláveis nesse banco. São dados do Classic 1.12; bicho novo do Forever não está neles | [local] | dump baixado e lido em 2026-11-06; lista em `modder\addons-proprios\GuiaForever\SkinDB.lua` |
 | O Wowhead recusa cliente automático: `curl` em `wowhead.com/classic/npc=<id>` volta com corpo vazio, e o WebFetch não mostra as abas (Skinning, loot), que são montadas por JavaScript. Wowpedia e classic-wow (Fandom) dão 402; Icy Veins dá 403 | [local] | tentativas de 2026-11-06 |
+
+## Leatherworking pelo vídeo do ReptilioPlays (conferido em 2026-11-13)
+
+Fonte máxima de Leatherworking por decisão do dono (2026-11-13). Vídeo de 2026-11-10, https://www.youtube.com/watch?v=ECKmoBDhfM0, lido pela legenda (yt-dlp) e pelos 57 cartões da tela em quadros de 1080p; conteúdo completo em `..\fontes\profissoes\reptilio-leatherworking.md`. A marca [página] aqui quer dizer "vídeo aberto e quadros lidos", não resumo de busca. É afirmação do autor, não conferida no cliente.
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| Treino de Leatherworking: Apprentice sem nível de personagem, até 75; Journeyman pede perícia 50 e nível 10, até 150; Expert pede 125 e nível 20, até 225; Artisan (último) pede 200 e nível 35, até 300. Especializações ensinam receitas, não outro nível | [página] | cartões dos treinadores (01:02, 01:41, 03:16, 05:02) |
+| Expert da Aliança: só o Telonis (Craftsmen's Terrace, Darnassus), sem Expert neutro; Artisan da Aliança: Drakk Stonehand (Wildhammer Keep, Aerie Peak, descendo a escada do prédio com a caixa de correio) | [página] | cartões 03:16 e 05:02 |
+| Treinadores neutros em Zephras Isle: Indari Sunseam (Apprentice, Shen'dar Village) e Emerii Tallgust (Apprentice e Journeyman, Valanaar); Waldor (Apprentice) na caverna acima das Wailing Caverns | [página] | cartões 00:47 e 01:13 (o autor diz que conferiu nas páginas de NPC do Forever) |
+| Merchant's Favor de Leatherworking: Daniel Stitchsong, Azeroth Commerce Authority, Three Corners (Redridge Mountains); na Horda, Pawani, Durotar Supply and Logistics, perto da Crossroads | [página] | cartões 00:15 |
+| Padrões do Merchant's Favor: cintos na perícia 60 (pede nível 12), luvas 75 (nível 15), capuzes 100 (nível 20), túnicas 110 (nível 22), pernas 125 (nível 25), 30 Favor cada; luvas 175 (nível 35) custam 60 Favor e pedem Friendly. Peças "Binds when picked up" | [página] | cartões dos desbloqueios (01:57 a 03:12 e 04:39) |
+| Padrões da rota: Gem-studded Leather Belt com Rikqiz (Booty Bay); Wicked Leather Gauntlets com Leonard Porter (Western Plaguelands); Heavy Scorpid Bracers e Helm com Zannok Hidepiercer (Silithus); Wicked Leather Bracers caem do Legashi Rogue (Azshara) | [página] | cartões 04:20 e 05:47 |
+| Cured Rugged Hide: o autor marca "conferir no treinador aos 225" e rende 2 por craft | [página] | cartão 05:23 |

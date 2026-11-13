@@ -341,18 +341,21 @@ GuiaForeverProfissoesPlanejadas = {
 -- que escolheu "meta pelo nivel da area, a partir das fontes dele":
 --   Skinning: faixas por nivel de bicho do wow-professions (bichos de nivel
 --   1-2 ate 75; 10-20 de 75 a 125; 25-27 de 125 a 150);
---   Leatherworking: couro de cada faixa no roteiro do Gfinity (Light Leather ate
---   100; Medium Leather de 100 a 150).
---   75 tambem e o teto do Apprentice (o Journeyman pede nivel 10).
--- Os numeros por faixa foram aprovados pelo dono; a ligacao de cada zona a uma
--- faixa (pelo nivel tipico dos bichos da zona) e do agente, a conferir.
+--   Leatherworking: couro de cada faixa na rota do video do ReptilioPlays
+--   (fonte maxima desde 2026-11-13; antes, Gfinity): Light Leather ate 100;
+--   Medium Leather e Cured Medium Hide de 100 a 125, e a partir do 125 entram
+--   22 Heavy Hide (125-135 e 143-145), por isso 125 e nao mais 150.
+--   75 tambem e o teto do Apprentice (o Journeyman pede pericia 50 e nivel 10).
+-- Os numeros por faixa foram aprovados pelo dono (o 125 do Leatherworking em
+-- 20-30 e rederivacao do agente pela fonte nova, 2026-11-13); a ligacao de cada
+-- zona a uma faixa (pelo nivel tipico dos bichos da zona) e do agente, a conferir.
 GuiaForeverRastreador = {
   ligado = true,
   esconderEmCombate = true,
   faixas = {
     { nome = "1-10", nivelDe = 1, nivelAte = 9, metas = { Skinning = 75, Leatherworking = 75 } },
     { nome = "10-20", nivelDe = 10, nivelAte = 19, metas = { Skinning = 125, Leatherworking = 100 } },
-    { nome = "20-30", nivelDe = 20, nivelAte = 29, metas = { Skinning = 150, Leatherworking = 150 } },
+    { nome = "20-30", nivelDe = 20, nivelAte = 29, metas = { Skinning = 150, Leatherworking = 125 } },
   },
   -- zona (nome do cliente enUS, GetRealZoneText) -> faixa. Fora desta lista
   -- (cidade, zona nova do Forever), vale a faixa do nivel do personagem.

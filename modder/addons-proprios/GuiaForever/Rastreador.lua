@@ -124,7 +124,7 @@ local function criarQuadro()
       GameTooltip:AddLine("Skin here: " .. (#partes > 0 and table.concat(partes, ", ") or "no skinnable creature known here"), 1, 1, 1, true)
     end
     GameTooltip:AddLine(" ")
-    GameTooltip:AddLine(CINZA .. "Sources: wow-professions (Skinning), Gfinity (Leatherworking). /guia tracker hides it." .. FIM, 1, 1, 1, true)
+    GameTooltip:AddLine(CINZA .. "Sources: wow-professions (Skinning), ReptilioPlays (Leatherworking). /guia tracker hides it." .. FIM, 1, 1, 1, true)
     GameTooltip:Show()
   end)
   quadro:SetScript("OnLeave", function() GameTooltip:Hide() end)

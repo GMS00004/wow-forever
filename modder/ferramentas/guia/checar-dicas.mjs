@@ -47,6 +47,7 @@ const FONTES = [
   'Jurdi',
   'DwarfLord (beta)',
   'Blizzard', // nota oficial de 03/11 (ficha do Ignatius Stonejaw)
+  'ReptilioPlays', // Leatherworking (comum\fontes\profissoes\reptilio-leatherworking.md), 2026-11-13
 ];
 const permitidos = (lista) => {
   if (lista === 'petTreino') return CAMPOS[lista];
