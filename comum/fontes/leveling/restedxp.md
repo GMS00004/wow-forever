@@ -19,7 +19,7 @@ O `GuideList-forever.xml` só carrega no Forever (`[AllowLoadGameType camelot]` 
 
 ## Guia pago (comprado em 2026-11-13)
 
-A compra não traz addon novo nem zip: o guia chega como um código de importação (import string) gerado no site para o Battle.net do dono e colado no RestedXP já instalado (passos e fontes em `..\..\referencia\forever.md`, seção Addons). As rotas importadas ficam nas SavedVariables da conta (`RXPDB`), então o backup do WTF as guarda. Pendente: importar no jogo e anotar aqui quais rotas apareceram.
+A compra não traz addon novo nem zip: o guia chega como um código de importação (import string) gerado no site para o Battle.net do dono e colado no RestedXP já instalado (passos e fontes em `..\..\referencia\forever.md`, seção Addons). As rotas importadas ficam nas SavedVariables da conta (`RXPDB`), então o backup do WTF as guarda. Importado pelo dono em 2026-11-13 (106 guias, código da Aliança). Rotas lidas nos nomes das SavedVariables `[local]`: "RestedXP Forever Guide (A)" do 23 ao 59 (de "23-24 Wetlands" a "59-59 Winterspring/Silithus part 1"), "RestedXP Forever Dungeon Guide (A)" (a mesma rota com dungeons), "RXP Forever Dungeon Quests (A)" (as quests de 24 dungeons, de Hall of Thanes a Dire Maul, sem Wailing Caverns; o dono quer usar só esta parte das dungeons) e "RestedXP Riverglades (A)" ("38-40 Riverglades I (Standalone)"). O conteúdo é criptografado e não se lê fora do jogo.
 
 ## Cuidado com os talentos do addon
 
