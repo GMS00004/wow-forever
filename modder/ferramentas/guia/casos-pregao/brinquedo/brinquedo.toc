@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: PregaoForever brinquedo
+## Notes: Addon de brinquedo que so existe para a bancada conferir o proprio falso
+## Author: Bruno
+## Version: 0.0.1
+## SavedVariables: PregaoForeverDB
+## SavedVariablesPerCharacter: PregaoForeverCharDB
+
+Base.lua
+Consultas.lua
+Botoes.lua

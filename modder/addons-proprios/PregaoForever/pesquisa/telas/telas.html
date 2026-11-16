@@ -1,10 +1,21 @@
 <!doctype html>
+<!--
+  COMO TROCAR O TAMANHO DA JANELA
+  Edite so o bloco ":root" marcado "CONFIGURACAO" logo abaixo, no inicio do <style>:
+    --W  largura da janela em unidades da UI (hoje 520)
+    --H  altura da janela em unidades da UI (hoje 500; e a altura minima das visoes, se o conteudo passar o rotulo "ESTOURA" avisa)
+    --S  escala da UI (hoje 1; a janela e desenhada em W x H unidades e ampliada por S)
+  Todo o resto (visoes, bilhetes, faixas, painel do correio, quadro de posicao) le esses tres numeros.
+  Depois rode, nesta pasta:  node renderizar.mjs
+-->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PregaoForever: quadros das telas</title>
 <style>
+  /* CONFIGURACAO: o unico ponto onde o tamanho da janela e a escala sao definidos (veja o comentario no topo do arquivo) */
+  :root { --W: 520; --H: 500; --S: 1; }
   :root {
     --pg: #14161b; --pg2: #1c1f26; --ink: #e9e4d6; --dim: #a9a290; --rule: #2e323c;
     --win: #0b0c10; --winline: #5a4b33; --zone: #23262e; --gold: #ffd100; --sel: #2a2416;
@@ -30,8 +41,9 @@
   ol.leg li { margin: 2px 0; }
   code { font: 13px Consolas, monospace; color: #d7cfb8; }
 
-  /* a janela do addon: 520 unidades de largura, linhas de 28, botoes de 32 */
-  .win { width: 520px; background: var(--win); border: 1px solid var(--winline); box-shadow: 0 0 0 1px #000, 0 10px 30px rgba(0,0,0,.55);
+  /* a janela do addon: largura W e altura minima H (das visoes), linhas de 28, botoes de 32 */
+  .win.vista { min-height: calc(var(--H) * 1px); }
+  .win { width: calc(var(--W) * 1px); zoom: var(--S); background: var(--win); border: 1px solid var(--winline); box-shadow: 0 0 0 1px #000, 0 10px 30px rgba(0,0,0,.55);
     font: 13px/1 "PT Sans Narrow", "Arial Narrow", "Segoe UI", Arial, sans-serif; color: var(--ink); }
   .bar { height: 30px; display: flex; align-items: center; gap: 10px; padding: 0 8px; background: linear-gradient(#2a2418, #17140e); border-bottom: 1px solid var(--winline); }
   .bar .nm { color: var(--gold); font-weight: 700; letter-spacing: .3px; margin-right: 4px; }
@@ -77,8 +89,20 @@
       radial-gradient(900px 500px at 30% 20%, #33404f 0%, transparent 60%),
       radial-gradient(900px 600px at 80% 90%, #3d3120 0%, transparent 65%), #1a1d23; overflow: hidden; }
   .fant { position: absolute; border: 1px dashed #7d8696; color: #b7bfcc; font: 13px "Segoe UI", Arial, sans-serif; padding: 8px 10px; background: rgba(20,24,30,.55); }
-  .tela .win { position: absolute; left: 830px; top: 116px; height: 500px; }
+  .tela .win { position: absolute; right: 15px; top: 116px; }
   .cota { position: absolute; color: #d6dbe4; font: 12px Consolas, monospace; }
+  .cota.dir { right: 15px; }
+
+  /* rotulo da onda, fora da janela */
+  .onda { display: inline-block; margin: 0 0 12px; padding: 3px 10px; border-radius: 3px; font: 700 13px "Segoe UI", Arial, sans-serif; letter-spacing: .3px; }
+  .onda.o2 { background: #1f3a2a; color: #a9f0c0; border: 1px solid #3f8a5c; }
+  .onda.o3 { background: #2b2a3d; color: #c9c3ff; border: 1px solid #6a63b5; }
+  .onda.estoura { background: #40161a; color: #ffb3ad; border: 1px solid #a0605a; margin-left: 8px; }
+  .tela .onda { position: absolute; left: 20px; top: 20px; margin: 0; }
+  .win.corte .bar { margin-bottom: 0; }
+  .pilha.duas { grid-template-columns: repeat(2, calc(var(--W) * var(--S) * 1px)); gap: 14px 18px; }
+  .rt { color: var(--dim); font: 12.5px "Segoe UI", Arial, sans-serif; margin: 0 0 4px; }
+  .bt.off { opacity: .45; border-style: dashed; }
 
   /* teclado */
   .tecl { display: grid; gap: 7px; padding: 6px 2px; font: 13px "Segoe UI", Arial, sans-serif; }
@@ -106,17 +130,17 @@
 <main>
 <h1>PregaoForever: quadros das telas</h1>
 <p class="lede">Primeira versão desenhada das telas da seção 11.3 do <code>DESIGN.md</code>, para você aprovar ou pedir mudança antes de existir código. Os textos da janela ficam em inglês, como o projeto manda; itens e valores são ilustrativos.</p>
-<p class="nota">O que é hipótese neste desenho: o tamanho da janela (520 por 500 unidades), que só fecha quando o comando 15 da sonda ler a resolução e a escala da sua tela; a fonte, que no jogo é a do próprio cliente (aqui é uma aproximação); e as cores, que são só reforço, porque todo estado aparece em palavra. As linhas de estado do topo e a legenda de teclas do rodapé aparecem em todas as visões por leitura minha da seção 11.1 (três zonas fixas); o desenho em caracteres da 11.3 só as mostra na visão Next.</p>
+<p class="nota">O que é hipótese neste desenho: o tamanho da janela (parâmetro único no topo de <code>telas.html</code>; hoje 520 por 500 unidades), que só fecha quando o comando 15 da sonda ler a resolução e a escala da sua tela; a fonte, que no jogo é a do próprio cliente (aqui é uma aproximação); e as cores, que são só reforço, porque todo estado aparece em palavra. As linhas de estado do topo e a legenda de teclas do rodapé aparecem em todas as visões por leitura minha da seção 11.1 (três zonas fixas); o desenho em caracteres da 11.3 só as mostra na visão Next.</p>
 
 <section id="lado">
 <h2>1. Onde a janela fica</h2>
-<p>Uma tela 16:9 na escala 1 tem 1.365 por 768 unidades. O leilão da Blizzard ocupa 800 por 538 à esquerda e não é tocado. A janela do addon entra nas 545 unidades que sobram à direita.</p>
-<div class="palco livre"><div class="tela">
+<p>Uma tela 16:9 na escala 1 tem 1.365 por 768 unidades. O leilão da Blizzard ocupa 800 por 538 à esquerda e não é tocado. A janela do addon entra nas unidades que sobram à direita.</p>
+<div class="palco livre"><div class="tela"><div class="onda o3">ONDA 3 (mostra a visao Next)</div>
   <div class="fant" style="left:20px;top:116px;width:800px;height:538px">Blizzard Auction House<br>800 x 538, untouched</div>
   <div class="fant" style="left:1085px;top:630px;width:265px;height:124px">Bags (your bag window)<br>position and size measured in probe step S0</div>
-  <div class="cota" style="left:830px;top:96px">520 x 500</div>
+  <div class="cota dir" style="top:96px" id="cota-w"></div>
   <div class="cota" style="left:20px;top:96px">800 x 538</div>
-  <div class="win" id="w-lado"></div>
+  <div class="win vista" id="w-lado"></div>
 </div></div>
 <ol class="leg"><li>Se as bolsas cobrirem a janela na sua tela, a janela encolhe ou sobe: é o que a sonda mede antes de qualquer código.</li></ol>
 </section>
@@ -124,7 +148,7 @@
 <section id="next">
 <h2>2. Visão Next (F1), a que abre</h2>
 <p>Três zonas fixas: estado em cima, lista no meio, bilhete embaixo. A fila mostra até cinco linhas do que vale fazer agora. A linha com o sinal de maior é a selecionada.</p>
-<div class="palco"><div class="win" id="w-next">
+<div class="palco"><div class="onda o3">ONDA 3 (Next)</div><br><div class="win vista" id="w-next">
   <div class="bar"><span class="nm">PregaoForever</span><span class="tab on">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab">F5 SESSION</span></div>
   <div class="zone st">
     <div class="r"><span><span class="k">BUDGET</span> <span class="m">4g 00s</span></span><span><span class="k">FREE</span> <span class="m">3g 12s 86c</span></span><span><span class="k">STOCK</span> <span class="m">64s</span></span><span><span class="k">DEPOSITS</span> <span class="m">14c</span></span><span><span class="k">IN MAIL</span> <span class="m">23s</span></span></div>
@@ -159,7 +183,7 @@
 <section id="bilhetes">
 <h2>3. O bilhete e a conta da linha</h2>
 <p>O bilhete é o resumo de uma ordem que gasta ouro ou perde depósito. Ele aparece na zona de baixo antes da tecla que executa: <code>Y</code> executa, <code>M</code> desiste.</p>
-<div class="palco"><div class="pilha">
+<div class="palco"><div class="onda o3">ONDA 3 (bilhetes de Next, Sell e Mine)</div><div class="pilha">
   <div class="win"><div class="zone">
     <div class="r l"><span><span class="k">TICKET</span> <span class="ok">QUOTE OK</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
     <div class="r"><span>pay <span class="m">1s 44c</span> total (<span class="m">9c</span> each)</span><span>max <span class="m">1s 48c</span></span><span>0.4% of budget</span></div>
@@ -193,7 +217,7 @@
 <section id="sell">
 <h2>4. Visão Sell (F2)</h2>
 <p>O que está nas bolsas e pode ir à venda. <code>KEPT</code> é o que ficou reservado, com o motivo; a última linha diz o que está nos outros personagens.</p>
-<div class="palco"><div class="win" id="w-sell">
+<div class="palco"><div class="onda o3">ONDA 3 (Sell)</div><br><div class="win vista" id="w-sell">
   <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab on">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab">F5 SESSION</span></div>
   <div class="zone st" data-estado></div>
   <div class="zone">
@@ -221,9 +245,30 @@
 </section>
 
 <section id="mine">
-<h2>5. Visão Mine (F3)</h2>
+<h2>5. Visão Mine (F3), versão da onda 2</h2>
+<p>Os seus leilões, só com fatos, sem a regra contra guerra de preço (sem <code>STAND DOWN</code>) e sem a linha <code>LIMITS</code>, que chegam na onda 3. Nenhum ganho de cancelar é calculado.</p>
+<div class="palco"><div class="onda o2">ONDA 2 (Mine, sem LIMITS e sem STAND DOWN)</div><br><div class="win vista" id="w-mine">
+  <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab on">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab">F5 SESSION</span></div>
+  <div class="zone st" data-estado></div>
+  <div class="zone">
+    <div class="r ttl"><span>MY AUCTIONS (5)</span><span class="col" style="font-weight:400">deposits at risk <span class="m">14c</span></span></div>
+    <div class="row mine"><span></span><span></span><span class="col">price</span><span class="col">left</span><span class="col" style="grid-column: 5 / 7">cheaper ahead</span></div>
+    <div class="row mine sel"><span class="mk">&gt;</span><span class="q1">Tin Ore x20</span><span><span class="m">1s 76c</span> ea</span><span>2-12h</span><span>340</span><span></span></div>
+    <div class="row mine"><span></span><span class="q1">Linen Bag x1</span><span class="ok">SOLD</span><span style="grid-column: 4 / 7">gold in about 41 min</span></div>
+    <div class="row mine"><span></span><span class="q1">Copper Bar x10</span><span><span class="m">90c</span> ea</span><span>12h+</span><span>0</span></div>
+    <div class="more">Show 2 more</div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> none</span><span class="fim bts"><span class="bt"><b>C</b>cancel</span><span class="bt"><b>I</b>why</span></span></div>
+  </div>
+  <div class="zone foot" data-rodape></div>
+</div></div>
+</section>
+
+<section id="mine-completa">
+<h2>5. Visão Mine (F3), completa</h2>
 <p>Os seus leilões, só com fatos. Nenhum ganho de cancelar é calculado. <code>STAND DOWN</code> aparece quando a regra contra guerra de preço manda parar.</p>
-<div class="palco"><div class="win" id="w-mine">
+<div class="palco"><div class="onda o3">ONDA 3 (Mine completa, com LIMITS e STAND DOWN)</div><br><div class="win vista" id="w-mine-completa">
   <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab on">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab">F5 SESSION</span></div>
   <div class="zone st" data-estado></div>
   <div class="zone">
@@ -247,7 +292,7 @@
 <section id="risk">
 <h2>6. Visão Risk (F4)</h2>
 <p>A banca, os três limites mais perto de estourar (do mais próximo para o mais distante), as travas e o nível de cada estratégia (permitido por você, conquistado pelo dado, em vigor). Vendor floor é arrematar abaixo do preço que o vendedor paga.</p>
-<div class="palco"><div class="win" id="w-risk">
+<div class="palco"><div class="onda o3">ONDA 3 (Risk)</div><br><div class="win vista" id="w-risk">
   <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab on">F4 RISK</span><span class="tab">F5 SESSION</span></div>
   <div class="zone st" data-estado></div>
   <div class="zone">
@@ -277,7 +322,7 @@
 <section id="session">
 <h2>7. Visão Session (F5)</h2>
 <p>O fecho da sessão. <code>OUTSIDE</code> é o ouro que entrou ou saiu fora do leilão, registrado para não se confundir com trading. A tecla <code>Y</code> aqui salva e recarrega a interface.</p>
-<div class="palco"><div class="win" id="w-session">
+<div class="palco"><div class="onda o2">ONDA 2 (Session)</div><br><div class="win vista" id="w-session">
   <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab on">F5 SESSION</span></div>
   <div class="zone st" data-estado></div>
   <div class="zone">
@@ -302,7 +347,7 @@
 <section id="mail">
 <h2>8. Painel do correio</h2>
 <p>Abre quando você abre a caixa de correio. Só lê e confere: quem pega o ouro e os itens é você, pelo botão da própria Blizzard. Não tem teclas, só botões.</p>
-<div class="palco"><div class="win" id="w-mail">
+<div class="palco"><div class="onda o2">ONDA 2 (painel do correio)</div><br><div class="win" id="w-mail">
   <div class="bar"><span class="nm">PregaoForever</span><span class="tab on">MAIL</span></div>
   <div class="zone">
     <div class="r l"><span><span class="k">STATE</span> &nbsp;<span class="ok">READY</span> - 11 letters read. Take your mail now.</span></div>
@@ -321,7 +366,7 @@
 <section id="avisos">
 <h2>9. Faixas de aviso</h2>
 <p>Todo aviso é uma faixa de texto na linha de estado; nenhum pede tecla. Estes são os principais, com o texto exato do contrato.</p>
-<div class="palco"><div class="win">
+<div class="palco"><div class="onda o3">ONDA 3 (faixas de aviso)</div><br><div class="win">
   <div class="faixa i">Press L to reconcile</div>
   <div class="faixa i">PAUSED - press L</div>
   <div class="faixa a">KEYS HELD - burst</div>
@@ -338,10 +383,233 @@
 <ol class="leg"><li>Azul: o addon espera uma tecla sua. Âmbar: algo pausou e volta sozinho ou com uma tecla. Vermelho: uma trava que pede atenção. A cor só reforça; a frase diz tudo.</li></ol>
 </section>
 
+<section id="estados">
+<h2>11. Linha de estado: abertura, pausa e travas</h2>
+<p>A faixa no topo da janela diz em palavra o que o addon espera ou o que parou. O resto da linha de estado muda junto. Cada janela abaixo é só o cabeçalho da visão Next naquele estado.</p>
+<div class="palco"><div class="onda o3">ONDA 3 (estados da linha de estado)</div><div class="pilha duas">
+  <div class="win corte"><div class="bar" data-barra></div>
+    <div class="faixa i">Press L to reconcile</div>
+    <div class="zone st">
+      <div class="r"><span><span class="k">BUDGET</span> not read yet</span></div>
+      <div class="r"><span><span class="k">MODE</span> <span class="ok">LIVE</span></span><span><span class="k">AT RISK</span> 16% of budget</span><span class="ok">KEYS ON</span></div>
+      <div class="r"><span><span class="k">PRICES</span> none yet</span><span class="fim bt"><b>L</b>look again</span></div>
+    </div>
+  </div>
+  <div class="win corte"><div class="bar" data-barra></div>
+    <div class="faixa i">PAUSED - press L</div>
+    <div class="zone st">
+      <div class="r"><span><span class="k">BUDGET</span> <span class="m">4g 00s</span></span><span><span class="k">FREE</span> <span class="m">3g 12s 86c</span></span><span><span class="k">STOCK</span> <span class="m">64s</span></span><span><span class="k">DEPOSITS</span> <span class="m">14c</span></span><span><span class="k">IN MAIL</span> <span class="m">23s</span></span></div>
+      <div class="r"><span><span class="k">MODE</span> <span class="ok">LIVE</span></span><span><span class="k">AT RISK</span> 16% of budget</span><span class="ok">KEYS ON</span></div>
+      <div class="r"><span><span class="k">PRICES</span> 9 min old, full read</span><span class="fim bt"><b>L</b>look again</span></div>
+    </div>
+  </div>
+  <div class="win corte"><div class="bar" data-barra></div>
+    <div class="faixa a">KEYS HELD - burst</div>
+    <div class="zone st">
+      <div class="r"><span><span class="k">BUDGET</span> <span class="m">4g 00s</span></span><span><span class="k">FREE</span> <span class="m">3g 12s 86c</span></span><span><span class="k">STOCK</span> <span class="m">64s</span></span><span><span class="k">DEPOSITS</span> <span class="m">14c</span></span><span><span class="k">IN MAIL</span> <span class="m">23s</span></span></div>
+      <div class="r"><span><span class="k">MODE</span> <span class="ok">LIVE</span></span><span><span class="k">AT RISK</span> 16% of budget</span><span class="wn">KEYS HELD</span></div>
+      <div class="r"><span><span class="k">PRICES</span> 42s old, full read</span><span class="fim bt"><b>H</b>hold</span></div>
+    </div>
+  </div>
+  <div class="win corte"><div class="bar" data-barra></div>
+    <div class="faixa v">BUYING HALTED - 3 items gone in a row</div>
+    <div class="zone st">
+      <div class="r"><span><span class="k">BUDGET</span> <span class="m">4g 00s</span></span><span><span class="k">FREE</span> <span class="m">3g 12s 86c</span></span><span><span class="k">STOCK</span> <span class="m">64s</span></span><span><span class="k">DEPOSITS</span> <span class="m">14c</span></span><span><span class="k">IN MAIL</span> <span class="m">23s</span></span></div>
+      <div class="r"><span><span class="k">MODE</span> <span class="ok">LIVE</span></span><span><span class="k">AT RISK</span> 16% of budget</span><span class="ok">KEYS ON</span></div>
+      <div class="r"><span><span class="k">PRICES</span> 42s old, full read</span><span class="fim bt"><b>L</b>look again</span></div>
+    </div>
+  </div>
+  <div class="win corte"><div class="bar" data-barra></div>
+    <div class="faixa v">CONFIG ERROR - read only</div>
+    <div class="zone st">
+      <div class="r"><span><span class="k">BUDGET</span> not read yet</span></div>
+      <div class="r"><span><span class="k">MODE</span> <span class="wn">READ ONLY</span></span><span class="wn">KEYS HELD</span></div>
+      <div class="r"><span><span class="k">PRICES</span> none</span></div>
+    </div>
+  </div>
+  <div class="win corte"><div class="bar" data-barra></div>
+    <div class="faixa v">DATABASE NOT LOADED - tell the agent</div>
+    <div class="zone st">
+      <div class="r"><span><span class="k">BUDGET</span> not read yet</span></div>
+      <div class="r"><span><span class="k">MODE</span> <span class="wn">READ ONLY</span></span><span class="wn">KEYS HELD</span></div>
+      <div class="r"><span><span class="k">PRICES</span> none</span></div>
+    </div>
+  </div>
+</div></div>
+<ol class="leg"><li>Azul: o addon espera a tecla <code>L</code>. Âmbar: as teclas de ação estão soltas (<code>H</code> as rearma). Vermelho: trava ou erro que pede o agente; em <code>CONFIG ERROR</code> e <code>DATABASE NOT LOADED</code> a janela só lê. A palavra <code>READ ONLY</code> na linha MODE é leitura minha da frase da faixa.</li></ol>
+</section>
+
+<section id="bilhetes-andamento">
+<h2>12. Bilhete em andamento</h2>
+<p>A palavra do bilhete muda no mesmo quadro assim que a tecla é aceita, e o rodapé mostra a última tecla recebida.</p>
+<div class="palco"><div class="onda o3">ONDA 3 (estados do bilhete: andamento)</div><div class="pilha duas">
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">CHECKING</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>reading the auction again</span></div>
+    <div class="r l"><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">REFRESHED</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>photo is fresh again, press B to quote</span></div>
+    <div class="r l"><span class="bts"><span class="bt"><b>B</b>buy</span></span><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">QUOTING</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>asking the game for a quote</span></div>
+    <div class="r l"><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">SENT</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>waiting for the game answer</span></div>
+    <div class="r l"><span class="col">last key: <b>Y</b></span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">UNKNOWN - checking</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>gold may have moved; saving is blocked until known</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">GAME ASKS TO CONFIRM</span></span><span><span class="vb POST">POST</span> <span class="q2">Bandit Cloak x1</span> &nbsp;24h</span></div>
+    <div class="r"><span>MAINTENANCE: may return early, deposit lost</span></div>
+    <div class="r"><span>price <span class="m">2s 00c</span> &nbsp; deposit <span class="m">30c</span> &nbsp; aborts in 20 s</span></div>
+    <div class="r l"><span class="bt go"><b>Y</b>CONFIRM POST</span><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+</div></div>
+<ol class="leg"><li>Em <code>UNKNOWN - checking</code> nenhuma tecla de ação vale; o addon relê o leilão até saber o que aconteceu.</li></ol>
+</section>
+
+<section id="bilhetes-fim">
+<h2>13. Bilhete resolvido</h2>
+<p>O resultado vem em uma palavra. A linha resolvida sai da fila e a seguinte sobe com a marca <code>NEXT</code>.</p>
+<div class="palco"><div class="onda o3">ONDA 3 (estados do bilhete: resultado e modo papel)</div><div class="pilha duas">
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">BOUGHT</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>paid <span class="m">1s 44c</span> total</span></div>
+    <div class="r"><span>next line moved up: NEXT</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">POSTED</span></span><span><span class="vb POST">POST</span> <span class="q2">Bandit Cloak x1</span> &nbsp;24h</span></div>
+    <div class="r"><span>price <span class="m">2s 00c</span> &nbsp; deposit <span class="m">30c</span></span></div>
+    <div class="r"><span>next line moved up: NEXT</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">CANCELLED</span></span><span><span class="vb CANCEL">CANCEL</span> <span class="q1">Tin Ore x20</span></span></div>
+    <div class="r"><span>deposit lost <span class="m">12c</span></span></div>
+    <div class="r"><span>next line moved up: NEXT</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">FAILED - GONE</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>someone bought it first; no gold moved</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">NOT POSTED</span></span><span><span class="vb POST">POST</span> <span class="q2">Bandit Cloak x1</span> &nbsp;24h</span></div>
+    <div class="r"><span>20 s passed, nothing sent</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="wn">PRICE MOVED</span></span><span><span class="vb POST">POST</span> <span class="q2">Bandit Cloak x1</span></span></div>
+    <div class="r"><span>price now <span class="m">1s 90c</span>, was <span class="m">2s 00c</span></span></div>
+    <div class="r"><span>press P to arm it again</span></div>
+    <div class="r l"><span class="bts"><span class="bt"><b>P</b>post</span></span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">READY</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>PAPER - no gold moved</span></div>
+    <div class="r"><span>pay <span class="m">1s 44c</span> total (<span class="m">9c</span> each)</span></div>
+    <div class="r l"><span class="bt go"><b>Y</b>BUY NOW</span><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">READY</span></span><span><span class="vb POST">POST</span> <span class="q2">Bandit Cloak x1</span> &nbsp;24h</span></div>
+    <div class="r"><span>PAPER - nothing posted</span></div>
+    <div class="r"><span>price <span class="m">2s 00c</span> &nbsp; deposit <span class="m">30c</span></span></div>
+    <div class="r l"><span class="bt go"><b>Y</b>POST NOW</span><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+</div></div>
+<ol class="leg"><li><code>FAILED</code> traz o motivo ou a palavra própria (<code>GONE</code>, <code>NOT ENOUGH GOLD</code>, <code>MATCH THE LOWEST PRICE</code>). <code>PRICE MOVED</code>, <code>POSTING CLOSED</code> e <code>KEEP - buyer pending</code> são volta sem falha. Os dois últimos quadros são o modo papel.</li></ol>
+</section>
+
+<section id="session-bloqueado">
+<h2>14. Session: salvar bloqueado</h2>
+<p>Com uma máquina fora do repouso, INCERTO pendente ou fôlego aberto, o bilhete da Session não deixa salvar.</p>
+<div class="palco"><div class="onda o2">ONDA 2 (Session, bilhete bloqueado)</div><br>
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab on">F5 SESSION</span></div>
+  <div class="zone"><div class="r l"><span><span class="k">TICKET</span> <span class="wn">SAVE BLOCKED - finish or cancel first</span></span></div>
+  <div class="r l"><span class="bt off"><b>Y</b>save now (reloads the interface)</span><span class="fim col">1 buy: UNKNOWN - checking</span></div></div>
+  </div>
+</div>
+</section>
+
+<section id="mail-estados">
+<h2>15. Painel do correio: estados</h2>
+<p>A linha <code>STATE</code> muda enquanto o addon lê as cartas. O painel tem só botões.</p>
+<div class="palco"><div class="onda o2">ONDA 2 (painel do correio, estados)</div><div class="pilha">
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">MAIL</span></div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">STATE</span> &nbsp;<span class="wn">WAIT</span> - reading (7 of 11)</span></div>
+    <div class="r l"><span><span class="k">CHECK</span> &nbsp;not closed yet</span></div>
+  </div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt">Dismiss</span><span class="bt">Save now</span></span><span class="fim col">click: no keys here</span></div></div>
+  </div>
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">MAIL</span></div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">STATE</span> &nbsp;<span class="ok">READY</span> - headers only. Take your mail now.</span></div>
+    <div class="r l"><span><span class="k">CHECK</span> &nbsp;waiting for you to take the mail</span></div>
+  </div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt">Dismiss</span><span class="bt">Save now</span></span><span class="fim col">click: no keys here</span></div></div>
+  </div>
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">MAIL</span></div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">STATE</span> &nbsp;<span class="wn">MORE MAIL WAITING</span> - 11 of 14 letters shown</span></div>
+    <div class="r l"><span><span class="k">CHECK</span> &nbsp;not closed: the box shows less than the total</span></div>
+  </div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt">Dismiss</span><span class="bt">Save now</span></span><span class="fim col">click: no keys here</span></div></div>
+  </div>
+</div></div>
+</section>
+
+<section id="alertas">
+<h2>16. Faixa de alertas (fora do leilão)</h2>
+<p>Com o leilão fechado, o alerta é um quadro próprio, só com botões. Fica 10 segundos e passa para a linha <code>LAST ALERT</code>. Nenhum pede tecla.</p>
+<div class="palco"><div class="onda o3">ONDA 3 (faixa de alertas)</div><div class="pilha">
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">ALERT</span></div>
+  <div class="faixa i">SOLD Linen Bag x1</div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt">Dismiss</span></span><span class="fim col">click: no keys here</span></div></div>
+  </div>
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">ALERT</span></div>
+  <div class="faixa a">EXPIRED Tin Ore x20 - deposit lost 12c</div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt">Dismiss</span></span><span class="fim col">click: no keys here</span></div></div>
+  </div>
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">ALERT</span></div>
+  <div class="faixa v">BUYING HALTED - 3 items gone in a row</div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt">Dismiss</span></span><span class="fim col">click: no keys here</span></div></div>
+  </div>
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">ALERT</span></div>
+  <div class="faixa a">SAVE SOON - 49 actions, 52 min unsaved</div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt">Dismiss</span><span class="bt">Save now</span></span><span class="fim col">click: no keys here</span></div></div>
+  </div>
+</div></div>
+<ol class="leg"><li>Os textos são os do contrato da seção 11.5; <code>OUTBID</code>, <code>TOO MANY OPEN LOTS</code> e os demais usam o mesmo quadro. O detalhe depois do hífen em <code>EXPIRED</code> e <code>SAVE SOON</code> é meu.</li></ol>
+</section>
+
+<section id="sonda">
+<h2>17. Cartão da sonda</h2>
+<p>O roteiro de medição da onda 2, um passo por cartão. A seção 11.3 não desenha este cartão; é uma proposta minha com as mesmas zonas e o mesmo estilo, para você aprovar ou mudar.</p>
+<div class="palco"><div class="onda o2">ONDA 2 (cartão da sonda, proposta)</div><br>
+  <div class="win corte"><div class="bar"><span class="nm">PregaoForever</span><span class="tab on">PROBE</span></div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">STEP</span> &nbsp;S5 (5 of 14)</span><span class="ok">READY</span></div>
+    <div class="r l"><span><span class="k">DO</span> &nbsp;post <span class="q1">Linen Cloth x1</span>, 24h, deposit <span class="m">2c</span></span></div>
+    <div class="r l"><span><span class="k">READS</span> &nbsp;time left of the first rung</span></div>
+    <div class="r l"><span><span class="k">RESULT</span> &nbsp;waiting for the game</span></div>
+    <div class="r l"><span><span class="k">LIMIT</span> &nbsp;one order for this step</span></div>
+  </div>
+  <div class="zone"><div class="r l"><span class="bts"><span class="bt go"><b>Y</b>do this step</span><span class="bt"><b>M</b>never mind</span></span><span class="fim bts"><span class="bt">Skip step</span><span class="bt">Save now</span></span></div></div>
+  </div>
+</div>
+</section>
+
 <section id="teclas">
 <h2>10. Mapa de teclas (proposta)</h2>
 <p>Só vale com a janela do leilão aberta, e nesse momento a letra deixa de fazer o que faz no jogo. Você decide o mapa depois que a sonda disser o que cada letra faz hoje. Uma tecla faz uma coisa só.</p>
-<div class="palco"><div class="tecl">
+<div class="palco"><div class="onda o3">ONDA 3 (teclas)</div><div class="tecl">
   <div class="lin"><div class="tc nav f"><b>F1</b><span>NEXT</span></div><div class="tc nav f"><b>F2</b><span>SELL</span></div><div class="tc nav f"><b>F3</b><span>MINE</span></div><div class="tc nav f"><b>F4</b><span>RISK</span></div><div class="tc nav f"><b>F5</b><span>SESSION</span></div></div>
   <div class="lin" style="margin-top:8px"><div class="tc"><b>Q</b></div><div class="tc"><b>W</b></div><div class="tc"><b>E</b></div><div class="tc"><b>R</b></div><div class="tc"><b>T</b></div><div class="tc exec"><b>Y</b><span>yes</span></div><div class="tc nav"><b>U</b><span>back</span></div><div class="tc nav"><b>I</b><span>why</span></div><div class="tc nav"><b>O</b><span>more</span></div><div class="tc arma"><b>P</b><span>post</span></div></div>
   <div class="lin" style="padding-left:20px"><div class="tc"><b>A</b></div><div class="tc"><b>S</b></div><div class="tc"><b>D</b></div><div class="tc"><b>F</b></div><div class="tc"><b>G</b></div><div class="tc sai"><b>H</b><span>hold</span></div><div class="tc"><b>J</b></div><div class="tc nav"><b>K</b><span>skip</span></div><div class="tc nav"><b>L</b><span>look</span></div></div>
@@ -367,6 +635,18 @@
   document.querySelectorAll('[data-rodape]').forEach(function (e) { e.innerHTML = rod; });
   // o quadro de posicao mostra a visao Next inteira
   document.getElementById('w-lado').innerHTML = document.getElementById('w-next').innerHTML;
+  // barra de abas das janelas recortadas
+  document.querySelectorAll('[data-barra]').forEach(function (e) { e.innerHTML = document.querySelector('#w-next .bar').innerHTML; });
+  // cotas do quadro de posicao a partir do parametro unico de tamanho
+  var cs = getComputedStyle(document.documentElement);
+  var W = cs.getPropertyValue('--W').trim(), H = cs.getPropertyValue('--H').trim(), S = cs.getPropertyValue('--S').trim();
+  var cw = document.getElementById('cota-w'); if (cw) cw.textContent = W + ' x ' + H + (S !== '1' ? ' (scale ' + S + ')' : '');
+  // visao mais alta que H: avisa ao lado do rotulo da onda
+  document.querySelectorAll('.win.vista').forEach(function (w) {
+    var natural = w.scrollHeight / (parseFloat(S) || 1);
+    var o = w.parentNode.querySelector('.onda');
+    if (o && natural > parseFloat(H) + 1) { var x = document.createElement('span'); x.className = 'onda estoura'; x.textContent = 'ESTOURA ' + Math.ceil(natural - parseFloat(H)) + ' unidades alem de ' + H; o.parentNode.insertBefore(x, o.nextSibling); }
+  });
   // modo de foto
   function foto() {
     var id = location.hash.replace('#', '');

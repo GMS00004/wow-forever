@@ -11,7 +11,7 @@ const edge = ["C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", "C
 if (!edge) { console.error("RECUSA msedge.exe nao encontrado"); process.exit(2); }
 const saida = join(aqui, "png");
 mkdirSync(saida, { recursive: true });
-const TODOS = ["lado", "next", "bilhetes", "sell", "mine", "risk", "session", "mail", "avisos", "teclas"];
+const TODOS = ["lado", "next", "estados", "bilhetes", "bilhetes-andamento", "bilhetes-fim", "sell", "mine", "mine-completa", "risk", "session", "session-bloqueado", "mail", "mail-estados", "alertas", "sonda", "avisos", "teclas"];
 const ids = process.argv.slice(2).length ? process.argv.slice(2) : TODOS;
 const base = pathToFileURL(join(aqui, "telas.html")).href;
 const comum = ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1", "--virtual-time-budget=3000",

@@ -1,0 +1,3 @@
+local _, ns = ...
+local botao = CreateFrame("Button", "PregaoForeverBotao")
+botao:SetScript("OnClick", ns.seguro(function() ns.tecla_postar(nil) end))

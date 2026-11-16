@@ -1,0 +1,3 @@
+local _, ns = ...
+ns.Config = { buscasPorMinuto = 4 }
+ns.Config.acoesPorMinuto = 2

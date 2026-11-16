@@ -1,0 +1,3 @@
+-- Receitas.lua (PregaoForever): receitas de profissao. Fase 3; esqueleto vazio.
+local _, ns = ...
+ns.receitas = ns.receitas or {}

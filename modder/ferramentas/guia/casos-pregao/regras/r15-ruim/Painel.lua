@@ -1,0 +1,3 @@
+local _, ns = ...
+local banco = PregaoForeverDB or {}
+banco.ultimo = GetTime()

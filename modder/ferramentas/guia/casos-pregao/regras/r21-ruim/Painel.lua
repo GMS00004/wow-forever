@@ -1,0 +1,3 @@
+local _, ns = ...
+local quadro = CreateFrame("Frame")
+quadro:SetScript("OnUpdate", ns.seguro(function(self, dt) ns.ciclo() end))

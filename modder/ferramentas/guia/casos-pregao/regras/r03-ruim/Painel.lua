@@ -1,0 +1,3 @@
+local _, ns = ...
+local quadro = CreateFrame("Frame")
+quadro:SetScript("OnEvent", function(self, evento) ns.tratar(evento) end)

@@ -1,0 +1,3 @@
+local _, ns = ...
+local nome = C_Item.GetItemInfo(ns.item)
+ns.mostrar("Show 3 more")

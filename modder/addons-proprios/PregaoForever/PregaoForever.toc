@@ -1,0 +1,37 @@
+## Interface: 16001
+## Title: PregaoForever
+## Notes: Auction terminal: ruler, queue and one key per action
+## Author: Bruno
+## Version: 0.1.0
+## SavedVariables: PregaoForeverDB
+## SavedVariablesPerCharacter: PregaoForeverCharDB
+## OptionalDeps: Auctionator, Syndicator, Baganator, ElvUI
+
+Nucleo.lua
+Tetos.lua
+Config.lua
+Calibrado.lua
+Dados.lua
+Receitas.lua
+Banco.lua
+Itens.lua
+Pedidos.lua
+Varredura.lua
+Escada.lua
+Estimadores.lua
+Motor.lua
+Sombra.lua
+Estrategias.lua
+Cofre.lua
+Livro.lua
+Acoes.lua
+Ecos.lua
+Teclas.lua
+Correio.lua
+Sonda.lua
+Pontes.lua
+Visual.lua
+Alertas.lua
+Janela.lua
+Telas.lua
+PregaoForever.lua
