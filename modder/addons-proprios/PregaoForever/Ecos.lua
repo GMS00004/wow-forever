@@ -63,13 +63,36 @@ local function lerProprios(podar)
   end
 end
 
--- dinheiro antes e depois do eco: o PLAYER_MONEY que acabou de chegar e o que o eco explica
-local function antesDepois()
-  local depois = GetMoney()
-  local antes = depois
-  if din.quando and din.anterior and ns.mono() - din.quando <= 1 then antes = din.anterior end
-  din.quando = nil
-  return antes, depois
+-- dinheiro antes e depois do eco, nas duas ordens. Se o PLAYER_MONEY acabou de chegar, fn(antes, depois) roda na
+-- hora. Se o eco chegou primeiro (foi o que o cliente real fez numa compra em 2026-11-16), fn espera o proximo
+-- PLAYER_MONEY, ou ESPERA_DINHEIRO segundos se ele nao vier (acao que nao mexe no dinheiro).
+local ESPERA_DINHEIRO = 1
+local esperando = {}
+local function comDinheiro(fn)
+  if din.quando and din.anterior and ns.mono() - din.quando <= 1 then
+    local antes = din.anterior
+    din.quando = nil
+    fn(antes, GetMoney())
+    return
+  end
+  local antes = GetMoney()
+  local feito = false
+  local function rodar()
+    if feito then return end
+    feito = true
+    fn(antes, GetMoney())
+  end
+  esperando[#esperando + 1] = rodar
+  ns.depois(ESPERA_DINHEIRO, rodar)
+end
+
+-- leiloes comprados nesta sessao: o cliente tambem dispara AUCTION_CANCELED para o leilao que o dono comprou
+local comprados = {}
+local ultimaCompra = nil
+function E.eraCompra(auctionID)
+  if auctionID and comprados[auctionID] then return true end
+  if auctionID and memo[auctionID] then return false end
+  return ultimaCompra ~= nil and (ns.mono() - ultimaCompra) <= 3
 end
 
 local function acharLote(estado, chave, qtd)
@@ -94,37 +117,48 @@ local function aoCriado(_, auctionID)
   local m = memo[auctionID] or {}
   memo[auctionID] = m
   local chave, qtd = m.chave or '', m.qtd or 1
-  local antes, depois = antesDepois()
-  m.deposito = math.max(0, antes - depois)
-  linha('post', chave, qtd, m.preco or 0, 'created', antes, depois)
-  local maos = acharLote('maos', chave, qtd)
-  if maos then
-    ns.livro.lote({ seq = maos.seq, estado = 'postado' })
-  else
-    ns.livro.lote({ chave = chave, qtd = qtd, custo = 0, origem = 'coletado', estado = 'postado' })
-  end
+  comDinheiro(function(antes, depois)
+    m.deposito = math.max(0, antes - depois)
+    linha('post', chave, qtd, m.preco or 0, 'created', antes, depois)
+    local maos = acharLote('maos', chave, qtd)
+    if maos then
+      ns.livro.lote({ seq = maos.seq, estado = 'postado' })
+    else
+      ns.livro.lote({ chave = chave, qtd = qtd, custo = 0, origem = 'coletado', estado = 'postado' })
+    end
+  end)
 end
 
 local function aoCancelado(_, auctionID)
+  -- no cliente real a compra chegou antes deste evento, entao a decisao e na hora
+  if E.eraCompra(auctionID) then
+    ns.log('info', 'canceled event of a bought auction ignored')
+    return
+  end
   local m = memo[auctionID] or {}
   local chave = m.chave or ''
-  local antes, depois = antesDepois()
-  linha('cancel', chave, m.qtd or 1, m.preco or 0, 'cancelled', antes, depois)
+  local antes = GetMoney()
+  if din.quando and din.anterior and ns.mono() - din.quando <= 1 then antes = din.anterior end
+  din.quando = nil
+  linha('cancel', chave, m.qtd or 1, m.preco or 0, 'cancelled', antes, GetMoney())
   local l = acharLote('postado', chave, nil)
   if l then ns.livro.fecharLote(l.seq, 'retirado', 0) end
   memo[auctionID] = nil
 end
 
 local function registrarCompra(chave, qtd, eco)
-  local antes, depois = antesDepois()
-  local total = math.max(0, antes - depois)
-  local un = 0
-  if qtd > 0 then un = math.floor(total / qtd) end
-  linha('buy', chave, qtd, un, eco, antes, depois)
-  ns.livro.lote({ chave = chave, qtd = qtd, custo = total, origem = 'comprado', estado = 'maos' })
+  ultimaCompra = ns.mono()
+  comDinheiro(function(antes, depois)
+    local total = math.max(0, antes - depois)
+    local un = 0
+    if qtd > 0 then un = math.floor(total / qtd) end
+    linha('buy', chave, qtd, un, eco, antes, depois)
+    ns.livro.lote({ chave = chave, qtd = qtd, custo = total, origem = 'comprado', estado = 'maos' })
+  end)
 end
 
-local function aoCompradoItem()
+local function aoCompradoItem(_, auctionID)
+  if auctionID then comprados[auctionID] = true end
   registrarCompra('', 1, 'bought')
 end
 
@@ -153,6 +187,13 @@ local function aoDinheiro()
   din.anterior = din.atual
   din.atual = GetMoney()
   din.quando = ns.mono()
+  -- ecos que chegaram antes deste PLAYER_MONEY: rodam agora, com o dinheiro novo, e consomem a variacao
+  if #esperando > 0 then
+    local lista = esperando
+    esperando = {}
+    for i = 1, #lista do lista[i]() end
+    din.quando = nil
+  end
 end
 
 local function aoEntrar()

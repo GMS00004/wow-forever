@@ -146,4 +146,10 @@ ns.ao("ADDON_LOADED", function(_, nome)
 end)
 
 ns.ao("AUCTION_HOUSE_AUCTION_CREATED", function() S.aoEvento("created") end)
-ns.ao("AUCTION_CANCELED", function() S.aoEvento("canceled") end)
+-- o cliente tambem dispara AUCTION_CANCELED para o leilao que o dono comprou: decide depois da espera do Ecos
+ns.ao("AUCTION_CANCELED", function(_, auctionID)
+  ns.depois(1.5, function()
+    if ns.ecos.eraCompra and ns.ecos.eraCompra(auctionID) then return end
+    S.aoEvento("canceled")
+  end)
+end)

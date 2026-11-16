@@ -282,7 +282,14 @@ function U.mine()
       lista[#lista + 1] = { item = i, cols = { U.nomeLeilao(p), U.precoLeilao(p), U.faixaTempo(p.tempo), "-" } }
     end
   end
-  if #itens == 0 then lista[#lista + 1] = { t = "none read yet - press L", cor = "cinza" } end
+  if #itens == 0 then
+    -- antes do primeiro folego da abertura a faixa de reconciliar esta ligada: ainda nao leu; depois, leu e nao ha nenhum
+    if ns.faixaLigada and not ns.faixaLigada("reconciliar") and ns.pronto then
+      lista[#lista + 1] = { t = "no auctions posted", cor = "cinza" }
+    else
+      lista[#lista + 1] = { t = "none read yet - press L", cor = "cinza" }
+    end
+  end
   if mais then lista[#lista + 1] = { t = mais, cor = "azul" } end
 
   local bil = {}

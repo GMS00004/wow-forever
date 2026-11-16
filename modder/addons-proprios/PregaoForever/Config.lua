@@ -30,8 +30,8 @@ ns.cfg = {
   },
   T_pulso = 90,                   -- segundos desde a ultima tecla do dono; 30 a 240 (DD13)
 
-  -- Teclas: mapa da secao 11.2, pendente da DD5 (o dono confere o desenho antes de valer)
-  teclas = {                      -- pendente da DD5; uma letra ou F1 a F5 por acao
+  -- Teclas: mapa da secao 11.2, aprovado pelo dono em 2026-11-16 (DD5), com P em dois tempos (P arma, Y executa)
+  teclas = {                      -- DD5 de 2026-11-16; uma letra ou F1 a F5 por acao
     olhar = 'L',                  -- abre ou renova um folego de varredura
     proxima = 'N',                -- proxima linha (so navegacao)
     anterior = 'U',               -- linha anterior (so navegacao)
