@@ -23,6 +23,8 @@ item ao vendedor, subindo a perícia sem perder ouro, ou vendendo no leilão. S�
 | `baixar-precos.mjs` | tarefa 2 | grava `dados/pregao/precos.json` |
 | `crafts.mjs` | tarefa 3 | exporta `calcular()` e imprime a lista |
 | `testes/caso-base.json`, `testes/testar-crafts.mjs` | sessão principal | casos de preço fixo da tarefa 3 (não editar) |
+| `rota.mjs` | tarefa R2 | exporta `calcularRota()` e imprime a rota de uma perícia a outra (seção 6) |
+| `testes/caso-rota.json`, `testes/testar-rota.mjs` | sessão principal | casos de preço fixo da rota (não editar) |
 
 ## 3. `receitas-lw.json` (tarefa 1)
 
@@ -131,6 +133,9 @@ node baixar-precos.mjs                  # baixa a foto publica da hora e le a ex
 node crafts.mjs --pericia 180           # a lista, em ate 40 linhas
 node crafts.mjs --pericia 180 --todas   # sem o filtro de pericia de aprender
 node gerar-receitas.mjs                 # so quando o build do cliente mudar (BUILD em comum.mjs)
+node rota.mjs --de 186 --ate 225        # a rota mais barata no pior caso (secao 6)
+node rota.mjs --de 186 --ate 225 --sem "Dusky Boots" --lua   # sem uma receita, no formato do J
+node testes/testar-rota.mjs             # casos de preco fixo da rota
 ```
 
 Forma do arquivo:
@@ -152,6 +157,31 @@ Forma do arquivo:
 
 O script imprime uma linha por fonte: hora da foto pública e itens lidos; dias de saída; itens de vendedor; e,
 do Auctionator, a hora da exportação, o total de preços e quantos têm idade 0, ou "sem exportacao".
+
+## 4.2 Histórico diário (tarefa R1, 2026-11-16)
+
+O mesmo release público tem `<CASA_PUBLICA>-history.txt` (em `URL_PUBLICA`), refeito uma vez por dia, com até
+30 dias (o README diz 30; em 2026-11-16 o arquivo tinha 5, de 11/11 a 15/11, por o jogo ser novo): por item e por dia, o preço mínimo, a mediana e as unidades listadas (o README do repositório
+diz que a API da Blizzard só dá anúncios, não vendas). Vale também para item não empilhável (armadura), que o
+`-sales.txt` não cobre. O `index.txt` não lista esse arquivo, então não há SHA-256 para conferir.
+
+- Baixe para `dados/pregao/publico/` a cada execução do `baixar-precos.mjs`.
+- Valide: a primeira linha é `#qmh 1`; existe a linha `market=<CASA_PUBLICA>`; existe a linha
+  `days=<AAAAMMDD> <AAAAMMDD>`. Depois, linhas `<tipo> <itemID> <dia>;<dia>;...`, com `tipo` `c` ou `i` e cada
+  `<dia>` no formato `<AAAAMMDD>:<min>:<mediana>:<unidades>` (cobre por unidade, inteiros). Linha que não segue o
+  formato é ignorada e contada.
+- Grave em `publico.historico` um objeto `{ "<itemID>": [[AAAAMMDD, min, mediana, unidades], ...] }`, com os dias
+  em ordem crescente e todos os valores inteiros, e em `publico.historicoDias` o par `[primeiro, ultimo]` da linha
+  `days=`, como inteiros.
+- Download que falha ou validação que não passa: `historico` e `historicoDias` saem `null`, o script avisa numa
+  linha e segue gravando o resto (não é erro de saída).
+- Linha impressa: `historico: dias=<primeiro>-<ultimo> itens=<n> ignoradas=<n>` ou
+  `historico: indisponivel (<motivo>)`.
+
+`testes/checar-precos.mjs` passa a conferir, quando `historico` não é `null`: pelo menos 5.000 itens; o item 4234
+com pelo menos 3 dias; toda entrada com 4 inteiros, data de 8 dígitos dentro de `historicoDias`, `min` maior que
+0, `min` menor ou igual à mediana e unidades maiores ou iguais a 0; dias em ordem crescente sem repetição. A linha
+final ganha `historico=<n>` (ou `historico=null`).
 
 ## 5. `crafts.mjs` (tarefa 3)
 
@@ -227,3 +257,89 @@ a hora atual e imprime, em ASCII e em no máximo 40 linhas. Sem `--todas`, as tr
 
 Cada seção mostra até `--linhas` (padrão 8) e, se houver mais, a linha `mais N`. Ao lado do custo, as letras das
 fontes na ordem dos reagentes (por exemplo `LVL`).
+
+## 6. `rota.mjs` (tarefa R2, 2026-11-16)
+
+Decisão do dono em 2026-11-16: o Leatherworking do Hexumlite não segue roteiro de terceiro; a rota sai desta
+ferramenta e o dono aprova ou muda. `rota.mjs` propõe a rota mais barata de uma perícia a outra, com os preços do
+dia, e a escreve também no formato do roteiro do GuiaForever.
+
+`export function calcularRota(receitas, precos, opcoes)`, pura (sem ler arquivo, sem relógio). `opcoes` é
+`{ de, ate, agora, sem, so }`: `de` e `ate` inteiros com `de < ate`; `agora` em epoch de segundos; `sem` uma lista de
+nomes de receita a tirar (vazia por padrão); `so` uma lista de nomes, ou `null` (sem restrição). Nome compara
+exato, sem diferenciar maiúsculas.
+
+**Constantes por receita.** Chame uma vez `calcular(receitas, precos, { pericia: de, agora })` do `crafts.mjs` e use
+de cada linha `custo`, `vendaNpc`, `lucroLeilao`, `ate`, `aprende`, `aprendeEstimado`, `listados`, `saiDia` e
+`semPreco` (nenhum deles depende da perícia). Da receita, `amarela`, `cinza`, `pontos`, `reagentes` e `itemReceita`.
+
+**Chance de ponto na perícia `s`,** a mesma regra do `crafts.mjs`: `pontos` 0 dá 0; `s < amarela` dá 1;
+`s >= cinza` dá 0; senão `(cinza - s) / (cinza - amarela)`, limitado a 0 e 1.
+
+**Um ponto por vez,** para `s` de `de` até `ate - 1`, com `n[r]` (crafts esperados já usados da receita `r`) começando
+em 0:
+1. Candidatas: receitas sem `semPreco`, com `vendaNpc` não nulo, `aprende <= s`, chance em `s` maior que 0, nome
+   fora de `sem`, nome em `so` quando `so` não é `null`, e com `n[r] + e <= ate` da linha quando `ate` não é `null`,
+   em que `e = 1 / (chance * pontos)` é o número esperado de crafts para o ponto.
+2. Custo do ponto, no pior caso (tudo vendido ao vendedor): `k = (custo - vendaNpc) * e`. Vence o menor `k`; no
+   empate (diferença menor que 1e-9), o maior `lucroLeilao` (nulo perde para qualquer número); depois, a menor `magia`.
+3. Soma `e` em `n[r]` da vencedora e registra o ponto `s` para ela.
+4. Sem candidata: a rota para. `parou` vira `{ pericia: s, motivo: 'sem receita' }` e `chegou` vira `s`.
+
+O limite `ate` vale por receita e para a rota inteira; reagente comum a duas receitas não soma entre elas (limitação
+declarada no rodapé).
+
+**Passos.** Pontos seguidos da mesma receita formam um passo: `de` é o primeiro ponto, `ate` o último mais 1.
+`esperado` é a soma dos `e` do passo e `crafts` é `Math.ceil(esperado - 1e-9)`.
+
+**Devolve** `{ de, ate, chegou, parou, passos, totais }`. `chegou` é `ate` quando a rota termina, e `parou` é `null`.
+Cada passo:
+
+| Campo | Regra |
+|---|---|
+| `de`, `ate`, `magia`, `nome` | do passo e da receita |
+| `crafts`, `esperado` | como acima |
+| `custo`, `vendaNpc`, `lucroLeilao`, `aprende`, `aprendeEstimado`, `listados`, `saiDia` | da linha do `calcular` |
+| `itemReceita` | `true` se a receita tem `itemReceita` (precisa do padrão), senão `false` |
+| `piorCaso` | `crafts * (vendaNpc - custo)`; negativo é perda |
+| `seVender` | `crafts * lucroLeilao`; com `lucroLeilao` nulo, igual a `piorCaso` |
+| `materiais` | por reagente direto da receita, na ordem dela: `{ id, nome, qtd: qtd do reagente * crafts }`; `nome` de `receitas.itens`, ou o id em texto |
+| `historico` | os últimos 4 itens de `precos.publico.historico[produto]` (como estão, `[dia, min, mediana, unidades]`), ou `null` sem histórico |
+
+`totais`: `{ crafts, custo, piorCaso, seVender }`, com `custo` a soma de `crafts * custo` e os outros a soma dos
+campos dos passos.
+
+**Linha de comando:** `node rota.mjs --de 186 --ate 225 [--sem "A,B"] [--so "A,B"] [--lua]`. Os nomes separados por
+vírgula, sem espaços nas pontas. Lê `ARQ_RECEITAS` e `ARQ_PRECOS` e usa a hora atual. Argumento errado, `de >= ate`
+ou nome de `--sem`/`--so` que não existe em nenhuma receita: mensagem e código 2. Saída em ASCII.
+
+Sem `--lua`, no máximo 40 linhas:
+1. `ROTA - Leatherworking - de <de> a <ate>` e a linha de horas igual à do `crafts.mjs` (foto pública e Auctionator).
+2. Tabela dos passos, com colunas faixa (`186-195`), receita, crafts, aprende (`175 i` ou `~180`, como no
+   `crafts.mjs`), custo por craft, pior caso, se vender, listados e `ultimos dias` (as unidades dos dias do
+   `historico` separadas por `/`, ou `-`). Até 20 passos; havendo mais, a linha `mais N passos`.
+3. Se parou: `parou em <s>: nenhuma receita da ponto com os filtros e limites`.
+4. `total: <crafts> crafts | materiais <custo> | pior caso <piorCaso> | se tudo vender <seVender>`.
+5. `materiais:` e a soma por reagente de todos os passos (`312 Thick Leather, 52 Wildvine`), em ordem decrescente de
+   quantidade, quebrada em até 4 linhas de 110 caracteres; o que não couber vira `e mais N`.
+6. Rodapé: `precisa do padrao: <receitas com itemReceita, separadas por virgula>` (ou `nenhuma`); com `ate > 225`,
+   `acima de 225 pede o Artisan (pericia 200 e nivel 35)`; e os avisos fixos
+   `aviso: chance de ponto: formula do Classic, nao conferida no Forever | ~ = pericia de aprender estimada` e
+   `aviso: limite por receita: 25% do listado de cada reagente; reagente comum a duas receitas nao soma`.
+
+Com `--lua`, só as linhas do roteiro, prontas para a tabela `passos` do `ProfissoesB.lua`, uma por passo, com 6
+espaços na frente e o texto em inglês. Elas vêm de `export function textoLua(rota, quando)`, pura, que recebe o
+resultado do `calcularRota` e o texto da hora (`AAAA-MM-DD HH:MM`) e devolve a lista de linhas (strings, sem quebra
+de linha no fim). Exemplo de uma linha:
+
+```
+      { de = 186, ate = 194, texto = "Dusky Boots (8x): 64 Heavy Leather, 16 Shadowcat Hide, 8 Shadow Oil, 16 Silken Thread (pattern; worst case -44s 56c; if sold +2g 86s 08c)" },
+```
+
+O texto é `<nome> (<crafts>x): <qtd> <reagente>, ...` e depois, entre parênteses, as notas separadas por `; `:
+`pattern` quando `itemReceita` é `true`; `worst case <piorCaso>`; e `if sold <seVender>` quando `lucroLeilao` não é
+nulo. Dinheiro pelo `moeda()` do `comum.mjs`, com `+` na frente quando é maior que 0. Aspas e barras invertidas do
+texto escapadas para Lua. A última linha é o comentário
+`      -- route from the crafts tool (rota.mjs), prices of <AAAA-MM-DD HH:MM>`, com a hora da exportação do
+Auctionator, ou da foto pública se não houver exportação. Se a rota parou, uma linha de comentário antes dela:
+`      -- stopped at <s>: no recipe gives a point`.

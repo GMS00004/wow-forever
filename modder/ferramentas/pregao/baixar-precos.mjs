@@ -201,6 +201,45 @@ export function lerVendedores(texto) {
   return { lista };
 }
 
+// us-110-history.txt: "#qmh 1", "market=<casa>", "days=<ini> <fim>"; depois "<tipo> <id> <dia>:<min>:<med>:<unid>;...".
+// Linha fora do formato (ou com dia fora de days=, fora de ordem ou item repetido) e ignorada e contada.
+// Devolve { historico, dias: [ini, fim], ignoradas } ou { erro }.
+export function lerHistorico(texto, casa) {
+  const linhas = texto.replace(/^﻿/, '').split(/\r?\n/);
+  if (linhas[0].trim() !== '#qmh 1') return { erro: 'sem #qmh 1 na primeira linha' };
+  let mercado = null;
+  let dias = null;
+  const candidatas = [];
+  for (const bruta of linhas.slice(1)) {
+    const l = bruta.trim();
+    if (!l || l.startsWith('#')) continue;
+    if (l.startsWith('market=')) mercado = l.slice('market='.length);
+    else if (l.startsWith('days=')) {
+      const d = /^days=(\d{8}) (\d{8})$/.exec(l);
+      dias = d ? [Number(d[1]), Number(d[2])] : null;
+    } else if (/^[a-z]+=/.test(l)) continue;
+    else candidatas.push(l);
+  }
+  if (mercado !== casa) return { erro: `market=${mercado}, esperado ${casa}` };
+  if (!dias || dias[0] > dias[1]) return { erro: 'sem days= valido' };
+  const [ini, fim] = dias;
+
+  const historico = {};
+  let ignoradas = 0;
+  for (const l of candidatas) {
+    const m = /^([ci]) (\d+) (\S+)$/.exec(l);
+    const partes = m ? m[3].split(';').map((x) => /^(\d{8}):(\d+):(\d+):(\d+)$/.exec(x)) : [];
+    const ok = !!m && partes.length > 0 && partes.every((p, i) => {
+      const dia = p && Number(p[1]);
+      return dia >= ini && dia <= fim && (i === 0 || dia > Number(partes[i - 1][1]));
+    });
+    if (!ok || m[2] in historico) { ignoradas++; continue; }
+    historico[m[2]] = partes.map((p) => [Number(p[1]), Number(p[2]), Number(p[3]), Number(p[4])]);
+  }
+  if (!Object.keys(historico).length) return { erro: 'nenhuma linha de item' };
+  return { historico, dias, ignoradas };
+}
+
 // Le GuiaForever.lua da pasta SavedVariables. Sem arquivo ou sem bloco ah: null.
 async function lerAuctionator() {
   const pasta = await pastaSavedVariables();
@@ -212,6 +251,18 @@ async function lerAuctionator() {
     throw e;
   }
   return lerExportacao(texto);
+}
+
+// Baixa o historico diario (fora do index.txt, sem SHA-256) e le. Falha de download ou de validacao vira { erro }.
+async function baixarHistorico() {
+  const nome = `${CASA_PUBLICA}-history.txt`;
+  try {
+    const texto = await baixarTexto(nome);
+    await writeFile(path.join(PUBLICO, nome), texto);
+    return lerHistorico(texto, CASA_PUBLICA);
+  } catch (e) {
+    return { erro: String(e.message).replace(/[^\x20-\x7e]/g, '?') };
+  }
 }
 
 const iso = (s) => (Number.isFinite(s) ? new Date(s * 1000).toISOString() : 'sem data');
@@ -234,6 +285,7 @@ async function principal() {
   const vendas = lerVendas(baixado.sales);
   const vend = lerVendedores(vendorsTexto);
   const auct = await lerAuctionator();
+  const hist = await baixarHistorico();
 
   const obj = {
     esquema: 1,
@@ -244,6 +296,8 @@ async function principal() {
       itens: casa.itens,
       saidas: vendas.saidas,
       horas: vendas.horas,
+      historico: hist.erro ? null : hist.historico,
+      historicoDias: hist.erro ? null : hist.dias,
     },
     auctionator: auct,
     vendedor: vend.lista ?? null,
@@ -252,6 +306,8 @@ async function principal() {
 
   console.log(`publico: foto ${iso(casa.foto)} itens=${Object.keys(casa.itens).length} repetidos=${casa.repetidos}`);
   console.log(`saidas: dias=${Object.keys(vendas.horas).length} itens=${Object.keys(vendas.saidas).length}`);
+  if (hist.erro) console.log(`historico: indisponivel (${hist.erro})`);
+  else console.log(`historico: dias=${hist.dias[0]}-${hist.dias[1]} itens=${Object.keys(hist.historico).length} ignoradas=${hist.ignoradas}`);
   if (vend.lista) console.log(`vendedor: itens=${vend.lista.length}`);
   else console.log(`AVISO vendedor: null (${vend.erro})`);
   if (auct) {

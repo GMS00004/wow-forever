@@ -2,7 +2,7 @@ tema: profissoes
 fonte: ReptilioPlays (Tanner "Reptilio"), vídeo "WoW Forever Leatherworking 1–300 Guide (Updated) | Trainers, Materials & Recipes"
 url: https://www.youtube.com/watch?v=ECKmoBDhfM0
 data: 2026-11-10 (publicação); lido em 2026-11-13
-seguir: tudo, para Leatherworking. Decisão do dono em 2026-11-13: "Pode considerá-lo como a fonte máxima da verdade, e o que tiver divergente, pode considerar como superseded". Substitui o roteiro do Gfinity (`roteiros.md`) e qualquer outra fonte de Leatherworking onde divergir; o que ficou superseded está listado no fim deste arquivo.
+seguir: desde 2026-11-16, só como dado de referência (treinadores, padrões, Merchant's Favor e requisitos de tier); a rota e as quantidades não valem mais, porque o Leatherworking do Hexumlite Bull segue a rota do próprio dono, montada com a ferramenta de crafts (`..\..\modder\ferramentas\pregao\`; decisão do dono: "Não vou seguir mais nenhum roteiro de ninguém. Agora sou eu que crio os roteiros. Nossa tool é suprema."). De 2026-11-13 a 2026-11-16 valia tudo, para Leatherworking. Decisão do dono em 2026-11-13: "Pode considerá-lo como a fonte máxima da verdade, e o que tiver divergente, pode considerar como superseded". Substitui o roteiro do Gfinity (`roteiros.md`) e qualquer outra fonte de Leatherworking onde divergir; o que ficou superseded está listado no fim deste arquivo.
 
 # Leatherworking 1 a 300 (ReptilioPlays, 2026-11-10)
 

@@ -1,0 +1,77 @@
+{
+  "nota": "Casos de preco fixo da rota (CONTRATO.md, secao 6). Usa receitas e precos de caso-base.json, com auctionator null, mais o historico abaixo. Valores conferidos a mao pela sessao principal em 2026-11-16.",
+  "agora": 1794850000,
+  "historico": {
+    "200": [[20261111, 3800, 4400, 90], [20261112, 3700, 4300, 100], [20261113, 3900, 4500, 110], [20261114, 3600, 4200, 120], [20261115, 3500, 4100, 130]]
+  },
+  "historicoDias": [20261111, 20261115],
+  "casos": [
+    {
+      "nome": "R1: Leggings ate a Bop Vest abrir, depois Bop Vest",
+      "de": 160, "ate": 175, "sem": [], "so": null,
+      "esperado": {
+        "chegou": 175, "parou": null,
+        "totais": { "crafts": 15, "custo": 23500, "piorCaso": 12255, "seVender": 15025 },
+        "passos": [
+          { "de": 160, "ate": 165, "magia": 1, "nome": "Leggings", "crafts": 5, "esperado": 5, "custo": 3100, "vendaNpc": 3151, "lucroLeilao": 605, "piorCaso": 255, "seVender": 3025, "itemReceita": false, "aprende": 140, "aprendeEstimado": true, "listados": 116,
+            "materiais": [ { "id": 100, "nome": "Leather", "qtd": 50 }, { "id": 101, "nome": "Thread", "qtd": 10 }, { "id": 102, "nome": "Gem", "qtd": 5 } ],
+            "historico": [[20261112, 3700, 4300, 100], [20261113, 3900, 4500, 110], [20261114, 3600, 4200, 120], [20261115, 3500, 4100, 130]] },
+          { "de": 165, "ate": 175, "magia": 5, "nome": "Bop Vest", "crafts": 10, "esperado": 10, "custo": 800, "vendaNpc": 2000, "lucroLeilao": null, "piorCaso": 12000, "seVender": 12000, "itemReceita": false, "aprende": 165, "aprendeEstimado": true, "listados": 3,
+            "materiais": [ { "id": 100, "nome": "Leather", "qtd": 40 } ],
+            "historico": null }
+        ],
+        "lua": [
+          "      { de = 160, ate = 165, texto = \"Leggings (5x): 50 Leather, 10 Thread, 5 Gem (worst case +2s 55c; if sold +30s 25c)\" },",
+          "      { de = 165, ate = 175, texto = \"Bop Vest (10x): 40 Leather (worst case +1g 20s 00c)\" },",
+          "      -- route from the crafts tool (rota.mjs), prices of 2026-11-16 15:04"
+        ]
+      }
+    },
+    {
+      "nome": "R2: sem a Bop Vest (nome em minusculas), Leggings bate o limite de reagente e a rota para",
+      "de": 160, "ate": 175, "sem": ["bop vest"], "so": null,
+      "esperado": {
+        "chegou": 169, "parou": { "pericia": 169, "motivo": "sem receita" },
+        "totais": { "crafts": 10, "custo": 31000, "piorCaso": 510, "seVender": 6050 },
+        "passos": [
+          { "de": 160, "ate": 169, "magia": 1, "nome": "Leggings", "crafts": 10, "esperado": 9.3402133, "piorCaso": 510, "seVender": 6050,
+            "materiais": [ { "id": 100, "nome": "Leather", "qtd": 100 }, { "id": 101, "nome": "Thread", "qtd": 20 }, { "id": 102, "nome": "Gem", "qtd": 10 } ] }
+        ],
+        "lua": [
+          "      { de = 160, ate = 169, texto = \"Leggings (10x): 100 Leather, 20 Thread, 10 Gem (worst case +5s 10c; if sold +60s 50c)\" },",
+          "      -- stopped at 169: no recipe gives a point",
+          "      -- route from the crafts tool (rota.mjs), prices of 2026-11-16 15:04"
+        ]
+      }
+    },
+    {
+      "nome": "R3: so a Belt, receita de item, com prejuizo",
+      "de": 170, "ate": 172, "sem": [], "so": ["Belt"],
+      "esperado": {
+        "chegou": 172, "parou": null,
+        "totais": { "crafts": 3, "custo": 7950, "piorCaso": -4950, "seVender": -2250 },
+        "passos": [
+          { "de": 170, "ate": 172, "magia": 2, "nome": "Belt", "crafts": 3, "esperado": 2.0526316, "piorCaso": -4950, "seVender": -2250, "itemReceita": true, "aprende": 170, "aprendeEstimado": false, "listados": 4,
+            "materiais": [ { "id": 103, "nome": "Cured Hide", "qtd": 6 }, { "id": 101, "nome": "Thread", "qtd": 3 } ],
+            "historico": null }
+        ],
+        "lua": [
+          "      { de = 170, ate = 172, texto = \"Belt (3x): 6 Cured Hide, 3 Thread (pattern; worst case -49s 50c; if sold -22s 50c)\" },",
+          "      -- route from the crafts tool (rota.mjs), prices of 2026-11-16 15:04"
+        ]
+      }
+    },
+    {
+      "nome": "R4: so Leggings e Belt; Leggings esgota o limite no 176 e a Belt assume",
+      "de": 170, "ate": 177, "sem": [], "so": ["leggings", "BELT"],
+      "esperado": {
+        "chegou": 177, "parou": null,
+        "totais": { "crafts": 12, "custo": 36300, "piorCaso": -2790, "seVender": 4550 },
+        "passos": [
+          { "de": 170, "ate": 176, "magia": 1, "nome": "Leggings", "crafts": 10, "esperado": 9.7852148, "piorCaso": 510, "seVender": 6050 },
+          { "de": 176, "ate": 177, "magia": 2, "nome": "Belt", "crafts": 2, "esperado": 1.4285714, "piorCaso": -3300, "seVender": -1500 }
+        ]
+      }
+    }
+  ]
+}

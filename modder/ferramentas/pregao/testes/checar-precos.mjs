@@ -49,6 +49,36 @@ if (p.auctionator !== null) {
   exige(v && Number.isInteger(v.preco) && Number.isInteger(v.idadeDias), `auctionator item: ${JSON.stringify(v)}`);
 }
 
+// 3. Historico diario (CONTRATO 4.2). Null quando o download ou a validacao falhou: nao e erro.
+exige('historico' in pub, 'historico ausente em publico');
+const hist = pub.historico;
+if (hist != null) {
+  const hd = pub.historicoDias;
+  const hdOk = Array.isArray(hd) && hd.length === 2 && hd.every((d) => Number.isInteger(d) && /^\d{8}$/.test(String(d))) && hd[0] <= hd[1];
+  exige(hdOk, `historicoDias: ${JSON.stringify(hd)}`);
+  const [ini, fim] = hdOk ? hd : [Infinity, -Infinity];
+  const nh = Object.keys(hist).length;
+  exige(nh >= 5000, `historico: ${nh} itens (esperado 5000 ou mais)`);
+  const h4 = hist['4234'];
+  exige(Array.isArray(h4) && h4.length >= 3, `historico 4234: ${JSON.stringify(h4)}`);
+  const falhas = {};
+  const falha = (tipo, id, e) => { falhas[tipo] ??= { n: 0, ex: `${id} ${JSON.stringify(e)}` }; falhas[tipo].n++; };
+  for (const [id, lista] of Object.entries(hist)) {
+    let anterior = -Infinity;
+    for (const e of lista) {
+      if (!(Array.isArray(e) && e.length === 4 && e.every(Number.isInteger))) { falha('entrada sem 4 inteiros', id, e); continue; }
+      const [d, min, med, unid] = e;
+      if (!(/^\d{8}$/.test(String(d)) && d >= ini && d <= fim)) falha('data fora de historicoDias', id, e);
+      if (!(min > 0)) falha('min nao maior que 0', id, e);
+      if (min > med) falha('min maior que mediana', id, e);
+      if (!(unid >= 0)) falha('unidades negativas', id, e);
+      if (d <= anterior) falha('dias fora de ordem ou repetidos', id, e);
+      anterior = d;
+    }
+  }
+  for (const [tipo, f] of Object.entries(falhas)) erros.push(`historico ${tipo}: ${f.n} (ex.: ${f.ex})`);
+}
+
 for (const e of erros) console.log('ERRO', e);
-console.log(`publicos=${Object.keys(itens).length} saidas=${Object.keys(pub.saidas || {}).length} vendedor=${p.vendedor ? p.vendedor.length : null} auctionator=${p.auctionator ? Object.keys(p.auctionator.itens).length : 'null'} erros=${erros.length}`);
+console.log(`publicos=${Object.keys(itens).length} saidas=${Object.keys(pub.saidas || {}).length} vendedor=${p.vendedor ? p.vendedor.length : null} auctionator=${p.auctionator ? Object.keys(p.auctionator.itens).length : 'null'} erros=${erros.length} historico=${hist == null ? 'null' : Object.keys(hist).length}`);
 process.exit(erros.length ? 1 : 0);

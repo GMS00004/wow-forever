@@ -2,7 +2,7 @@ tema: profissoes
 fonte: Gfinity (Herbalism, Cooking, First Aid, Enchanting, Alchemy, Tailoring), wow-professions.com (Mining, Skinning, Blacksmithing) e, desde 2026-11-13, o vídeo do ReptilioPlays para Leatherworking (`reptilio-leatherworking.md`)
 url: ver a tabela abaixo
 data: 2026-11-05 (Leatherworking: 2026-11-13)
-seguir: o roteiro de perícia 1 a 300 de cada profissão, escolha do dono em 2026-11-05 ("Gfinity + wow-professions"). Leatherworking: o vídeo do ReptilioPlays é a fonte máxima desde 2026-11-13 e o roteiro do Gfinity ficou superseded. Os passos estão no addon próprio GuiaForever (`..\..\modder\addons-proprios\GuiaForever\ProfissoesA.lua` e `ProfissoesB.lua`) e aparecem no jogo com `/guia prof`.
+seguir: o roteiro de perícia 1 a 300 de cada profissão, escolha do dono em 2026-11-05 ("Gfinity + wow-professions"). Leatherworking: desde 2026-11-16 nenhum roteiro de terceiro vale (decisão do dono, só para o Leatherworking do Hexumlite Bull: "Não vou seguir mais nenhum roteiro de ninguém. Agora sou eu que crio os roteiros. Nossa tool é suprema."); a rota é do dono, montada com a ferramenta de crafts (`..\..\modder\ferramentas\pregao\`). O vídeo do ReptilioPlays, fonte máxima de 2026-11-13 a 2026-11-16, e o roteiro do Gfinity ficaram superseded como rota. Os passos estão no addon próprio GuiaForever (`..\..\modder\addons-proprios\GuiaForever\ProfissoesA.lua` e `ProfissoesB.lua`) e aparecem no jogo com `/guia prof`.
 
 # Roteiros de profissão
 

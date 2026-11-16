@@ -31,38 +31,20 @@ GuiaForeverProfissoesB = {
       "Artisan (up to 300): Annora (inside the Uldaman dungeon, Badlands; you must enter the instance)",
     },
   },
-  -- Leatherworking: video do ReptilioPlays de 2026-11-10, fonte maxima do dono desde 2026-11-13
-  -- (substitui o Gfinity onde divergir). Rota, treinadores da Alianca, neutros, padroes e
-  -- Merchant's Favor: comum\fontes\profissoes\reptilio-leatherworking.md. Materiais = total
-  -- estimado da faixa; o que esta entre parenteses fica fora da soma da aba Professions.
+  -- Leatherworking do Hexumlite: rota do dono, montada com a ferramenta de crafts
+  -- (ferramentas/pregao/rota.mjs), sem roteiro de terceiro desde 2026-11-16 (decisao do dono).
+  -- Os treinadores e os padroes do ReptilioPlays ficam em treino, como dado de referencia.
+  -- Materiais = o que a rota calculou; o que esta entre parenteses fica fora da soma da aba Professions.
   ["Leatherworking"] = {
-    fonte = "ReptilioPlays", url = "https://www.youtube.com/watch?v=ECKmoBDhfM0", data = "video published 2026-11-10",
+    fonte = "crafts tool (rota.mjs)", url = "", data = "prices of 2026-11-16 15:04",
     passos = {
-      { de = 1, ate = 30, texto = "Light Leather (32x): 96 Ruined Leather Scraps (keep the 32 Light Leather for the next crafts)" },
-      { de = 30, ate = 45, texto = "Light Armor Kit (20x): 20 Light Leather (sell them or use them on your gear)" },
-      { de = 45, ate = 55, texto = "Cured Light Hide (10x): 10 Light Hide, 10 Salt (train Journeyman now: skill 50 and level 10, or you stop at 75)" },
-      { de = 55, ate = 85, texto = "Embossed Leather Gloves (35x): 105 Light Leather, 70 Coarse Thread (Merchant's Favor patterns: belts at 60, gloves at 75)" },
-      { de = 85, ate = 100, texto = "Fine Leather Belt (20x): 120 Light Leather, 40 Coarse Thread (keep every belt: the route uses 25 at 118 and 135, so make or buy 5 more)" },
-      { de = 100, ate = 115, texto = "Dark Leather Pants (15x): 180 Medium Leather, 15 Gray Dye, 15 Fine Thread (Merchant's Favor hoods at 100, tunics at 110)" },
-      { de = 115, ate = 118, texto = "Gray Leather Boots (7x): 28 Medium Leather, 14 Fine Thread, 7 Gray Dye" },
-      { de = 118, ate = 125, texto = "Dark Leather Belt (7x): 7 Fine Leather Belt, 7 Cured Medium Hide, 14 Fine Thread, 7 Gray Dye" },
-      { de = 125, ate = 135, texto = "Cured Heavy Hide (10x): 10 Heavy Hide, 30 Salt (first train Expert: skill 125 and level 20; keep the hides; Merchant's Favor legs at 125)" },
-      { de = 135, ate = 143, texto = "Dark Leather Belt (18x): 18 Fine Leather Belt, 18 Cured Medium Hide, 36 Fine Thread, 18 Gray Dye" },
-      { de = 143, ate = 145, texto = "Cured Heavy Hide (12x): 12 Heavy Hide, 36 Salt (keep the hides: 22 in all)" },
-      { de = 145, ate = 155, texto = "Toughened Leather Gloves (25x): 100 Medium Leather, 50 Cured Medium Hide, 50 Elixir of Lesser Defense, 50 Spider's Silk, 50 Fine Thread (bind on equip: you can sell them)" },
-      { de = 155, ate = 160, texto = "Barbaric Shoulders (5x): 40 Heavy Leather, 5 Cured Heavy Hide, 10 Fine Thread (then buy the Gem-studded Leather Belt pattern from Rikqiz, Booty Bay)" },
-      { de = 160, ate = 180, texto = "Gem-studded Leather Belt (20x): 80 Cured Heavy Hide, 40 Iridescent Pearl, 40 Jade, 20 Citrine, 20 Fine Thread (pattern from Rikqiz, Booty Bay: learn it before buying the gems; without it, Barbaric Shoulders to 165, then Guardian Gloves to 190)" },
-      { de = 180, ate = 185, texto = "Barbaric Shoulders (12x): 96 Heavy Leather, 12 Cured Heavy Hide, 24 Fine Thread (Merchant's Favor gloves at 175: 60 Favor, Friendly)" },
-      { de = 185, ate = 190, texto = "Gem-studded Leather Belt (7x): 28 Cured Heavy Hide, 14 Iridescent Pearl, 14 Jade, 7 Citrine, 7 Fine Thread" },
-      { de = 190, ate = 200, texto = "Nightscape Tunic (10x): 70 Thick Leather, 20 Silken Thread (learned at 180; orange up to 199)" },
-      { de = 200, ate = 210, texto = "Nightscape Tunic (10x): 70 Thick Leather, 20 Silken Thread (first train Artisan: skill 200 and level 35; yellow, so a few extra crafts)" },
-      { de = 210, ate = 225, texto = "Nightscape Pants (15x): 210 Thick Leather, 60 Silken Thread" },
-      { de = 225, ate = 230, texto = "Cured Rugged Hide (6x): 6 Rugged Hide, 6 Refined Deeprock Salt (2 hides per craft, keep them all; if the trainer does not teach it at 225, make Nightscape Pants to 240)" },
-      { de = 230, ate = 240, texto = "Nightscape Pants (20x): 280 Thick Leather, 80 Silken Thread" },
-      { de = 240, ate = 255, texto = "Wicked Leather Gauntlets (15x): 120 Rugged Leather, 15 Black Dye, 15 Rune Thread (pattern from Leonard Porter, Western Plaguelands)" },
-      { de = 255, ate = 260, texto = "Heavy Scorpid Bracers (6x): 24 Rugged Leather, 24 Heavy Scorpid Scale, 6 Rune Thread (pattern from Zannok Hidepiercer, Silithus)" },
-      { de = 260, ate = 270, texto = "Wicked Leather Bracers (10x): 80 Rugged Leather, 10 Black Dye, 10 Rune Thread (pattern drops from Legashi Rogue, Azshara; yellow, so a few extra crafts)" },
-      { de = 270, ate = 300, texto = "Heavy Scorpid Helm (33x): 264 Rugged Leather, 396 Heavy Scorpid Scale, 33 Cured Rugged Hide, 33 Rune Thread (pattern from Zannok Hidepiercer, Silithus; buy the Cured Rugged Hide you did not keep)" },
+      { de = 1, ate = 186, texto = "Done before the tool route (skill 186 on 2026-11-16)" },
+      { de = 186, ate = 190, texto = "Dusky Boots (4x): 32 Heavy Leather, 8 Shadowcat Hide, 4 Shadow Oil, 8 Silken Thread (pattern; worst case -22s 28c; if sold +1g 43s 04c)" },
+      { de = 190, ate = 200, texto = "Swift Boots (11x): 110 Heavy Leather, 22 Swiftness Potion, 22 Thick Spider's Silk, 11 Silken Thread (pattern; worst case -87s 23c; if sold +50s 93c)" },
+      { de = 200, ate = 205, texto = "Skycaller's Mail Boots (5x): 40 Heavy Leather, 10 Cured Medium Hide, 10 Elemental Water (pattern; worst case +26s 15c)" },
+      { de = 205, ate = 225, texto = "Wild Leather Vest (21x): 252 Thick Leather, 42 Wildvine, 21 Cured Thick Hide (pattern; worst case -1g 53s 30c; if sold +1g 61s 28c)" },
+      -- route from the crafts tool (rota.mjs), prices of 2026-11-16 15:04
+      { de = 225, ate = 300, texto = "Next route: run the crafts tool at 225 (train Artisan first: skill 200 and level 35)" },
     },
     treino = {
       "Apprentice (no level needed, up to 75): Randal Worth (Protective Hide, Old Town, Stormwind City), Gretta Finespindle (Finespindle's Leather Goods, Great Forge, Ironforge), Darianna (upstairs, Craftsmen's Terrace, Darnassus), Adele Fielder (house by Crystal Lake, north-east of Goldshire, Elwynn Forest), Nadyia Maneweaver (house by the Darnassus road, north-west of Ban'ethil, Teldrassil)",
@@ -71,7 +53,7 @@ GuiaForeverProfissoesB = {
       "Artisan (skill 200 and level 35, up to 300; train before 225): Drakk Stonehand (Wildhammer Keep, Aerie Peak, The Hinterlands: enter the building with a mailbox, left corridor, then downstairs)",
       "Both factions: Apprentice at Waldor (cave above Wailing Caverns, The Barrens) and Indari Sunseam (Shen'dar Village, Zephras Isle); Apprentice and Journeyman at Emerii Tallgust (Valanaar, Zephras Isle)",
       "Merchant's Favor patterns (optional): Daniel Stitchsong, Azeroth Commerce Authority camp, Three Corners, Redridge Mountains. 30 Favor each: belts at 60, gloves at 75, hoods at 100, tunics at 110, legs at 125; gloves at 175 cost 60 Favor and need Friendly",
-      "Route patterns: Gem-studded Leather Belt from Rikqiz (Booty Bay, Stranglethorn Vale); Wicked Leather Gauntlets from Leonard Porter (Western Plaguelands); Heavy Scorpid Bracers and Helm from Zannok Hidepiercer (Silithus); Wicked Leather Bracers drop from Legashi Rogue (Azshara)",
+      "Pattern locations (reference): Gem-studded Leather Belt from Rikqiz (Booty Bay, Stranglethorn Vale); Wicked Leather Gauntlets from Leonard Porter (Western Plaguelands); Heavy Scorpid Bracers and Helm from Zannok Hidepiercer (Silithus); Wicked Leather Bracers drop from Legashi Rogue (Azshara)",
     },
   },
   ["Alchemy"] = {

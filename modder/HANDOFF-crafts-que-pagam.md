@@ -1,124 +1,164 @@
 ---
 frente: crafts-que-pagam
 status: ativa
-atualizado: 2026-11-16T15:14-03:00
+atualizado: 2026-11-16T18:07-03:00
 maquina: Avell
 temas: [jogos, analise-dados]
-proximo_passo: "Dono: usar a lista por alguns dias (varredura do Auctionator, comando de exportação, /reload, baixar-precos e crafts) e dizer o que faltou ou errou"
+proximo_passo: "Dono: /reload no Hexumlite, conferir a rota em J > Professions > Mine e dizer quais dos quatro padrões não tem"
 decisoes_abertas: 1
-commit: 286e013
+commit: 9c4a125
 sensivel: false
 ---
 
-> Frente: crafts-que-pagam · Atualizado: 16/11/2026 15:14 · Máquina: Avell
+> Frente: crafts-que-pagam · Atualizado: 16/11/2026 18:07 · Máquina: Avell
 
-> **O que é esta frente.** Uma lista, fora do jogo, de quais receitas de Leatherworking do WoW Forever pagam: vendendo o item ao vendedor, subindo a perícia sem perder ouro, ou vendendo no leilão. São ferramentas Node em `C:\GMS\Claude Code Projects\wow\modder\ferramentas\pregao\`, feitas em 16/11/2026 e testadas com dado real e no jogo. É a estratégia "conversão" do PregaoForever, antecipada em modo leitura: nada compra, posta ou vende.
+> **O que é esta frente.** Ferramentas Node, fora do jogo, que dizem quais receitas de Leatherworking do WoW Forever pagam e, desde 16/11/2026 à tarde, qual rota de perícia seguir. Moram em `C:\GMS\Claude Code Projects\wow\modder\ferramentas\pregao\`. Dão a lista (`crafts.mjs`: vendedor, perícia, leilão) e a rota (`rota.mjs`: a mais barata de uma perícia a outra, no pior caso). A rota também é gravada no addon próprio GuiaForever, na janela J. Só leem: nada compra, posta ou vende.
 >
-> **Leia isto mais um arquivo e você retoma do zero:** `C:\GMS\Claude Code Projects\wow\modder\ferramentas\pregao\CONTRATO.md` (regras de cálculo, formato dos arquivos, o comando de exportação e a seção 4.1, "Uso"). Os limites fixos do projeto estão em `C:\GMS\Claude Code Projects\wow\CLAUDE.md`.
+> **Leia isto mais um arquivo e você retoma do zero:** `C:\GMS\Claude Code Projects\wow\modder\ferramentas\pregao\CONTRATO.md` (seções 4.1 "Uso", 4.2 "Histórico diário", 5 "crafts.mjs" e 6 "rota.mjs"). Os limites fixos do projeto estão em `C:\GMS\Claude Code Projects\wow\CLAUDE.md`.
 >
-> **Não releia nem refaça:** o `DESIGN.md` do PregaoForever (44 mil palavras; esta frente não depende dele para rodar), a identificação da casa de leilão (é a `us-111`, conferida) e a conferência das tabelas do cliente contra o jogo.
+> **Não releia nem refaça:** o `DESIGN.md` do PregaoForever (esta frente não depende dele), a identificação da casa de leilão (é a `us-111`, conferida), a conferência das tabelas do cliente contra o jogo e o roteamento da onda R1/R2 (já executada e aprovada no gate).
 >
-> ⚠️ **Preço envelhece rápido.** A lista só usa a exportação do Auctionator com até 6 horas, e o arquivo público atrasa cerca de uma hora. Antes de decidir um craft, refaça a varredura e a exportação.
+> ⚠️ **Decisão do dono em 16/11/2026, restrição fixa:** "Não vou seguir mais nenhum roteiro de ninguém. Agora sou eu que crio os roteiros. Nossa tool é suprema." Vale só para o Leatherworking do Hexumlite Bull (escolha do dono). A rota sai da ferramenta e o dono aprova. O ReptilioPlays ficou só como dado de referência: treinadores, padrões, Merchant's Favor e requisitos de tier.
 >
-> ⚠️ **A lista não sabe quais receitas o personagem tem.** Ela filtra pela perícia de aprender, que é exata só para receita que vem de item (388 de 482) e estimada nas de treinador ("amarela menos 25"). Linha marcada `i` exige o padrão.
+> ⚠️ **O trabalho da tarde de 16/11/2026 está sem commit, só no disco do Avell.** O dono escolheu fechar depois, com diário, commit por caminho, `/sb` e este handoff. A lista de arquivos está em "Estado do repo".
 >
-> ⚠️ **Código de addon de terceiro não é referência.** Do Auctionator só se usa a API pública, pelo comando colado no jogo, e um bloco de preços de vendedor legível no arquivo dele. Mesma regra da frente `pregaoforever`.
+> ⚠️ **Preço envelhece rápido.** A exportação do Auctionator vale 6 horas, e o arquivo público atrasa cerca de uma hora. A rota do J fica com os preços do dia em que foi gerada.
 >
-> ⚠️ **Os commits desta frente estão só no Avell, sem push.** Em outra máquina, rode o Sincronizar antes. A pasta `dados\pregao\` não vai pelo git: lá ela se refaz com os dois primeiros comandos de "Como retomar".
+> ⚠️ **A ferramenta não sabe quais receitas o personagem tem nem onde se compra cada padrão.** Receita de treinador tem a perícia de aprender estimada (`~`). A chance de ponto usa a fórmula do Classic, que não foi conferida no Forever.
 
 ## Estado em uma tela
 
-- **Projeto:** `C:\GMS\Claude Code Projects\wow`, agente wow-modder (subpasta `modder`). **Ferramentas:** `modder\ferramentas\pregao\`. **Dados gerados:** `modder\dados\pregao\` (fora do git).
-- **Jogo:** WoW Forever, cliente 1.60.1 build 70938 (observado em 16/11/2026, no `.build.info`). Personagem: Hexumlite Bull, Leatherworking 186 (inferido: dito pelo dono em 16/11/2026).
-- **Status:** pronto e em uso. Os três checadores passam com erro zero (observado em 16/11/2026). O comando de exportação rodou no jogo e trouxe 6.876 preços (observado em 16/11/2026).
-- **Fontes de preço, aprovadas pelo dono em 16/11/2026:** a varredura completa do Auctionator, como preço principal, e o arquivo público por hora `RuslanMunasipov/quest-murder-prices`, casa `us-111`, para profundidade, liquidez e conferência.
-- **Última lista (perícia 186, varredura das 15h04 de 16/11/2026):** no vendedor só pagam Raptor Hide Harness (3s 66c) e Barbaric Leggings (81c), as duas já cinza; 14 receitas dão ponto e têm lucro no leilão se venderem; a mais barata por ponto é a Dusky Boots (observado em 16/11/2026).
-- **O que falta, em uma frase:** o dono usar a lista e dizer o que faltou; depois, o painel dentro do jogo, que pede plano próprio.
+- **Projeto:** `C:\GMS\Claude Code Projects\wow`, agente wow-modder (subpasta `modder`). **Ferramentas:** `modder\ferramentas\pregao\`. **Dados gerados:** `modder\dados\pregao\`, fora do git.
+- **Jogo:** WoW Forever, cliente 1.60.1 build 70938 (inferido: handoff de 16/11/2026 15:14). Personagem: Hexumlite Bull, Leatherworking 186 (inferido: dito pelo dono em 16/11/2026).
+- **Status:** a lista e a rota prontas; a rota está no J (GuiaForever 1.3.2), sem teste no jogo (não testado). Checadores: `testar-crafts` e `testar-rota` com erros=0, `checar-precos` com erros=0 e historico=6979 (observado em 16/11/2026).
+- **Rota no J (preços da foto pública das 16h17 e da exportação das 15h04 de 16/11/2026):**
+
+  | Faixa | Receita | Crafts | O NPC devolve do custo |
+  |---|---|---|---|
+  | 186-190 | Dusky Boots | 4 | 88% |
+  | 190-200 | Swift Boots | 11 | 84% |
+  | 200-205 | Skycaller's Mail Boots | 5 | 114% |
+  | 205-225 | Wild Leather Vest | 21 | 92% |
+
+  No total, 41 crafts e 27g 73s de materiais. No pior caso (tudo vendido ao NPC), a perda é de 2g 36s 66c, ou seja, 91% do custo volta. Se tudo vender no leilão, sobra 3g 81s 40c (observado em 16/11/2026). As quatro receitas pedem padrão.
+- **O que falta, em uma frase:** o dono testar a rota no J e dizer quais padrões não tem; depois, fechar a sessão (commit, `/sb`, diário).
 
 ## O que já foi feito (não refazer)
 
-1. **Entrevista com o dono** (16/11/2026). Decisões fechadas, gravadas em `estado\estado.md`, tabela "Decisões do dono": lista fora do jogo agora e painel depois; os três objetivos (vendedor, perícia, leilão); todas as receitas de Leatherworking; coluna de liquidez com aviso; execução por subagentes econômicos; painel só depois de usar a lista.
-2. **Contrato e módulo comum:** `ferramentas\pregao\CONTRATO.md` e `comum.mjs` (caminhos, leitor de CSV, download das tabelas do cliente com cache, pasta SavedVariables sem gravar o nome da conta).
-3. **`gerar-receitas.mjs`:** tira das tabelas do cliente as 482 receitas de Leatherworking, com reagentes, produto, faixas de cor, item de receita e preços de vendedor; grava `dados\pregao\receitas-lw.json`. O modo `--conferir-vendedor` compara o preço de compra da tabela com o que o Auctionator viu em vendedores: 386 comparados, 227 iguais, 159 com desconto de reputação, nenhum divergente (observado em 16/11/2026).
-4. **`baixar-precos.mjs`:** baixa a foto pública da hora (com SHA-256), as saídas por dia e a lista de itens de vendedor, lê a exportação do Auctionator e grava `dados\pregao\precos.json`.
-5. **`crafts.mjs`:** função pura `calcular()` e a linha de comando que imprime a lista em até 40 linhas. Custo pelo menor entre leilão, vendedor e fabricar o intermediário.
-6. **Testes e checadores** em `ferramentas\pregao\testes\`: `testar-crafts.mjs` (4 casos de preço fixo, 131 campos), `checar-receitas.mjs`, `checar-precos.mjs` (observado em 16/11/2026: os três com `erros=0`).
-7. **Teste no jogo** (16/11/2026, 15h04): o dono rodou a varredura completa e colou o comando; o chat mostrou `6876 ok /reload`. A casa `us-111` ficou confirmada: 86% dos 6.448 itens em comum a até 5% da varredura. O tooltip da Barbaric Leggings mostra 31s 51c, igual à tabela (observado em 16/11/2026).
-8. **Registros:** `estado\estado.md` (decisão, uma pendência recorrente do dono, a pendência do painel e duas entradas no diário); três linhas em `C:\GMS\Claude Code Projects\skill-review\reviews\calibracao.jsonl` (466 a 468); entrada nova no `.gitignore` da raiz para `wow/modder/dados/`.
-9. **Commits, locais e sem push:** `7a357d0` e `286e013` em `C:\GMS`.
-10. **Second brain:** `/sb` concluído em 16/11/2026. Destilado e adendo em `C:\GMS\Claude Code Projects\Obsidian\GMS-SB\raw\` (`2026-11-16-crafts-pregaoforever-precos-leilao.md` e `-adendo.md`); duas páginas novas no vault ("Leatherworking Crafts List Outside the Game ..." e a página da sessão) e dois reforços em `AI-Assisted Work Process.md`. O checador estrutural do vault deu 0 erros (observado em 16/11/2026).
+1. **Entrevista com o dono** (16/11/2026). As decisões estão em `estado\estado.md`, na tabela "Decisões do dono": lista fora do jogo agora e painel depois; os três objetivos (vendedor, perícia, leilão); todas as receitas de Leatherworking; coluna de liquidez com aviso; execução por subagentes econômicos.
+2. **Contrato e módulo comum:** `CONTRATO.md` e `comum.mjs`.
+3. **`gerar-receitas.mjs`:** 482 receitas de Leatherworking das tabelas do cliente, gravadas em `dados\pregao\receitas-lw.json`.
+4. **`baixar-precos.mjs`:** foto pública da hora (com SHA-256), saídas por dia, lista de itens de vendedor e exportação do Auctionator, gravados em `dados\pregao\precos.json`. **Desde 16/11/2026, também o histórico diário** `us-111-history.txt`: preço mínimo, preço do meio e unidades listadas por dia, armadura incluída. São 6.979 itens, de 11/11 a 15/11, gravados em `publico.historico` (observado em 16/11/2026).
+5. **`crafts.mjs`:** a lista em até 40 linhas.
+6. **Testes:** `testar-crafts.mjs` (4 casos, 131 campos), `checar-receitas.mjs` e `checar-precos.mjs`. Este último confere também o histórico, conforme a seção 4.2.
+7. **Teste da exportação no jogo** (16/11/2026, 15h04): 6.876 preços (observado em 16/11/2026).
+8. **Consulta da tarde de 16/11/2026 (perícia 186):**
+   - O histórico mostrou que as Azure (no topo do lucro no leilão) têm mercado raso, de 1 a 6 listadas por dia, e preço caindo pela metade em quatro dias, e o NPC paga 0c por elas.
+   - Só os Thick Armor Kit têm estimativa de venda (cerca de 256 e 376 por dia).
+   - O Wild Leather Vest (aprende 200; laranja até 220, amarelo até 230) leva de 200 a 225 em cerca de 26 crafts (observado em 16/11/2026).
+9. **Decisão do dono gravada** (ver o banner) em `estado\estado.md`, `..\comum\jogador.md`, `..\comum\fontes\profissoes\roteiros.md`, `..\comum\fontes\profissoes\reptilio-leatherworking.md` e `..\comum\personagens\hexumlite-bull.md`.
+10. **`rota.mjs`** (onda R1/R2 com subagentes Haiku; contrato na seção 6): sobe um ponto por vez e, em cada ponto, escolhe a receita de menor `(custo - vendaNpc) / chance`. Cada receita tem um teto de crafts de 25% do listado do reagente mais escasso. Uso: `--de`, `--ate`, `--sem`, `--so`, `--lua`. Testes: `testes\caso-rota.json` e `testar-rota.mjs`, com 4 casos e 112 campos, conferidos à mão e por uma referência (observado em 16/11/2026).
+11. **GuiaForever 1.3.2:** a rota da ferramenta entrou em `addons-proprios\GuiaForever\ProfissoesB.lua`, no lugar das faixas do ReptilioPlays. Ganhou as linhas extras "1-186 done" e "225-300 next route", e "Route patterns" virou "Pattern locations (reference)". Conferido: a sintaxe pelo `ferramentas\guia\checar-lua.mjs` e a leitura dos passos pela regra do J, com os totais da faixa Expert iguais aos da ferramenta (observado em 16/11/2026).
+12. **Rotas mais rígidas, só com venda ao NPC:** com receitas que devolvem 90%, 95% ou 100% do custo, nenhuma sai do 186, porque entre 186 e 200 não há receita que dê ponto com retorno de 90% ou mais (observado em 16/11/2026). A rota atual já é a de venda ao NPC. Substitutas de 200 a 205, se faltar o padrão da Skycaller's Mail Boots: Mender's Mail Boots (104%), Prowler's Leather Shoes (95%), Skycaller's Leather Shoes (95%) e Mender's Leather Shoes (90%) (observado em 16/11/2026).
+13. **Registros:** `estado\estado.md` (decisão, alteração de UI, duas pendências novas, GuiaForever 1.3.2 na tabela de addons; a pendência da rota do ReptilioPlays saiu) e duas linhas em `C:\GMS\Claude Code Projects\skill-review\reviews\calibracao.jsonl` (R1 e R2).
+14. **Commits anteriores:** `7a357d0`, `286e013` e `bd46e09` em `C:\GMS`, sem push (inferido: handoff de 16/11/2026 15:14).
+15. **Second brain:** `/sb` da manhã concluído (inferido: handoff de 16/11/2026 15:14). ⚠️ A página do vault sobre a lista diz que o arquivo público não traz liquidez de armadura. O `us-111-history.txt` corrige isso, e o `/sb` desta tarde ainda vai registrar a correção.
 
 ## Decisões abertas
 
-1. **Onde nasce o painel dentro do jogo.** O dono escolheu em 16/11/2026 que o painel é a primeira fatia do PregaoForever, em modo leitura. Falta decidir, quando o plano for pedido: (a) um addon mínimo próprio agora, só com a aba de crafts, que não espera as seis decisões da frente `pregaoforever` mas cria estrutura que a onda 1 dela vai refazer; ou (b) a aba entra na onda 2 do PregaoForever (a régua), com `.toc`, kit visual e pontes já no contrato, e espera as decisões e a onda 0 daquela frente. Não decida pelo dono.
+1. **Onde nasce o painel dentro do jogo** (sem mudança desde 16/11/2026, 15:14). Há duas opções:
+   - (a) um addon mínimo próprio agora, só com a aba de crafts;
+   - (b) a aba entra na onda 2 do PregaoForever, depois das decisões e da onda 0 daquela frente.
+
+   Não decida pelo dono.
 
 ## Próximos passos concretos
 
-1. **Dono:** usar a lista por alguns dias e dizer o que faltou ou errou. O roteiro de cada consulta está em "Como retomar".
-2. **Dono:** rodar o atalho Sincronizar. Em 16/11/2026 o `main` de `C:\GMS` estava 8 commits à frente e 5 atrás do remoto (observado em 16/11/2026).
-3. **Agente, quando o dono pedir:** plano do painel dentro do jogo, com roteamento por tarefa e a decisão aberta 1 levada a ele antes de qualquer código. O painel lê do jogo as receitas que o personagem sabe e o preço de venda ao vendedor, o que tira as duas estimativas da lista de fora. Ligar addon novo exige o jogo fechado.
-4. **Agente, só se o dono pedir:** outras profissões (o gerador hoje só lê a linha 165, Leatherworking); nomes no lugar de ids na linha de divergências; liquidez de armadura, que o arquivo público não traz.
+1. **Dono:** `/reload` no Hexumlite e abrir J > Professions > Mine, conferir as quatro faixas e os totais, e dizer quais padrões não tem. Para cada padrão que faltar, o agente roda `node rota.mjs --de <perícia> --ate 225 --sem "<receita>"`, mostra a prévia e troca no J com o ok.
+2. **Agente, no fechamento** (o dono escolheu fechar depois), nesta ordem:
+   - a entrada do diário em `estado\estado.md`;
+   - o commit por caminho com os arquivos de "Estado do repo";
+   - o `/sb`, com o histórico diário e as lições desta tarde (Gotchas);
+   - a atualização deste handoff.
+3. **Dono:** rodar o atalho Sincronizar. Em 16/11/2026, o `main` de `C:\GMS` estava 5 commits atrás do remoto, e o notebook do escritório não tinha feito o sync de saída (observado em 16/11/2026).
+4. **Quando o dono pedir preços novos:** ele faz a varredura e a exportação no jogo (roteiro em "Como retomar"); o agente roda `baixar-precos` e `rota`, mostra a prévia e troca no J.
+5. **Aos 225, já com o Artisan (perícia 200 e nível 35):** gerar a rota de 225 a 300 com uma exportação nova e trocar a linha "next route" no J.
+6. **Só se o dono pedir:**
+   - um modo "lucro no leilão" na rota (oferecido em 16/11/2026, sem resposta);
+   - o painel no jogo (decisão aberta 1);
+   - outras profissões (o gerador só lê a linha 165);
+   - nomes no lugar de ids nas divergências.
 
 ## Como retomar (comandos exatos)
 
-Abra a sessão em `C:\GMS\Claude Code Projects\wow\modder`. Pré-requisito: Node (v24 no Avell). Nenhum comando escreve na pasta do jogo.
+Abra a sessão em `C:\GMS\Claude Code Projects\wow\modder`. O pré-requisito é o Node (v24 no Avell). Nenhum comando escreve na pasta do jogo.
 
 Conferir que está tudo de pé (Bash):
 
 ```bash
 cd "/c/GMS/Claude Code Projects/wow/modder/ferramentas/pregao"
-node gerar-receitas.mjs && node testes/checar-receitas.mjs
+node testes/testar-crafts.mjs && node testes/testar-rota.mjs && node testes/checar-receitas.mjs
 node baixar-precos.mjs && node testes/checar-precos.mjs
-node testes/testar-crafts.mjs
 ```
 
-Resultado esperado: três linhas finais com `erros=0`; `receitas=482`; a linha `auctionator:` com a hora da exportação, ou `sem exportacao` se o dono ainda não exportou.
+O esperado é `erros=0` nas quatro linhas finais e a linha `historico: dias=... itens=... ignoradas=0`.
 
 Uma consulta, do começo ao fim:
 
-1. No jogo, com o leilão aberto: **Scan auction house** (botão do Auctionator) e esperar terminar.
-2. Colar no chat o comando da seção 4 do `CONTRATO.md` (linha que começa em `/run local A,t,n=Auctionator.API.v1`). Deve aparecer um número seguido de `ok /reload`.
-3. Digitar `/reload`.
-4. Fora do jogo (PowerShell ou Bash), trocando 186 pela perícia atual:
+1. No jogo, com o leilão aberto, clique em **Scan auction house** (Auctionator) e espere terminar.
+2. Cole no chat o comando da seção 4 do `CONTRATO.md` (a linha que começa em `/run local A,t,n=Auctionator.API.v1`). Deve aparecer um número seguido de `ok /reload`.
+3. Digite `/reload`.
+4. Fora do jogo:
 
 ```
 cd "C:\GMS\Claude Code Projects\wow\modder\ferramentas\pregao"
 node baixar-precos.mjs
 node crafts.mjs --pericia 186
+node rota.mjs --de 186 --ate 225
+node rota.mjs --de 186 --ate 225 --lua
 ```
 
-`--linhas 10` mostra mais linhas por seção; `--todas` tira o filtro de perícia de aprender. `node gerar-receitas.mjs` só precisa rodar de novo quando o build do cliente mudar (constante `BUILD` em `comum.mjs`).
+Para trocar a rota no J, substitua em `addons-proprios\GuiaForever\ProfissoesB.lua`, no bloco `["Leatherworking"]`, as linhas de `passos` entre "Done before the tool route" e "Next route" pela saída do `--lua`. Atualize também `data = "prices of ..."`. Depois confira com `node ferramentas\guia\checar-lua.mjs addons-proprios\GuiaForever` (código 0). O dono dá `/reload`.
 
 ## Gotchas
 
-- **O banco de preços do Auctionator no disco é um bloco codificado.** Não tente ler `AUCTIONATOR_PRICE_DATABASE` do arquivo; o caminho é o comando de exportação pela API pública.
-- **`AUCTIONATOR_VENDOR_PRICE_CACHE` é o preço que o vendedor cobra,** por unidade e com desconto de reputação, não o que ele paga. Serve para conferir o preço de compra da tabela, não o de venda.
-- **O `BuyPrice` do `ItemSparse` é o preço do lote** de `VendorStackCount` unidades. Sem dividir, 52 itens pareciam divergir do jogo.
-- **Não identifique a casa pública por contagem contra arquivo velho.** A sessão escolheu a `us-110` assim e errou: em duas horas a 110 foi de 7.069 para 4.028 unidades de Heavy Leather e a 111 de 3.154 para 7.115. Compare percentil e mediana com o arquivo da mesma hora, ou a varredura inteira contra cada casa.
-- **110 receitas das tabelas não existem no jogo** (produto sem linha no `ItemSparse`). Se a contagem voltar a 592, o filtro quebrou.
-- **As saídas por dia do arquivo público só cobrem item empilhável** (27 produtos de Leatherworking). Para armadura a coluna fica vazia.
-- **Abra a sessão em `wow\modder`, não em `random_shit\modder`.** A sessão de 16/11/2026 abriu na pasta errada e teve de usar caminho absoluto em tudo.
-- **Outra sessão no mesmo repositório** (a frente `pregaoforever`): commit só por caminho, e `estado\estado.md` e `HANDOFFS.md` são compartilhados; edite-os no fim, com a outra sessão parada.
-- **Não copie o nome real da pasta da conta** (`WTF\Account\...`) para arquivo do projeto; use `pastaSavedVariables()` do `comum.mjs`.
+- **O release público é regravado aos poucos, e o `index.txt` sobe por último.** No meio da atualização, o SHA-256 não bate e o `baixar-precos` sai com código 2, sem gravar nada. Isso é o contrato funcionando, não um bug. Tente de novo em alguns minutos; em 16/11/2026 alinhou depois de cerca de 5 minutos (observado em 16/11/2026).
+- **Barra invertida dentro de um heredoc do Git Bash pode sumir**, e `\r` vira retorno de carro. Um comentário Lua com `ferramentas\pregao\rota.mjs` quebrou o `ProfissoesB.lua` (`'}' expected`), e o checador pegou. Em texto que vai para Lua, use `/` ou edite pelo Edit (observado em 16/11/2026).
+- **`ferramentas\guia\rodar-janela.mjs` não cobre a aba de profissões:** passou até com o `ProfissoesB.lua` quebrado. Confira a rota pelo `checar-lua.mjs` e pela regra do J (`partesPasso` e `lerMateriais` em `Abas.lua`).
+- **O histórico tem 5 dias, não 30,** porque o jogo é novo (de 11/11 a 15/11 em 16/11/2026) e é refeito uma vez por dia, perto da meia-noite UTC. Ele mostra anúncios, não vendas.
+- **O teto de crafts vale por receita.** Reagente comum a duas receitas não soma entre elas: Wildvine e Heavy Leather podem passar de 25% somando a rota inteira.
+- **O banco de preços do Auctionator no disco é um bloco codificado.** O caminho é o comando de exportação pela API pública.
+- **O `BuyPrice` do `ItemSparse` é o preço do lote.** O mesmo vale para o `AUCTIONATOR_VENDOR_PRICE_CACHE`, que é o que o vendedor cobra (ver o CONTRATO, seção 3).
+- **Não identifique a casa pública por contagem contra um arquivo velho** (a `us-110` foi escolhida por engano em 16/11/2026).
+- **Outra sessão no mesmo repositório,** na frente `pregaoforever`: há código novo do PregaoForever sem commit, um `estado\addons\dev-pregaoforever.json` e linhas no `estado\registro.md`. Commit só por caminho. O `estado\estado.md` e o `HANDOFFS.md` são compartilhados: confira o diff antes de commitar.
+- **Não copie o nome real da pasta da conta** para um arquivo do projeto; use `pastaSavedVariables()`.
 
 ## Estado do repo e da plataforma
 
-- **`C:\GMS`** (branch `main`): `286e013` "feat(wow): lista de crafts cruza pericia com leilao; exportacao do Auctionator conferida no jogo", sobre `7a357d0` "feat(wow): lista de crafts de Leatherworking que pagam, fora do jogo (PregaoForever)". Sem push; 8 à frente e 5 atrás do remoto (observado em 16/11/2026). Este handoff e o `HANDOFFS.md` foram gravados depois do `286e013`.
+- **`C:\GMS`** (branch `main`), HEAD `9c4a125`. O último commit desta frente é `bd46e09` "docs: handoff crafts-que-pagam". O `main` estava 5 commits atrás do remoto (observado em 16/11/2026).
+- **Sem commit, desta frente** (o que entra no commit do fechamento):
+  - `modder\ferramentas\pregao\CONTRATO.md`, `baixar-precos.mjs`, `rota.mjs` (novo), `testes\checar-precos.mjs`, `testes\caso-rota.json` (novo) e `testes\testar-rota.mjs` (novo);
+  - `modder\addons-proprios\GuiaForever\ProfissoesB.lua` e `GuiaForever.toc`;
+  - `modder\estado\estado.md`;
+  - `comum\jogador.md`, `comum\fontes\profissoes\roteiros.md`, `comum\fontes\profissoes\reptilio-leatherworking.md` e `comum\personagens\hexumlite-bull.md`;
+  - este arquivo e o `modder\HANDOFFS.md`.
+
+  As duas linhas novas de `C:\GMS\Claude Code Projects\skill-review\reviews\calibracao.jsonl` estão em outro repositório.
+- **Não é desta frente:** todo o `addons-proprios\PregaoForever\` novo ou alterado, `estado\registro.md`, `estado\addons\dev-pregaoforever.json` e `ferramentas\guia\casos-pregao\` e `ferramentas\guia\pregao\`.
 - **Invisível ao repositório:**
-  - o banco do GuiaForever nas SavedVariables do jogo ganhou a chave `ah`, com cerca de 6,9 mil preços, escrita pelo comando de exportação; cada exportação a substitui;
-  - `modder\dados\pregao\` (tabelas do cliente em cache, arquivos públicos, `receitas-lw.json`, `precos.json`) só existe no Avell e se refaz pelos comandos acima;
-  - as três linhas do `calibracao.jsonl` estão no repositório `skill-review`, sem commit desta sessão;
-  - o ingest no vault GMS-SB (oito arquivos tocados) ficou sem commit desta sessão; o Sincronizar o leva.
-- **Fonte externa:** o arquivo público depende de um repositório de terceiro continuar publicando. Sem ele, a lista ainda roda só com a exportação do Auctionator, mas sem o lucro conservador, sem "até" e sem liquidez (não testado).
+  - a chave `ah` no banco do GuiaForever, nas SavedVariables (a exportação das 15h04);
+  - `modder\dados\pregao\` (só no Avell; refaz com os comandos acima);
+  - os arquivos de análise da tarde no scratchpad da sessão (descartáveis).
+- **Fonte externa:** `RuslanMunasipov/quest-murder-prices`, release `current`, de terceiro. Sem ele, a lista e a rota rodam só com a exportação do Auctionator, mas sem histórico, sem `p25` e sem liquidez (não testado).
 
 ## Referências rápidas
 
 | Preciso de | Onde |
 |---|---|
-| Regras de cálculo, formato dos arquivos e o comando de exportação | `ferramentas\pregao\CONTRATO.md` (seções 3, 4, 4.1 e 5) |
-| Decisões do dono, pendências e diário | `estado\estado.md` (linhas de 16/11/2026) |
+| Regras de cálculo, formatos, comando de exportação e rota | `ferramentas\pregao\CONTRATO.md` (seções 3, 4, 4.1, 4.2, 5 e 6) |
+| Decisões do dono, alterações de UI, pendências e diário | `estado\estado.md` (linhas de 16/11/2026) |
+| A rota no jogo | `addons-proprios\GuiaForever\ProfissoesB.lua`, bloco `["Leatherworking"]` |
+| Como o J lê a rota | `addons-proprios\GuiaForever\Abas.lua` (`partesPasso`, `lerMateriais`, `totaisPorFaixa`) |
 | A outra frente do mesmo addon | `HANDOFF-pregaoforever.md`, nesta pasta |
-| O desenho do PregaoForever (estratégia `conversao`, mesa externa, dados estáticos) | `addons-proprios\PregaoForever\DESIGN.md`, seções 3.2, 12 e 13 |
-| Fatos do leilão com fonte | `addons-proprios\PregaoForever\pesquisa\base-de-fatos.md` |
-| Roteiro de Leatherworking que o dono segue | `addons-proprios\GuiaForever\ProfissoesB.lua` |
+| Treinadores e padrões (referência) | `..\comum\fontes\profissoes\reptilio-leatherworking.md` |
 | Limites fixos do projeto | `C:\GMS\Claude Code Projects\wow\CLAUDE.md` |
