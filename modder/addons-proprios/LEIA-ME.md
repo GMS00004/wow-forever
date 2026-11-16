@@ -9,6 +9,7 @@ Pasta dos addons que você escreve. O jogo não lê esta pasta: o `dev-link.ps1`
 | `GuiaForever` | próximo talento por nível, roteiro das profissões, perfil gráfico, lembrete do RestedXP e macros do caçador criadas no login (`/guia`) | `..\estado\estado.md` (linhas do GuiaForever) |
 | `UIForever` | layout do ElvUI, teclas, magias e macros nos botões por classe, minimapa grande no Shift+M e alça de altura dos chats, tudo aplicado no login | `UIForever\LEIA-ME.md` |
 | `CentralForever` | central de combate no canto inferior direito: DPS, dano da luta, dano acumulado, tempo e threat; só exibe, tudo no `Config.lua` (0.1.0, ainda não rodou no jogo) | `CentralForever\LEIA-ME.md` |
+| `PregaoForever` | terminal de leilão em três peças (régua que mede, fila do que fazer, mão que age por uma tecla do dono por ação); só o design, sem código e sem `.toc`, não ligado ao jogo | `PregaoForever\LEIA-ME.md` |
 
 Os dois se ligam pelo nome das macros: o GuiaForever cria, o UIForever põe nos botões.
 
@@ -40,5 +41,6 @@ A Interface do `.toc` tem de bater com a do cliente (`/dump select(4, GetBuildIn
 | `UIForever` | layout do ElvUI, teclas, barras por classe e minimapa grande, definidos no `Config.lua` | comentários do `UIForever\Config.lua` |
 | `!KitAmigo` | só para o kit do amigo (não roda no jogo do dono): deixa o Leatrix vendendo lixo e consertando, liga o saque automático e mostra boas-vindas em português (`/kit`); no bruxo, talento e treino a cada nível (`/kit bruxo`) e a macro Marca | `!KitAmigo\LEIA-ME.md` |
 | `CentralForever` | central de combate: DPS, dano da luta, dano acumulado, tempo e threat; só exibe, tudo no `Config.lua` | `CentralForever\LEIA-ME.md` |
+| `PregaoForever` | design de um addon de leilão, ainda sem código: texto do dono, contrato de implementação (`DESIGN.md`), pesquisa e quadros das telas | `PregaoForever\LEIA-ME.md` |
 
 Checagens sem interpretador Lua (sintaxe, ASCII, globais e os dados do GuiaForever): `..\ferramentas\guia\` (rodar `npm install` uma vez ali; os comandos estão no LEIA-ME do GuiaForever).

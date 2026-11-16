@@ -1,0 +1,298 @@
+Trocas da varredura de consistência (onda 5), parte B: seções 9 a 19 e apêndices do DESIGN.md.
+
+L2-A1: estados do ouro
+<<<
+- Estados do ouro: livre; em estoque comprado; em depósito em risco; em correio; em cotação. A soma deles é a banca, e o cabeçalho das telas fecha essa soma.
+===
+- Estados do ouro: livre; em estoque comprado; em depósito em risco; em correio. A soma deles é a banca, e o cabeçalho das telas fecha essa soma. O ouro de uma cotação aberta continua contado como livre, porque a cotação não debita (H-32), mas fica reservado: o Cofre não autoriza outra ordem com ele enquanto a cotação estiver aberta.
+>>>
+
+L6-11: nomes do estado do lote
+<<<
+estado (em mão, postado, vendido, no NPC, retirado), fechamento |
+===
+estado (`maos`, `postado`, `vendido`, `npc` ou `retirado`), fechamento |
+>>>
+
+<<<
+Item que o dono usa ou guarda fecha como `withdrawn`, sem resultado.
+===
+Item que o dono usa ou guarda fecha como `retirado`, sem resultado.
+>>>
+
+L6-01: chave na fatura
+<<<
+| Fatura | tipo (`buyer`, `seller` ou `seller_temp_invoice`), `bid`,
+===
+| Fatura | tipo (`buyer`, `seller` ou `seller_temp_invoice`), chave do item (resolvida pelo anexo da carta ou, na venda, pelo nome contra os lotes abertos; o texto do nome não é gravado), `bid`,
+>>>
+
+L2-A4: exemplo de PICK RULE na Next
+<<<
+|   POST    Wool Cloth x20    PICK RULE                                      |
+===
+|   POST    Shadowfang x1     PICK RULE                                      |
+>>>
+
+L2-A4 e L2-A3: explicação depois da Next
+<<<
+A linha `PICK RULE` aparece enquanto o dono não escolheu regra, duração e lote para a classe (DD3), e não tem tecla.
+===
+A linha `PICK RULE` aparece enquanto o dono não escolheu regra, duração e lote para a classe (DD3), e não tem tecla; no exemplo é um item raro, de uma classe ainda sem duração escolhida, enquanto a classe das commodities já tem as três escolhas.
+
+A linha de estado (as três primeiras linhas da Next) e a zona `TICKET` são as mesmas nas cinco visões. Os desenhos de Sell, Mine, Risk e Session as omitem por abreviação; os quadros de `pesquisa/telas/` as mostram.
+>>>
+
+L2-A4: exemplo de PICK RULE na Sell
+<<<
+|   Wool Cloth x20       PICK RULE                                           |
+===
+|   Shadowfang x1        PICK RULE                                           |
+>>>
+
+L2-A5: os três tetos mais próximos, em ordem
+<<<
+(a faixa de preço de postagem e a classe `sonda` não são consumo e ficam fora);
+===
+(a faixa de preço de postagem e a classe `sonda` não são consumo e ficam fora), do mais próximo para o mais distante;
+>>>
+
+<<<
+|   stock at price risk      64s of 2g 00s                                   |
+|   cost in one item         38s of 40s                                      |
+|   deposits lost today      3c of 8s                                        |
+===
+|   cost in one item         38s of 40s                                      |
+|   stock at price risk      64s of 2g 00s                                   |
+|   deposits at risk         14c of 20s                                      |
+>>>
+
+L7-A6: OUTSIDE e entradas de fora
+<<<
+`PACE` e `OUTSIDE` só aparecem com número medido.
+===
+`PACE` e `OUTSIDE` só aparecem com número medido. `OUTSIDE` é o registro `Fora` da seção 10; as entradas de fora da seção 3.4 somam a ele o resultado da venda do que os personagens coletam.
+>>>
+
+L2-A7: cartas do painel do correio
+<<<
+| STATE    READY - 12 letters read. Take your mail now.                      |
+===
+| STATE    READY - 11 letters read. Take your mail now.                      |
+>>>
+
+<<<
+`WAIT - reading (7 of 12)`
+===
+`WAIT - reading (7 of 11)`
+>>>
+
+L6-10: mesa velha
+<<<
+| `Calibrado.lua` mais velho | `DESK STALE` | a compra para revenda cai para papel |
+===
+| `Calibrado.lua` mais velho | `DESK STALE` | toda compra cai para papel |
+>>>
+
+L4-07: recusas que são padrão e não regra
+<<<
+| Chamar `:Click()`, usar macro ou ligar tecla a botão da Blizzard | Simula entrada: o cliente marca o clique por código como entrada roteirizada; risco de taint não medido |
+| Pegar correio | Recomendação DD1c, pelas incógnitas da H-11, e não pela decisão de 2026-11-06, que fala de comprar ou gastar |
+===
+| Chamar `:Click()` ou usar macro | Simula entrada: o cliente marca o clique por código como entrada roteirizada |
+| Ligar tecla a botão da Blizzard | Regra 10 e recomendação da DD1c: o risco de taint e a leitura da H-11 não foram medidos. É padrão que o dono pode rever na DD1c, não recusa permanente |
+| Pegar correio por código ou por tecla | Por código, nunca. Por tecla, é recomendação da DD1c (padrão: não), pelas incógnitas da H-11, e não pela decisão de 2026-11-06, que fala de comprar ou gastar |
+>>>
+
+L4-01: recusa de consulta
+<<<
+| Disparar consulta por evento, ou consultar sem tecla recente | Regra 9 e I9; a opção contínua da DD13 foi recusada |
+===
+| Abrir fôlego por evento ou timer, consultar fora de fôlego aberto por tecla ou sem tecla recente | Regra 9 e I9; a opção contínua da DD13 foi recusada |
+>>>
+
+L4-09
+<<<
+| Confirmar commodity só com tecla | Regra do dono (uma tecla por compra) | Nenhum | fixo |
+===
+| Confirmar commodity só com tecla | Regra do dono (uma tecla por ação) | Nenhum | fixo |
+>>>
+
+L3-A6: grupos de cenário por onda
+<<<
+`--cenarios <grupo>` roda um grupo (`folego`, `fatura`, `postar`, `cancelar`, `comprar`, `operador`, `dados`), e cada tarefa de onda tem o seu comando.
+===
+`--cenarios <grupo>` roda um grupo (`folego`, `fatura`, `dados`, `venda`, `postar`, `cancelar`, `operador`, `comprar`, `papel`), e cada tarefa de onda tem o seu comando: o grupo segue a onda que constrói o módulo testado.
+>>>
+
+L2-A11 e L3-A6: cenários
+<<<
+`Y` na visão Session com bilhete armado, cotação aberta, `ENVIANDO` ou INCERTO (salvar bloqueado). Mais os casos de dados: abertura do leilão (nenhuma consulta antes do `L`; ações bloqueadas até conciliar); lotes de papel em fila na mesma chave; preço robusto com 1, 2 e 5 unidades; `P*` nos casos-limite.
+===
+`Y` na visão Session com `ENVIANDO`, AVISO, INCERTO ou fôlego aberto (salvar bloqueado); troca para a Session com bilhete armado ou cotação aberta (o bilhete desarma, a cotação é cancelada e o salvar segue). Mais os casos sem tecla de ação, por grupo: `dados`, abertura do leilão (nenhuma consulta antes do `L`; ações bloqueadas até conciliar) e ida e volta da gramática; `venda`, preço robusto com 1, 2 e 5 unidades e `P*` nos casos-limite; `papel`, lotes de papel em fila na mesma chave.
+>>>
+
+L4-04: teste do I7
+<<<
+| I7 | Nível em vigor de cada estratégia ao longo do roteiro; falha se subir sem recarga |
+===
+| I7 | Nível concedido de cada estratégia ao longo do roteiro: falha se subir sem recarga, ou se o nível em vigor passar do concedido depois de um disjuntor destravar |
+>>>
+
+L4-01 e L4-08: checador
+<<<
+Confere as regras 6, 7 (quantidade 1 em `PostItem`), 8, 9, 10 (por trecho de nome), 12, 13, 14 (construções que só existem numa das duas versões de Lua) e 20 (nenhum `owners[` atribuído ao banco; `playerName` nunca gravado), e que nenhuma função alcançada por timer, `OnUpdate` ou evento chega a uma `tecla_` ou a uma função de consulta.
+===
+Confere as regras 3 (todo tratador registrado passa por `ns.seguro`), 4 (nenhum `SetScript` nem atribuição em quadro da Blizzard; só os quatro ganchos), 5 (nome de addon de terceiro só em `Pontes.lua`, dentro de `pcall`), 6, 7 (quantidade 1 em `PostItem`), 8, 9 (função de consulta só em `Pedidos.lua`), 10 (por trecho de nome), 12, 13, 14 (construções que só existem numa das duas versões de Lua), 15 (nada que vai ao banco usa `GetTime`) e 20 (nenhum `owners[` atribuído ao banco; `playerName` nunca gravado), e que nenhuma função alcançada por timer, `OnUpdate` ou evento chega a uma `tecla_`. Que a consulta só sai com fôlego aberto por tecla é conferência dinâmica, da bancada (I9). As regras 1, 2, 16 e 18 ficam com os dois checadores que o projeto já tem (sintaxe, ASCII e globais; guarda de combate e `.toc` igual aos arquivos). As regras 11, 17 e 19 não têm conferência automática: são revisão da sessão principal em cada portão.
+>>>
+
+L4-10: sonda e as duas decisões
+<<<
+Nenhum passo testa o caminho sem tecla, e os passos com tecla de ação só rodam depois da decisão DD1a, pela classe `sonda` do Cofre.
+===
+Nenhum passo testa o caminho sem tecla. Os passos com tecla de ação rodam pela classe `sonda` do Cofre: os de postar e cancelar (S2 e S6) só depois da DD1a em sim, e a S8, que compra, só com a DD1b em sim. Com a DD1b em "só papel" ou "não", a S8 fica de fora e a compra segue sem medida.
+>>>
+
+L3-A5 e L3-A1: tarefas da onda 2
+<<<
+visões Session e Mine, painel do correio e cartão da sonda; `ler-pregao.mjs`; `modo = "leitura"` |
+===
+visões Session e Mine (a Mine ainda sem a seção `LIMITS` e sem `STAND DOWN`, que entram na onda 3 com o Cofre), painel do correio e cartão da sonda; `ler-pregao.mjs`, que também calcula fora do jogo as medidas da linha de base; `modo = "leitura"` |
+>>>
+
+L3-A6: pronto da onda 3
+<<<
+| `--cenarios postar`, `--cenarios cancelar`, `--cenarios operador` e os 10.000 roteiros com `erros=0`; telas iguais aos quadros |
+===
+| `--cenarios venda`, `--cenarios postar`, `--cenarios cancelar`, `--cenarios operador` e os 10.000 roteiros com `erros=0`; telas iguais aos quadros |
+>>>
+
+L3-A7 e L3-A6: onda 4
+<<<
+| 4, piso | `Acoes` e `Ecos` de comprar, `Sombra`, `Estrategias` (`piso`), em papel e depois micro | `sonnet/medium`, portão na sessão principal | `--cenarios comprar` com `erros=0` |
+===
+| 4, piso | `Acoes` e `Ecos` de comprar, `Motor` (a conta do `piso`), `Sombra`, `Estrategias` (`piso`), em papel e depois micro | `sonnet/medium`, portão na sessão principal | `--cenarios comprar` e `--cenarios papel` com `erros=0` |
+>>>
+
+L3-A7 e tamanho do anel: onda 5
+<<<
+| 5, fase 2 | Anel de 48 fotos, `giro`, diferença de escadas com pares válidos, deriva,
+===
+| 5, fase 2 | Anel de 48 fotos (ou de 32, se a S1 não liberar teto maior), `giro`, `Estimadores` e `Motor` da fase 2 (o teste de compra da seção 7.4), diferença de escadas com pares válidos, deriva,
+>>>
+
+L3-A4 e L3-A1: portão da onda 2
+<<<
+| 2 | S1, S3, S4, S5, S9, S12 e S13 gravadas; uma sessão de linha de base | DD2; no fim, DD12 | linha de base: uma sessão em que o dono vende pela tela que já usa, em cobre por ação e por hora; entradas de fora; cobre disponível abaixo do vendedor nas escadas lidas; vãos e arremates que passariam no teste da seção 7.4, por fôlego, e quanto duram; fração dos verdes com referência forte |
+===
+| 2 | S1, S3, S4, S5, S9, S12 e S13 gravadas; três sessões de linha de base | DD2; no fim, DD12 | linha de base: três sessões em que o dono vende pela tela que já usa, em cobre por ação e por hora (são as da DD12); entradas de fora; cobre disponível abaixo do vendedor nas escadas lidas e fração dos verdes com referência forte, contas do agente sobre o banco lido; as fotos para a contagem de vãos e arremates, que é feita a partir da onda 3 |
+>>>
+
+<<<
+| 2 a 3 dias, mais 1 ou 2 sessões de jogo |
+===
+| 2 a 3 dias de código, mais 3 sessões de jogo |
+>>>
+
+L3-A8: hipótese e data da linha do tempo
+<<<
+Toda data é hipótese, não compromisso: supõe uma onda a cada 1 a 3 dias e o dono jogando todo dia.
+===
+Toda data é hipótese, não compromisso: supõe uma onda a cada 1 a 4 dias e o dono jogando todo dia.
+>>>
+
+<<<
+| Primeira postagem por tecla | Onda 3; S1 a S4; S2 positiva; DD1a; DD10 | 24 a 27/11 |
+===
+| Primeira postagem por tecla | Onda 3; S1 a S4; S2 positiva; DD1a; DD10 | 25 a 28/11 |
+>>>
+
+L7-A5: nem toda decisão tem padrão
+<<<
+2. Decidir os seis pontos da tabela de decisões (DD1a, DD1b, DD3, DD4, DD9, DD14). Cada um tem padrão marcado.
+===
+2. Decidir os seis pontos da tabela de decisões (DD1a, DD1b, DD3, DD4, DD9, DD14). Quase todos têm padrão marcado; reunir ou não o ouro (DD4) e a duração e o lote das sobras (DD3) só o dono escolhe.
+>>>
+
+L7-A3: o comando 16 pede preparo
+<<<
+6. Colar os comandos 2 a 16, um por vez, e guardar a resposta de cada um (captura de tela serve).
+===
+6. Colar os comandos 2 a 16, um por vez, e guardar a resposta de cada um (captura de tela serve). O 16 pede o preparo descrito junto dele.
+>>>
+
+L3-A2: quadros no primeiro dia
+<<<
+10. Ver os quadros das telas e do teclado, aprovar ou pedir mudança, e decidir o mapa de teclas (DD5).
+===
+10. Ver a primeira versão dos quadros das telas e do teclado (`pesquisa/telas/`) e dizer o que mudar. A aprovação dos quadros no tamanho medido e o mapa de teclas (DD5) fecham no portão da onda 1.
+>>>
+
+L2-A10 e L4-06: conselhos da carteira
+<<<
+vira linha de conselho (`REPRICE`, `LET EXPIRE` ou `VENDOR`), cada um com a sua tecla; nada é liquidado sozinho.
+===
+vira linha de conselho (`REPRICE`, `LET EXPIRE` ou `VENDOR`). `REPRICE` usa as teclas de cancelar e de postar que já existem; `LET EXPIRE` e `VENDOR` não têm tecla (o addon marca o item e o dono age). Nada é liquidado sozinho.
+>>>
+
+Tamanho da foto na fase 3
+<<<
+As linhas abaixo são conta sobre a foto média de 385 bytes;
+===
+As linhas abaixo são conta sobre a foto média medida (385 bytes na fase 1 e 360 na fase 2);
+>>>
+
+L4-10: Apêndice A
+<<<
+Sem essa classe não haveria caminho, porque todas as licenças nascem em 0.
+===
+Sem essa classe não haveria caminho, porque todas as licenças nascem em 0. A S2 e a S6 dependem da DD1a em sim; a S8, que compra, da DD1b em sim.
+>>>
+
+L1-P03: fôlego na fase 3
+<<<
+| `folego.max_buscas` | 20 | buscas por ciclo | 5 a 100 | S4; degraus da seção 17.1 |
+| `folego.max_s` | 60 | segundos por ciclo | 20 a 180 | S4 |
+===
+| `folego.max_buscas` | 20 | buscas por ciclo | 5 a 100 nas fases 1 e 2; na fase 3 acompanha as chaves em foco do degrau (40, 150, até 500) | S4; degraus da seção 17.1 |
+| `folego.max_s` | 60 | segundos por ciclo | 20 a 180 nas fases 1 e 2; na fase 3, o ciclo da vigília do degrau | S4; degraus da seção 17.1 |
+>>>
+
+Anel da fase 2
+<<<
+| Chaves com anel; fotos por chave | 60; 16 na fase 1 e 48 na fase 2 | | por degrau (seção 17.1); 8 a 64 | S1 (tempo do `/reload`) |
+===
+| Chaves com anel; fotos por chave | 60; 16 na fase 1 e 48 na fase 2 (32, se a S1 não liberar teto maior) | | por degrau (seção 17.1); 8 a 64 | S1 (tempo do `/reload`) |
+>>>
+
+L1-P02 e L4-05: teto de preço
+<<<
+| Teto de preço de postagem | 3 vezes a referência | | 1,5 a 5 | DD10 |
+===
+| Teto de preço de postagem | 3 vezes a referência | | 1,5 a 3: o `Config.lua` só baixa | DD10; subir é editar `Tetos.lua` |
+>>>
+
+L1-P01 e L4-05: volume diário
+<<<
+| Volume diário por item | 10% das vendas inferidas na exposição do dia; 2 horas mínimas | | 5 a 50%; 1 a 6 horas | vendas próprias contra as inferidas |
+===
+| Volume diário por item | 10% das vendas inferidas na exposição do dia; 2 horas mínimas | | 1 a 10%; 2 a 6 horas: o `Config.lua` só aperta | vendas próprias contra as inferidas; subir é editar `Tetos.lua` |
+>>>
+
+L1-P04: parâmetros que faltavam
+<<<
+| Classe `sonda` | depósito de até 30 cobre; compra de até 20 cobre; 1 ordem por passo | cobre | | fixo |
+===
+| Classe `sonda` | depósito de até 30 cobre; compra de até 20 cobre; 1 ordem por passo | cobre | | fixo |
+| Destrava do disjuntor de perda num item | 24 | horas | 12 a 72 | DD10 |
+| Degraus comprados pelo `vao` | até 2 | degraus | 1 a 3 | DD10 |
+
+**Fase 3 e gargalo** (seção 17.1)
+
+| Parâmetro | Partida | Unidade | Faixa | Como calibrar ou quem decide |
+|---|---|---|---|---|
+| `degrau` | 0 | | 0 a 3; dentro do jogo só desce | portões da seção 17.1, com o sim do dono |
+| Banca que abre os degraus 1, 2 e 3 | 15, 60 e 250 | ouro | | proposta do projeto; decisão do dono com os números da régua |
+| Gargalo de capital; de sinal | banca livre abaixo de 20%; acima de 50%, com a fila de compra vazia em mais da metade dos fôlegos | fração da banca | 10 a 30%; 40 a 70% | sessões classificadas à mão no relatório |
+| Gargalo de giro e conselho de carteira | estoque com idade acima de 2 vezes o tempo de venda medido | vezes | 1,5 a 4 | DD10 |
+>>>

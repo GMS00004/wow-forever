@@ -1,0 +1,271 @@
+Trocas da varredura de consistência (onda 5), parte A: seções 0 a 8 do DESIGN.md.
+
+L3-A1: o que a onda 2 mede é conta feita fora do jogo
+<<<
+Não tem fonte de estratégia; o addon conta o que existe desde a onda 2 e a estratégia só liga
+===
+Não tem fonte de estratégia; o que existe é contado desde a onda 2, fora do jogo, sobre as fotos que o addon grava, e a estratégia só liga
+>>>
+
+L4-01: regra 9
+<<<
+Uma consulta em voo por vez, todas por `Pedidos.lua`. Nenhum evento, nem o de abertura do leilão, dispara consulta.
+===
+Uma consulta em voo por vez, todas por `Pedidos.lua`. Nenhum evento ou timer abre um fôlego, nem o evento de abertura do leilão, e nenhuma consulta sai fora de um fôlego aberto por tecla; dentro do fôlego aberto, a resposta de uma consulta (ou o prazo dela) pode pedir a `Pedidos.lua` a seguinte, dentro do orçamento.
+>>>
+
+L2-A8: regra 12
+<<<
+cada seção com até 5 linhas e `Show N more`; estado sempre em palavra
+===
+cada seção mostra no máximo 5 linhas (menos, quando a zona tem altura fixa menor) e `Show N more` para o resto; estado sempre em palavra
+>>>
+
+L4-04: regra 13
+<<<
+O nível de uma estratégia só desce dentro do jogo; subir é edição de arquivo. |
+===
+O nível concedido de uma estratégia (licença e evidência) só desce dentro do jogo; subir é edição de arquivo. A suspensão por disjuntor é à parte (seção 9.4). |
+>>>
+
+L4-03 e L6-06: regra 19
+<<<
+| 19 | O agente e a mesa nunca escrevem em `WTF` nem direto em `Interface\AddOns`. O agente escreve
+===
+| 19 | O agente e a mesa nunca escrevem em `WTF` nem direto em `Interface\AddOns`, fora dos scripts do modder (`wtf-sv.ps1` e `dev-link.ps1`), que rodam com o jogo fechado, com backup e com o ok do dono: é o limite 4 do projeto, e são eles que a DD2 e a S13 usam. O agente escreve
+>>>
+
+L1-P06: nome do campo de licença
+<<<
+Todas nascem com `licenca = 0`.
+===
+Todas nascem com `licencas[id] = 0` no `Config.lua`.
+>>>
+
+L6-07: o que o campo blocos guarda
+<<<
+O addon guarda o menor preço por bloco de 4 horas das chaves com anel (campo `blocos`, seção 6)
+===
+O addon guarda o último mínimo lido em cada bloco de 4 horas das chaves com anel (campo `blocos`, seção 6)
+>>>
+
+L6-12: medições de vendedor têm tabela própria
+<<<
+quando o dono abre um vendedor, o addon anota `numAvailable` (base 9.3).
+===
+quando o dono abre um vendedor, o addon anota `numAvailable` na tabela `npc` do banco (seção 6.1; base 9.3).
+>>>
+
+<<<
+de todo item que o dono vê num vendedor o addon anota o preço de compra (`C_MerchantFrame.GetItemInfo`, base 3.7) e conta, a cada resumo, quantas vezes o menor preço do leilão passa dele com a margem da seção 7.4 (a conta é a do R9 5.4).
+===
+de todo item que o dono vê num vendedor o addon anota o preço de compra (`C_MerchantFrame.GetItemInfo`, base 3.7) na tabela `npc`; quantas vezes o menor preço do leilão passa dele com a margem da seção 7.4 é conta feita fora do jogo, sobre `dias` e `npc` (a conta é a do R9 5.4).
+>>>
+
+L3-A1: vãos e arremates
+<<<
+- Vãos e arremates que passariam no teste da seção 7.4: contados por fôlego desde a onda 2, com quanto duram, gravados sem ordem. É o que diz
+===
+- Vãos e arremates que passariam no teste da seção 7.4: contados por fôlego, com quanto duram, sobre as fotos gravadas desde a onda 2. A conta roda fora do jogo, pelos arquivos puros (`Estimadores`, `Motor`), a partir da onda 3, e nenhuma ordem nasce dela. É o que diz
+>>>
+
+L4-04: nível concedido e suspensão
+<<<
+O nível em vigor é o menor entre a licença que o dono aprovou no `Config.lua`, o nível que a evidência sustenta e o imposto pelos disjuntores: são duas chaves, a do dono e a do dado. A evidência é avaliada na carga do addon; dentro do jogo o nível só desce.
+===
+O **nível concedido** é o menor entre a licença que o dono aprovou no `Config.lua` e o nível que a evidência sustenta: são duas chaves, a do dono e a do dado. Ele é avaliado na carga do addon e, dentro do jogo, só desce. Por cima dele, um disjuntor pode suspender a estratégia por um tempo (seção 9.4): o **nível em vigor** é o concedido menos essa suspensão, e quando o disjuntor destrava a estratégia volta ao nível concedido, nunca acima dele.
+>>>
+
+L3-A3: de onde os dias contam
+<<<
+**Dias de jogo de 5,09 ouro até cada degrau** (conta do modelo, com o ouro reunido e piso de 1 ouro):
+===
+**Dias de jogo de 5,09 ouro até cada degrau** (conta do modelo, com o ouro reunido e piso de 1 ouro). Os dias contam a partir do dia em que a compra para revenda liga com ouro, não de hoje: a seção 17 não a põe antes de meados de dezembro, e até lá só as entradas de fora e a venda do próprio estoque mexem na banca.
+>>>
+
+<<<
+O dia 14 é hipótese para as ondas 1 a 5 mais os dias de papel.
+===
+Nas variantes "depois do dia 14 e de 15 ouro", os 14 dias são só um atraso de exemplo, para mostrar quanto pesa começar depois; não são a linha do tempo da seção 17.
+>>>
+
+L5-C2: a taxa composta
+<<<
+2. **De 60 ouro em diante, a taxa composta**, produto de quatro fatores de mesmo peso: fração aplicada, voltas por dia, margem e acerto. Dobrar qualquer um dobra a taxa.
+===
+2. **De 60 ouro em diante, a taxa composta**: o produto da fração aplicada, das voltas por dia e da borda. Dobrar a fração ou as voltas dobra a taxa. A borda sobe com a margem e com o acerto, mas não em proporção: no C2, dobrar a margem multiplica a borda por 2,3, e levar o acerto de 70% para 90% a multiplica por 1,5.
+>>>
+
+L3-A7: disjuntores do Cofre na onda 3
+<<<
+| 2 (conciliação, em leitura); 3 (tetos e autorização) |
+===
+| 2 (conciliação, em leitura); 3 (tetos, autorização e disjuntores) |
+>>>
+
+L4-02: o diagrama
+<<<
+                          sem eco no prazo -> INCERTO -> conciliacao no proximo folego -> Livro
+===
+                          sem eco no prazo -> INCERTO -> conciliacao (folego curto da tecla; senao, o proximo folego) -> Livro
+>>>
+
+L4-01: seção 4.3
+<<<
+Timer e evento só mudam estado; nunca chamam ação nem consulta.
+===
+Timer e evento só mudam estado: nunca chamam ação e nunca abrem fôlego. A única consulta que um evento ou um prazo pode pedir é a seguinte de um fôlego já aberto por tecla (regra 9).
+>>>
+
+L5-C3: páginas do resumo
+<<<
+Chamá-la a cada página alocaria cerca de 68 mil linhas por resumo, em vez de 8 mil (conta sobre a base 2.6).
+===
+Chamá-la a cada página alocaria cerca de 73 mil linhas por resumo, em vez de 8 mil (conta sobre a base 2.6, com páginas de 480 linhas).
+>>>
+
+L2-A12 e L4-02: o fôlego curto
+<<<
+Uma tecla de ação abre um fôlego de uma consulta antes de agir (plano D) ou de até duas consultas de conciliação depois. **Foto velha, a tecla atualiza; foto fresca, a tecla age.**
+===
+Uma tecla de ação abre um fôlego de uma consulta antes de agir (plano D) ou de até duas consultas de conciliação depois. Esse fôlego nasce na tecla e acaba quando a ação fecha (eco, falha ou INCERTO conciliado) ou em `T_pulso`, o que vier primeiro. **Foto velha, a tecla atualiza; foto fresca, a tecla age.** A exceção é o `B` em item, que sempre relê o leilão antes de armar, porque a compra é de um leilão específico.
+>>>
+
+L6-08: o que a foto de commodity grava
+<<<
+a marca de conta por degrau (`containsAccountItem`); `timeLeftSeconds`, se veio; as marcas `frente` e `escada` |
+===
+a marca de conta por degrau (`containsAccountItem`); a quantidade total lida (`qtot`); as marcas `frente` e `escada`. O `timeLeftSeconds` do degrau, se vier, vai só ao cartão da sonda (S5): a regra de expiração usa a idade da coorte (seção 3.3) |
+>>>
+
+L6-04, L6-12, L6-02: esquema
+<<<
+  casas   = {},     -- [reino:faccao] = { itens, resumo, dias, blocos, giro, tri, fotos }
+  sinais  = {},     -- anel: sinal, nivel, bilhete, executou, desfecho
+===
+  casas   = {},     -- [reino:faccao] = { itens, resumo, dias, blocos, giro, tri, fotos, npc }
+  sinais  = {},     -- anel: sinal, nivel, executou, desfecho
+>>>
+
+L6-03 e L6-08: linha da foto de commodity
+<<<
+    linha    1|seq|t|marcas|degraus|cauda; degrau preco:qtd:donos:proprias:conta; marcas com F (frente) e E (escada); cauda com os 8 baldes ou T (truncada)
+    exemplo  1|8841|1794873600|FE|9:14:2:0:0,10:200:5:0:0|0,0,310,0,0,0,0,0
+===
+    linha    1|seq|t|marcas|qtot|degraus|cauda; degrau preco:qtd:donos:proprias:conta; marcas com F (frente) e E (escada); qtot é a quantidade total lida, gravada sempre, para que a foto de cauda truncada ainda sirva à janela `N_ref` e à parede; cauda com os 8 baldes ou T (truncada)
+    exemplo  1|8841|1794873600|FE|524|9:14:2:0:0,10:200:5:0:0|0,0,310,0,0,0,0,0
+>>>
+
+L6-04: bilhete na linha da ação
+<<<
+    linha    1|seq|t|verbo|chave|qtd|preco|estrategia|origem|antes|depois|eco|tEco|erro (origem key, mouse ou outside; dinheiro antes e depois)
+    exemplo  1|9010|1794874100|post|6541:18:845|1|20000|venda_verdes|key|31200|31170|created|1794874101|
+===
+    linha    1|seq|t|verbo|chave|qtd|preco|estrategia|origem|antes|depois|eco|tEco|erro|bilhete (origem key, mouse ou outside; dinheiro antes e depois; bilhete conforme o verbo: buy total:teto:fracao:saida, post duracao:regra:deposito:fila, cancel deposito:custo:fila, com a fração em milésimos; vazio em ação de fora)
+    exemplo  1|9010|1794874100|post|6541:18:845|1|20000|venda_verdes|key|31200|31170|created|1794874101||24:m:30:0
+>>>
+
+L6-11: valores de estado do lote
+<<<
+    linha    1|seq|t|chave|qtd|custo|origem|estado|tFecho|resultado
+    exemplo  1|9011|1794874100|6541:18:845|1|0|coletado|postado|0|0
+===
+    linha    1|seq|t|chave|qtd|custo|origem|estado|tFecho|resultado (origem comprado ou coletado; estado maos, postado, vendido, npc ou retirado)
+    exemplo  1|9011|1794874100|6541:18:845|1|0|coletado|postado|0|0
+>>>
+
+L6-01: chave do item na fatura
+<<<
+    linha    1|seq|t|tipo|bid|buyout|deposit|consignment|moneyDelay|etaHour|etaMin|count|commerce
+    exemplo  1|9050|1794880000|seller|20000|20000|30|1000|0|0|0|1|0
+===
+    linha    1|seq|t|tipo|chave|bid|buyout|deposit|consignment|moneyDelay|etaHour|etaMin|count|commerce (chave do item, resolvida pelo anexo da carta ou, na venda, pelo nome contra os lotes abertos; o texto do nome não é gravado; vazia se não resolveu, e aí o lote casa por valor e hora)
+    exemplo  1|9050|1794880000|seller|6541:18:845|20000|20000|30|1000|0|0|0|1|0
+>>>
+
+L6-02, L6-05, L6-12: calib, sessoes, npc, sonda e log
+<<<
+calib[parametro]
+    linha    1|valor|n|medido|em|build, mais as amostras
+    exemplo  1|500|3|1|1794880000|70938
+
+sessoes
+    linha    1|seq|tIni|tFim|acoes|resultado|fora|parametros
+===
+calib[parametro]
+    linha    1|valor|n|medido|em|build, mais as amostras, uma por item da lista: t:build:valor nos parâmetros numéricos; na frequência de venda, t:classe:duracao:regra:fila:preco:desfecho (classe c ou e0 a e4; regra m, u ou f; desfecho s vendeu, x expirou, c cancelado, d downtime)
+    exemplo  1|500|3|1|1794880000|70938
+
+sessoes
+    linha    1|seq|tIni|tFim|acoes|resultado|fora|gargalo|parametros (acoes post:buy:cancel:outside; gargalo capital, sinal, vazao, giro ou vazio)
+    exemplo  1|9100|1794870000|1794875520|21:14:3:11|1075|2400|capital|
+
+casas[c].npc[itemID] (só medição: o que o dono viu num vendedor)
+    linha    1|compra|disponivel|t (preço de compra no vendedor; numAvailable, ou -1 se ilimitado; hora)
+    exemplo  1|500|3|1794874300
+
+sonda[passo], log
+    linha    sonda: 1|t|build|resultado (texto do passo, sem nome de jogador); log: anel de 60 linhas, 1|t|nivel|texto
+>>>
+
+L5-C1, L1-P05, L6-09: tamanhos medidos
+<<<
+| `fotos` | até 60 chaves com anel; fase 1: 16 fotos por chave; fase 2: 48; foto média de 385 bytes | 370 KB; 1.050 KB |
+===
+| `fotos` | até 60 chaves com anel; fase 1: 16 fotos por chave; fase 2: 48; foto média medida de 385 bytes na fase 1 e de 360 na fase 2 (arquivo gerado com 40 chaves, levado a 60) | 370 KB; 1.050 KB |
+>>>
+
+<<<
+| `calib`, `sessoes`, `sonda`, `log`, `itens` | 100 amostras por parâmetro; 60 sessões; um registro por passo da sonda | 42 KB |
+
+Total: cerca de 1,7 MB na fase 1 e 2,4 MB na fase 2, no estilo de gravação com comentário de índice (H-34). Teto de 3 MB,
+===
+| `calib`, `sessoes`, `sonda`, `log`, `itens`, `npc` | 100 amostras por parâmetro (a frequência de venda, até 200 por classe); 60 sessões; um registro por passo da sonda | cerca de 70 KB |
+
+A coluna Tamanho é a medida no arquivo gerado, que inclui o custo de chave e de índice de cada entrada: por isso `dias` e `sinais` passam do produto simples da coluna Limite.
+
+Total: cerca de 1,7 MB na fase 1 e 2,4 MB na fase 2, no estilo de gravação com comentário de índice (H-34). Cheia, a fase 2 encosta no gatilho de poda (80% de 3 MB): a poda passa a rodar o tempo todo, e é mais um motivo para o teto ou o anel serem decididos pela S1. Teto de 3 MB,
+>>>
+
+L2-A6: linhas sem tecla na fila
+<<<
+3. Cancelamentos não entram na fila nas fases 1 e 2: o dono os decide na visão Mine, pelos fatos.
+===
+3. Cancelamentos não entram na fila nas fases 1 e 2: o dono os decide na visão Mine, pelos fatos.
+4. Linhas sem tecla (`VENDOR`, `PICK RULE`) entram no fim da fila, depois das executáveis, como lembrete do que está parado nas bolsas. Não passam pelo tíquete e contam no número do título.
+>>>
+
+L4-04: I7
+<<<
+| I7 | O nível em vigor de uma estratégia só desce dentro do jogo. |
+===
+| I7 | O nível concedido de uma estratégia (licença e evidência) só desce dentro do jogo. A suspensão por disjuntor é à parte e, ao destravar, devolve no máximo o nível concedido. |
+>>>
+
+L4-01: I9
+<<<
+| I9 | Nenhuma consulta sai sem uma tecla do dono há no máximo `T_pulso`. Nenhum evento dispara consulta. |
+===
+| I9 | Nenhuma consulta sai sem uma tecla do dono há no máximo `T_pulso`, nem fora de um fôlego aberto por tecla. Nenhum evento ou timer abre fôlego. |
+>>>
+
+L4-02 e conferência anterior: INCERTO
+<<<
+A conciliação usa as até duas consultas do fôlego curto da tecla que originou a ação; se não decidir, o item fica bloqueado até aparecer evidência, e as outras linhas voltam. A evidência vem de dois lugares: no leilão, do primeiro fôlego seguinte (a faixa `Press L to reconcile` só existe com o leilão aberto, e a consulta só sai com o `L`); no correio,
+===
+A conciliação usa as até duas consultas do fôlego curto que a própria tecla da ação abriu (seção 5.2); se não decidir, o item fica bloqueado até aparecer evidência, e as outras linhas voltam. A evidência vem de dois lugares: no leilão, do fôlego seguinte, que só uma tecla abre (a faixa `Press L to reconcile` só existe com o leilão aberto); no correio,
+>>>
+
+L2-A9 e L2-A2: palavras de estado
+<<<
+| ARMADO | `READY - press Y` |
+===
+| ARMADO | `READY` (o botão do bilhete diz a tecla: `[Y] POST NOW`) |
+>>>
+
+<<<
+| FALHOU | `FAILED` com o motivo, ou a palavra própria (`GONE`, `PRICE MOVED`, `NOT ENOUGH GOLD`, `POSTING CLOSED`) |
+===
+| FALHOU | `FAILED` com o motivo, ou a palavra própria (`GONE`, `NOT ENOUGH GOLD`, `MATCH THE LOWEST PRICE`) |
+| Volta sem falha (não conta como FALHOU nem como INCERTO) | `PRICE MOVED`; `POSTING CLOSED`; `KEEP - buyer pending`; e `GONE` quando vem da releitura, sem ação enviada (conta na taxa de "já sumiu") |
+>>>

@@ -1,0 +1,134 @@
+Trocas da varredura de consistência (onda 5) no LEIA-ME.md.
+
+L7-A1: para onde vão os números
+<<<
+e mandar dado para fora do jogo (os arquivos de fora ficam na máquina, e o relatório de sessão leva os números à sessão do agente).
+===
+e mandar dado para fora do jogo. Um aviso sobre isso: o addon não envia nada e os arquivos de fora ficam na máquina, mas o relatório de sessão leva os números do seu banco à sessão do agente, que roda num serviço de nuvem.
+>>>
+
+L3-A8
+<<<
+supõem uma etapa de código a cada 1 a 3 dias e você jogando todo dia.
+===
+supõem uma etapa de código a cada 1 a 4 dias e você jogando todo dia.
+>>>
+
+<<<
+| 24 a 27/11 |
+===
+| 25 a 28/11 |
+>>>
+
+L7-A2: a compra depende também da aprovação do piso
+<<<
+| Primeira compra por tecla | Testes de compra, corte e devoluções medidos, duas sessões limpas e sua decisão de comprar por tecla | 28/11 a 2/12 |
+===
+| Primeira compra por tecla | Testes de compra, corte e devoluções medidos, duas sessões limpas, sua decisão de comprar por tecla e a sua aprovação da ideia de arrematar abaixo do preço que o vendedor paga, que não tem fonte | 28/11 a 2/12 |
+>>>
+
+L7-A5
+<<<
+2. Decidir os seis pontos da tabela da parte 5; cada um já tem um padrão marcado.
+===
+2. Decidir os seis pontos da tabela da parte 5. Quase todos têm padrão marcado; reunir ou não o ouro e a duração e o lote das sobras só você escolhe.
+>>>
+
+L7-A3
+<<<
+6. Colar os outros 15 comandos, um por vez, e guardar a resposta de cada um (captura de tela serve). Nenhum compra, posta ou cancela.
+===
+6. Colar os outros 15 comandos, um por vez, e guardar a resposta de cada um (captura de tela serve). Nenhum compra, posta ou cancela. O comando 16 pede um preparo, descrito junto dele: abrir antes, pela tela da Blizzard, a janela de compra de um material e cancelá-la depois de ler o número, sem comprar.
+>>>
+
+L3-A2
+<<<
+10. Ver os quadros das telas e do teclado, aprovar ou pedir mudança, e decidir o mapa de teclas.
+===
+10. Ver a primeira versão dos quadros das telas e do teclado e dizer o que mudar. A aprovação final dos quadros e o mapa de teclas fecham na etapa seguinte, com as medidas da sua tela.
+>>>
+
+L7-A5
+<<<
+O padrão é o que o agente grava se você só disser "pode seguir".
+===
+O padrão é o que o agente grava se você só disser "pode seguir"; onde a tabela diz que não há padrão, o ponto fica em aberto até você escolher.
+>>>
+
+L7-A2
+<<<
+construir ou adotar (parte 8), o gatilho da varredura, correio e vendedor por tecla,
+===
+construir ou adotar (parte 8), aprovar ou não a compra abaixo do preço que o vendedor paga, que não tem fonte (na etapa da compra), o gatilho da varredura, correio e vendedor por tecla,
+>>>
+
+L2-A4
+<<<
+quer dizer que o leilão paga mais que o vendedor se uma em cada cinco postagens daquele tipo vender.
+===
+quer dizer que o leilão paga mais que o vendedor se uma em cada cinco postagens daquele tipo vender. PICK RULE marca um item de uma classe em que você ainda não escolheu regra, duração ou lote; a linha não tem tecla.
+>>>
+
+<<<
+|   POST    Wool Cloth x20    PICK RULE                                      |
+===
+|   POST    Shadowfang x1     PICK RULE                                      |
+>>>
+
+L7-A4: rodapé da Next igual ao do contrato
+<<<
+| TICKET  none             [P] post   [B] buy   [K] skip   [I] why           |
+| LAST ALERT  SOLD Linen Bag x1 (19 min ago)             last key: N         |
++----------------------------------------------------------------------------+
+===
+| TICKET  none             [P] post   [B] buy   [K] skip   [I] why           |
++----------------------------------------------------------------------------+
+| L look   N next   U back   I why   O more   K skip   H hold                |
+| P post   B buy    C cancel   Y yes   M never mind      last key: N         |
+| LAST ALERT  SOLD Linen Bag x1 (19 min ago)                                 |
++----------------------------------------------------------------------------+
+>>>
+
+<<<
+|   Wool Cloth x20       PICK RULE                                           |
+===
+|   Shadowfang x1        PICK RULE                                           |
+>>>
+
+L7-A2 e L2-A5: Risk
+<<<
+Risk mostra a banca, os três limites mais perto de estourar, as travas ligadas e o nível de cada estratégia.
+===
+Risk mostra a banca, os três limites mais perto de estourar, as travas ligadas e o nível de cada estratégia. Vendor floor é a estratégia de arrematar abaixo do preço que o vendedor paga.
+>>>
+
+<<<
+|   stock at price risk      64s of 2g 00s                                   |
+|   cost in one item         38s of 40s                                      |
+|   deposits lost today      3c of 8s                                        |
+===
+|   cost in one item         38s of 40s                                      |
+|   stock at price risk      64s of 2g 00s                                   |
+|   deposits at risk         14c of 20s                                      |
+>>>
+
+L3-A3 e L7-A6: de onde os dias contam; o que são as entradas de fora
+<<<
+Tudo abaixo é hipótese, sem número medido, e nada é promessa nem conselho de como jogar; "entradas de fora" é só uma grandeza que a régua mede (toda variação de ouro que não vem de compra para revenda).
+===
+Tudo abaixo é hipótese, sem número medido, e nada é promessa nem conselho de como jogar. Os dias contam a partir do momento em que a compra para revenda estiver ligada com ouro, o que a linha do tempo não põe antes de meados de dezembro; até lá só as entradas de fora e a venda do seu próprio estoque mexem na banca. "Entradas de fora" é só uma grandeza que a régua mede: toda variação de ouro que não vem de compra para revenda, isto é, o ouro de quest, saque e conserto (que a tela Session chama de OUTSIDE) e também o da venda do que os seus personagens coletam.
+>>>
+
+L5-C2
+<<<
+a taxa composta, produto de quatro fatores de mesmo peso (parte aplicada, voltas por dia, margem e acerto).
+===
+a taxa composta, que é o produto da parte aplicada, das voltas por dia e do ganho médio por volta (dobrar a parte aplicada ou as voltas dobra a taxa; o ganho médio sobe com a margem e com o acerto, mas não em proporção).
+>>>
+
+L7-A7
+<<<
+Das três peças, a régua e a fila se justificam sozinhas: nenhuma fonte descreve ferramenta que meça por estratégia e por origem com um livro que o agente lê e devolve como configuração e relatório, e as duas funcionam em modo leitura e custam pouco. A mão (postar, cancelar e comprar por tecla) é a parte cara e a que duplica o que já existe. O que a justifica são as suas regras juntas (nada configurado no jogo, até cinco linhas por seção, estratégia só com fonte aprovada), o risco proporcional à banca, a prova em papel antes de gastar e o teclado pensado para acesso remoto.
+===
+Das três peças, a régua e a fila se justificam sozinhas. A régua, porque nenhuma fonte descreve ferramenta que meça por estratégia e por origem com um livro que o agente lê e devolve como configuração e relatório. A fila, porque junta as suas regras (nada configurado no jogo, até cinco linhas por seção, estratégia só com fonte aprovada), e a pesquisa não achou ferramenta que cumpra as três. As duas funcionam em modo leitura e custam pouco. A mão (postar, cancelar e comprar por tecla) é a parte cara e a que duplica o que já existe. O que a justifica são o núcleo de risco proporcional à banca, a regra de nunca repetir sozinha uma ação que ficou sem resposta, a prova em papel antes de gastar e o teclado pensado para acesso remoto.
+>>>

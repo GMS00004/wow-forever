@@ -1,0 +1,254 @@
+Trocas da segunda varredura de consistência (onda 6) no DESIGN.md.
+
+L7-4: o aviso de scripts vale para /run e /dump (conferido no espelho)
+<<<
+O primeiro `/run` da conta abre o aviso "Allow custom scripts?" e não roda.
+===
+O primeiro `/run` ou `/dump` da conta abre o aviso "Allow custom scripts?" e não roda (espelho, `Blizzard_ChatFrameBase/Shared/SlashCommands.lua`: os dois comandos passam pela mesma guarda).
+>>>
+
+L4-02: relógio do dia de risco
+<<<
+tudo o que vai ao disco usa `GetServerTime` (base 3.3, 3.8; R9 11.1; R1c 5). |
+===
+tudo o que vai ao disco usa `GetServerTime` (base 3.3, 3.8; R9 11.1; R1c 5). A única leitura da hora local da máquina é a do dia de risco (seção 6), por `date('*t')`; o que se grava junto dele leva `GetServerTime`. |
+>>>
+
+L3-A2: quem conta vãos e arremates antes da onda 5
+<<<
+A conta roda fora do jogo, pelos arquivos puros (`Estimadores`, `Motor`), a partir da onda 3, e nenhuma ordem nasce dela.
+===
+A conta roda fora do jogo, na sessão do agente, por um script de análise sobre o banco lido, a partir da onda 3: é a conta da seção 7.4 sem a classe de saída B, que pede vendas inferidas. Os arquivos puros só ganham essa parte na onda 5, e nenhuma ordem nasce da contagem.
+>>>
+
+L1-P04: banca sem reunir
+<<<
+Sem reunir, o piso zera a banca do negociador; e ele deixa parado cerca de um quinto do capital de hoje.
+===
+Sem reunir, o piso deixa ao negociador só cerca de 27 prata de banca; reunido, ele deixa parado cerca de um quinto do capital de hoje.
+>>>
+
+L1-P02: vigília acima de 8
+<<<
+Sem a mesma chave em fôlegos seguidos não há par de fotos, e sem par não há venda inferida, testemunha nem fecho de papel.
+===
+Sem a mesma chave em fôlegos seguidos não há par de fotos, e sem par não há venda inferida, testemunha nem fecho de papel. Se passarem de 8, entram as de papel ou de lote mais antigo, e as demais disputam as cotas.
+>>>
+
+L4-01 e L1-P05: o ciclo para em T_pulso
+<<<
+qualquer --TRAVADO ou AUCTION_HOUSE_CLOSED--> PARADO, fila zerada
+===
+qualquer --sem tecla do dono ha T_pulso--> PARADO ("Press L"); vale nas opcoes (a) e (b), conferido antes de cada envio
+qualquer --TRAVADO ou AUCTION_HOUSE_CLOSED--> PARADO, fila zerada
+>>>
+
+L4-01 e L5-C1: envio
+<<<
+- **Envio.** Só com `IsThrottledMessageSystemReady()` verdadeiro (H-06), uma consulta em voo, até `ritmo.buscas_min` (30 de partida, que são 30% do limite documentado, base 2.2). Cada `RequestMore...` conta no orçamento.
+===
+- **Envio.** Antes de cada envio, `Pedidos.lua` confere a I9: sem tecla do dono nos últimos `T_pulso` segundos, o ciclo para onde está. Depois, só com `IsThrottledMessageSystemReady()` verdadeiro (H-06), uma consulta em voo, até `ritmo.buscas_min` (30 de partida, que são 30% do limite documentado, base 2.2). O ritmo e `folego.max_buscas` contam as buscas por item dos planos C e D, inclusive cada `RequestMore...SearchResults`. As páginas do resumo (`RequestMoreBrowseResults`, plano A) ficam fora dessas duas contas: seguem só o throttle do cliente e o teto de tempo do ciclo (`folego.max_s`), porque o limite documentado é o das buscas por item.
+>>>
+
+L5-C3: exemplo da foto de commodity
+<<<
+    exemplo  1|8841|1794873600|FE|524|9:14:2:0:0,10:200:5:0:0|0,0,310,0,0,0,0,0
+===
+    exemplo  1|8841|1794873600|FE|214|9:14:2:0:0,10:200:5:0:0|0,0,0,0,0,0,0,0
+>>>
+
+L5-C2 e L6-8: exemplo da foto de item
+<<<
+    exemplo  1|8850|1794873700|F|3|1|771:20000:0:2:1:0:0,774:21500:0:3:1:0:0|0:0
+===
+    exemplo  1|8850|1794873700|F|2|1|771:20000:0:2:1:0:0,774:21500:0:3:1:0:0|0:0
+>>>
+
+L6-3: hora da foto na ação
+<<<
+    linha    1|seq|t|verbo|chave|qtd|preco|estrategia|origem|antes|depois|eco|tEco|erro|bilhete (origem key, mouse ou outside; dinheiro antes e depois; bilhete conforme o verbo: buy total:teto:fracao:saida, post duracao:regra:deposito:fila, cancel deposito:custo:fila, com a fração em milésimos; vazio em ação de fora)
+    exemplo  1|9010|1794874100|post|6541:18:845|1|20000|venda_verdes|key|31200|31170|created|1794874101||24:m:30:0
+===
+    linha    1|seq|t|verbo|chave|qtd|preco|estrategia|origem|antes|depois|eco|tEco|erro|bilhete|fotoEm (origem key, mouse ou outside; dinheiro antes e depois; bilhete conforme o verbo: buy total:teto:fracao:saida, post duracao:regra:deposito:fila, cancel deposito:custo:fila, com a fração em milésimos; fotoEm é a hora da foto que sustentou a ordem; os dois vazios em ação de fora)
+    exemplo  1|9010|1794874100|post|6541:18:845|1|20000|venda_verdes|key|31200|31170|created|1794874101||24:m:30:0|1794874058
+>>>
+
+L6-3, L6-4, L6-5, L6-6: amostras do calib
+<<<
+    linha    1|valor|n|medido|em|build, mais as amostras, uma por item da lista: t:build:valor nos parâmetros numéricos; na frequência de venda, t:classe:duracao:regra:fila:preco:desfecho (classe c ou e0 a e4; regra m, u ou f; desfecho s vendeu, x expirou, c cancelado, d downtime)
+===
+    linha    1|valor|n|medido|em|build, mais as amostras, uma por item da lista, todas com hora e build: t:build:valor nos parâmetros numéricos; na frequência de venda, t:build:classe:duracao:regra:fila:preco:desfecho (classe c, ou e1 a e4 para equipamento comum, incomum, raro e épico; regra m, u ou f; desfecho s vendeu, x expirou, c cancelado, d downtime); no "já sumiu", t:build:faixa:idade:ficou (faixa de desconto de 1 a 3; segundos entre a foto e a tecla; 1 ou 0); na sombra, t:build:classe:regra:desfecho:valor (desfecho w, n ou u: venderia, não venderia, não se sabe)
+>>>
+
+L6-4: tamanho das amostras
+<<<
+| 100 amostras por parâmetro (a frequência de venda, até 200 por classe); 60 sessões; um registro por passo da sonda | cerca de 70 KB |
+===
+| 100 amostras por parâmetro (a frequência de venda e a sombra, até 200 por classe); 60 sessões; um registro por passo da sonda | cerca de 100 KB |
+>>>
+
+L6-7: anéis dos outros personagens
+<<<
+na tabela `abertos`, com teto de 300 e o alerta `TOO MANY OPEN LOTS`.
+===
+na tabela `abertos`, com teto de 300 no negociador e de 100 nos outros personagens, e o alerta `TOO MANY OPEN LOTS`.
+>>>
+
+<<<
+- **`correio`** em anel de 300; **`sonda`**, um registro por passo.
+===
+- **`correio`** em anel de 300 no negociador e de 100 nos outros personagens; **`sonda`**, um registro por passo.
+>>>
+
+L6-1: onde vivem as leituras do jogo
+<<<
+e o agente grava em `Config.remoto.latencia_ms` | 1 leitura por sessão longa |
+===
+e o agente grava em `Config.remoto.latencia_ms` | 1 leitura por sessão longa |
+
+As leituras do jogo desta tabela (corte, devoluções, atraso do correio, cadência) o addon adota sozinho, em `calib`, e elas não passam pelo `Calibrado.lua`. Cada uma tem uma faixa de sanidade, proposta do projeto: corte de 0 a 0,25; devolução de 0 a 1; atraso do correio de 0 a 180 minutos; cadência de 5 a 100 buscas por minuto. Leitura fora da faixa não é adotada: fica como amostra, e a faixa `GAME NUMBER CHANGED` aparece.
+>>>
+
+<<<
+Os parâmetros do jogo estão na seção 7.6 e os tetos de dinheiro, na seção 9.2.
+===
+Os parâmetros lidos do jogo (corte, devoluções, atraso do correio, cadência) estão na seção 7.6, com as faixas de sanidade: o addon os adota sozinho, em `calib`, sem passar pelo `Calibrado.lua`. Os tetos de dinheiro estão na seção 9.2.
+>>>
+
+<<<
+| `NO DESK` | valem os números de partida; só as vendas e o papel funcionam |
+===
+| `NO DESK` | valem os números de partida e as leituras do jogo já adotadas em `calib`; só as vendas e o papel funcionam |
+>>>
+
+L2-A1: a cotação é a exceção do INCERTO
+<<<
+| I5 | Ação sem eco vira INCERTO e bloqueia. Nunca há reenvio. |
+===
+| I5 | Ação sem eco vira INCERTO e bloqueia. Nunca há reenvio. A exceção é a cotação (`StartCommoditiesPurchase`), que não gasta: sem resposta em 5 s o addon cancela a cotação e volta ao sinal (`PRICE MOVED`), e outra cotação só sai com outra tecla. |
+>>>
+
+<<<
+| I5 | Injetar "sem eco": estado INCERTO, zero chamadas novas com os mesmos argumentos, bloqueio até a conciliação |
+===
+| I5 | Injetar "sem eco": estado INCERTO, zero chamadas novas com os mesmos argumentos, bloqueio até a conciliação (na cotação, o esperado é `PRICE MOVED` e zero chamadas novas sem tecla) |
+>>>
+
+<<<
+ação muda de cada uma das 8 funções de ação
+===
+ação muda de cada uma das 8 funções de ação (na cotação, o esperado é `PRICE MOVED`, não INCERTO)
+>>>
+
+L3-A1: casos com cotação são da onda 4
+<<<
+troca de visão com cotação aberta; `Y` na visão Session com `ENVIANDO`, AVISO, INCERTO ou fôlego aberto (salvar bloqueado); troca para a Session com bilhete armado ou cotação aberta (o bilhete desarma, a cotação é cancelada e o salvar segue).
+===
+troca de visão com bilhete armado; `Y` na visão Session com `ENVIANDO`, AVISO, INCERTO ou fôlego aberto (salvar bloqueado); troca para a Session com bilhete armado (o bilhete desarma e o salvar segue). Os mesmos casos com cotação aberta, em que a troca também cancela a cotação, ficam no grupo `comprar`, da onda 4.
+>>>
+
+L2-A2: estados depois da tecla
+<<<
+uma função de ação, estado `ENVIANDO`. Tudo na mesma pilha (regra 3).
+===
+uma função de ação, estado `ENVIANDO` (`COTANDO` ou `CONFIRMANDO`, nas máquinas de commodity). Tudo na mesma pilha (regra 3).
+>>>
+
+<<<
+A tecla aceita muda a palavra de estado no mesmo quadro (`SENT`), e o rodapé
+===
+A tecla aceita muda a palavra de estado no mesmo quadro (`SENT`; `QUOTING` na cotação), e o rodapé
+>>>
+
+L2-A3: botões para o mouse
+<<<
+os botões de ação ficam em posições fixas e vizinhas, um por verbo, com o `Y` longe dos demais: nenhuma viagem longa de ponteiro e nenhum ponto que acumule dois verbos.
+===
+os botões de ação ficam em posições fixas, lado a lado, um por verbo, com o `Y` separado deles por um vão da largura de um botão: nenhuma viagem longa de ponteiro e nenhum ponto que acumule dois verbos.
+>>>
+
+L1-P01: ordens da classe sonda
+<<<
+postagem com depósito de até 30 cobre; compra de até 20 cobre por ordem; 1 ordem por passo | igual | |
+===
+postagem com depósito de até 30 cobre; compra de até 20 cobre por ordem; só as ordens que o passo prevê, uma por tecla | igual | |
+>>>
+
+<<<
+postagem com depósito de até 30 cobre, compra de até 20 cobre por ordem, uma ordem por passo, sempre pela tecla (seção 9.2).
+===
+postagem com depósito de até 30 cobre, compra de até 20 cobre por ordem, só as ordens que a coluna Custo do passo prevê, uma por tecla (seção 9.2).
+>>>
+
+<<<
+| Classe `sonda` | depósito de até 30 cobre; compra de até 20 cobre; 1 ordem por passo | cobre | | fixo |
+===
+| Classe `sonda` | depósito de até 30 cobre; compra de até 20 cobre; só as ordens previstas no passo, uma por tecla | cobre | | fixo |
+>>>
+
+L1-P03: quem decide o ritmo de partida
+<<<
+sem mensagem descartada | S4; portão da seção 17.1 |
+===
+sem mensagem descartada | DD10 (partida); S4 e portão da seção 17.1 (subida) |
+>>>
+
+<<<
+(10, 15 e 20 são os previstos; 20 não é teto) | portão da seção 17.1 |
+===
+(10, 15 e 20 são os previstos; 20 não é teto) | DD10 (partida); portão da seção 17.1 (subida) |
+>>>
+
+<<<
+limiar da razão do portão (seção 3.3); ritmo de partida.
+===
+limiar da razão do portão (seção 3.3); ritmo de partida; disjuntores e dia de risco (seção 9.4). Vale para tudo o que o Apêndice B marca com DD10.
+>>>
+
+L1-P02: vigília na fase 3
+<<<
+| `foco.vigilia` (lista) e máximo de vigília | vazia; 8 | chaves | 0 a 20 | chaves com papel aberto por sessão |
+===
+| `foco.vigilia` (lista) e máximo de vigília | vazia; 8 | chaves | 0 a 20 nas fases 1 e 2; na fase 3, o anel quente do degrau | chaves com papel aberto por sessão |
+>>>
+
+L1-P05: ciclo e T_pulso
+<<<
+| `folego.max_s` | 60 | segundos por ciclo | 20 a 180 nas fases 1 e 2; na fase 3, o ciclo da vigília do degrau | S4; degraus da seção 17.1 |
+===
+| `folego.max_s` | 60 | segundos por ciclo | 20 a 180 nas fases 1 e 2; na fase 3, o ciclo da vigília do degrau. Em qualquer fase o ciclo também é cortado quando passam `T_pulso` segundos da última tecla | S4; degraus da seção 17.1 |
+>>>
+
+L6-2: o campo fora da sessão
+<<<
+| Sessão | duração, ações por verbo, resultado, entradas de fora, gargalo, parâmetros em vigor |
+===
+| Sessão | duração, ações por verbo, resultado, `fora` (a soma do registro `Fora` na sessão), gargalo, parâmetros em vigor |
+>>>
+
+<<<
+fração aplicada da banca, margem líquida por volta, acerto, horas por volta e entradas de fora por dia.
+===
+fração aplicada da banca, margem líquida por volta, acerto, horas por volta e entradas de fora por dia (a soma do registro `Fora` mais o resultado dos lotes de origem `coletado` fechados no dia: é conta da régua, não campo gravado).
+>>>
+
+L5-C4: ações de uma volta na fase 3
+<<<
+uma volta são cerca de 125 itens e 375 ações: 37 minutos no ritmo de 10 ações por minuto, numa volta que o correio limita a cerca de 60.
+===
+uma volta são cerca de 125 itens e 250 ações (uma compra e uma postagem por item): 25 minutos no ritmo de 10 ações por minuto, e 625 teclas, numa volta que o correio limita a cerca de 60 minutos.
+>>>
+
+L7-5: o que o LEIA-ME traz
+<<<
+O `LEIA-ME.md` traz a mesma tabela em linguagem do dono.
+===
+O `LEIA-ME.md` traz, em linguagem do dono, a tabela das seis decisões de antes do código e uma lista das demais.
+>>>
+
+L7-1: quem é o negociador não tem padrão
+<<<
+Quase todos têm padrão marcado; reunir ou não o ouro (DD4) e a duração e o lote das sobras (DD3) só o dono escolhe.
+===
+Quase todos têm padrão marcado; qual personagem compra e reunir ou não o ouro (DD4), e a duração e o lote das sobras (DD3), só o dono escolhe.
+>>>

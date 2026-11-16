@@ -1,0 +1,42 @@
+Trocas da segunda varredura de consistência (onda 6) no LEIA-ME.md.
+
+L7-1
+<<<
+Quase todos têm padrão marcado; reunir ou não o ouro e a duração e o lote das sobras só você escolhe.
+===
+Quase todos têm padrão marcado; qual personagem compra, reunir ou não o ouro e a duração e o lote das sobras só você escolhe.
+>>>
+
+<<<
+Um personagem compra e todos vendem, cada um com os seus limites.
+===
+Um personagem compra (você diz qual) e todos vendem, cada um com os seus limites.
+>>>
+
+L7-2
+<<<
+(antes da primeira postagem por tecla; são proposta do projeto
+===
+(antes de começar o código da postagem por tecla; são proposta do projeto
+>>>
+
+L7-3
+<<<
+a Blizzard não publicou a fórmula) e depósito mínimo de 1 prata até a manutenção de 17/11, 1 cobre depois.
+===
+a Blizzard não publicou a fórmula). Fora do cliente, o anúncio da Blizzard diz que o depósito mínimo cai de 1 prata para 1 cobre na manutenção de 17/11, o que só o jogo confirma (comandos 8, 11 e 12).
+>>>
+
+L7-5
+<<<
+correio e vendedor por tecla,
+===
+correio e vendedor por tecla, postar mais de uma unidade de um item por tecla,
+>>>
+
+L7-6
+<<<
+até lá só as entradas de fora e a venda do seu próprio estoque mexem na banca.
+===
+até lá só as entradas de fora e a venda do seu próprio estoque mexem na banca. Eles partem dos 5 ouro e 9 prata de hoje, com o ouro reunido num personagem e piso pessoal de 1 ouro, e os degraus são de ouro total, não de banca.
+>>>
