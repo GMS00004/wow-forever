@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PregaoForever: quadros das telas</title>
+<style>
+  :root {
+    --pg: #14161b; --pg2: #1c1f26; --ink: #e9e4d6; --dim: #a9a290; --rule: #2e323c;
+    --win: #0b0c10; --winline: #5a4b33; --zone: #23262e; --gold: #ffd100; --sel: #2a2416;
+    --post: #8fd98f; --buy: #7cc0ff; --cancel: #ff9a80; --vendor: #d8c48a; --paper: #c3b4ff; --warn: #ffb347;
+    --q2: #1eff00; --q1: #ffffff; --q0: #9d9d9d; --q3: #4a9eff;
+    --mg: #ffd100; --ms: #c9ccd6; --mc: #eda55f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--pg); color: var(--ink); font: 15px/1.55 "Segoe UI", Arial, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 28px 16px 64px; }
+  h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: .2px; }
+  h2 { font-size: 18px; margin: 0 0 6px; color: var(--gold); font-weight: 600; }
+  p { margin: 0 0 10px; max-width: 78ch; }
+  .lede { color: var(--dim); }
+  .nota { color: var(--dim); font-size: 13.5px; }
+  section { margin: 34px 0 0; padding-top: 22px; border-top: 1px solid var(--rule); }
+  .palco { margin: 14px 0 10px; padding: 24px; background:
+      radial-gradient(1200px 500px at 20% 0%, #2b3340 0%, transparent 60%),
+      radial-gradient(900px 500px at 90% 100%, #33291c 0%, transparent 60%), var(--pg2);
+    border: 1px solid var(--rule); border-radius: 6px; overflow-x: auto; }
+  .palco.livre { padding: 0; }
+  ol.leg { margin: 6px 0 0 20px; padding: 0; color: var(--dim); font-size: 13.5px; max-width: 80ch; }
+  ol.leg li { margin: 2px 0; }
+  code { font: 13px Consolas, monospace; color: #d7cfb8; }
+
+  /* a janela do addon: 520 unidades de largura, linhas de 28, botoes de 32 */
+  .win { width: 520px; background: var(--win); border: 1px solid var(--winline); box-shadow: 0 0 0 1px #000, 0 10px 30px rgba(0,0,0,.55);
+    font: 13px/1 "PT Sans Narrow", "Arial Narrow", "Segoe UI", Arial, sans-serif; color: var(--ink); }
+  .bar { height: 30px; display: flex; align-items: center; gap: 10px; padding: 0 8px; background: linear-gradient(#2a2418, #17140e); border-bottom: 1px solid var(--winline); }
+  .bar .nm { color: var(--gold); font-weight: 700; letter-spacing: .3px; margin-right: 4px; }
+  .tab { padding: 4px 6px; color: var(--dim); border: 1px solid transparent; white-space: nowrap; }
+  .tab.on { color: #14110a; background: var(--gold); border-color: #fff3a8; font-weight: 700; }
+  .zone { border-bottom: 1px solid var(--zone); padding: 5px 8px; }
+  .zone:last-child { border-bottom: 0; }
+  .r { display: flex; align-items: center; gap: 14px; min-height: 20px; white-space: nowrap; }
+  .r.l { min-height: 28px; }
+  .r .fim { margin-left: auto; }
+  .k { color: var(--dim); letter-spacing: .4px; }
+  .v { color: var(--ink); }
+  .ttl { color: var(--gold); font-weight: 700; letter-spacing: .4px; min-height: 24px; }
+  .col { color: var(--dim); }
+  .row { display: grid; align-items: center; min-height: 28px; column-gap: 8px; padding: 0 2px; white-space: nowrap; }
+  .row.sel { background: var(--sel); outline: 1px solid #6b5a2a; }
+  .row .mk { color: var(--gold); font-weight: 700; }
+  .next { grid-template-columns: 10px 54px 124px 30px 72px 1fr auto; }
+  .sell { grid-template-columns: 10px 136px 92px 74px 30px 44px 1fr; column-gap: 6px; }
+  .mine { grid-template-columns: 10px 150px 76px 50px 44px 1fr; }
+  .risk { grid-template-columns: 14px 150px 1fr; }
+  .more { color: var(--dim); padding-left: 20px; min-height: 26px; display: flex; align-items: center; }
+  .vb { font-weight: 700; letter-spacing: .4px; }
+  .POST { color: var(--post); } .BUY { color: var(--buy); } .CANCEL { color: var(--cancel); } .VENDOR { color: var(--vendor); }
+  .tag { color: var(--paper); font-weight: 700; letter-spacing: .4px; }
+  .wn { color: var(--warn); font-weight: 700; letter-spacing: .3px; }
+  .ok { color: var(--post); font-weight: 700; letter-spacing: .3px; }
+  .q2 { color: var(--q2); } .q1 { color: var(--q1); } .q0 { color: var(--q0); } .q3 { color: var(--q3); }
+  .m i { font-style: normal; font-weight: 700; } .m .g { color: var(--mg); } .m .s { color: var(--ms); } .m .c { color: var(--mc); }
+  .bt { display: inline-flex; align-items: center; height: 32px; padding: 0 9px; border: 1px solid #6b5a2a; background: linear-gradient(#3a2f18, #221b0d); color: #ffe9a6; white-space: nowrap; }
+  .bt b { color: var(--gold); margin-right: 5px; }
+  .bt.go { border-color: #7fb46a; background: linear-gradient(#27401f, #162611); color: #d8f7c8; }
+  .bt.go b { color: #b6ff9a; }
+  .bts { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+  .foot .r { min-height: 18px; color: var(--dim); gap: 12px; }
+  .foot b { color: var(--ink); }
+  .faixa { display: flex; align-items: center; min-height: 26px; padding: 0 8px; font-weight: 700; letter-spacing: .3px; border-bottom: 1px solid var(--zone); }
+  .faixa.a { background: #3b2a10; color: #ffd08a; } .faixa.v { background: #40161a; color: #ffb3ad; } .faixa.i { background: #14283a; color: #a9d6ff; }
+  .pilha { display: grid; gap: 14px; }
+
+  /* quadro de posicao: tela 16:9 em unidades de interface na escala 1 (1365 x 768) */
+  .tela { position: relative; width: 1365px; height: 768px; background:
+      radial-gradient(900px 500px at 30% 20%, #33404f 0%, transparent 60%),
+      radial-gradient(900px 600px at 80% 90%, #3d3120 0%, transparent 65%), #1a1d23; overflow: hidden; }
+  .fant { position: absolute; border: 1px dashed #7d8696; color: #b7bfcc; font: 13px "Segoe UI", Arial, sans-serif; padding: 8px 10px; background: rgba(20,24,30,.55); }
+  .tela .win { position: absolute; left: 830px; top: 116px; height: 500px; }
+  .cota { position: absolute; color: #d6dbe4; font: 12px Consolas, monospace; }
+
+  /* teclado */
+  .tecl { display: grid; gap: 7px; padding: 6px 2px; font: 13px "Segoe UI", Arial, sans-serif; }
+  .lin { display: flex; gap: 7px; }
+  .tc { width: 62px; height: 56px; border: 1px solid #3a3f4b; border-radius: 5px; background: #1d2028; color: #6f7686; padding: 5px 7px; display: flex; flex-direction: column; justify-content: space-between; }
+  .tc b { font-size: 15px; color: inherit; }
+  .tc span { font-size: 11.5px; line-height: 1.1; }
+  .tc.nav { border-color: #5d6a80; background: #232a36; color: #cfd8e6; }
+  .tc.arma { border-color: #8a6d2a; background: #33290f; color: #ffe2a0; }
+  .tc.exec { border-color: #7fb46a; background: #1d3317; color: #d6f8c6; }
+  .tc.sai { border-color: #a0605a; background: #381b19; color: #ffc9c2; }
+  .tc.f { width: 104px; height: 44px; }
+  .chaves { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; font-size: 13px; color: var(--dim); }
+  .chaves i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1px solid; }
+
+  /* modo de foto: com #id na URL so aparece o palco daquele quadro */
+  body.foto main { max-width: none; padding: 0; }
+  body.foto h1, body.foto .lede, body.foto .nota, body.foto section > h2, body.foto section > p, body.foto ol.leg, body.foto .chaves.fora { display: none; }
+  body.foto section { display: none; margin: 0; padding: 0; border: 0; }
+  body.foto section.alvo { display: block; }
+  body.foto .palco { margin: 0; border: 0; border-radius: 0; display: inline-block; }
+</style>
+</head>
+<body>
+<main>
+<h1>PregaoForever: quadros das telas</h1>
+<p class="lede">Primeira versão desenhada das telas da seção 11.3 do <code>DESIGN.md</code>, para você aprovar ou pedir mudança antes de existir código. Os textos da janela ficam em inglês, como o projeto manda; itens e valores são ilustrativos.</p>
+<p class="nota">O que é hipótese neste desenho: o tamanho da janela (520 por 500 unidades), que só fecha quando o comando 15 da sonda ler a resolução e a escala da sua tela; a fonte, que no jogo é a do próprio cliente (aqui é uma aproximação); e as cores, que são só reforço, porque todo estado aparece em palavra. As linhas de estado do topo e a legenda de teclas do rodapé aparecem em todas as visões por leitura minha da seção 11.1 (três zonas fixas); o desenho em caracteres da 11.3 só as mostra na visão Next.</p>
+
+<section id="lado">
+<h2>1. Onde a janela fica</h2>
+<p>Uma tela 16:9 na escala 1 tem 1.365 por 768 unidades. O leilão da Blizzard ocupa 800 por 538 à esquerda e não é tocado. A janela do addon entra nas 545 unidades que sobram à direita.</p>
+<div class="palco livre"><div class="tela">
+  <div class="fant" style="left:20px;top:116px;width:800px;height:538px">Blizzard Auction House<br>800 x 538, untouched</div>
+  <div class="fant" style="left:1085px;top:630px;width:265px;height:124px">Bags (your bag window)<br>position and size measured in probe step S0</div>
+  <div class="cota" style="left:830px;top:96px">520 x 500</div>
+  <div class="cota" style="left:20px;top:96px">800 x 538</div>
+  <div class="win" id="w-lado"></div>
+</div></div>
+<ol class="leg"><li>Se as bolsas cobrirem a janela na sua tela, a janela encolhe ou sobe: é o que a sonda mede antes de qualquer código.</li></ol>
+</section>
+
+<section id="next">
+<h2>2. Visão Next (F1), a que abre</h2>
+<p>Três zonas fixas: estado em cima, lista no meio, bilhete embaixo. A fila mostra até cinco linhas do que vale fazer agora. A linha com o sinal de maior é a selecionada.</p>
+<div class="palco"><div class="win" id="w-next">
+  <div class="bar"><span class="nm">PregaoForever</span><span class="tab on">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab">F5 SESSION</span></div>
+  <div class="zone st">
+    <div class="r"><span><span class="k">BUDGET</span> <span class="m">4g 00s</span></span><span><span class="k">FREE</span> <span class="m">3g 12s 86c</span></span><span><span class="k">STOCK</span> <span class="m">64s</span></span><span><span class="k">DEPOSITS</span> <span class="m">14c</span></span><span><span class="k">IN MAIL</span> <span class="m">23s</span></span></div>
+    <div class="r"><span><span class="k">MODE</span> <span class="ok">LIVE</span></span><span><span class="k">AT RISK</span> 16% of budget</span><span class="ok">KEYS ON</span></div>
+    <div class="r"><span><span class="k">PRICES</span> 42s old, full read</span><span class="fim bt"><b>L</b>look again</span></div>
+  </div>
+  <div class="zone">
+    <div class="r ttl">NEXT (7)</div>
+    <div class="row next sel"><span class="mk">&gt;</span><span class="vb POST">POST</span><span class="q2">Bandit Cloak x1</span><span>24h</span><span class="m">2s 00c</span><span>pays if 1 in 5 sells</span><span></span></div>
+    <div class="row next"><span></span><span class="vb POST">POST</span><span class="q1">Copper Ore x20</span><span>8h</span><span><span class="m">1s 08c</span> ea</span><span>pays if 1 in 98 sells</span><span></span></div>
+    <div class="row next"><span></span><span class="vb BUY">BUY</span><span class="q1">Linen Cloth x16</span><span></span><span><span class="m">9c</span> ea</span><span>vendor pays <span class="m">13c</span> &nbsp; <span class="m">+64c</span></span><span class="tag">PAPER</span></div>
+    <div class="row next"><span></span><span class="vb POST">POST</span><span class="q3">Shadowfang x1</span><span></span><span class="wn" style="grid-column: 5 / 8">PICK RULE</span></div>
+    <div class="row next"><span></span><span class="vb VENDOR">VENDOR</span><span class="q0">Ruined Pelt x5</span><span></span><span><span class="m">25c</span> ea</span><span>auction pays less</span><span></span></div>
+    <div class="more">Show 2 more</div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> none</span><span class="fim bts"><span class="bt"><b>P</b>post</span><span class="bt"><b>B</b>buy</span><span class="bt"><b>K</b>skip</span><span class="bt"><b>I</b>why</span></span></div>
+  </div>
+  <div class="zone foot">
+    <div class="r"><span><b>L</b> look</span><span><b>N</b> next</span><span><b>U</b> back</span><span><b>I</b> why</span><span><b>O</b> more</span><span><b>K</b> skip</span><span><b>H</b> hold</span></div>
+    <div class="r"><span><b>P</b> post</span><span><b>B</b> buy</span><span><b>C</b> cancel</span><span><b>Y</b> yes</span><span><b>M</b> never mind</span><span class="fim">last key: <b>N</b></span></div>
+    <div class="r"><span><span class="k">LAST ALERT</span> &nbsp;SOLD Linen Bag x1 (19 min ago)</span></div>
+  </div>
+</div></div>
+<ol class="leg">
+<li><code>pays if 1 in 5 sells</code>: o leilão paga mais que o vendedor se uma em cada cinco postagens daquele tipo vender.</li>
+<li><code>PAPER</code>: a linha é só registro, sem gastar ouro. <code>PICK RULE</code>: falta você escolher regra, duração ou lote para aquela classe de item (no exemplo, um item raro); a linha não tem tecla.</li>
+<li><code>last key</code> mostra a última tecla que o jogo recebeu, para o acesso remoto não gerar tecla repetida por dúvida.</li>
+</ol>
+</section>
+
+<section id="bilhetes">
+<h2>3. O bilhete e a conta da linha</h2>
+<p>O bilhete é o resumo de uma ordem que gasta ouro ou perde depósito. Ele aparece na zona de baixo antes da tecla que executa: <code>Y</code> executa, <code>M</code> desiste.</p>
+<div class="palco"><div class="pilha">
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">QUOTE OK</span></span><span><span class="vb BUY">BUY</span> <span class="q1">Linen Cloth x16</span></span></div>
+    <div class="r"><span>pay <span class="m">1s 44c</span> total (<span class="m">9c</span> each)</span><span>max <span class="m">1s 48c</span></span><span>0.4% of budget</span></div>
+    <div class="r"><span>vendor pays <span class="m">2s 08c</span> (safe exit)</span></div>
+    <div class="r l"><span class="bt go"><b>Y</b>BUY NOW (quote valid 12 s)</span><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">READY</span></span><span><span class="vb POST">POST</span> <span class="q2">Bandit Cloak x1</span> &nbsp;24h</span></div>
+    <div class="r"><span>price <span class="m">2s 00c</span> (match)</span><span>deposit <span class="m">30c</span></span><span>price from 42s ago</span></div>
+    <div class="r l"><span class="bt go"><b>Y</b>POST NOW</span><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> <span class="ok">READY</span></span><span><span class="vb CANCEL">CANCEL</span> <span class="q1">Tin Ore x20</span></span></div>
+    <div class="r"><span>you lose the deposit <span class="m">12c</span></span><span>cancel fee <span class="m">0c</span></span><span>340 cheaper ahead</span></div>
+    <div class="r l"><span class="bt go"><b>Y</b>CANCEL NOW</span><span class="fim bt"><b>M</b>never mind</span></div>
+  </div></div>
+  <div class="win"><div class="zone">
+    <div class="r l"><span><span class="k">WHY</span> <span class="q2">Bandit Cloak x1</span></span></div>
+    <div class="r"><span>lowest <span class="m">2s 00c</span>, next +50%</span><span>5 auctions, 3 sellers</span><span>strong reference</span></div>
+    <div class="r"><span>vendor pays <span class="m">50c</span></span><span>deposit 2h <span class="m">2c</span>, 8h <span class="m">10c</span>, 24h <span class="m">30c</span></span></div>
+    <div class="r"><span>24h: pays if 1 in 5 sells</span><span>sold 4 of 10 (uncommon gear, 24h, match)</span></div>
+    <div class="r"><span>0 cheaper ahead</span></div>
+  </div></div>
+</div></div>
+<ol class="leg">
+<li>De cima para baixo: compra de material com cotação do jogo; postagem; cancelamento, que sempre pede as duas teclas; e a conta de uma linha, aberta com <code>I</code>.</li>
+<li>Em modo papel, o bilhete de compra diz <code>PAPER - no gold moved</code> e o de postagem, <code>PAPER - nothing posted</code>.</li>
+</ol>
+</section>
+
+<section id="sell">
+<h2>4. Visão Sell (F2)</h2>
+<p>O que está nas bolsas e pode ir à venda. <code>KEPT</code> é o que ficou reservado, com o motivo; a última linha diz o que está nos outros personagens.</p>
+<div class="palco"><div class="win" id="w-sell">
+  <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab on">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab">F5 SESSION</span></div>
+  <div class="zone st" data-estado></div>
+  <div class="zone">
+    <div class="row sell ttl"><span></span><span>BAGS TO SELL (6)</span><span class="col">rule</span><span class="col">price</span><span class="col">time</span><span class="col">deposit</span><span class="col">your sales</span></div>
+    <div class="row sell sel"><span class="mk">&gt;</span><span class="q2">Bandit Cloak x1</span><span class="vb POST">MATCH</span><span class="m">2s 00c</span><span>24h</span><span class="m">30c</span><span>4 of 10</span></div>
+    <div class="row sell"><span></span><span class="q1">Copper Ore x20</span><span class="vb POST">MATCH</span><span><span class="m">1s 08c</span> ea</span><span>8h</span><span class="m">20c</span><span>no sales yet</span></div>
+    <div class="row sell"><span></span><span class="q3">Shadowfang x1</span><span class="wn" style="grid-column: 3 / 8">PICK RULE</span></div>
+    <div class="row sell"><span></span><span class="q1">Wolf Meat x7</span><span class="vb VENDOR">VENDOR</span><span><span class="m">3c</span> ea</span><span style="grid-column: 5 / 8">auction pays less</span></div>
+    <div class="row sell"><span></span><span class="q2">Ring of the Monkey</span><span class="wn">NO REFERENCE</span><span style="grid-column: 4 / 6">vendor pays <span class="m">45c</span></span><span style="grid-column: 6 / 8; justify-self: end"><span class="bt" style="height:24px"><b>I</b>deposits</span></span></div>
+    <div class="more">Show 1 more</div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">KEPT (2)</span> &nbsp;<span class="q1">Light Leather x18</span>: reserved for Leatherworking</span><span class="fim col">Show 1 more</span></div>
+    <div class="r l"><span><span class="k">ON OTHER CHARACTERS (3)</span> &nbsp;<span class="q1">Peacebloom x40</span> on Rurik</span><span class="fim col">Show 2 more</span></div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> none</span><span class="fim bts"><span class="bt"><b>P</b>post</span><span class="bt"><b>K</b>skip</span><span class="bt"><b>I</b>why</span></span></div>
+  </div>
+  <div class="zone foot" data-rodape></div>
+</div></div>
+<ol class="leg">
+<li><code>your sales</code> é a frequência medida das suas próprias vendas naquele tipo de item; sem dez desfechos, a linha diz que ainda não há vendas.</li>
+<li>Linhas <code>VENDOR</code>, <code>NO REFERENCE</code> e <code>PICK RULE</code> não têm tecla de ação: o addon aponta e você decide pela tela da Blizzard.</li>
+</ol>
+</section>
+
+<section id="mine">
+<h2>5. Visão Mine (F3)</h2>
+<p>Os seus leilões, só com fatos. Nenhum ganho de cancelar é calculado. <code>STAND DOWN</code> aparece quando a regra contra guerra de preço manda parar.</p>
+<div class="palco"><div class="win" id="w-mine">
+  <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab on">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab">F5 SESSION</span></div>
+  <div class="zone st" data-estado></div>
+  <div class="zone">
+    <div class="r ttl"><span>MY AUCTIONS (5)</span><span class="col" style="font-weight:400">deposits at risk <span class="m">14c</span></span></div>
+    <div class="row mine"><span></span><span></span><span class="col">price</span><span class="col">left</span><span class="col" style="grid-column: 5 / 7">cheaper ahead</span></div>
+    <div class="row mine sel"><span class="mk">&gt;</span><span class="q1">Tin Ore x20</span><span><span class="m">1s 76c</span> ea</span><span>2-12h</span><span>340</span><span></span></div>
+    <div class="row mine"><span></span><span class="q1">Linen Bag x1</span><span class="ok">SOLD</span><span style="grid-column: 4 / 7">gold in about 41 min</span></div>
+    <div class="row mine"><span></span><span class="q1">Copper Bar x10</span><span><span class="m">90c</span> ea</span><span>12h+</span><span>0</span><span class="wn">STAND DOWN</span></div>
+    <div class="more">Show 2 more</div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">LIMITS</span> &nbsp;Tin Ore: 1 of 2 cancels (4h)</span><span class="fim">deposits lost today <span class="m">3c</span> of <span class="m">8s</span></span></div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">TICKET</span> none</span><span class="fim bts"><span class="bt"><b>C</b>cancel</span><span class="bt"><b>I</b>why</span></span></div>
+  </div>
+  <div class="zone foot" data-rodape></div>
+</div></div>
+</section>
+
+<section id="risk">
+<h2>6. Visão Risk (F4)</h2>
+<p>A banca, os três limites mais perto de estourar (do mais próximo para o mais distante), as travas e o nível de cada estratégia (permitido por você, conquistado pelo dado, em vigor). Vendor floor é arrematar abaixo do preço que o vendedor paga.</p>
+<div class="palco"><div class="win" id="w-risk">
+  <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab on">F4 RISK</span><span class="tab">F5 SESSION</span></div>
+  <div class="zone st" data-estado></div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">BUDGET</span> <span class="m">4g 00s</span></span><span>personal floor <span class="m">1g 00s</span></span><span>today <span class="m">+10s 75c</span></span></div>
+  </div>
+  <div class="zone">
+    <div class="r ttl"><span>EXPOSURE</span><span class="col" style="font-weight:400">closest to the limit</span></div>
+    <div class="row risk"><span></span><span>cost in one item</span><span><span class="m">38s</span> of <span class="m">40s</span></span></div>
+    <div class="row risk"><span></span><span>stock at price risk</span><span><span class="m">64s</span> of <span class="m">2g 00s</span></span></div>
+    <div class="row risk"><span></span><span>deposits at risk</span><span><span class="m">14c</span> of <span class="m">20s</span></span></div>
+    <div class="more">Show 7 more</div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span class="ttl" style="min-height:0">BREAKERS</span><span class="ok">all 11 clear</span></div>
+  </div>
+  <div class="zone">
+    <div class="r ttl"><span>LICENCES</span><span class="col" style="font-weight:400">allowed / earned / in force</span></div>
+    <div class="row risk"><span></span><span>Sell greens</span><span>micro / micro / micro</span></div>
+    <div class="row risk"><span></span><span>Sell extras</span><span>micro / micro / micro</span></div>
+    <div class="row risk"><span></span><span>Vendor floor</span><span>paper / paper / paper &nbsp; 2 of 3 proof scans</span></div>
+    <div class="more">Show 3 more</div>
+  </div>
+</div></div>
+<ol class="leg"><li>Uma trava ligada aparece em palavra, por exemplo <code>BUYING HALTED - 3 items gone in a row</code>, e também na linha de estado de todas as visões.</li></ol>
+</section>
+
+<section id="session">
+<h2>7. Visão Session (F5)</h2>
+<p>O fecho da sessão. <code>OUTSIDE</code> é o ouro que entrou ou saiu fora do leilão, registrado para não se confundir com trading. A tecla <code>Y</code> aqui salva e recarrega a interface.</p>
+<div class="palco"><div class="win" id="w-session">
+  <div class="bar"><span class="nm">PregaoForever</span><span class="tab">F1 NEXT</span><span class="tab">F2 SELL</span><span class="tab">F3 MINE</span><span class="tab">F4 RISK</span><span class="tab on">F5 SESSION</span></div>
+  <div class="zone st" data-estado></div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">SESSION</span> &nbsp;1h 32m</span><span>actions 49 (post 21, buy 14, cancel 3,</span></div>
+    <div class="r" style="padding-left:62px"><span>done in Blizzard UI 11)</span><span>unconfirmed 0</span></div>
+    <div class="r l"><span><span class="k">RESULT</span> &nbsp;realized <span class="m">+10s 75c</span></span><span>per action <span class="m">+22c</span></span><span>per hour <span class="m">+7s 01c</span></span></div>
+    <div class="r" style="padding-left:62px"><span>budget used 0.4 times</span></div>
+    <div class="r l"><span><span class="k">OUTSIDE</span> &nbsp;<span class="m">+24s</span> today (not trading)</span></div>
+    <div class="r l"><span><span class="k">PACE</span> &nbsp;<span class="m">+32s</span> a day (trade <span class="m">8s</span>, outside <span class="m">24s</span>)</span><span>applied 16% of budget</span></div>
+    <div class="r l"><span><span class="k">BY PLAN</span> &nbsp;Sell greens <span class="m">+5s 80c</span> (sold 2 of 5)</span><span>Sell extras <span class="m">-45c</span></span><span class="fim col">Show 2 more</span></div>
+    <div class="r l"><span><span class="k">CHECKS</span> &nbsp;measured 7 of 12 game numbers</span><span class="fim col">Show 5 more</span></div>
+    <div class="r l"><span><span class="k">STORAGE</span> &nbsp;1.7 MB of 3 MB</span><span>unsaved 49 actions, 52 min</span></div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span class="k">TICKET</span><span class="bt go"><b>Y</b>save now (reloads the interface)</span></div>
+  </div>
+  <div class="zone foot" data-rodape></div>
+</div></div>
+<ol class="leg"><li>Com uma ação ainda sem resposta ou uma rodada de consultas aberta, o bilhete diz <code>SAVE BLOCKED - finish or cancel first</code>.</li></ol>
+</section>
+
+<section id="mail">
+<h2>8. Painel do correio</h2>
+<p>Abre quando você abre a caixa de correio. Só lê e confere: quem pega o ouro e os itens é você, pelo botão da própria Blizzard. Não tem teclas, só botões.</p>
+<div class="palco"><div class="win" id="w-mail">
+  <div class="bar"><span class="nm">PregaoForever</span><span class="tab on">MAIL</span></div>
+  <div class="zone">
+    <div class="r l"><span><span class="k">STATE</span> &nbsp;<span class="ok">READY</span> - 11 letters read. Take your mail now.</span></div>
+    <div class="r l"><span><span class="k">SOLD (5)</span> &nbsp;<span class="m">+14s 20c</span></span><span>cut <span class="m">75c</span></span><span>deposits back <span class="m">10c</span></span></div>
+    <div class="r l"><span><span class="k">EXPIRED (2)</span> &nbsp;2 items back</span><span>deposits lost <span class="m">4c</span></span></div>
+    <div class="r l"><span><span class="k">BOUGHT (3)</span> &nbsp;3 items to collect</span><span>2 lots for the vendor</span></div>
+    <div class="r l"><span><span class="k">PENDING (1)</span> &nbsp;sale pending, gold arrives at 21:40</span></div>
+    <div class="r l"><span><span class="k">CHECK</span> &nbsp;waiting for you to take the mail</span></div>
+  </div>
+  <div class="zone">
+    <div class="r l"><span class="bts"><span class="bt">Dismiss</span><span class="bt">Save now</span></span><span class="fim col">click: no keys here</span></div>
+  </div>
+</div></div>
+</section>
+
+<section id="avisos">
+<h2>9. Faixas de aviso</h2>
+<p>Todo aviso é uma faixa de texto na linha de estado; nenhum pede tecla. Estes são os principais, com o texto exato do contrato.</p>
+<div class="palco"><div class="win">
+  <div class="faixa i">Press L to reconcile</div>
+  <div class="faixa i">PAUSED - press L</div>
+  <div class="faixa a">KEYS HELD - burst</div>
+  <div class="faixa a">Keys paused: click outside the search box</div>
+  <div class="faixa a">IN COMBAT - trading paused</div>
+  <div class="faixa a">GAME ASKS TO CONFIRM &nbsp; MAINTENANCE: may return early, deposit lost</div>
+  <div class="faixa a">UNKNOWN - checking</div>
+  <div class="faixa v">BUYING HALTED - 3 items gone in a row</div>
+  <div class="faixa v">API STALLED - close and reopen the auction house</div>
+  <div class="faixa v">AUCTION HOUSE RESTRICTED - actions paused</div>
+  <div class="faixa v">DATABASE NOT LOADED - tell the agent</div>
+  <div class="faixa v" style="border-bottom:0">CONFIG ERROR - read only</div>
+</div></div>
+<ol class="leg"><li>Azul: o addon espera uma tecla sua. Âmbar: algo pausou e volta sozinho ou com uma tecla. Vermelho: uma trava que pede atenção. A cor só reforça; a frase diz tudo.</li></ol>
+</section>
+
+<section id="teclas">
+<h2>10. Mapa de teclas (proposta)</h2>
+<p>Só vale com a janela do leilão aberta, e nesse momento a letra deixa de fazer o que faz no jogo. Você decide o mapa depois que a sonda disser o que cada letra faz hoje. Uma tecla faz uma coisa só.</p>
+<div class="palco"><div class="tecl">
+  <div class="lin"><div class="tc nav f"><b>F1</b><span>NEXT</span></div><div class="tc nav f"><b>F2</b><span>SELL</span></div><div class="tc nav f"><b>F3</b><span>MINE</span></div><div class="tc nav f"><b>F4</b><span>RISK</span></div><div class="tc nav f"><b>F5</b><span>SESSION</span></div></div>
+  <div class="lin" style="margin-top:8px"><div class="tc"><b>Q</b></div><div class="tc"><b>W</b></div><div class="tc"><b>E</b></div><div class="tc"><b>R</b></div><div class="tc"><b>T</b></div><div class="tc exec"><b>Y</b><span>yes</span></div><div class="tc nav"><b>U</b><span>back</span></div><div class="tc nav"><b>I</b><span>why</span></div><div class="tc nav"><b>O</b><span>more</span></div><div class="tc arma"><b>P</b><span>post</span></div></div>
+  <div class="lin" style="padding-left:20px"><div class="tc"><b>A</b></div><div class="tc"><b>S</b></div><div class="tc"><b>D</b></div><div class="tc"><b>F</b></div><div class="tc"><b>G</b></div><div class="tc sai"><b>H</b><span>hold</span></div><div class="tc"><b>J</b></div><div class="tc nav"><b>K</b><span>skip</span></div><div class="tc nav"><b>L</b><span>look</span></div></div>
+  <div class="lin" style="padding-left:48px"><div class="tc"><b>Z</b></div><div class="tc"><b>X</b></div><div class="tc arma"><b>C</b><span>cancel</span></div><div class="tc"><b>V</b></div><div class="tc arma"><b>B</b><span>buy</span></div><div class="tc nav"><b>N</b><span>next</span></div><div class="tc sai"><b>M</b><span>never mind</span></div></div>
+  <div class="chaves"><span><i style="background:#232a36;border-color:#5d6a80"></i>olhar e andar: nunca gasta</span><span><i style="background:#33290f;border-color:#8a6d2a"></i>prepara o bilhete</span><span><i style="background:#1d3317;border-color:#7fb46a"></i>executa o bilhete que está na tela</span><span><i style="background:#381b19;border-color:#a0605a"></i>desiste ou solta as teclas</span></div>
+</div></div>
+<ol class="leg">
+<li><code>P</code>, <code>B</code> e <code>C</code> preparam; <code>Y</code> executa; <code>M</code> desiste. <code>C</code> sempre só prepara. <code>P</code> só prepara até você decidir o mapa; depois, se você quiser, posta num tempo só.</li>
+<li><code>K</code> tira a linha da fila até o fim da sessão. <code>H</code> solta ou rearma as teclas de ação. <code>L</code> faz uma rodada de consultas.</li>
+<li>Se a fileira F não chegar pelo acesso remoto, as visões vão para Shift+1 a Shift+5.</li>
+</ol>
+</section>
+</main>
+<script>
+  // dinheiro: pinta as letras g, s e c dentro de .m
+  document.querySelectorAll('.m').forEach(function (e) {
+    e.innerHTML = e.textContent.replace(/(\d)([gsc])(?![a-z])/g, '$1<i class="$2">$2</i>');
+  });
+  // zonas fixas: o estado e o rodape da visao Next se repetem nas outras visoes
+  var est = document.querySelector('#w-next .zone.st').innerHTML;
+  var rod = document.querySelector('#w-next .zone.foot').innerHTML;
+  document.querySelectorAll('[data-estado]').forEach(function (e) { e.innerHTML = est; });
+  document.querySelectorAll('[data-rodape]').forEach(function (e) { e.innerHTML = rod; });
+  // o quadro de posicao mostra a visao Next inteira
+  document.getElementById('w-lado').innerHTML = document.getElementById('w-next').innerHTML;
+  // modo de foto
+  function foto() {
+    var id = location.hash.replace('#', '');
+    var alvo = id && document.getElementById(id);
+    document.body.classList.toggle('foto', !!alvo);
+    document.querySelectorAll('section').forEach(function (s) { s.classList.toggle('alvo', s === alvo); });
+    if (alvo) { var p = alvo.querySelector('.palco'); document.body.setAttribute('data-w', Math.ceil(p.offsetWidth)); document.body.setAttribute('data-h', Math.ceil(p.offsetHeight)); }
+  }
+  window.addEventListener('hashchange', foto); foto();
+</script>
+</body>
+</html>
