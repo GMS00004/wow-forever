@@ -1,0 +1,5 @@
+## Interface: 16001
+## Title: Minimo
+## Notes: Mutante da bancada da central (segredo no banco salvo).
+## SavedVariables: CentralForeverDB
+Minimo.lua

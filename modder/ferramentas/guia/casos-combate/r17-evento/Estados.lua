@@ -1,0 +1,3 @@
+local _, ns = ...
+-- R17: evento fora da lista fechada da secao 8
+ns.ao("UNIT_HEALTH", function() end)

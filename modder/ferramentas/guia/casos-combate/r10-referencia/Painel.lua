@@ -1,0 +1,3 @@
+local _, ns = ...
+-- R10: so referenciada, sem chamar, fora de Segredo.lua
+local lider = UnitThreatLeadSituation

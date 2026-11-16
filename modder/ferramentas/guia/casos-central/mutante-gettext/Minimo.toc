@@ -1,0 +1,5 @@
+## Interface: 16001
+## Title: Minimo
+## Notes: Mutante da bancada da central (GetText).
+## SavedVariables: CentralForeverDB
+Minimo.lua

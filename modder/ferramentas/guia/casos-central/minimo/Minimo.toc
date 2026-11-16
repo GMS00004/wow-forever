@@ -1,0 +1,5 @@
+## Interface: 16001
+## Title: Minimo
+## Notes: Addon de brinquedo da bancada da central. Respeita todos os invariantes A0.
+## SavedVariables: CentralForeverDB
+Minimo.lua

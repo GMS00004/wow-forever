@@ -14,6 +14,16 @@ const casos = {
   'r6-aviso': [[], null, 'R6'],
   'prefixos': [['--prefixos', 'MeuExtra'], null, null],
   'toc': [['--toc'], 'TOC', null],
+  // sem perfil: as APIs de combate do CentralForever continuam proibidas aos outros addons
+  'r2-medidor': [[], 'R2', null], 'r9-reset': [[], 'R9', null],
+  // com --perfil central (CentralForever\CONTRATO.md, secao 11.3)
+  'central-bom': [['--perfil', 'central'], null, null],
+  'r10-fora': [['--perfil', 'central'], 'R10', null], 'r10-referencia': [['--perfil', 'central'], 'R10', null],
+  'r11-cru': [['--perfil', 'central'], 'R11', null],
+  'r12-medir': [['--perfil', 'central'], 'R12', null], 'r12-fade': [['--perfil', 'central'], 'R12', null],
+  'r14-metodo': [['--perfil', 'central'], 'R14', null],
+  'r15-cvar-fora': [['--perfil', 'central'], 'R15', null], 'r15-cvar-outro': [['--perfil', 'central'], 'R15', null],
+  'r16-token': [['--perfil', 'central'], 'R16', null], 'r17-evento': [['--perfil', 'central'], 'R17', null],
 };
 let falhas = 0;
 for (const [pasta, [extra, regraErro, regraAviso]] of Object.entries(casos)) {

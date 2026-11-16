@@ -1,0 +1,17 @@
+## Interface: 16001
+## Title: CentralForever
+## Notes: Central de combate no canto inferior direito: DPS da luta, dano da luta, dano acumulado, tempo e threat. So exibe valores; nada se configura no jogo (Config.lua).
+## Author: Bruno
+## Version: 0.1.0
+## OptionalDeps: ElvUI
+## SavedVariables: CentralForeverDB
+# A Interface tem de bater com a do cliente (estado\sessao.json, ultimaInterface).
+Config.lua
+Nucleo.lua
+Segredo.lua
+Diario.lua
+Medidor.lua
+Ameaca.lua
+Painel.lua
+Convivencia.lua
+Estados.lua

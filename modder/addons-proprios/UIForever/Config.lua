@@ -91,6 +91,15 @@ UIForeverConfig.elvui = {
   -- a barra de XP da Blizzard (secao 6, barraXP) substitui a do ElvUI;
   -- para voltar a do ElvUI, true aqui e ligada = false la
   { "databars.experience.enable", false },
+  -- CentralForever (0.7.1, 2026-11-16, decisao do dono: "a central substitui"). A central de
+  -- combate do canto inferior direito (addon CentralForever, de 31 a 107 do chao) toma o lugar
+  -- da barra de threat do ElvUI, e o tooltip passa a nascer acima dela: o ElvUI prende o
+  -- tooltip no topo do mover (20 de altura) e soma 18, entao a caixa nasce em 126 e a barra de
+  -- vida dela termina perto de 111. Vale para os quatro personagens (perfil unico).
+  -- Para voltar: true na barra e "BOTTOMRIGHT,RightChatToggleButton,BOTTOMRIGHT,0,0" no mover
+  -- (apagar a linha nao desfaz: o UIForever nao restaura valor de linha removida).
+  { "databars.threat.enable", false },
+  { "movers.TooltipMover", "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,88" },
 }
 
 -- 1b. Numeros em Expressway (pedido do dono em 2026-11-06: o 5 parecia 6 e o 6

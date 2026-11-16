@@ -1,8 +1,17 @@
 // Checador estatico de combate e de API para addons do WoW Forever (Lua 5.1, sem interpretador).
-// Uso: node checar-combate.mjs <pasta do addon> [--toc] [--prefixos A,B]
+// Uso: node checar-combate.mjs <pasta do addon> [--toc] [--prefixos A,B] [--perfil central]
 // Regras R1..R9 e --toc: ver ARQUITETURA.md (secoes 1 e 2) e o cabecalho de cada regra abaixo.
-// R2 (API secreta, todo C_UnitAuras.*) tem uma excecao unica, a da secao 12.4: GetAuraDataBySpellName e GetPlayerAuraBySpellID
-// numa funcao com a guarda do R1 que chama issecretvalue.
+// R2 (API secreta, todo C_UnitAuras.*, medidor de dano C_DamageMeter.* e as UnitThreat*) tem duas excecoes:
+//  1. a da secao 12.4 do ARQUITETURA.md: GetAuraDataBySpellName e GetPlayerAuraBySpellID numa funcao com a guarda do R1
+//     que chama issecretvalue;
+//  2. a excecao 2 do CentralForever (addons-proprios/CentralForever/CONTRATO.md, secao 2): as 8 funcoes de dano e de threat
+//     da secao 2 podem ser lidas, mas so em Segredo.lua. So com --perfil central; sem o perfil, todo addon continua proibido.
+// --perfil central (so para o CentralForever, CONTRATO.md secao 11.3): acrescenta os prefixos CentralForever e
+// SLASH_CENTRALFOREVER ao R4 e liga as regras R10 (mencao as funcoes da secao 2 fora de Segredo.lua), R11 (campo .cru fora
+// de Segredo.lua), R12 (nada de medir: GetText, GetStringWidth etc., UIFrameFade*), R14 (metodo de widget inexistente),
+// R15 (SetCVar so em Convivencia.lua, com guarda e so "damageMeterEnabled"), R16 (tokens "targettarget" e "nameplate*") e
+// R17 (evento fora da lista fechada da secao 8). Com o perfil, R2 e R9 nao disparam para as funcoes da secao 2
+// (dentro de Segredo.lua porque e a excecao, fora dele porque o R10 ja cobra).
 import { createRequire } from 'node:module';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -14,13 +23,17 @@ const aqui = dirname(fileURLToPath(import.meta.url));
 
 // ---------- argumentos ----------
 const args = process.argv.slice(2);
-const pasta = args.find(a => !a.startsWith('--') && args[args.indexOf(a) - 1] !== '--prefixos');
+const pasta = args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--prefixos' && args[i - 1] !== '--perfil');
 const usarToc = args.includes('--toc');
 const iPref = args.indexOf('--prefixos');
 const extras = iPref >= 0 && args[iPref + 1] ? args[iPref + 1].split(',').map(s => s.trim()).filter(Boolean) : [];
-if (!pasta) { console.error('uso: node checar-combate.mjs <pasta do addon> [--toc] [--prefixos A,B]'); process.exit(2); }
+const iPerf = args.indexOf('--perfil');
+const perfil = iPerf >= 0 ? args[iPerf + 1] : null;
+const central = perfil === 'central';
+if (!pasta || (iPerf >= 0 && !central)) { console.error('uso: node checar-combate.mjs <pasta do addon> [--toc] [--prefixos A,B] [--perfil central]'); process.exit(2); }
 
-const PREFIXOS_GLOBAIS = ['GuiaForever', 'UIForever', 'SLASH_GUIAFOREVER', 'SLASH_UIFOREVER', 'BINDING_', ...extras];
+const PREFIXOS_GLOBAIS = ['GuiaForever', 'UIForever', 'SLASH_GUIAFOREVER', 'SLASH_UIFOREVER', 'BINDING_', ...extras,
+  ...(central ? ['CentralForever', 'SLASH_CENTRALFOREVER'] : [])];
 const temPrefixo = n => PREFIXOS_GLOBAIS.some(p => n.startsWith(p));
 const TERCEIROS = ['TomTom', 'NaowhForever', 'RXP', 'ElvUI', 'LibStub', 'ElvDB', 'ElvPrivateDB', 'ElvCharacterDB', 'Questie', 'QuestieLoader', 'LibQuestieDB', 'UIForever_', 'GuiaForever_'];
 const ehTerceiro = n => TERCEIROS.some(p => n.startsWith(p));
@@ -43,11 +56,26 @@ const baseOk = new Set(BASE_PADRAO);
 const PROTEGIDAS = new Set(['CreateMacro', 'EditMacro', 'DeleteMacro', 'SetBinding', 'SetBindingMacro', 'SetBindingSpell', 'SetBindingClick',
   'SaveBindings', 'PickupAction', 'PlaceAction', 'SetCVar', 'C_CVar.SetCVar', 'SetUIPanelLayoutAttribute', ':SetAttribute', '.SetAttribute']);
 const SECRETAS = new Set(['UnitAttackSpeed', 'UnitRangedDamage', 'UnitRangedAttackPower', 'GetUnitSpeed', 'C_Spell.GetSpellCooldown',
-  'GetSpellCharges', 'C_Spell.GetSpellCharges']);
+  'GetSpellCharges', 'C_Spell.GetSpellCharges',
+  'C_DamageMeter.GetCombatSessionFromType', 'C_DamageMeter.GetCombatSessionFromID', 'C_DamageMeter.GetCombatSessionSourceFromType',
+  'C_DamageMeter.GetCombatSessionSourceFromID', 'C_DamageMeter.GetSessionDurationSeconds', 'UnitDetailedThreatSituation',
+  'UnitThreatSituation', 'UnitThreatLeadSituation', 'UnitThreatPercentageOfLead']);
 const QUENTES = new Set(['COMBAT_LOG_EVENT_UNFILTERED', 'UNIT_AURA', 'SPELL_UPDATE_COOLDOWN']);
 const PROIBIDAS = new Set(['C_Traits.PurchaseRank', 'C_Traits.CommitConfig', 'BuyTrainerService', 'CastSpell', 'CastSpellByName', 'CastSpellByID',
-  'UseContainerItem', 'C_Container.UseContainerItem', 'LoadAddOn', 'C_AddOns.LoadAddOn']);
+  'UseContainerItem', 'C_Container.UseContainerItem', 'LoadAddOn', 'C_AddOns.LoadAddOn', 'C_DamageMeter.ResetAllCombatSessions']);
 const GUARDA_COMBATE = new Set(['emCombate', 'ns.emCombate', 'InCombatLockdown']);
+
+// Perfil central (CONTRATO.md do CentralForever). Funcoes da secao 2: so em Segredo.lua (R10).
+const SECAO2 = new Set(['C_DamageMeter.GetCombatSessionFromType', 'C_DamageMeter.GetCombatSessionFromID', 'C_DamageMeter.GetSessionDurationSeconds',
+  'C_DamageMeter.ResetAllCombatSessions', 'UnitDetailedThreatSituation', 'UnitThreatSituation', 'UnitThreatLeadSituation', 'UnitThreatPercentageOfLead']);
+const ARQ_SEGREDO = 'segredo.lua', ARQ_DIARIO = 'diario.lua', ARQ_CONVIVENCIA = 'convivencia.lua';
+const METODOS_MEDIDA = new Set(['GetText', 'GetValue', 'GetMinMaxValues', 'GetStringWidth', 'GetStringHeight', 'GetAlpha', 'GetEffectiveAlpha']);
+const FUNCOES_FADE = new Set(['UIFrameFadeIn', 'UIFrameFadeOut', 'UIFrameFade']);
+const METODOS_TEXTO = new Set(['format', 'gsub', 'sub', 'lower', 'upper', 'match', 'find', 'rep', 'len', 'byte', 'gmatch', 'reverse', 'Cancel', 'IsCancelled', 'Fetch']);
+const EVENTOS_CENTRAL = new Set(['PLAYER_ENTERING_WORLD', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED', 'ADDON_RESTRICTION_STATE_CHANGED',
+  'DAMAGE_METER_COMBAT_SESSION_UPDATED', 'DAMAGE_METER_CURRENT_SESSION_UPDATED', 'DAMAGE_METER_RESET', 'UNIT_THREAT_LIST_UPDATE',
+  'UNIT_THREAT_SITUATION_UPDATE', 'PLAYER_TARGET_CHANGED', 'GROUP_ROSTER_UPDATE', 'UNIT_PET', 'PLAYER_LEVEL_UP', 'ADDON_ACTION_BLOCKED', 'ADDON_LOADED']);
+const metodosWidget = central ? aspas(lerLista('WidgetAPI.lua')) : new Set();
 
 // ---------- utilidades de AST ----------
 // caminho de uma expressao: { texto, raiz, global } ou null. Metodo (a:b) vira ':b'.
@@ -132,6 +160,7 @@ const reporta = (nivel, arq, linha, regra, msg) => {
 
 const asts = [];
 const definidos = new Set(); // globais definidos pelo proprio addon
+const metodosProprios = new Set(); // nomes de metodo/campo-funcao definidos no addon (R14)
 for (const arq of arquivos) {
   const texto = readFileSync(join(pasta, arq), 'utf8');
   let ast;
@@ -141,6 +170,15 @@ for (const arq of arquivos) {
   andar(ast, [], (n) => {
     if (n.type === 'AssignmentStatement') for (const v of n.variables) { const c = caminho(v); if (c && c.global && v.type === 'Identifier') definidos.add(c.raiz); }
     if (n.type === 'FunctionDeclaration' && n.identifier && n.identifier.type === 'Identifier' && n.identifier.isLocal === false) definidos.add(n.identifier.name);
+    // R14: function X:nome, function X.nome, X.nome = function, X["nome"] = function, { nome = function }
+    if (n.type === 'FunctionDeclaration' && n.identifier && n.identifier.type === 'MemberExpression') metodosProprios.add(n.identifier.identifier.name);
+    if (n.type === 'AssignmentStatement') n.variables.forEach((v, i) => {
+      const val = n.init[i];
+      if (!val || val.type !== 'FunctionDeclaration') return;
+      if (v.type === 'MemberExpression') metodosProprios.add(v.identifier.name);
+      else if (v.type === 'IndexExpression' && ehString(v.index)) metodosProprios.add(valorString(v.index));
+    });
+    if (n.type === 'TableKeyString' && n.value && n.value.type === 'FunctionDeclaration') metodosProprios.add(n.key.name);
   });
 }
 
@@ -228,7 +266,26 @@ function excecaoAura(ast, no, pais) {
 // ---------- analise ----------
 for (const { arq, ast } of asts) {
   const R = (nivel, no, regra, msg) => reporta(nivel, arq, no.loc.start.line, regra, msg);
+  const arqMin = arq.toLowerCase();
+  const emSegredo = arqMin === ARQ_SEGREDO;
   andar(ast, [], (n, pais) => {
+    if (central) {
+      // R10: qualquer mencao (chamada, referencia, argumento de pcall) a uma funcao da secao 2 fora de Segredo.lua
+      if (!emSegredo && (n.type === 'Identifier' || n.type === 'MemberExpression' || n.type === 'IndexExpression')) {
+        const c = caminho(n);
+        if (c && c.global && SECAO2.has(c.texto) && (n.type !== 'Identifier' || n.isLocal === false))
+          R('ERRO', n, 'R10', `funcao da secao 2 do contrato (so em Segredo.lua): ${c.texto}`);
+      }
+      // R11: campo .cru fora de Segredo.lua
+      if (!emSegredo && ((n.type === 'MemberExpression' && n.indexer === '.' && n.identifier.name === 'cru')
+        || (n.type === 'IndexExpression' && ehString(n.index) && valorString(n.index) === 'cru')))
+        R('ERRO', n, 'R11', 'leitura do campo .cru fora de Segredo.lua');
+      // R16: tokens proibidos
+      if (n.type === 'StringLiteral') {
+        const v = valorString(n).toLowerCase();
+        if (v === 'targettarget' || v.startsWith('nameplate')) R('ERRO', n, 'R16', `token de unidade proibido: "${valorString(n)}"`);
+      }
+    }
     // R4: atribuicao a global fora dos prefixos
     if (n.type === 'AssignmentStatement') {
       for (const v of n.variables) {
@@ -265,6 +322,7 @@ for (const { arq, ast } of asts) {
       const lits = ehString(ev) ? [ev] : ev.type === 'TableConstructorExpression' ? ev.fields.map(f => f.value).filter(ehString) : [];
       for (const l of lits) {
         const nome = valorString(l);
+        if (central && !EVENTOS_CENTRAL.has(nome)) R('ERRO', n, 'R17', `evento fora da lista fechada do contrato (secao 8): ${nome}`);
         if (!/^[A-Z][A-Z0-9_]+$/.test(nome)) continue;
         if (QUENTES.has(nome)) R('ERRO', n, 'R5', `evento quente registrado: ${nome}`);
         else if (!eventos.has(nome)) R(dentroPcall || viaPcallEv ? 'AVISO' : 'ERRO', n, 'R6', `evento inexistente em Events.lua: ${nome}`);
@@ -282,13 +340,34 @@ for (const { arq, ast } of asts) {
       const t = u.cam.texto;
       const usoNo = u.viaPcall ? u.no : n;
       const ehSetAttr = u.cam.metodo === 'SetAttribute' || t.endsWith('.SetAttribute');
-      if (((u.cam.global && PROTEGIDAS.has(t)) || ehSetAttr) && !guardaR1(ast, usoNo, pais))
+      const ehSetCVar = u.cam.global && (t === 'SetCVar' || t === 'C_CVar.SetCVar');
+      if (central && ehSetCVar) {
+        // R15 (no perfil central substitui o R1 para o SetCVar): so em Convivencia.lua, com guarda, e so "damageMeterEnabled"
+        const arg = argsDe(n)[u.viaPcall ? 1 : 0];
+        if (arqMin !== ARQ_CONVIVENCIA) R('ERRO', usoNo, 'R15', `${t} fora de Convivencia.lua`);
+        else if (!guardaR1(ast, usoNo, pais)) R('ERRO', usoNo, 'R15', `${t} sem guarda de combate`);
+        else if (!(arg && ehString(arg) && valorString(arg) === 'damageMeterEnabled')) R('ERRO', usoNo, 'R15', `${t} com CVar diferente de "damageMeterEnabled"`);
+      } else if (((u.cam.global && PROTEGIDAS.has(t)) || ehSetAttr) && !guardaR1(ast, usoNo, pais))
         R('ERRO', usoNo, 'R1', `chamada protegida sem guarda de combate: ${t}`);
-      if (u.cam.global) {
+      // no perfil central as funcoes da secao 2 saem do R2 e do R9: dentro de Segredo.lua e a excecao, fora dele o R10 cobra
+      if (u.cam.global && !(central && SECAO2.has(t))) {
         if (SECRETAS.has(t) || t.startsWith('C_UnitAuras.')) {
           if (!(AURAS_EXCECAO.has(t) && excecaoAura(ast, usoNo, pais))) R('ERRO', usoNo, 'R2', `API que devolve valor secreto: ${t}`);
         }
         if (PROIBIDAS.has(t)) R('ERRO', usoNo, 'R9', `chamada proibida pelo contrato: ${t}`);
+      }
+      if (central) {
+        // R12: nada de medir
+        const ultimo = t.split('.').pop();
+        const medida = u.cam.metodo ? METODOS_MEDIDA.has(u.cam.metodo) : (u.viaPcall && METODOS_MEDIDA.has(ultimo));
+        const nomeMedida = u.cam.metodo || ultimo;
+        if (medida && !(nomeMedida === 'GetStringWidth' && arqMin === ARQ_DIARIO)) R('ERRO', usoNo, 'R12', `o layout nao mede: ${nomeMedida}`);
+        if (u.cam.global && FUNCOES_FADE.has(t)) R('ERRO', usoNo, 'R12', `o layout nao usa fade da Blizzard: ${t}`);
+        // R14: metodo chamado com ':' tem de existir
+        if (u.cam.metodo && !u.viaPcall) {
+          const m = u.cam.metodo;
+          if (!metodosWidget.has(m) && !METODOS_TEXTO.has(m) && !metodosProprios.has(m)) R('ERRO', usoNo, 'R14', `metodo fora de WidgetAPI.lua e nao definido no addon: ${m}`);
+        }
       }
     }
 
@@ -322,7 +401,7 @@ if (usarToc) {
   }
 }
 
-const chaveOrd = l => { const m = l.match(/^(S+) (S+):(d+) /); return m ? m[2] + ':' + String(m[3]).padStart(6, '0') + m[1] : l; };
+const chaveOrd = l => { const m = l.match(/^(\S+) (\S+):(\d+) /); return m ? m[2] + ':' + String(m[3]).padStart(6, '0') + m[1] : l; };
 achados.sort((a, b) => chaveOrd(a) < chaveOrd(b) ? -1 : 1);
 for (const l of achados) console.log(l);
 console.log(`resumo: ${arquivos.length} arquivo(s), ${erros} erro(s), ${avisos} aviso(s)`);

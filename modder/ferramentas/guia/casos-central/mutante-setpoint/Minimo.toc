@@ -1,0 +1,5 @@
+## Interface: 16001
+## Title: Minimo
+## Notes: Mutante da bancada da central (SetPoint em combate).
+## SavedVariables: CentralForeverDB
+Minimo.lua
