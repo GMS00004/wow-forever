@@ -1,0 +1,76 @@
+{
+  "receitas": {
+    "esquema": 1, "build": "teste", "profissao": { "id": 165, "nome": "Leatherworking" },
+    "receitas": [
+      { "magia": 4, "nome": "Cured Hide", "produto": { "id": 103, "qtd": 1 }, "reagentes": [ { "id": 104, "qtd": 1 }, { "id": 105, "qtd": 3 } ], "amarela": 135, "cinza": 145, "pontos": 1, "itemReceita": null },
+      { "magia": 1, "nome": "Leggings", "produto": { "id": 200, "qtd": 1 }, "reagentes": [ { "id": 100, "qtd": 10 }, { "id": 101, "qtd": 2 }, { "id": 102, "qtd": 1 } ], "amarela": 165, "cinza": 185, "pontos": 1, "itemReceita": null },
+      { "magia": 2, "nome": "Belt", "produto": { "id": 201, "qtd": 1 }, "reagentes": [ { "id": 103, "qtd": 2 }, { "id": 101, "qtd": 1 } ], "amarela": 170, "cinza": 190, "pontos": 1, "itemReceita": { "id": 900, "nome": "Pattern: Belt", "periciaExigida": 170, "compra": 500 } },
+      { "magia": 5, "nome": "Bop Vest", "produto": { "id": 203, "qtd": 1 }, "reagentes": [ { "id": 100, "qtd": 4 } ], "amarela": 190, "cinza": 210, "pontos": 1, "itemReceita": null },
+      { "magia": 3, "nome": "Mystery", "produto": { "id": 202, "qtd": 1 }, "reagentes": [ { "id": 106, "qtd": 1 } ], "amarela": 200, "cinza": 220, "pontos": 1, "itemReceita": null }
+    ],
+    "itens": {
+      "100": { "nome": "Leather", "vende": 150, "compra": 600, "pilha": 20, "vinculo": 0, "qualidade": 1 },
+      "101": { "nome": "Thread", "vende": 25, "compra": 100, "pilha": 20, "vinculo": 0, "qualidade": 1 },
+      "102": { "nome": "Gem", "vende": 400, "compra": 1600, "pilha": 20, "vinculo": 0, "qualidade": 2 },
+      "103": { "nome": "Cured Hide", "vende": 225, "compra": 900, "pilha": 20, "vinculo": 0, "qualidade": 1 },
+      "104": { "nome": "Hide", "vende": 200, "compra": 800, "pilha": 20, "vinculo": 0, "qualidade": 1 },
+      "105": { "nome": "Salt", "vende": 12, "compra": 50, "pilha": 20, "vinculo": 0, "qualidade": 1 },
+      "106": { "nome": "No Price", "vende": 10, "compra": 40, "pilha": 20, "vinculo": 0, "qualidade": 1 },
+      "200": { "nome": "Leggings", "vende": 3151, "compra": 15756, "pilha": 1, "vinculo": 2, "qualidade": 2 },
+      "201": { "nome": "Belt", "vende": 1000, "compra": 5000, "pilha": 1, "vinculo": 2, "qualidade": 2 },
+      "202": { "nome": "Mystery", "vende": 5000, "compra": 25000, "pilha": 1, "vinculo": 2, "qualidade": 2 },
+      "203": { "nome": "Bop Vest", "vende": 2000, "compra": 10000, "pilha": 1, "vinculo": 1, "qualidade": 2 }
+    }
+  },
+  "precos": {
+    "esquema": 1,
+    "publico": {
+      "casa": "teste", "foto": 1794840000,
+      "itens": {
+        "100": { "tipo": "c", "min": 200, "p25": 220, "med": 250, "unid": 1000, "lotes": 50, "baratos": [[200, 5]] },
+        "102": { "tipo": "c", "min": 900, "p25": 1000, "med": 1100, "unid": 40, "lotes": 20, "baratos": [[900, 1]] },
+        "103": { "tipo": "c", "min": 1275, "p25": 1377, "med": 1378, "unid": 537, "lotes": 41, "baratos": [[1275, 6]] },
+        "104": { "tipo": "c", "min": 1195, "p25": 1199, "med": 1224, "unid": 481, "lotes": 148, "baratos": [[1195, 1]] },
+        "105": { "tipo": "c", "min": 52, "p25": 52, "med": 57, "unid": 1125, "lotes": 15, "baratos": [[52, 460]] },
+        "200": { "tipo": "i", "min": 3900, "p25": 3900, "med": 4499, "unid": 116, "lotes": 116, "baratos": [[3900, 1]] },
+        "201": { "tipo": "i", "min": 2000, "p25": 2100, "med": 2200, "unid": 4, "lotes": 4, "baratos": [[2000, 1]] },
+        "203": { "tipo": "i", "min": 9999, "p25": 9999, "med": 9999, "unid": 3, "lotes": 3, "baratos": [[9999, 1]] }
+      },
+      "saidas": { "200": { "20261114": 100, "20261115": 80, "20261116": 40 }, "201": { "20261115": 6 } },
+      "horas": { "20261114": 24, "20261115": 24, "20261116": 16 }
+    },
+    "auctionator": null,
+    "vendedor": [100, 101, 105]
+  },
+  "casos": [
+    { "nome": "A: so o arquivo publico", "pericia": 180, "agora": 1794850000, "auctionator": null, "semPreco": 1,
+      "esperado": {
+        "4": { "semPreco": false, "custo": 1345, "custoCons": 1349, "fontes": { "104": "L", "105": "V" }, "vendaNpc": 225, "lucroNpc": -1120, "lucroNpcCons": -1124, "ate": 120, "cor": "cinza", "chance": 0, "custoPonto": null, "precoLeilao": 1275, "fontePrecoLeilao": "P", "lucroLeilao": -134, "saiDia": null, "listados": 537, "divergencias": [], "aprende": 110, "aprendeEstimado": true, "podeFazer": true, "ralo": false },
+        "1": { "semPreco": false, "custo": 3100, "custoCons": 3400, "fontes": { "100": "L", "101": "V", "102": "L" }, "vendaNpc": 3151, "lucroNpc": 51, "lucroNpcCons": -249, "ate": 10, "cor": "verde", "chance": 0.25, "custoPonto": -204, "precoLeilao": 3900, "fontePrecoLeilao": "P", "lucroLeilao": 605, "saiDia": 90, "listados": 116, "divergencias": [], "aprende": 140, "aprendeEstimado": true, "podeFazer": true, "ralo": false },
+        "2": { "semPreco": false, "custo": 2650, "custoCons": 2798, "fontes": { "103": "L", "101": "V" }, "vendaNpc": 1000, "lucroNpc": -1650, "lucroNpcCons": -1798, "ate": null, "cor": "verde", "chance": 0.5, "custoPonto": 3300, "precoLeilao": 2000, "fontePrecoLeilao": "P", "lucroLeilao": -750, "saiDia": 3, "listados": 4, "divergencias": [], "aprende": 170, "aprendeEstimado": false, "podeFazer": true, "ralo": true },
+        "5": { "semPreco": false, "custo": 800, "custoCons": 880, "fontes": { "100": "L" }, "vendaNpc": 2000, "lucroNpc": 1200, "lucroNpcCons": 1120, "ate": 62, "cor": "laranja", "chance": 1, "custoPonto": -1200, "precoLeilao": null, "fontePrecoLeilao": null, "lucroLeilao": null, "saiDia": null, "listados": 3, "divergencias": [], "aprende": 165, "aprendeEstimado": true, "podeFazer": true, "ralo": false },
+        "3": { "semPreco": true, "custo": null, "lucroNpc": null, "ate": null, "cor": "laranja", "chance": 1, "aprende": 175, "aprendeEstimado": true, "podeFazer": true, "ralo": false }
+      } },
+    { "nome": "B: exportacao do Auctionator de 1 hora atras", "pericia": 180, "agora": 1794850000,
+      "auctionator": { "em": 1794846400, "itens": { "100": { "preco": 190, "idadeDias": 0 }, "102": { "preco": 1200, "idadeDias": 0 }, "200": { "preco": 3500, "idadeDias": 2 } } }, "semPreco": 1,
+      "esperado": {
+        "1": { "custo": 3300, "custoCons": 3600, "lucroNpc": -149, "lucroNpcCons": -449, "custoPonto": 596, "precoLeilao": 3900, "fontePrecoLeilao": "P", "lucroLeilao": 405, "divergencias": [102] },
+        "5": { "custo": 760, "custoCons": 880, "lucroNpc": 1240, "custoPonto": -1240, "divergencias": [] },
+        "4": { "custo": 1345, "lucroLeilao": -134 }
+      } },
+    { "nome": "C: exportacao do Auctionator velha (mais de 6 horas)", "pericia": 180, "agora": 1794850000,
+      "auctionator": { "em": 1794820000, "itens": { "100": { "preco": 190, "idadeDias": 0 }, "102": { "preco": 1200, "idadeDias": 0 } } }, "semPreco": 1,
+      "esperado": {
+        "1": { "custo": 3100, "lucroNpc": 51, "divergencias": [] },
+        "5": { "custo": 800 }
+      } },
+    { "nome": "D: pericia 160", "pericia": 160, "agora": 1794850000, "auctionator": null, "semPreco": 1,
+      "esperado": {
+        "1": { "cor": "laranja", "chance": 1, "custoPonto": -51, "podeFazer": true },
+        "4": { "cor": "cinza", "chance": 0, "custoPonto": null, "podeFazer": true },
+        "2": { "cor": "laranja", "chance": 1, "custoPonto": 1650, "aprende": 170, "podeFazer": false },
+        "5": { "aprende": 165, "podeFazer": false },
+        "3": { "aprende": 175, "podeFazer": false }
+      } }
+  ]
+}
