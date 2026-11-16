@@ -311,22 +311,26 @@ function relatorio(res, receitas, precos, agora, limite, todas) {
       if (b.custoPonto === null) return -1;
       return a.custoPonto - b.custoPonto;
     })
-    .map((l) => [l.nome, l.cor, aprendeTxt(l), `${Math.round(l.chance * 100)}%`, mo(l.custoPonto), mo(l.lucroNpc)]);
+    .map((l) => [
+      l.nome, l.cor, aprendeTxt(l), `${Math.round(l.chance * 100)}%`, mo(l.custoPonto), mo(l.lucroNpc), mo(l.lucroLeilao),
+    ]);
 
   // PAGAM NO LEILAO: lucro > 0, do maior para o menor. Linha ralo leva '*' depois dos listados.
   const leilaoRows = res.linhas
     .filter((l) => mostra(l) && l.lucroLeilao !== null && l.lucroLeilao > 0)
     .sort((a, b) => b.lucroLeilao - a.lucroLeilao)
     .map((l) => [
-      l.nome, mo(l.precoLeilao), l.fontePrecoLeilao ?? '-', moeda(l.lucroLeilao),
-      `${l.listados ?? '-'}${l.ralo ? '*' : ''}`, l.saiDia === null ? '-' : String(Math.round(l.saiDia * 10) / 10),
+      l.nome, l.cor, `${Math.round(l.chance * 100)}%`, mo(l.precoLeilao), l.fontePrecoLeilao ?? '-',
+      moeda(l.lucroLeilao), `${l.listados ?? '-'}${l.ralo ? '*' : ''}`,
+      l.saiDia === null ? '-' : String(Math.round(l.saiDia * 10) / 10),
     ]);
 
-  // Rodape: sem preco (e fora por pericia, sem --todas) e divergencias; depois os avisos fixos.
+  // Rodape: sem preco (e fora por pericia, sem --todas) e divergencias numa linha so, com no maximo 6 ids;
+  // depois os avisos fixos em tres linhas.
   const divIds = [...new Set(res.linhas.flatMap((l) => l.divergencias))].sort((a, b) => a - b);
-  const divTxt = divIds.length
-    ? divIds.map((id) => `${id} ${itens[chave(id)]?.nome ?? '?'}`).join(', ')
-    : 'nenhuma';
+  const divTxt = divIds.length === 0
+    ? 'nenhuma'
+    : divIds.slice(0, 6).join(', ') + (divIds.length > 6 ? ` e mais ${divIds.length - 6}` : '');
   const resumo = `sem preco: ${res.semPreco} receita(s)`
     + (todas ? '' : ` | fora por pericia: ${foraPericia} (use --todas)`)
     + ` | divergencias A x P: ${divTxt}`;
@@ -344,11 +348,11 @@ function relatorio(res, receitas, precos, agora, limite, todas) {
       [26, 8, 19, 11, 11, 11, 5], vendedorRows, limite),
     `empatam (lucro menor que 0 e de ate 2% do custo): ${empatam}`,
     ...secao('SOBEM A PERICIA',
-      ['receita', 'cor', 'aprende', 'chance', 'custo/ponto', 'lucro vend.'],
-      [26, 8, 8, 7, 13, 12], sobemRows, limite),
+      ['receita', 'cor', 'aprende', 'chance', 'custo/ponto', 'lucro vend.', 'lucro leil.'],
+      [26, 8, 8, 7, 13, 12, 12], sobemRows, limite),
     ...secao('PAGAM NO LEILAO (se vender)',
-      ['receita', 'preco', 'fonte', 'lucro', 'listados', 'saiDia'],
-      [26, 12, 6, 12, 9, 7], leilaoRows, limite),
+      ['receita', 'cor', 'chance', 'preco', 'fonte', 'lucro', 'listados', 'saiDia'],
+      [26, 8, 7, 12, 6, 12, 9, 7], leilaoRows, limite),
     ...rodape,
   ];
 }

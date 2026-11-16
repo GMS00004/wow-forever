@@ -112,14 +112,15 @@ Deve aparecer um número seguido de `ok /reload`; o `/reload` grava o arquivo no
 /run local A,t,n=Auctionator.API.v1,{},0 local f,g=A.GetAuctionPriceByItemID,A.GetAuctionAgeByItemID for i=1,3e5 do local p=f("P",i) if p then t[i..""]=p+(g and g("P",i) or 0)/1e3 n=n+1 end end GuiaForeverDB.ah={em=time(),p=t} print(n,"ok /reload")
 ```
 
-Ele só lê preço pela API pública do Auctionator e grava na chave `ah` do banco do GuiaForever. Até 2026-11-16
-só rodou num simulador, com um substituto da API; os dois nomes de função não foram lidos no jogo. Se der erro,
+Ele só lê preço pela API pública do Auctionator e grava na chave `ah` do banco do GuiaForever. Rodou no jogo
+em 2026-11-16 às 15h04 e exportou 6.876 preços, 6.654 deles com idade 0. Se um dia der erro,
 `/run for k in pairs(Auctionator.API.v1) do print(k) end` lista os nomes reais.
 
 A casa pública do dono é a `us-111`: em 2026-11-16, o percentil 25 e a mediana de Heavy Leather do arquivo das
 14h17 (2s 11c e 2s 12c, com 7.115 unidades) batem com a tela do leilão dele (2s 11c e 2s 13c, com 7.229). A
-`us-110` foi escolhida primeiro por engano, comparando a tela com um arquivo duas horas mais velho. Com a
-exportação do Auctionator, a linha de divergências da lista confirma ou desmente a casa.
+`us-110` foi escolhida primeiro por engano, comparando a tela com um arquivo duas horas mais velho. A
+exportação do Auctionator confirmou: dos 6.448 itens em comum, 86% diferem em até 5% do mínimo da `us-111`, com
+diferença mediana zero; nas outras três casas da Aliança a diferença mediana fica entre 22% e 40%.
 
 ## 4.1 Uso
 
@@ -212,15 +213,17 @@ a hora atual e imprime, em ASCII e em no máximo 40 linhas. Sem `--todas`, as tr
    lucro, lucro conservador e `ate`. Depois uma linha com quantas empatam (lucro menor que 0 e de até 2% do
    custo).
 3. `SOBEM A PERICIA`: linhas com `chance > 0`, do menor `custoPonto` para o maior; colunas receita, cor, aprende,
-   chance em %, custo por ponto e lucro no vendedor. A coluna aprende mostra o número seguido de `i` quando a
+   chance em %, custo por ponto, lucro no vendedor e lucro no leilão (`lucroLeilao`, ou `-` sem preço). A coluna
+   aprende mostra o número seguido de `i` quando a
    receita vem de item (`145 i`) e precedido de `~` quando é estimado (`~140`).
-4. `PAGAM NO LEILAO (se vender)`: linhas com `lucroLeilao > 0`, da maior para a menor; colunas receita, preço,
-   fonte, lucro, listados e `saiDia`. Linha `ralo` leva `*` depois do número de listados.
+4. `PAGAM NO LEILAO (se vender)`: linhas com `lucroLeilao > 0`, da maior para a menor; colunas receita, cor,
+   chance em %, preço, fonte, lucro, listados e `saiDia`. Linha `ralo` leva `*` depois do número de listados.
 5. Rodapé: quantas receitas ficaram sem preço; os itens com divergência entre as duas fontes; e os avisos fixos:
    "chance de ponto: formula do Classic, nao conferida no Forever", "corte de 5% do leilao: inferido do cliente",
    "V = vendedor, pode ter estoque limitado", "saidas por dia: estimativa de terceiro",
    "~ = pericia de aprender estimada", "* = menos de 5 listados". Sem `--todas`, o rodapé também diz quantas
-   receitas ficaram fora por perícia (`fora por pericia: N (use --todas)`).
+   receitas ficaram fora por perícia (`fora por pericia: N (use --todas)`). A lista de divergências mostra no
+   máximo 6 ids de item e, se houver mais, termina em `e mais N`.
 
 Cada seção mostra até `--linhas` (padrão 8) e, se houver mais, a linha `mais N`. Ao lado do custo, as letras das
 fontes na ordem dos reagentes (por exemplo `LVL`).
