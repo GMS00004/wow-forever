@@ -2,6 +2,8 @@
 
 Data: 2026-11-16. Este texto é para você e se sustenta sozinho: diz o que é o addon, o que os fatos dizem hoje, o que você precisa decidir e o que acontece em seguida. O contrato que o agente usa para implementar é o `DESIGN.md`, na mesma pasta; nenhum código de addon foi escrito ainda.
 
+> **Atualização de 16/11/2026, noite.** O texto abaixo é o da etapa de design. Desde então você respondeu as decisões de antes do código (DD1a e DD1b sim; DD3 itens 1 e 3, DD9 e DD14 nos padrões; DD4 com o Hexumlite de negociador, o ouro reunido e piso zero; DD5 com o mapa proposto e P em dois tempos), as ondas 0, 1 e 2 foram feitas e o PregaoForever 0.1.0 está ligado ao jogo em modo leitura. Como usar o que já funciona: https://claude.ai/artifact/SVhE5CoGUNKXxN2sWGTf1p (cópia em `guia\guia-pregaoforever.html`). Ainda esperam você: a DD10 (números de política, antes da onda 3), os itens 2 e 4 da DD3 (fonte, duração e lote das sobras de coleta) e a aprovação da lista de reservas da DD14.
+
 ## 1. O que é, em poucas linhas
 
 O PregaoForever é um terminal de leilão em três peças. A régua é um livro que mede tudo o que você faz no leilão (cobre por ação, por hora e por estratégia, inclusive o que você faz pela tela da Blizzard) e troca cada estimativa sobre o jogo por número lido. A fila mostra até cinco linhas do que vale fazer agora com o ouro que existe. A mão executa, e só com a sua tecla: cada compra, postagem e cancelamento sai de uma tecla sua, uma por ação, depois de passar por um núcleo de risco chamado Cofre, que nega na dúvida.

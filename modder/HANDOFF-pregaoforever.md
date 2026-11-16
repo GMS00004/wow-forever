@@ -40,6 +40,7 @@ sensivel: false
 4. **Onda 2:** corpos de `Nucleo`, `Banco`, `Itens`, `Escada`, `Pontes`, `Pedidos`, `Varredura`, `Livro`, `Ecos`, `Cofre`, `Correio`, `Visual`, `Janela`, `Teclas`, `Telas`, `Sonda` e `PregaoForever.lua`; `ler-pregao.mjs`. Integração na sessão principal (formatos do painel do correio, lista de ações da sessão, anel de fotos no leitor, prioridade das faixas). Commit `9c4a125`.
 5. **Primeira noite no jogo:** S0 em `pesquisa\sonda\S0-2026-11-16.md`; S1, S4, S12, S13 e o banco da noite em `pesquisa\sonda\onda2-2026-11-16.md`. Correções da noite (Ecos, Sonda, Mine com nome do item e "no auctions posted") com os cenários `livro-15` e `folego-10`. Commit `ea69e41`.
 6. **Registros:** diário e pendências em `estado\estado.md` (entrada de 16/11/2026, 15h20 às 18h10; sem commit, porque o arquivo tem alterações da frente crafts-que-pagam); 11 linhas em `C:\GMS\Claude Code Projects\skill-review\reviews\calibracao.jsonl` (commit `b8d3190` naquele repositório).
+7. **Guia de uso para o dono** (16/11/2026, depois do /sb): página publicada como artifact em https://claude.ai/artifact/SVhE5CoGUNKXxN2sWGTf1p, com cópia do HTML em `addons-proprios\PregaoForever\guia\guia-pregaoforever.html`. Para atualizar a mesma página numa sessão nova, publique a cópia editada passando a URL em `url`; sem a URL, sai um artifact novo.
 
 ## Decisões abertas
 
@@ -125,3 +126,4 @@ Trocar o tamanho da janela depois de medir: `janela = { w, h, escala }` no `Conf
 | O que já foi medido no jogo | `addons-proprios\PregaoForever\pesquisa\sonda\` |
 | Quadros das telas | `addons-proprios\PregaoForever\pesquisa\telas\telas.html` |
 | Pendências e diário | `estado\estado.md` |
+| Como o dono usa o que já funciona (teclas, telas, painel do correio, sonda) | https://claude.ai/artifact/SVhE5CoGUNKXxN2sWGTf1p e `addons-proprios\PregaoForever\guia\guia-pregaoforever.html` |
