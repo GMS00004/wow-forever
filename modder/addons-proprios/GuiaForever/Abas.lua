@@ -823,7 +823,7 @@ local ADDONS = {
   { "Deadly Boss Mods", "boss alerts and timers", "automatic in dungeons; /dbm" },
   { "Forever Guide", "dungeon loot tables (bosses with 3D model, trash, drop chances), where any item drops, rares with alerts", "/fguide (or the compass button); /flfind <item>" },
   { "BugSack", "addon errors", "/bugsack" },
-  { "UIForever", "this layout, keys, rotation cooldown bar under your character, number fonts", "automatic on login" },
+  { "UIForever", "this layout, keys, number fonts", "automatic on login" },
 }
 
 local function cor(nome)

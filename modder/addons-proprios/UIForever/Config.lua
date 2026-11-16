@@ -34,7 +34,10 @@ UIForeverConfig.elvui = {
   -- as teclas continuam as da barra 1. O icone fica cinza enquanto recarrega,
   -- em todas as barras (desaturateOnCooldown, que no Forever le a recarga pelo
   -- objeto de duracao da Blizzard, sem ler valor secreto).
-  { "actionbar.bar5.enabled", true },
+  -- Desligada em 2026-11-15 (dono, com o print da barra: "Tira isso da minha
+  -- tela, nao preciso dessa barra"); a lista de magias saiu de uso (secao 4b).
+  -- Para voltar: true aqui e o nome barraRecargas de volta na 4b, depois /reload.
+  { "actionbar.bar5.enabled", false },
   -- buttons e buttonsPerRow da barra 5 nao ficam aqui: o UIForever ajusta ao
   -- numero de magias conhecidas da lista UIForeverConfig.barraRecargas (0.6.0)
   { "actionbar.bar5.buttonSize", 44 },
@@ -402,7 +405,11 @@ UIForeverConfig.barras = {
 -- Multi-Shot, Summon Hawk divide 6 s com o Arcane Shot). So as que o personagem
 -- ja conhece entram, nos slots seguidos a partir do 49, e a barra 5 do ElvUI
 -- ganha esse numero de botoes (minimo 1), centrada no mover dela.
-UIForeverConfig.barraRecargas = {
+-- Desligada em 2026-11-15 (dono: "nao preciso dessa barra"): a lista mudou de
+-- nome e o codigo, que so le barraRecargas, deixa de usa-la. Sem lista, os slots
+-- 49 a 59 ficam sem plano, o UIForever limpa os que ele mesmo tinha preenchido
+-- (o que o dono pos fica) e nao redimensiona mais a barra 5.
+UIForeverConfig.barraRecargasDesligada = {
   HUNTER = { "Raptor Strike", "Arcane Shot", "Concussive Shot", "Mongoose Bite", "Immolation Trap",
     "Multi-Shot", "Aimed Shot", "Summon Hawk", "Rapid Fire", "Intimidation", "Bestial Wrath" },
   PALADIN = { "Judgement", "Holy Strike", "Hammer of Justice", "Consecration", "Exorcism", "Holy Shield", "Hammer of Wrath" },
