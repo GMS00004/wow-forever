@@ -174,6 +174,11 @@ proximo = function(S)
   if i > #S.ids then
     if S.sonda then
       encerrar(S, nil, "probe")
+    elseif S.tipo == "refresh" and ns.scan and ns.scan.escadas then
+      -- nova busca de poucos itens: troca so a escada deles no scan atual
+      for id, esc in pairs(S.escadas) do ns.scan.escadas[id] = esc end
+      ns.scan.atualizadoEm = time()
+      encerrar(S, ns.scan)
     else
       encerrar(S, { tipo = S.tipo, em = time(), escadas = S.escadas, revenda = nil, semResposta = S.sem })
     end
@@ -208,6 +213,13 @@ local function iniciarBusca(tipo, ids, aoTerminar, sonda)
   ns.scanEstado.total = #ids
   proximo(S)
   return true, S
+end
+
+-- busca de novo so estes ids (preco que mudou na hora da compra) e refaz o plano com o resto do scan intacto
+function ns.atualizarItens(ids, aoTerminar)
+  if type(ids) ~= "table" or #ids == 0 then return false, "nothing" end
+  local ok, motivo = iniciarBusca(ns.scan and "refresh" or "dirigido", ids, aoTerminar, false)
+  return ok, (not ok) and motivo or nil
 end
 
 function ns.scanDirigido(aoTerminar)

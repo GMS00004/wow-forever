@@ -225,7 +225,14 @@ local function acaoLeilao()
   if estado.lote then return { texto = "Buying " .. estado.lote.nome } end
   if estado.busca then return { texto = "Searching " .. estado.busca.nome } end
   if ns.scanEstado and ns.scanEstado.ocupado then return { texto = "Scanning..." } end
-  for _, row in ipairs(ns.plano and ns.plano.leilao or {}) do
+  -- compra primeiro o que custa mais: se um preco mudar depois, sobra menos comprado pela metade
+  local ordem = {}
+  for _, row in ipairs(ns.plano and ns.plano.leilao or {}) do ordem[#ordem + 1] = row end
+  table.sort(ordem, function(x, y)
+    if x.custo ~= y.custo then return x.custo > y.custo end
+    return x.id < y.id
+  end)
+  for _, row in ipairs(ordem) do
     if row.qtd > 0 then
       local lote = row.inteiro and row.lotes[1]
       if not row.inteiro then
@@ -244,18 +251,33 @@ local function acaoLeilao()
   return nil
 end
 
+-- Quanto a cotacao pode passar do planejado: 2% mais metade do lucro do plano. Uma alta pequena come parte do lucro
+-- mas ainda paga; nao vale largar a leva comprada pela metade por ela.
+local function limiteCotacao(custo)
+  local lucro = ns.plano and ns.plano.totais and ns.plano.totais.lucro or 0
+  return floor(custo * TOLERANCIA) + 1 + max(0, floor(lucro / 2))
+end
+
 ns.ao("COMMODITY_PRICE_UPDATED", function(unit, total)
   local c = estado.cot
   if not c or c.fase ~= "cotando" then return end
-  if total <= c.custo * TOLERANCIA + 1 then
+  if total <= limiteCotacao(c.custo) then
     c.fase, c.total = "confirmar", total
   else
+    -- subiu demais: cancela, busca de novo so este item e refaz o plano com o que ja foi comprado em estoque
     C_AuctionHouse.CancelCommoditiesPurchase()
     estado.cot = nil
     local sc = ns.scan
-    if sc and sc.escadas then sc.escadas[c.id] = nil end
-    estado.aviso = { texto = "Price rose: Scan again", scan = sc }
-    ns.replanejar()
+    estado.aviso = { texto = "Price rose: re-checking " .. c.nome, scan = sc }
+    local ok = ns.atualizarItens and ns.atualizarItens({ c.id }, function()
+      estado.aviso = nil
+      atualizar()
+    end)
+    if not ok then
+      if sc and sc.escadas then sc.escadas[c.id] = nil end
+      estado.aviso = { texto = "Price rose: Scan again", scan = sc }
+      ns.replanejar()
+    end
   end
   atualizar()
 end)

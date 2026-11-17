@@ -39,7 +39,7 @@ return {
       b.igual(p.fabricar[1].n, 4, "4 casts")
       b.igual(p.crafts[1].n, 1, "1 craft principal")
       local pt, rel, relPonto, x, y = CompraForeverPainel:GetPoint(1)
-      b.igual({ pt, rel == ProfessionsFrame, relPonto, x, y }, { "TOPLEFT", true, "TOPRIGHT", 4, 0 }, "painel ancorado na profissao")
+      b.igual({ pt, rel == ProfessionsFrame, relPonto, x, y }, { "TOPLEFT", true, "TOPRIGHT", 48, 0 }, "painel ancorado na profissao, depois das abas laterais")
       b.igual(CompraForeverAcao:GetText(), "Craft 4 Heavy Leather", "primeiro o intermediario")
       b.verdadeiro(CompraForeverAcao:IsEnabled(), "botao habilitado")
     end },

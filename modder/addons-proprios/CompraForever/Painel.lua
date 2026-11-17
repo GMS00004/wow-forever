@@ -201,11 +201,21 @@ function ns.atualizarPainel()
   btAcao:SetEnabled(a ~= nil and a.executar ~= nil)
 end
 
+-- Prende o painel a direita da janela e o desenha acima dela. A janela de profissao do Forever tem uma coluna de abas
+-- na borda direita (LargeSideTabButtonTemplate, Camelot\Blizzard_ProfessionsFrame.xml) e a pagina de craft em
+-- frameLevel 100: sem o afastamento e o nivel, o painel ficava atras das abas e da janela.
+local function ancorar(a)
+  f:ClearAllPoints()
+  local dx = (a == _G.ProfessionsFrame) and 48 or 4
+  f:SetPoint("TOPLEFT", a, "TOPRIGHT", dx, 0)
+  f:SetFrameStrata(a:GetFrameStrata() or "MEDIUM")
+  f:SetFrameLevel(min((a:GetFrameLevel() or 0) + 200, 9000))
+end
+
 local function reavaliar()
   local a = alvo()
   if a then
-    f:ClearAllPoints()
-    f:SetPoint("TOPLEFT", a, "TOPRIGHT", 4, 0)
+    ancorar(a)
     f:Show()
   else
     f:Hide()
@@ -219,8 +229,13 @@ function ns.alternarPainel()
     return
   end
   local a = alvo()
-  f:ClearAllPoints()
-  if a then f:SetPoint("TOPLEFT", a, "TOPRIGHT", 4, 0) else f:SetPoint("CENTER", UIParent, "CENTER", 0, 0) end
+  if a then
+    ancorar(a)
+  else
+    f:ClearAllPoints()
+    f:SetFrameStrata("MEDIUM")
+    f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+  end
   f:Show()
   ns.atualizarPainel()
 end

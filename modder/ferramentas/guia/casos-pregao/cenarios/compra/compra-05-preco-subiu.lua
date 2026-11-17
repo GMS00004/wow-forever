@@ -1,7 +1,7 @@
--- O mercado sobe entre o scan e a cotacao: o addon cancela, nao confirma e pede novo Scan.
+-- O mercado sobe muito entre o scan e a cotacao: o addon cancela, nao confirma, busca so o item e refaz o plano.
 return {
   id = "compra-05", grupo = "compra",
-  descricao = "preco subiu: Cancel na cotacao acima de custo * 1,02 + 1, sem Confirm, texto Price rose, item fora do plano ate novo scan",
+  descricao = "preco subiu demais: Cancel na cotacao acima de custo * 1,02 + 1 + metade do lucro, sem Confirm; busca so o item de novo e refaz o plano",
   inicio = {
     dinheiro = 51400,
     itens = {
@@ -28,31 +28,24 @@ return {
     { ate_ocioso = true },
     { chamar = function(b)
       b.igual(b.ns.plano.leilao[1].custo, 1680, "custo planejado")
-      -- o mercado sobe depois do scan
-      for _, r in ipairs(__bancada.A.mercado[4461]) do r.preco = r.preco + 40 end
+      -- o mercado sobe muito depois do scan: passa de 2% + metade do lucro do plano
+      for _, r in ipairs(__bancada.A.mercado[4461]) do r.preco = r.preco + 200 end
     end },
     { clique = "CompraForeverAcao" },
     { avancar = 1 },
     { chamar = function(b)
-      local ns = b.ns
       b.igual(b.contar("StartCommoditiesPurchase"), 1, "um Start")
       b.igual(b.contar("CancelCommoditiesPurchase"), 1, "cotacao cancelada")
       b.igual(b.contar("ConfirmCommoditiesPurchase"), 0, "nunca confirmou")
-      b.igual(CompraForeverAcao:GetText(), "Price rose: Scan again", "texto do botao")
-      b.falso(CompraForeverAcao:IsEnabled(), "botao desabilitado")
-      b.igual(ns.proximaAcao().texto, "Price rose: Scan again", "proximaAcao")
       b.igual(GetMoney(), 51400, "dinheiro intacto")
-      b.igual(ns.scan.escadas[4461], nil, "o item sai do plano ate novo scan")
-      b.igual(#ns.plano.leilao, 0, "plano sem a compra")
-      b.igual(ns.sessao.comprado[4461], nil, "nada comprado")
+      b.igual(b.ns.sessao.comprado[4461], nil, "nada comprado")
     end },
-    -- novo scan: o preco novo entra no plano e a compra volta
-    { clique = "CompraForeverScan" },
+    -- o addon busca de novo so o item e refaz o plano, sem novo Scan
     { ate_ocioso = true },
     { chamar = function(b)
       local ns = b.ns
-      b.igual(ns.plano.leilao[1].custo, 8 * 170 + 4 * 200, "plano com o preco novo")
-      b.igual(CompraForeverAcao:GetText(), "Buy 12 Raptor Hide (21s 60c)", "a compra volta")
+      b.igual(ns.plano.leilao[1].custo, 8 * 330 + 4 * 360, "plano com o preco novo, sem novo Scan")
+      b.igual(CompraForeverAcao:GetText(), "Buy 12 Raptor Hide (40s 80c)", "a compra volta com o preco novo")
       b.verdadeiro(CompraForeverAcao:IsEnabled(), "botao habilitado")
     end },
   },
