@@ -1,5 +1,5 @@
 {
- "gerado": "2026-11-17T15:05:41.757Z",
+ "gerado": "2026-11-17T16:20:43.810Z",
  "estrito": true,
  "personagem": {
   "nome": "Ignatius Stonejaw",
@@ -2746,9 +2746,9 @@
     "icone": "Interface\\Icons\\INV_Misc_ArmorKit_17",
     "sub": [
      "65 crafts, skill 186 to 225",
-     "Materials 36g 04s 80c, patterns 29s 00c",
-     "Worst case -4g 65s 52c, if all sells -4g 65s 40c",
-     "Live AH prices (Auctionator): 3 of 13 items seen today"
+     "Materials 35g 55s 10c, patterns 29s 00c",
+     "Worst case -4g 15s 82c, if all sells -4g 15s 70c",
+     "Live AH prices (Auctionator): 3 of 15 items seen today"
     ],
     "titulo": "Leatherworking route"
    },
@@ -2768,7 +2768,7 @@
      "s": "Trainer"
     },
     "s": "Dusky Leather Armor  x22",
-    "sub": "39s 00c each, worst case -30s 80c, if sold -61s 60c",
+    "sub": "38s 80c each, worst case -26s 40c, if sold -57s 20c",
     "tam": "grande"
    },
    {
@@ -2777,7 +2777,7 @@
     "icone": "item:5739",
     "itemId": 5739,
     "s": "Cheaper now: Barbaric Harness",
-    "sub": "186-189: about -20s 64c vs -30s 33c today. Ask for a new route."
+    "sub": "186-189: about -19s 97c vs -26s 00c today. Ask for a new route."
    },
    {
     "t": "materiais",
@@ -2805,6 +2805,15 @@
    },
    {
     "t": "sec",
+    "id": "crafts:vendedor",
+    "s": "Vendor profit"
+   },
+   {
+    "t": "nota",
+    "s": "No recipe you can make pays at the vendor at today's prices."
+   },
+   {
+    "t": "sec",
     "id": "crafts:prox",
     "qtd": "5 steps",
     "s": "Next"
@@ -2819,8 +2828,16 @@
      "s": "Trainer"
     },
     "s": "Barbaric Harness  x14",
-    "sub": "33s 56c each, worst case -86s 52c, if sold -97s 44c",
+    "sub": "33s 36c each, worst case -83s 72c, if sold -94s 64c",
     "tam": "pequeno"
+   },
+   {
+    "t": "card",
+    "cor": "laranja",
+    "icone": "item:8176",
+    "itemId": 8176,
+    "s": "Cheaper now: Nightscape Headband",
+    "sub": "189-197: about -73s 44c vs -79s 28c today. Ask for a new route."
    },
    {
     "t": "materiais",
@@ -2856,7 +2873,7 @@
      "s": "Trainer"
     },
     "s": "Nightscape Headband  x3",
-    "sub": "39s 40c each, worst case -30s 54c, if sold -18s 45c",
+    "sub": "38s 40c each, worst case -27s 54c, if sold -15s 45c",
     "tam": "pequeno"
    },
    {
@@ -2879,6 +2896,7 @@
    },
    {
     "t": "receita",
+    "cor": "verde",
     "faixa": "200-205",
     "icone": "item:252565",
     "itemId": 252565,
@@ -2887,7 +2905,7 @@
      "s": "AH 29s 00c"
     },
     "s": "Mender's Mail Boots  x5",
-    "sub": "39s 76c each, worst case +16s 20c",
+    "sub": "39s 66c each, vendor profit +16s 70c",
     "tam": "pequeno"
    },
    {
@@ -2900,6 +2918,7 @@
       "tem": 62
      },
      {
+      "dica": "Cheaper to make it yourself: Medium Hide + Salt (3s 15c each).",
       "id": 4233,
       "nome": "Cured Medium Hide",
       "qtd": 10,
@@ -2924,7 +2943,7 @@
      "s": "Trainer"
     },
     "s": "Nightscape Headband  x3",
-    "sub": "39s 40c each, worst case -30s 54c, if sold -18s 45c",
+    "sub": "38s 40c each, worst case -27s 54c, if sold -15s 45c",
     "tam": "pequeno"
    },
    {
@@ -2955,7 +2974,7 @@
      "s": "Trainer"
     },
     "s": "Nightscape Pants  x18",
-    "sub": "1g 02s 32c each, worst case -2g 74s 32c, if sold -2g 85s 66c",
+    "sub": "1g 00s 32c each, worst case -2g 38s 32c, if sold -2g 49s 66c",
     "tam": "pequeno"
    },
    {
@@ -3035,7 +3054,7 @@
    },
    {
     "t": "nota",
-    "s": "Still to buy: 33g 85s 12c, at today's AH prices."
+    "s": "Still to buy: 33g 43s 62c, at today's AH prices."
    },
    {
     "t": "materiais",

@@ -4,12 +4,12 @@ import { pathToFileURL } from 'node:url';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda, pastaSavedVariables } from './comum.mjs';
-import { calcular } from './crafts.mjs';
+import { calcular, comDesconto, lerDesconto, DESCONTO_VENDEDOR } from './crafts.mjs';
 
 const JANELA_AUCTIONATOR = 21600; // segundos: a exportacao do Auctionator so vale ate 6 horas (como no crafts.mjs)
 const TOLERANCIA = 1e-9;
 const MAX_PASSOS = 20;
-const USO = 'uso: node rota.mjs --de 186 --ate 225 [--sem "A,B"] [--so "A,B"] [--conheco "A,B"] [--todos-padroes] [--lua | --addon <RotaCrafts.lua>]';
+const USO = 'uso: node rota.mjs --de 186 --ate 225 [--sem "A,B"] [--so "A,B"] [--conheco "A,B"] [--todos-padroes] [--desconto-vendedor 10] [--lua | --addon <RotaCrafts.lua>]';
 
 const chave = (id) => String(id);
 const minusc = (s) => String(s).toLowerCase();
@@ -27,25 +27,53 @@ function chanceEm(r, s) {
 
 // O que o J precisa para refazer custo e resultado com o preco do Auctionator (secao 6.3): o produto, se ele
 // pode ir ao leilao e, por reagente, a quantidade por craft, o preco que a ferramenta usou, a letra (L leilao,
-// V vendedor, F fabricar) e o preco de vendedor quando o vendedor vende o item.
-function dadosVivos(r, l, receitas, vendedor) {
+// V vendedor, F fabricar) e o preco de vendedor quando o vendedor vende o item. Reagente com letra F leva tambem
+// `fab`, a receita mais barata que o faz (um nivel): quantos saem por craft e os reagentes dela, para o J refazer o
+// preco de fabricar com o leilao de agora (por exemplo, curar a Medium Hide em vez de comprar a Cured Medium Hide).
+function dadosVivos(r, l, receitas, vendedor, linhas) {
   const prod = receitas.itens?.[chave(r.produto.id)];
+  const fab = linhas ? mapaFab(receitas, linhas) : null;
+  const mat = (g) => {
+    const it = receitas.itens?.[chave(g.id)];
+    return {
+      id: g.id,
+      nome: it?.nome ?? chave(g.id),
+      un: g.qtd,
+      preco: g.preco,
+      letra: g.letra,
+      vendedor: vendedor.has(chave(g.id)) && it && it.compra > 0 ? it.compra : null,
+    };
+  };
   return {
     produto: r.produto.id,
     produtoQtd: r.produto.qtd,
     vinculado: prod ? prod.vinculo === 1 : false,
     precoLeilao: l.precoLeilao ?? null,
     precosMat: (l.reagentes || []).map((g) => {
-      const it = receitas.itens?.[chave(g.id)];
-      return {
-        id: g.id,
-        un: g.qtd,
-        preco: g.preco,
-        letra: g.letra,
-        vendedor: vendedor.has(chave(g.id)) && it && it.compra > 0 ? it.compra : null,
-      };
+      const m = mat(g);
+      const f = g.letra === 'F' && fab ? fab.get(chave(g.id)) : null;
+      if (f) m.fab = { qtd: f.r.produto.qtd, mats: (f.l.reagentes || []).map(mat) };
+      return m;
     }),
   };
+}
+
+// Por item produzido, a receita de menor custo por unidade (a do candidato F do crafts.mjs, um nivel).
+const memoFab = new WeakMap();
+function mapaFab(receitas, linhas) {
+  let m = memoFab.get(linhas);
+  if (m) return m;
+  m = new Map();
+  receitas.receitas.forEach((r, i) => {
+    const l = linhas[i];
+    if (!l || l.semPreco || l.custo === null) return;
+    const k = chave(r.produto.id);
+    const un = l.custo / r.produto.qtd;
+    const atual = m.get(k);
+    if (!atual || un < atual.un) m.set(k, { r, l, un });
+  });
+  memoFab.set(linhas, m);
+  return m;
 }
 
 // Funcao pura: nao le arquivo e nao usa relogio. A hora vem em opcoes.agora (epoch em segundos).
@@ -123,7 +151,7 @@ export function calcularRota(receitas, precos, opcoes) {
     }));
     const h = precos.publico?.historico?.[chave(r.produto.id)];
     return {
-      ...dadosVivos(r, l, receitas, vendedor),
+      ...dadosVivos(r, l, receitas, vendedor, linhas),
       de: g.de,
       ate: g.ate,
       magia: r.magia,
@@ -278,7 +306,43 @@ export function escolherRota(receitas, precos, opcoes) {
   rota.livre = { totais: livre.totais, chegou: livre.chegou };
   const excluida = (r) => semBase.has(minusc(r.nome)) || (so !== null && !so.has(minusc(r.nome)));
   alternativas(rota, receitas, linhas, sit, excluida, precos);
+  rota.lucroNpc = listaLucroNpc(receitas, linhas, sit, excluida, precos, ate);
   return rota;
+}
+
+const MAX_LUCRO_NPC = 15;
+
+// Receitas que pagam no vendedor (secao 6.5), para a secao "Vendor profit" do J: as que da para fazer (nao "fora"),
+// que se aprendem antes do fim da rota e cujo lucro no vendedor, aos precos da rota, passa de -15% do custo (o J
+// mostra so as que pagam ao preco de agora). Maior lucro primeiro; no maximo MAX_LUCRO_NPC. Funcao pura.
+function listaLucroNpc(receitas, linhas, sit, excluida, precos, ate) {
+  const vendedor = new Set((precos.vendedor || []).map(chave));
+  const cands = [];
+  receitas.receitas.forEach((r, i) => {
+    const l = linhas[i];
+    if (l.semPreco || l.lucroNpc === null || l.custo === null || excluida(r)) return;
+    const s0 = sit.get(r.magia);
+    if (!s0 || s0.situacao === 'fora' || l.aprende >= ate) return;
+    if (l.lucroNpc <= -0.15 * l.custo) return;
+    cands.push({ r, l, s0 });
+  });
+  cands.sort((a, b) => b.l.lucroNpc - a.l.lucroNpc || a.r.magia - b.r.magia);
+  return cands.slice(0, MAX_LUCRO_NPC).map(({ r, l, s0 }) => ({
+    magia: r.magia,
+    nome: r.nome,
+    custo: l.custo,
+    vendaNpc: l.vendaNpc,
+    lucroNpc: l.lucroNpc,
+    limite: l.ate,
+    aprende: l.aprende,
+    aprendeEstimado: l.aprendeEstimado,
+    amarela: r.amarela,
+    cinza: r.cinza,
+    pontos: r.pontos,
+    padrao: { situacao: s0.situacao, preco: s0.preco, id: s0.id ?? null, nome: s0.nome ?? null },
+    materiais: reagentesDe(r).map((x) => ({ id: Number(x.id), nome: receitas.itens?.[chave(x.id)]?.nome ?? chave(x.id), qtd: x.qtd })),
+    ...dadosVivos(r, l, receitas, vendedor, linhas),
+  }));
 }
 
 // Segunda melhor receita de cada passo, na mesma faixa (secao 6.3): a de menor perda no pior caso para os
@@ -319,7 +383,7 @@ function alternativas(rota, receitas, linhas, sit, excluida, precos) {
       vendaNpc: l.vendaNpc,
       piorCaso: (l.vendaNpc - l.custo) * e - (COMPRA.has(s0.situacao) ? s0.preco : 0),
       padrao: { situacao: s0.situacao, preco: s0.preco, id: s0.id ?? null, nome: s0.nome ?? null },
-      ...dadosVivos(r, l, receitas, vendedor),
+      ...dadosVivos(r, l, receitas, vendedor, linhas),
     };
   }
 }
@@ -373,7 +437,10 @@ const luaNum = (v) => (v === null || v === undefined || !Number.isFinite(v) ? 'n
 const luaDec = (v) => (v === null || v === undefined || !Number.isFinite(v) ? 'nil' : String(Math.round(v * 1000) / 1000));
 // Precos por reagente para os numeros vivos do J (secao 6.3).
 const luaPrecosMat = (lista) => (lista || [])
-  .map((g) => `{ id = ${g.id}, un = ${g.un}, preco = ${luaNum(g.preco)}, letra = ${g.letra ? `"${g.letra}"` : 'nil'}, vendedor = ${luaNum(g.vendedor)} }`)
+  .map((g) => {
+    const fab = g.fab ? `, fab = { qtd = ${luaNum(g.fab.qtd)}, mats = { ${luaPrecosMat(g.fab.mats)} } }` : '';
+    return `{ id = ${g.id}, nome = ${luaStr(g.nome ?? g.id)}, un = ${g.un}, preco = ${luaNum(g.preco)}, letra = ${g.letra ? `"${g.letra}"` : 'nil'}, vendedor = ${luaNum(g.vendedor)}${fab} }`;
+  })
   .join(', ');
 
 // Arquivo RotaCrafts.lua inteiro (texto), a partir do resultado do escolherRota. Funcao pura.
@@ -381,7 +448,7 @@ export function dadosAddon(rota, receitas, meta) {
   const prod = new Map(receitas.receitas.map((r) => [r.magia, r.produto?.id ?? null]));
   const L = [];
   L.push('-- GuiaForever: Crafts tab data. Generated by ferramentas/pregao/rota.mjs --addon; do not edit by hand.');
-  L.push(`-- Prices of ${meta.quando}. Known recipes: ${meta.conhecidasTxt}.`);
+  L.push(`-- Prices of ${meta.quando}. Known recipes: ${meta.conhecidasTxt}.${meta.desconto ? ` Vendor discount: ${meta.desconto}%.` : ''}`);
   L.push('GuiaForeverRotaCrafts = {');
   L.push(`  profissao = "Leatherworking", de = ${rota.de}, ate = ${rota.ate}, chegou = ${rota.chegou},`);
   L.push(`  precos = ${luaStr(meta.quando)}, geradoEm = ${luaNum(meta.agora)}, conhecidasEm = ${luaNum(meta.conhecidasEm)},`);
@@ -416,6 +483,20 @@ export function dadosAddon(rota, receitas, meta) {
     const v = e.visto;
     const visto = v ? `{ dia = ${v.dia}, min = ${luaNum(v.min)}, med = ${luaNum(v.med)}, unid = ${luaNum(v.unid)} }` : 'nil';
     L.push(`    { magia = ${e.magia}, nome = ${luaStr(e.nome)}, padrao = ${luaNum(e.padrao.id)}, padraoNome = ${luaStr(e.padrao.nome)}, visto = ${visto} },`);
+  }
+  L.push('  },');
+  // receitas que pagam no vendedor (secao 6.5), para a secao "Vendor profit"; materiais por craft
+  L.push('  lucroNpc = {');
+  for (const v of rota.lucroNpc || []) {
+    const pd = v.padrao && v.padrao.id
+      ? `{ id = ${v.padrao.id}, nome = ${luaStr(v.padrao.nome)}, situacao = "${v.padrao.situacao}", preco = ${luaNum(v.padrao.preco)} }`
+      : `{ situacao = "${v.padrao ? v.padrao.situacao : 'treinador'}" }`;
+    const mats = v.materiais.map((m) => `{ id = ${m.id}, nome = ${luaStr(m.nome)}, qtd = ${m.qtd} }`).join(', ');
+    L.push(`    { magia = ${v.magia}, nome = ${luaStr(v.nome)}, produto = ${luaNum(v.produto)}, produtoQtd = ${luaNum(v.produtoQtd ?? 1)}, vinculado = ${v.vinculado ? 'true' : 'false'}, precoLeilao = ${luaNum(v.precoLeilao)},`);
+    L.push(`      custo = ${luaNum(v.custo)}, vendaNpc = ${luaNum(v.vendaNpc)}, lucroNpc = ${luaNum(v.lucroNpc)}, limite = ${luaNum(v.limite)}, aprende = ${luaNum(v.aprende)}, aprendeEstimado = ${v.aprendeEstimado ? 'true' : 'false'},`);
+    L.push(`      amarela = ${luaNum(v.amarela)}, cinza = ${luaNum(v.cinza)}, pontos = ${luaNum(v.pontos)}, padrao = ${pd},`);
+    L.push(`      precosMat = { ${luaPrecosMat(v.precosMat)} },`);
+    L.push(`      materiais = { ${mats} } },`);
   }
   L.push('  },');
   if (rota.parou) L.push(`  parou = ${rota.parou.pericia},`);
@@ -634,13 +715,17 @@ const nomesDe = (v) => v.split(',').map((s) => s.trim());
 
 // Le --de, --ate, --sem, --so e --lua. Devolve { erro } se faltar ou vier errado.
 function lerOpcoes(argv) {
-  const op = { de: null, ate: null, sem: [], so: null, lua: false, conheco: [], todosPadroes: false, addon: null };
+  const op = { de: null, ate: null, sem: [], so: null, lua: false, conheco: [], todosPadroes: false, addon: null, desconto: DESCONTO_VENDEDOR };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--lua') {
       op.lua = true;
     } else if (a === '--todos-padroes') {
       op.todosPadroes = true;
+    } else if (a === '--desconto-vendedor') {
+      const d = lerDesconto(argv[++i]);
+      if (d.erro) return d;
+      op.desconto = d;
     } else if (a === '--conheco') {
       const v = argv[++i];
       if (v === undefined) return { erro: '--conheco pede uma lista de nomes separada por virgula' };
@@ -686,7 +771,8 @@ async function linhaDeComando(argv) {
     console.error(`${op.erro}\n${USO}`);
     process.exit(2);
   }
-  const receitas = await lerEntrada(ARQ_RECEITAS, 'gerar-receitas.mjs');
+  // Desconto de reputacao no vendedor (secao 6.4): vale para a compra de itens e padroes de vendedor.
+  const receitas = comDesconto(await lerEntrada(ARQ_RECEITAS, 'gerar-receitas.mjs'), op.desconto);
   const precos = await lerEntrada(ARQ_PRECOS, 'baixar-precos.mjs');
 
   const nomes = new Set(receitas.receitas.map((r) => minusc(r.nome)));
@@ -717,7 +803,7 @@ async function linhaDeComando(argv) {
       console.error('--addon nao combina com --todos-padroes');
       process.exit(2);
     }
-    const texto = dadosAddon(res, receitas, { quando, agora, conhecidasEm: sv ? sv.em : null, conhecidasTxt });
+    const texto = dadosAddon(res, receitas, { quando, agora, conhecidasEm: sv ? sv.em : null, conhecidasTxt, desconto: op.desconto });
     await writeFile(op.addon, texto.split('\n').map(ASCII).join('\n'));
     console.log(`gravado: ${op.addon} (${res.passos.length} passos, conhecidas: ${conhecidasTxt})`);
   } else if (op.lua) {
@@ -725,6 +811,7 @@ async function linhaDeComando(argv) {
   } else {
     if (!op.todosPadroes) console.log(`conhecidas: ${conhecidasTxt}`);
     console.log(relatorio(res, precos, agora).map(ASCII).join('\n'));
+    console.log(`desconto de vendedor: ${op.desconto}% na compra${op.desconto ? ' (Darnassus; fora de la, --desconto-vendedor 0)' : ''}`);
   }
 }
 

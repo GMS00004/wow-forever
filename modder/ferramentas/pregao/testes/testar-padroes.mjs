@@ -79,20 +79,48 @@ if (erros === 0) {
   const leg = r3.passos.find((p) => p.nome === 'Leggings');
   const belt = r3.passos.find((p) => p.nome === 'Belt');
   confere('[V1] precosMat da Leggings', leg.precosMat, [
-    { id: 100, un: 10, preco: 200, letra: 'L', vendedor: 600 },
-    { id: 101, un: 2, preco: 100, letra: 'V', vendedor: 100 },
-    { id: 102, un: 1, preco: 900, letra: 'L', vendedor: null },
+    { id: 100, nome: 'Leather', un: 10, preco: 200, letra: 'L', vendedor: 600 },
+    { id: 101, nome: 'Thread', un: 2, preco: 100, letra: 'V', vendedor: 100 },
+    { id: 102, nome: 'Gem', un: 1, preco: 900, letra: 'L', vendedor: null },
   ]);
   confere('[V1] produto e leilao da Leggings', [leg.produto, leg.produtoQtd, leg.vinculado, leg.precoLeilao], [200, 1, false, 3900]);
   confere('[V2] alternativa da Leggings: Belt com o padrao no custo',
     [leg.alternativa.nome, Math.round(leg.alternativa.esperado * 1000) / 1000, Math.round(leg.alternativa.piorCaso), leg.alternativa.padrao.preco],
     ['Belt', 6.924, -11724, 300]);
   confere('[V3] Belt sem alternativa: a Leggings ja gastou o limite de 25%', belt.alternativa, null);
+  // 3c. desconto de reputacao no vendedor (secao 6.4)
+  const { comDesconto, lerDesconto } = await import('../crafts.mjs');
+  const rd = comDesconto(base.receitas, 10);
+  confere('[R1] compra com 10% e venda igual', [rd.itens['101'].compra, rd.itens['101'].vende, rd.itens['105'].compra], [90, 25, 45]);
+  confere('[R1] padrao de vendedor com 10%', rd.receitas.find((r) => r.magia === 2).itemReceita.compra, Math.round(base.receitas.receitas.find((r) => r.magia === 2).itemReceita.compra * 0.9));
+  confere('[R1] original intacto e 0 sem copia', [base.receitas.itens['101'].compra, comDesconto(base.receitas, 0) === base.receitas], [100, true]);
+  confere('[R2] desconto invalido', [lerDesconto('100').erro !== undefined, lerDesconto('x').erro !== undefined, lerDesconto('10')], [true, true, 10]);
+  const leg10 = mod.escolherRota(rd, precosLeilao, { ...opc, conhecidas: new Set() }).passos.find((p) => p.nome === 'Leggings');
+  confere('[R3] Thread do vendedor a 90 na Leggings', leg10.precosMat.find((g) => g.id === 101), { id: 101, nome: 'Thread', un: 2, preco: 90, letra: 'V', vendedor: 90 });
+
   confere('[V4] Lua com esperado, precosMat e alternativa',
     [dados.includes('esperado = 9.785, produtoQtd = 1, vinculado = false, precoLeilao = 3900,'),
-     dados.includes('{ id = 101, un = 2, preco = 100, letra = "V", vendedor = 100 }'),
+     dados.includes('{ id = 101, nome = "Thread", un = 2, preco = 100, letra = "V", vendedor = 100 }'),
      dados.includes('alternativa = { magia = 2, nome = "Belt", produto = 201,')],
     [true, true, true]);
+
+  // 3d. fabricar um reagente (letra F): a receita que o faz vai junto, um nivel (secao 6.3)
+  const precosHide = precosCom((p) => {
+    p.publico.itens['900'] = { tipo: 'i', min: 300, p25: 300, med: 350, unid: 3, lotes: 3, baratos: [[300, 1]] };
+    p.publico.itens['104'] = { ...p.publico.itens['104'], min: 100, p25: 100 };
+  });
+  const beltF = mod.escolherRota(base.receitas, precosHide, { ...opc, conhecidas: new Set([2]) }).passos.find((p) => p.nome === 'Belt');
+  const hide = beltF.precosMat.find((g) => g.id === 103);
+  confere('[V5] Cured Hide fabricada: letra, preco e receita', [hide.letra, hide.preco, hide.fab && hide.fab.qtd, hide.fab && hide.fab.mats.map((m) => [m.id, m.un, m.letra])],
+    ['F', 250, 1, [[104, 1, 'L'], [105, 3, 'V']]]);
+
+  // 3e. receitas que pagam no vendedor (secao 6.5)
+  const ln = r3.lucroNpc || [];
+  confere('[N1] lista existe, ate 15, maior lucro primeiro',
+    [Array.isArray(r3.lucroNpc), ln.length <= 15, ln.every((v, i) => i === 0 || ln[i - 1].lucroNpc >= v.lucroNpc)], [true, true, true]);
+  confere('[N1] so receitas que da para fazer e acima de -15% do custo',
+    ln.every((v) => v.padrao.situacao !== 'fora' && v.lucroNpc > -0.15 * v.custo && v.aprende < 177), true);
+  confere('[N2] Lua com a secao lucroNpc', dados.includes('  lucroNpc = {'), true);
 
   // 4. receitas gravadas pelo GuiaForever (SavedVariables)
   const sv = [

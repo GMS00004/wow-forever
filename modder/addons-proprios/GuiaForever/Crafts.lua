@@ -199,9 +199,33 @@ local function unidade(g)
   local vivo = vivoDe(g.id)
   if vivo then cand(vivo) elseif g.letra == "L" then cand(g.preco) end
   cand(g.vendedor)
-  if g.letra == "F" then cand(g.preco) end
+  if g.letra == "F" then
+    -- fabricar: a receita que faz o item, com o preco de agora dos reagentes dela (um nivel)
+    local fab = type(g.fab) == "table" and type(g.fab.mats) == "table" and g.fab or nil
+    if fab and #fab.mats > 0 then
+      local s = 0
+      for _, h in ipairs(fab.mats) do s = s + (tonumber(h.un) or 0) * unidade(h) end
+      cand(s / math.max(1, tonumber(fab.qtd) or 1))
+    else
+      cand(g.preco)
+    end
+  end
   if melhor == nil then cand(g.preco) end
   return melhor or 0
+end
+
+-- O mais barato e fabricar? (para a dica do material)
+local function fabricarVale(g)
+  if type(g) ~= "table" or g.letra ~= "F" or type(g.fab) ~= "table" or type(g.fab.mats) ~= "table" then return nil end
+  local s = 0
+  for _, h in ipairs(g.fab.mats) do s = s + (tonumber(h.un) or 0) * unidade(h) end
+  s = s / math.max(1, tonumber(g.fab.qtd) or 1)
+  local comprar = vivoDe(g.id) or tonumber(g.vendedor)
+  if comprar and comprar <= s then return nil end
+  local nomes = {}
+  for _, h in ipairs(g.fab.mats) do nomes[#nomes + 1] = tostring(h.nome or h.id) end
+  return "Cheaper to make it yourself: " .. table.concat(nomes, " + ") .. " (" .. moeda(math.floor(s + 0.5)) .. " each"
+    .. (comprar and (", buying it " .. moeda(comprar)) or "") .. ")."
 end
 
 -- Contas de um passo (ou da alternativa) com o preco de agora: custo por craft, pior caso e "se vender"
@@ -264,11 +288,13 @@ local function registrarAuctionator()
 end
 if ns.aoEntrar then ns.aoEntrar[#ns.aoEntrar + 1] = registrarAuctionator end
 
-local function listaMateriais(mats, fator)
+local function listaMateriais(mats, fator, pm)
+  local porId = {}
+  for _, g in ipairs(type(pm) == "table" and pm or {}) do porId[g.id] = g end
   local r = {}
   for _, m in ipairs(type(mats) == "table" and mats or {}) do
     local qtd = math.floor((tonumber(m.qtd) or 0) * (fator or 1) + 0.5)
-    r[#r + 1] = { id = m.id, nome = m.nome, qtd = qtd, tem = temItem(m.id) }
+    r[#r + 1] = { id = m.id, nome = m.nome, qtd = qtd, tem = temItem(m.id), dica = fabricarVale(porId[m.id]) }
   end
   return r
 end
@@ -277,10 +303,13 @@ end
 local function blocoPasso(b, p, agora, feito, primeira)
   local st = situacao(p)
   local c = contas(p)
-  local sub = moeda(c.custo) .. " each, worst case " .. comSinal(c.piorCaso)
+  -- lucro vendendo ao vendedor: faixa verde e o texto diz "vendor profit" (destaque pedido pelo dono)
+  local pagaNpc = c.piorCaso > 0
+  local sub = moeda(c.custo) .. " each, " .. (pagaNpc and "vendor profit " or "worst case ") .. comSinal(c.piorCaso)
   if c.seVender ~= c.piorCaso then sub = sub .. ", if sold " .. comSinal(c.seVender) end
   add(b, {
     t = "receita", tam = agora and "grande" or "pequeno", destaque = agora or nil, apagado = feito or nil,
+    cor = (pagaNpc and not feito) and "verde" or nil,
     icone = tonumber(p.produto) and ("item:" .. p.produto) or ICONE_PROF, itemId = tonumber(p.produto),
     s = tostring(p.nome) .. "  x" .. tostring(p.crafts), sub = sub,
     faixa = tostring(p.de) .. "-" .. tostring(p.ate), pilula = { s = st.pil, cor = st.cor },
@@ -290,7 +319,71 @@ local function blocoPasso(b, p, agora, feito, primeira)
     if aviso then
       add(b, { t = "card", cor = "laranja", icone = aviso.icone, itemId = aviso.itemId, s = aviso.s, sub = aviso.sub })
     end
-    add(b, { t = "materiais", recuo = 12, lista = listaMateriais(p.materiais) })
+    add(b, { t = "materiais", recuo = 12, lista = listaMateriais(p.materiais, 1, p.precosMat) })
+  end
+end
+
+-- Vendor profit (1.5, ARQUITETURA.md 13.7) ---------------------------------------------------------
+
+-- cor da receita na pericia s (a do jogo), para saber se ainda da ponto
+local function corPericia(v, s)
+  s = tonumber(s)
+  local am, ci = tonumber(v.amarela), tonumber(v.cinza)
+  if not (s and am and ci) or (tonumber(v.pontos) or 0) == 0 then return "gray" end
+  if s < am then return "orange" end
+  if s < (am + ci) / 2 then return "yellow" end
+  if s < ci then return "green" end
+  return "gray"
+end
+
+-- quantas da para fazer agora com o que tem nas bolsas e no banco
+local function daParaFazer(v)
+  local n
+  for _, m in ipairs(type(v.materiais) == "table" and v.materiais or {}) do
+    local q = tonumber(m.qtd) or 0
+    if q > 0 then
+      local k = math.floor((temItem(m.id) or 0) / q)
+      if n == nil or k < n then n = k end
+    end
+  end
+  return n or 0
+end
+
+local MAX_VENDOR, COM_MATERIAIS = 8, 3
+
+-- As receitas que voce ja pode fazer e que pagam no vendedor ao preco de agora, maior lucro por craft primeiro.
+local function secaoVendor(b, R, per)
+  local lista = {}
+  for _, v in ipairs(type(R.lucroNpc) == "table" and R.lucroNpc or {}) do
+    if conhece(v.magia) or (per and (tonumber(v.aprende) or 999) <= per) then
+      local c = contas(v, 1)
+      local lucro = (tonumber(v.vendaNpc) or 0) - c.custo
+      if lucro > 0 then lista[#lista + 1] = { v = v, lucro = lucro } end
+    end
+  end
+  table.sort(lista, function(a, c) return a.lucro > c.lucro end)
+  add(b, { t = "sec", s = "Vendor profit", id = "crafts:vendedor", qtd = #lista > 0 and (#lista .. " pay now") or nil })
+  if #lista == 0 then
+    add(b, { t = "nota", s = "No recipe you can make pays at the vendor at today's prices." })
+    return
+  end
+  for i, x in ipairs(lista) do
+    if i > MAX_VENDOR then break end
+    local v = x.v
+    local st = situacao(v)
+    local lim = tonumber(v.limite)
+    local sub = "+" .. moeda(x.lucro) .. " each, " .. (lim and ("market ~" .. lim .. "/day") or "no market limit")
+      .. ", can make " .. daParaFazer(v) .. " now"
+    local padrao = precoPadrao(v.magia, v.padrao)
+    if padrao > 0 then sub = sub .. ", pattern back in " .. math.ceil(padrao / x.lucro) end
+    add(b, {
+      t = "receita", tam = "pequeno", cor = "verde",
+      icone = tonumber(v.produto) and ("item:" .. v.produto) or ICONE_PROF, itemId = tonumber(v.produto),
+      s = tostring(v.nome), sub = sub, faixa = corPericia(v, per), pilula = { s = st.pil, cor = st.cor },
+    })
+    if i <= COM_MATERIAIS then
+      add(b, { t = "materiais", recuo = 12, lista = listaMateriais(v.materiais, 1, v.precosMat) })
+    end
   end
 end
 
@@ -377,6 +470,8 @@ AB.crafts = function(b, ctx)
     end
     blocoPasso(b, p, true, false, primeiraVez[idx])
   end
+
+  secaoVendor(b, R, per)
 
   if idx < #R.passos then
     add(b, { t = "sec", s = "Next", id = "crafts:prox", qtd = (#R.passos - idx) .. " steps" })

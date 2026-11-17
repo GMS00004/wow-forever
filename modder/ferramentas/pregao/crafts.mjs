@@ -5,9 +5,32 @@ import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda } from './comum.mjs';
 
 const JANELA_AUCTIONATOR = 21600; // segundos: a exportacao do Auctionator so vale ate 6 horas
 const PROF_MAX = 3;               // niveis de receita encadeada (candidato F) a partir do reagente direto
-const USO = 'uso: node crafts.mjs --pericia 180 [--linhas 8] [--todas]';
+const USO = 'uso: node crafts.mjs --pericia 180 [--linhas 8] [--todas] [--desconto-vendedor 10]';
+
+// Desconto de reputacao no vendedor, em %, padrao da linha de comando (secao 6.4). Dito pelo dono em 2026-11-17:
+// o Hexumlite tem 10% em todo item de vendedor de Darnassus, linhas incluidas. 0 desliga.
+export const DESCONTO_VENDEDOR = 10;
 
 const chave = (id) => String(id);
+
+// Copia das receitas com o preco de compra no vendedor (itens e padroes) vezes (1 - pct/100), arredondado.
+// O preco de venda ao vendedor nao muda (reputacao so barateia a compra). pct 0 devolve as receitas. Funcao pura.
+export function comDesconto(receitas, pct) {
+  if (!pct) return receitas;
+  const f = 1 - pct / 100;
+  const d = (v) => (typeof v === 'number' && v > 0 ? Math.round(v * f) : v);
+  const itens = {};
+  for (const [k, it] of Object.entries(receitas.itens || {})) itens[k] = { ...it, compra: d(it.compra) };
+  const lista = receitas.receitas.map((r) =>
+    r.itemReceita ? { ...r, itemReceita: { ...r.itemReceita, compra: d(r.itemReceita.compra) } } : r);
+  return { ...receitas, itens, receitas: lista };
+}
+
+// Le o valor de --desconto-vendedor (inteiro de 0 a 99). Devolve o numero ou { erro }.
+export function lerDesconto(v) {
+  if (v === undefined || !/^\d+$/.test(v) || Number(v) > 99) return { erro: '--desconto-vendedor pede um inteiro de 0 a 99' };
+  return Number(v);
+}
 
 // Reagentes validos de uma receita: id diferente de 0 e quantidade maior que 0.
 const reagentesDe = (r) => r.reagentes.filter((g) => Number(g.id) !== 0 && g.qtd > 0);
@@ -361,11 +384,15 @@ function relatorio(res, receitas, precos, agora, limite, todas) {
 
 // Le --pericia, --linhas e --todas. Devolve { erro } se faltar ou vier errado.
 function lerOpcoes(argv) {
-  const op = { pericia: null, linhas: 8, todas: false };
+  const op = { pericia: null, linhas: 8, todas: false, desconto: DESCONTO_VENDEDOR };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--todas') {
       op.todas = true;
+    } else if (a === '--desconto-vendedor') {
+      const d = lerDesconto(argv[++i]);
+      if (d.erro) return d;
+      op.desconto = d;
     } else if (a === '--pericia' || a === '--linhas') {
       const v = argv[++i];
       if (v === undefined || !/^\d+$/.test(v)) return { erro: `${a} pede um numero inteiro` };
@@ -398,11 +425,12 @@ async function linhaDeComando(argv) {
     console.error(`${op.erro}\n${USO}`);
     process.exit(2);
   }
-  const receitas = await lerEntrada(ARQ_RECEITAS, 'gerar-receitas.mjs');
+  const receitas = comDesconto(await lerEntrada(ARQ_RECEITAS, 'gerar-receitas.mjs'), op.desconto);
   const precos = await lerEntrada(ARQ_PRECOS, 'baixar-precos.mjs');
   const agora = Math.floor(Date.now() / 1000);
   const res = calcular(receitas, precos, { pericia: op.pericia, agora });
   console.log(relatorio(res, receitas, precos, agora, op.linhas, op.todas).join('\n'));
+  console.log(`desconto de vendedor: ${op.desconto}% na compra${op.desconto ? ' (Darnassus; fora de la, --desconto-vendedor 0)' : ''}`);
 }
 
 // So roda a linha de comando quando o arquivo e chamado direto.

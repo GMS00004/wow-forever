@@ -429,3 +429,38 @@ seção 13.6). Para isso o `RotaCrafts.lua` leva, a mais:
 No Lua, cada passo ganha `esperado` (3 casas), `produtoQtd`, `vinculado`, `precoLeilao`, `precosMat` e, quando há,
 `alternativa`. Com os preços da própria rota, a alternativa não pode acender o aviso do J (conferido em 2026-11-17
 nas faixas 186-225, 150-200, 200-225 e 160-186). Teste: `testes\testar-padroes.mjs`, casos V1 a V4.
+
+## 6.4 Desconto de reputação no vendedor (2026-11-17)
+
+Dito pelo dono em 2026-11-17: o Hexumlite tem 10% de desconto em todo item de vendedor de Darnassus, linhas
+incluídas. `crafts.mjs` exporta `DESCONTO_VENDEDOR = 10` (o padrão das duas linhas de comando), `comDesconto(receitas,
+pct)` e `lerDesconto(v)`. `comDesconto` é pura e devolve uma cópia das receitas com `itens[*].compra` e
+`receitas[*].itemReceita.compra` vezes `(1 - pct / 100)`, arredondados; `vende` não muda (reputação só barateia a
+compra); com `pct` 0 devolve as próprias receitas. `crafts.mjs` e `rota.mjs` aplicam o desconto às receitas lidas
+antes de qualquer conta, então ele chega ao custo (candidato V), aos padrões de vendedor, ao `vendedor` de cada
+`precosMat` do `RotaCrafts.lua` e, por ele, aos números vivos do J. Opção `--desconto-vendedor N` (inteiro de 0 a 99;
+0 desliga) nas duas; o relatório termina com `desconto de vendedor: N% na compra`, e o cabeçalho do `RotaCrafts.lua`
+diz `Vendor discount: N%.`. Suposição declarada: o desconto vale para todo item de vendedor, como se tudo fosse
+comprado em Darnassus; na rota de 186 a 225 os itens de vendedor são o Fine Thread, o Silken Thread e o Salt da Cured
+Medium Hide. O cache de vendedor do Auctionator (seção 3) guarda o último preço visto em qualquer vendedor: em
+2026-11-17 ele tinha o Fine Thread e o Silken Thread a preço cheio e a Rune Thread com 10%. Teste: casos R1 a R3 do
+`testes\testar-padroes.mjs`.
+
+## 6.5 Receitas que pagam no vendedor e o fabricar ao vivo (2026-11-17)
+
+Pedido do dono em 2026-11-17: "as receitas que são vendor net positive tem que ter um destaque diferenciado!! Pq meu
+incentivo é fazer centenas delas!!", e, sobre a Mender's Mail Boots, que ele cura a Medium Hide em vez de comprar a
+Cured Medium Hide.
+
+`escolherRota` grava `rota.lucroNpc`: as receitas que não estão `fora`, fora de `--sem` e dentro de `--so`, com
+`aprende < ate` e `lucroNpc > -0,15 * custo` aos preços da rota (o J mostra só as que pagam ao preço de agora), da
+de maior `lucroNpc` para a menor, no máximo 15. Campos: `{ magia, nome, custo, vendaNpc, lucroNpc, limite (o ate do
+calcular, 25% do listado do reagente mais escasso), aprende, aprendeEstimado, amarela, cinza, pontos, padrao =
+{ situacao, preco, id, nome }, materiais = [{ id, nome, qtd por craft }] }` e os de `dadosVivos`. No Lua, a tabela
+`lucroNpc` do `GuiaForeverRotaCrafts`.
+
+Fabricar: o reagente que o `calcular` escolheu fabricar (letra `F`) leva `fab = { qtd, mats }`, a receita de menor
+custo por unidade que o faz (um nível), com `qtd` unidades por craft e os reagentes dela no formato de `precosMat`;
+todo item de `precosMat` ganha também `nome`. A conta da ferramenta já usava o fabricar (o candidato `F` do
+`crafts.mjs`): em 2026-11-17, a Cured Medium Hide da Mender's Mail Boots saía a 3s 15c fabricada (Medium Hide 2s 70c
+mais Salt 45c) contra 4s 35c no leilão. Teste: casos V5, N1 e N2 do `testes\testar-padroes.mjs`.
