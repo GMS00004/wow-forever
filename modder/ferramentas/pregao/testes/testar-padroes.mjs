@@ -75,6 +75,25 @@ if (erros === 0) {
   for (const c of dados) { if (c === '{') n++; else if (c === '}') n--; if (n < 0) break; }
   confere('[D1] chaves fechadas', n, 0);
 
+  // 3b. numeros vivos do J (secao 6.3): precos por reagente, produto e alternativa por passo
+  const leg = r3.passos.find((p) => p.nome === 'Leggings');
+  const belt = r3.passos.find((p) => p.nome === 'Belt');
+  confere('[V1] precosMat da Leggings', leg.precosMat, [
+    { id: 100, un: 10, preco: 200, letra: 'L', vendedor: 600 },
+    { id: 101, un: 2, preco: 100, letra: 'V', vendedor: 100 },
+    { id: 102, un: 1, preco: 900, letra: 'L', vendedor: null },
+  ]);
+  confere('[V1] produto e leilao da Leggings', [leg.produto, leg.produtoQtd, leg.vinculado, leg.precoLeilao], [200, 1, false, 3900]);
+  confere('[V2] alternativa da Leggings: Belt com o padrao no custo',
+    [leg.alternativa.nome, Math.round(leg.alternativa.esperado * 1000) / 1000, Math.round(leg.alternativa.piorCaso), leg.alternativa.padrao.preco],
+    ['Belt', 6.924, -11724, 300]);
+  confere('[V3] Belt sem alternativa: a Leggings ja gastou o limite de 25%', belt.alternativa, null);
+  confere('[V4] Lua com esperado, precosMat e alternativa',
+    [dados.includes('esperado = 9.785, produtoQtd = 1, vinculado = false, precoLeilao = 3900,'),
+     dados.includes('{ id = 101, un = 2, preco = 100, letra = "V", vendedor = 100 }'),
+     dados.includes('alternativa = { magia = 2, nome = "Belt", produto = 201,')],
+    [true, true, true]);
+
   // 4. receitas gravadas pelo GuiaForever (SavedVariables)
   const sv = [
     'GuiaForeverDB = {',

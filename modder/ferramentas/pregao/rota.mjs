@@ -25,6 +25,29 @@ function chanceEm(r, s) {
   return Math.min(1, Math.max(0, (r.cinza - s) / (r.cinza - r.amarela)));
 }
 
+// O que o J precisa para refazer custo e resultado com o preco do Auctionator (secao 6.3): o produto, se ele
+// pode ir ao leilao e, por reagente, a quantidade por craft, o preco que a ferramenta usou, a letra (L leilao,
+// V vendedor, F fabricar) e o preco de vendedor quando o vendedor vende o item.
+function dadosVivos(r, l, receitas, vendedor) {
+  const prod = receitas.itens?.[chave(r.produto.id)];
+  return {
+    produto: r.produto.id,
+    produtoQtd: r.produto.qtd,
+    vinculado: prod ? prod.vinculo === 1 : false,
+    precoLeilao: l.precoLeilao ?? null,
+    precosMat: (l.reagentes || []).map((g) => {
+      const it = receitas.itens?.[chave(g.id)];
+      return {
+        id: g.id,
+        un: g.qtd,
+        preco: g.preco,
+        letra: g.letra,
+        vendedor: vendedor.has(chave(g.id)) && it && it.compra > 0 ? it.compra : null,
+      };
+    }),
+  };
+}
+
 // Funcao pura: nao le arquivo e nao usa relogio. A hora vem em opcoes.agora (epoch em segundos).
 export function calcularRota(receitas, precos, opcoes) {
   const { de, ate, agora } = opcoes;
@@ -88,6 +111,7 @@ export function calcularRota(receitas, precos, opcoes) {
     }
   }
 
+  const vendedor = new Set((precos.vendedor || []).map(chave));
   const passos = grupos.map((g) => {
     const { r, l } = rec[g.i];
     const crafts = Math.ceil(g.esperado - TOLERANCIA);
@@ -99,6 +123,7 @@ export function calcularRota(receitas, precos, opcoes) {
     }));
     const h = precos.publico?.historico?.[chave(r.produto.id)];
     return {
+      ...dadosVivos(r, l, receitas, vendedor),
       de: g.de,
       ate: g.ate,
       magia: r.magia,
@@ -251,7 +276,52 @@ export function escolherRota(receitas, precos, opcoes) {
   rota.totais.piorCasoComPadroes = rota.totais.piorCaso - atual.nota.padroes;
   rota.esperar = esperar;
   rota.livre = { totais: livre.totais, chegou: livre.chegou };
+  const excluida = (r) => semBase.has(minusc(r.nome)) || (so !== null && !so.has(minusc(r.nome)));
+  alternativas(rota, receitas, linhas, sit, excluida, precos);
   return rota;
+}
+
+// Segunda melhor receita de cada passo, na mesma faixa (secao 6.3): a de menor perda no pior caso para os
+// mesmos pontos, entre as que da para fazer (nao "fora"), que se aprendem ate o comeco do passo, dao ponto em
+// toda a faixa e cabem no limite de 25%. Um padrao a comprar entra no custo dela. Grava p.alternativa (ou null).
+function alternativas(rota, receitas, linhas, sit, excluida, precos) {
+  const vendedor = new Set((precos.vendedor || []).map(chave));
+  const usados = new Map(); // magia -> crafts esperados que a rota ja gastou antes do passo (limite de 25%)
+  for (const p of rota.passos) {
+    let melhor = null;
+    receitas.receitas.forEach((r, i) => {
+      const l = linhas[i];
+      if (r.magia === p.magia || l.semPreco || l.vendaNpc === null || excluida(r)) return;
+      const s0 = sit.get(r.magia);
+      if (!s0 || s0.situacao === 'fora' || l.aprende > p.de) return;
+      let e = 0;
+      for (let s = p.de; s < p.ate; s++) {
+        const c = chanceEm(r, s);
+        if (!(c > 0)) return;
+        e += 1 / (c * r.pontos);
+      }
+      if (l.ate !== null && (usados.get(r.magia) || 0) + e > l.ate) return;
+      const padrao = COMPRA.has(s0.situacao) ? s0.preco : 0;
+      const k = (l.custo - l.vendaNpc) * e + padrao;
+      if (melhor === null || k < melhor.k - TOLERANCIA) melhor = { r, l, e, k, s0 };
+    });
+    usados.set(p.magia, (usados.get(p.magia) || 0) + p.esperado);
+    if (melhor === null) {
+      p.alternativa = null;
+      continue;
+    }
+    const { r, l, e, s0 } = melhor;
+    p.alternativa = {
+      magia: r.magia,
+      nome: r.nome,
+      esperado: e,
+      custo: l.custo,
+      vendaNpc: l.vendaNpc,
+      piorCaso: (l.vendaNpc - l.custo) * e - (COMPRA.has(s0.situacao) ? s0.preco : 0),
+      padrao: { situacao: s0.situacao, preco: s0.preco, id: s0.id ?? null, nome: s0.nome ?? null },
+      ...dadosVivos(r, l, receitas, vendedor),
+    };
+  }
 }
 
 // ---------- roteiro em Lua ----------
@@ -299,6 +369,12 @@ export function textoLua(rota, quando) {
 
 const luaStr = (s) => `"${escapaLua(String(s))}"`;
 const luaNum = (v) => (v === null || v === undefined || !Number.isFinite(v) ? 'nil' : String(Math.round(v)));
+// Numero com ate 3 casas (crafts esperados).
+const luaDec = (v) => (v === null || v === undefined || !Number.isFinite(v) ? 'nil' : String(Math.round(v * 1000) / 1000));
+// Precos por reagente para os numeros vivos do J (secao 6.3).
+const luaPrecosMat = (lista) => (lista || [])
+  .map((g) => `{ id = ${g.id}, un = ${g.un}, preco = ${luaNum(g.preco)}, letra = ${g.letra ? `"${g.letra}"` : 'nil'}, vendedor = ${luaNum(g.vendedor)} }`)
+  .join(', ');
 
 // Arquivo RotaCrafts.lua inteiro (texto), a partir do resultado do escolherRota. Funcao pura.
 export function dadosAddon(rota, receitas, meta) {
@@ -321,6 +397,17 @@ export function dadosAddon(rota, receitas, meta) {
     L.push(`    { de = ${p.de}, ate = ${p.ate}, magia = ${p.magia}, produto = ${luaNum(prod.get(p.magia))}, nome = ${luaStr(p.nome)},`);
     L.push(`      crafts = ${p.crafts}, custo = ${luaNum(p.custo)}, vendaNpc = ${luaNum(p.vendaNpc)}, piorCaso = ${luaNum(p.piorCaso)}, seVender = ${luaNum(p.seVender)},`);
     L.push(`      aprende = ${luaNum(p.aprende)}, aprendeEstimado = ${p.aprendeEstimado ? 'true' : 'false'}, padrao = ${padrao},`);
+    L.push(`      esperado = ${luaDec(p.esperado)}, produtoQtd = ${luaNum(p.produtoQtd ?? 1)}, vinculado = ${p.vinculado ? 'true' : 'false'}, precoLeilao = ${luaNum(p.precoLeilao)},`);
+    L.push(`      precosMat = { ${luaPrecosMat(p.precosMat)} },`);
+    const a = p.alternativa;
+    if (a) {
+      const ap = a.padrao && a.padrao.id
+        ? `{ id = ${a.padrao.id}, nome = ${luaStr(a.padrao.nome)}, situacao = "${a.padrao.situacao}", preco = ${luaNum(a.padrao.preco)} }`
+        : `{ situacao = "${a.padrao ? a.padrao.situacao : 'treinador'}" }`;
+      L.push(`      alternativa = { magia = ${a.magia}, nome = ${luaStr(a.nome)}, produto = ${luaNum(a.produto)}, produtoQtd = ${luaNum(a.produtoQtd ?? 1)},`);
+      L.push(`        vinculado = ${a.vinculado ? 'true' : 'false'}, precoLeilao = ${luaNum(a.precoLeilao)}, esperado = ${luaDec(a.esperado)}, custo = ${luaNum(a.custo)}, vendaNpc = ${luaNum(a.vendaNpc)}, piorCaso = ${luaNum(a.piorCaso)},`);
+      L.push(`        padrao = ${ap}, precosMat = { ${luaPrecosMat(a.precosMat)} } },`);
+    }
     L.push(`      materiais = { ${mats} } },`);
   }
   L.push('  },');

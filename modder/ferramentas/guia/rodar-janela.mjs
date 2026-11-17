@@ -533,6 +533,13 @@ mkapi("C_Item", {
   GetItemCount = function(id) local t = { [4234] = 62, [2321] = 12, [7071] = 3, [4291] = 14 } return t[id] or 0 end,
   GetItemIconByID = function() return nil end,
 })
+-- Auctionator simulado (aba Crafts 1.5, numeros vivos): precos vistos hoje (idade 0) do Heavy Leather, do Shadow Oil
+-- e da Dusky Leather Armor. O Heavy Leather a 2s 15c deixa a Barbaric Harness mais barata no 186-189 (cartao de aviso).
+Auctionator = { API = { v1 = {
+  GetAuctionPriceByItemID = function(_, id) local t = { [4234] = 215, [3824] = 1550, [7374] = 3810 } return t[id] end,
+  GetAuctionAgeByItemID = function(_, id) local t = { [4234] = 0, [3824] = 0, [7374] = 0 } return t[id] end,
+  RegisterForDBUpdate = function(_, fn) __auctionatorCB = fn end,
+} } }
 mkapi("C_Container", {
   GetContainerNumSlots = function() return 0 end,
   GetContainerItemInfo = function() return nil end,

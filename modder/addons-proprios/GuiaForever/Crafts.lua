@@ -1,7 +1,10 @@
--- GuiaForever 1.4: aba Crafts da janela J (a rota de Leatherworking da ferramenta, com icones) e o
+-- GuiaForever 1.5: aba Crafts da janela J (a rota de Leatherworking da ferramenta, com icones) e o
 -- registro das receitas conhecidas, lido da janela de profissao quando o dono a abre (so leitura).
--- Contrato: ARQUITETURA.md, secao 13. Dados: RotaCrafts.lua (GuiaForeverRotaCrafts), gerado por
--- ferramentas/pregao/rota.mjs --addon. O codigo nao escolhe receita: so mostra a rota dos dados (regra 11).
+-- Desde a 1.5, custo, pior caso e "se vender" saem do preco de leilao do Auctionator (API publica, so
+-- leitura) e se refazem quando ele atualiza o banco (pesquisa ou varredura); sem Auctionator, os da rota.
+-- Contrato: ARQUITETURA.md, secoes 13 e 13.6. Dados: RotaCrafts.lua (GuiaForeverRotaCrafts), gerado por
+-- ferramentas/pregao/rota.mjs --addon. O codigo nao escolhe receita: so mostra a rota dos dados (regra 11)
+-- e avisa quando a alternativa que veio nos dados ficou mais barata com o preco de agora.
 
 local _, ns = ...
 ns.abasConstrutores = ns.abasConstrutores or {}
@@ -147,6 +150,120 @@ local function situacao(p)
            sub = "Learn it at the Leatherworking trainer (skill " .. tostring(p.aprende or "?") .. ")." }
 end
 
+-- Precos vivos (1.5, ARQUITETURA.md 13.6) ---------------------------------------------------------
+
+local CHAMADOR = "GuiaForever"
+local MARGEM = 100 -- 1s: o aviso de troca so aparece se a alternativa poupa mais que isso no passo
+
+local function apiAuctionator()
+  local A = type(Auctionator) == "table" and type(Auctionator.API) == "table" and Auctionator.API.v1
+  if type(A) == "table" and type(A.GetAuctionPriceByItemID) == "function" then return A end
+  return nil
+end
+
+-- memo por desenho da aba: id -> preco (ou false) e a contagem do que veio vivo
+local memo, contagem = {}, { vivos = 0, total = 0 }
+
+-- Preco de leilao do Auctionator, so quando visto hoje (idade 0), como a ferramenta faz com a exportacao.
+local function vivoDe(id)
+  id = tonumber(id)
+  if not id then return nil end
+  if memo[id] ~= nil then return memo[id] or nil end
+  local v = false
+  local A = apiAuctionator()
+  if A then
+    local ok, preco = pcall(A.GetAuctionPriceByItemID, CHAMADOR, id)
+    if ok and type(preco) == "number" and preco > 0 then
+      local idade = 0
+      if type(A.GetAuctionAgeByItemID) == "function" then
+        local ok2, d = pcall(A.GetAuctionAgeByItemID, CHAMADOR, id)
+        idade = ok2 and d or nil
+      end
+      if idade == 0 then v = preco end
+    end
+  end
+  memo[id] = v
+  contagem.total = contagem.total + 1
+  if v then contagem.vivos = contagem.vivos + 1 end
+  return v or nil
+end
+
+-- Preco unitario de um reagente: o menor entre o leilao (vivo; sem ele, o da rota quando a letra e L),
+-- o vendedor e o fabricar (F, o da rota). A mesma regra do crafts.mjs.
+local function unidade(g)
+  local melhor
+  local function cand(v)
+    v = tonumber(v)
+    if v and v > 0 and (melhor == nil or v < melhor) then melhor = v end
+  end
+  local vivo = vivoDe(g.id)
+  if vivo then cand(vivo) elseif g.letra == "L" then cand(g.preco) end
+  cand(g.vendedor)
+  if g.letra == "F" then cand(g.preco) end
+  if melhor == nil then cand(g.preco) end
+  return melhor or 0
+end
+
+-- Contas de um passo (ou da alternativa) com o preco de agora: custo por craft, pior caso e "se vender"
+-- para n crafts, e k = perda esperada no pior caso para os pontos do passo (crafts esperados).
+local function contas(p, n)
+  n = tonumber(n) or tonumber(p.crafts) or 0
+  local mats = type(p.precosMat) == "table" and p.precosMat or nil
+  local venda = tonumber(p.vendaNpc) or 0
+  local esperado = tonumber(p.esperado) or n
+  if not mats or #mats == 0 then
+    local custo = tonumber(p.custo) or 0
+    return { custo = custo, piorCaso = tonumber(p.piorCaso) or 0, seVender = tonumber(p.seVender) or tonumber(p.piorCaso) or 0,
+             k = esperado * (custo - venda) }
+  end
+  local soma = 0
+  for _, g in ipairs(mats) do soma = soma + (tonumber(g.un) or 0) * unidade(g) end
+  local custo = math.floor(soma + 0.5)
+  local r = { custo = custo, piorCaso = n * (venda - custo), k = esperado * (custo - venda) }
+  if not p.vinculado then
+    local pl = vivoDe(p.produto) or tonumber(p.precoLeilao)
+    if pl then r.seVender = n * (math.floor((tonumber(p.produtoQtd) or 1) * pl * 0.95 + 0.5) - custo) end
+  end
+  if r.seVender == nil then r.seVender = r.piorCaso end
+  return r
+end
+
+-- Preco de um padrao a comprar: leilao (vivo, ou o da rota) ou vendedor; conhecido e treinador custam 0.
+local function precoPadrao(magia, pd)
+  if type(pd) ~= "table" or conhece(magia) then return 0 end
+  if pd.situacao == "leilao" then return vivoDe(pd.id) or tonumber(pd.preco) or 0 end
+  if pd.situacao == "vendedor" then return tonumber(pd.preco) or 0 end
+  return 0
+end
+
+-- Aviso de troca: a alternativa dos dados, com o preco de agora, perde menos que o passo nos mesmos pontos.
+local function avisoTroca(p, c, primeira)
+  local a = type(p.alternativa) == "table" and p.alternativa or nil
+  if not a then return nil end
+  local ca = contas(a, a.esperado)
+  local altK = ca.k + precoPadrao(a.magia, a.padrao)
+  local meuK = c.k + (primeira and precoPadrao(p.magia, p.padrao) or 0)
+  if altK < meuK - MARGEM then
+    return { s = "Cheaper now: " .. tostring(a.nome),
+             sub = tostring(p.de) .. "-" .. tostring(p.ate) .. ": about " .. comSinal(-altK) .. " vs "
+               .. comSinal(-meuK) .. " today. Ask for a new route.",
+             icone = tonumber(a.produto) and ("item:" .. a.produto) or ICONE_PROF, itemId = tonumber(a.produto) }
+  end
+  return nil
+end
+
+-- Avisa a janela quando o Auctionator atualiza o banco de precos (pesquisa no leilao ou varredura).
+local registrado = false
+local function registrarAuctionator()
+  if registrado then return end
+  local A = apiAuctionator()
+  if not (A and type(A.RegisterForDBUpdate) == "function") then return end
+  registrado = pcall(A.RegisterForDBUpdate, CHAMADOR, function()
+    if ns.agendar and ns.atualizarJanela then ns.agendar("crafts:precos", 1, ns.atualizarJanela) end
+  end)
+end
+if ns.aoEntrar then ns.aoEntrar[#ns.aoEntrar + 1] = registrarAuctionator end
+
 local function listaMateriais(mats, fator)
   local r = {}
   for _, m in ipairs(type(mats) == "table" and mats or {}) do
@@ -157,17 +274,45 @@ local function listaMateriais(mats, fator)
 end
 
 -- Bloco de um passo: cartao da receita e a fileira de materiais.
-local function blocoPasso(b, p, agora, feito)
+local function blocoPasso(b, p, agora, feito, primeira)
   local st = situacao(p)
-  local sub = moeda(p.custo) .. " each, worst case " .. comSinal(p.piorCaso)
-  if tonumber(p.seVender) and p.seVender ~= p.piorCaso then sub = sub .. ", if sold " .. comSinal(p.seVender) end
+  local c = contas(p)
+  local sub = moeda(c.custo) .. " each, worst case " .. comSinal(c.piorCaso)
+  if c.seVender ~= c.piorCaso then sub = sub .. ", if sold " .. comSinal(c.seVender) end
   add(b, {
     t = "receita", tam = agora and "grande" or "pequeno", destaque = agora or nil, apagado = feito or nil,
     icone = tonumber(p.produto) and ("item:" .. p.produto) or ICONE_PROF, itemId = tonumber(p.produto),
     s = tostring(p.nome) .. "  x" .. tostring(p.crafts), sub = sub,
     faixa = tostring(p.de) .. "-" .. tostring(p.ate), pilula = { s = st.pil, cor = st.cor },
   })
-  if not feito then add(b, { t = "materiais", recuo = 12, lista = listaMateriais(p.materiais) }) end
+  if not feito then
+    local aviso = avisoTroca(p, c, primeira)
+    if aviso then
+      add(b, { t = "card", cor = "laranja", icone = aviso.icone, itemId = aviso.itemId, s = aviso.s, sub = aviso.sub })
+    end
+    add(b, { t = "materiais", recuo = 12, lista = listaMateriais(p.materiais) })
+  end
+end
+
+-- Totais da rota inteira com o preco de agora (padroes a comprar contados uma vez).
+local function totaisVivos(R)
+  local t = { crafts = 0, custo = 0, piorCaso = 0, seVender = 0, padroes = 0 }
+  local vistos = {}
+  for _, p in ipairs(R.passos) do
+    local c = contas(p)
+    local n = tonumber(p.crafts) or 0
+    t.crafts = t.crafts + n
+    t.custo = t.custo + n * c.custo
+    t.piorCaso = t.piorCaso + c.piorCaso
+    t.seVender = t.seVender + c.seVender
+    local pd = type(p.padrao) == "table" and p.padrao or {}
+    local chave = pd.id or ("magia:" .. tostring(p.magia))
+    if not vistos[chave] then
+      vistos[chave] = true
+      t.padroes = t.padroes + precoPadrao(p.magia, pd)
+    end
+  end
+  return t
 end
 
 -- Aba Crafts ---------------------------------------------------------------------------------------
@@ -178,14 +323,22 @@ AB.crafts = function(b, ctx)
     add(b, { t = "vazio", s = "No crafting route yet. Ask the agent to make one with fresh prices." })
     return
   end
+  memo, contagem = {}, { vivos = 0, total = 0 }
+  registrarAuctionator()
   local per = pericia()
-  local t = type(R.totais) == "table" and R.totais or {}
-  local padroes = tonumber(t.padroes) or 0
+  local t = totaisVivos(R)
+  local padroes = t.padroes
+  local precosTxt
+  if contagem.vivos > 0 then
+    precosTxt = "Live AH prices (Auctionator): " .. contagem.vivos .. " of " .. contagem.total .. " items seen today"
+  else
+    precosTxt = "Prices of " .. tostring(R.precos or "?") .. " (search the items on the AH to update)"
+  end
   local linhas = {
-    tostring(t.crafts or "?") .. " crafts, skill " .. R.de .. " to " .. R.ate,
+    tostring(t.crafts) .. " crafts, skill " .. R.de .. " to " .. R.ate,
     "Materials " .. moeda(t.custo) .. (padroes > 0 and (", patterns " .. moeda(padroes)) or ""),
-    "Worst case " .. comSinal((tonumber(t.piorCaso) or 0) - padroes) .. ", if all sells " .. comSinal(t.seVender),
-    "Prices of " .. tostring(R.precos or "?"),
+    "Worst case " .. comSinal(t.piorCaso - padroes) .. ", if all sells " .. comSinal(t.seVender),
+    precosTxt,
   }
   local atual = per or R.de
   add(b, {
@@ -205,9 +358,15 @@ AB.crafts = function(b, ctx)
     if atual < p.ate then idx = i; break end
   end
 
+  -- primeira vez de cada receita na rota: e nela que o preco do padrao conta
+  local primeiraVez, jaVista = {}, {}
+  for i, q in ipairs(R.passos) do
+    if not jaVista[q.magia] then jaVista[q.magia] = true; primeiraVez[i] = true end
+  end
+
   if ctx and ctx.tudo and idx > 1 then
     add(b, { t = "sec", s = "Done", id = "crafts:feito", aberta = false, qtd = idx - 1 })
-    for i = 1, idx - 1 do blocoPasso(b, R.passos[i], false, true) end
+    for i = 1, idx - 1 do blocoPasso(b, R.passos[i], false, true, primeiraVez[i]) end
   end
 
   local p = R.passos[idx]
@@ -216,12 +375,12 @@ AB.crafts = function(b, ctx)
     if per and per < R.de then
       add(b, { t = "nota", s = "Your skill is below the start of this route (" .. R.de .. ")." })
     end
-    blocoPasso(b, p, true, false)
+    blocoPasso(b, p, true, false, primeiraVez[idx])
   end
 
   if idx < #R.passos then
     add(b, { t = "sec", s = "Next", id = "crafts:prox", qtd = (#R.passos - idx) .. " steps" })
-    for i = idx + 1, #R.passos do blocoPasso(b, R.passos[i], false, false) end
+    for i = idx + 1, #R.passos do blocoPasso(b, R.passos[i], false, false, primeiraVez[i]) end
   end
 
   -- padroes e receitas que faltam aprender, uma linha por receita
@@ -267,8 +426,11 @@ AB.crafts = function(b, ctx)
   end
 
   -- lista de compras: o resto da rota somado
-  local soma, ordem = {}, {}
+  local soma, ordem, precoMat = {}, {}, {}
   for i = idx, #R.passos do
+    for _, g in ipairs(type(R.passos[i].precosMat) == "table" and R.passos[i].precosMat or {}) do
+      if precoMat[g.id] == nil then precoMat[g.id] = g end
+    end
     for _, m in ipairs(type(R.passos[i].materiais) == "table" and R.passos[i].materiais or {}) do
       if not soma[m.id] then
         soma[m.id] = { id = m.id, nome = m.nome, qtd = 0 }
@@ -281,13 +443,26 @@ AB.crafts = function(b, ctx)
     table.sort(ordem, function(a, c) return soma[a].qtd > soma[c].qtd end)
     local lista = {}
     for _, id in ipairs(ordem) do lista[#lista + 1] = soma[id] end
+    local itens = listaMateriais(lista)
+    -- o que falta comprar (precisa menos o que tem), ao preco de agora
+    local falta, semPreco = 0, false
+    for _, m in ipairs(itens) do
+      local g = precoMat[m.id]
+      local n = math.max(0, (tonumber(m.qtd) or 0) - (tonumber(m.tem) or 0))
+      if n > 0 then
+        if g then falta = falta + n * unidade(g) else semPreco = true end
+      end
+    end
     add(b, { t = "sec", s = "Shopping list", id = "crafts:compras", qtd = "rest of the route" })
+    add(b, { t = "nota", s = "Still to buy: " .. moeda(math.floor(falta + 0.5)) .. (semPreco and " (some items without a price)" or "")
+             .. ", at " .. (contagem.vivos > 0 and "today's AH prices." or "the route's prices.") })
     add(b, { t = "materiais", titulo = "On the icon: what the rest of the route needs. Below: what you have (bags and bank) / needed.",
-             lista = listaMateriais(lista) })
+             lista = itens })
   end
 
   add(b, { t = "sec", s = "About this route", id = "crafts:sobre", aberta = false })
-  add(b, { t = "nota", s = "Worst case = you sell every craft to a vendor. Prices are a snapshot: they get old in a few hours." })
+  add(b, { t = "nota", s = "Worst case = you sell every craft to a vendor. Costs use the Auctionator price of each item seen today (search it on the AH or scan); without it, the route's prices." })
+  add(b, { t = "nota", s = "What you already bought counts at today's price (what it is worth now). An orange card means another recipe got cheaper for that range: ask the agent for a new route." })
   add(b, { t = "nota", s = "Known recipes are read when you open your Leatherworking window." })
   add(b, { t = "nota", s = "The chance of a skill point uses the Classic formula, not yet checked on Forever." })
 end

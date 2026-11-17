@@ -405,3 +405,27 @@ node rota.mjs --de <pericia> --ate 225 --lua      # o texto da aba Professions >
 ```
 
 O dono dá `/reload` (arquivo já listado no `.toc`; só a primeira vez pediu reiniciar o jogo).
+
+## 6.3 Números vivos no J (2026-11-17)
+
+Pedido do dono em 2026-11-17: "tem como os números de custos e resultados no meu J serem dinâmicos?", com a escolha
+"Vivos + aviso de troca". A escolha das receitas continua aqui fora (chance, limite de 25%, busca de padrões); o
+GuiaForever 1.5 refaz no jogo só o dinheiro, com o preço de leilão do Auctionator (ARQUITETURA.md do GuiaForever,
+seção 13.6). Para isso o `RotaCrafts.lua` leva, a mais:
+
+- na linha do `calcular()` (`crafts.mjs`), o campo `reagentes`: `{ id, qtd, preco, letra }` por reagente, com o preço
+  unitário e a letra (`L` leilão, `V` vendedor, `F` fabricar) do modo `min`;
+- em cada passo do `calcularRota`, `produto`, `produtoQtd`, `vinculado` (produto com vínculo 1), `precoLeilao` (o do
+  `calcular`) e `precosMat = [{ id, un, preco, letra, vendedor }]`, com `un` a quantidade por craft e `vendedor` o
+  `compra` do item quando ele está em `precos.vendedor` (senão `null`);
+- em cada passo do `escolherRota`, `alternativa`: a receita de menor `(custo - vendaNpc) * e + padrão` para os mesmos
+  pontos do passo, em que `e` é a soma de `1 / (chance * pontos)` de `de` a `ate - 1`. Entram as que não estão `fora`,
+  fora de `--sem` e dentro de `--so`, com `aprende <= de`, chance maior que 0 em todos os pontos e
+  `crafts esperados já gastos pela rota antes do passo + e <= ate` da linha; o padrão conta quando a situação é
+  `leilao` ou `vendedor`. Campos: `{ magia, nome, esperado, custo, vendaNpc, piorCaso, padrao = { situacao, preco,
+  id, nome } }` e os mesmos `produto`, `produtoQtd`, `vinculado`, `precoLeilao` e `precosMat` do passo; `null` sem
+  candidata.
+
+No Lua, cada passo ganha `esperado` (3 casas), `produtoQtd`, `vinculado`, `precoLeilao`, `precosMat` e, quando há,
+`alternativa`. Com os preços da própria rota, a alternativa não pode acender o aviso do J (conferido em 2026-11-17
+nas faixas 186-225, 150-200, 200-225 e 160-186). Teste: `testes\testar-padroes.mjs`, casos V1 a V4.

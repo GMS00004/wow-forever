@@ -210,6 +210,8 @@ export function calcular(receitas, precos, opcoes) {
       qtd: prod.qtd,
       semPreco,
       fontes,
+      // preco unitario e letra (L, V ou F) de cada reagente no modo min, para os numeros vivos do J (secao 6.3)
+      reagentes: reag.map((g) => ({ id: Number(g.id), qtd: g.qtd, preco: g.min.preco, letra: g.min.letra })),
       custo,
       custoCons,
       vendaNpc,

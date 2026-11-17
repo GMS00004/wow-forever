@@ -1,5 +1,5 @@
 {
- "gerado": "2026-11-17T00:37:11.692Z",
+ "gerado": "2026-11-17T15:05:41.757Z",
  "estrito": true,
  "personagem": {
   "nome": "Ignatius Stonejaw",
@@ -2745,10 +2745,10 @@
     ],
     "icone": "Interface\\Icons\\INV_Misc_ArmorKit_17",
     "sub": [
-     "45 crafts, skill 186 to 225",
-     "Materials 29g 77s 85c, patterns 42s 75c",
-     "Worst case -5g 07s 56c, if all sells -2g 48s 90c",
-     "Prices of 2026-11-16 21:13"
+     "65 crafts, skill 186 to 225",
+     "Materials 36g 04s 80c, patterns 29s 00c",
+     "Worst case -4g 65s 52c, if all sells -4g 65s 40c",
+     "Live AH prices (Auctionator): 3 of 13 items seen today"
     ],
     "titulo": "Leatherworking route"
    },
@@ -2760,16 +2760,24 @@
    {
     "t": "receita",
     "destaque": true,
-    "faixa": "186-191",
-    "icone": "item:5739",
-    "itemId": 5739,
+    "faixa": "186-189",
+    "icone": "item:7374",
+    "itemId": 7374,
     "pilula": {
      "cor": "azul",
      "s": "Trainer"
     },
-    "s": "Barbaric Harness  x6",
-    "sub": "32s 34c each, worst case -29s 76c, if sold -24s 24c",
+    "s": "Dusky Leather Armor  x22",
+    "sub": "39s 00c each, worst case -30s 80c, if sold -61s 60c",
     "tam": "grande"
+   },
+   {
+    "t": "card",
+    "cor": "laranja",
+    "icone": "item:5739",
+    "itemId": 5739,
+    "s": "Cheaper now: Barbaric Harness",
+    "sub": "186-189: about -20s 64c vs -30s 33c today. Ask for a new route."
    },
    {
     "t": "materiais",
@@ -2777,20 +2785,20 @@
      {
       "id": 4234,
       "nome": "Heavy Leather",
-      "qtd": 84,
+      "qtd": 220,
       "tem": 62
+     },
+     {
+      "id": 3824,
+      "nome": "Shadow Oil",
+      "qtd": 22,
+      "tem": 0
      },
      {
       "id": 2321,
       "nome": "Fine Thread",
-      "qtd": 12,
+      "qtd": 44,
       "tem": 12
-     },
-     {
-      "id": 7071,
-      "nome": "Iron Buckle",
-      "qtd": 6,
-      "tem": 3
      }
     ],
     "recuo": 12
@@ -2798,20 +2806,20 @@
    {
     "t": "sec",
     "id": "crafts:prox",
-    "qtd": "6 steps",
+    "qtd": "5 steps",
     "s": "Next"
    },
    {
     "t": "receita",
-    "faixa": "191-200",
-    "icone": "item:7391",
-    "itemId": 7391,
+    "faixa": "189-197",
+    "icone": "item:5739",
+    "itemId": 5739,
     "pilula": {
-     "cor": "dourado",
-     "s": "AH 13s 75c"
+     "cor": "azul",
+     "s": "Trainer"
     },
-    "s": "Swift Boots  x10",
-    "sub": "49s 60c each, worst case -70s 70c, if sold +26s 30c",
+    "s": "Barbaric Harness  x14",
+    "sub": "33s 56c each, worst case -86s 52c, if sold -97s 44c",
     "tam": "pequeno"
    },
    {
@@ -2820,25 +2828,50 @@
      {
       "id": 4234,
       "nome": "Heavy Leather",
-      "qtd": 100,
+      "qtd": 196,
       "tem": 62
      },
      {
-      "id": 2459,
-      "nome": "Swiftness Potion",
-      "qtd": 20,
-      "tem": 0
+      "id": 2321,
+      "nome": "Fine Thread",
+      "qtd": 28,
+      "tem": 12
      },
      {
-      "id": 4337,
-      "nome": "Thick Spider's Silk",
-      "qtd": 20,
+      "id": 7071,
+      "nome": "Iron Buckle",
+      "qtd": 14,
+      "tem": 3
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "receita",
+    "faixa": "197-200",
+    "icone": "item:8176",
+    "itemId": 8176,
+    "pilula": {
+     "cor": "azul",
+     "s": "Trainer"
+    },
+    "s": "Nightscape Headband  x3",
+    "sub": "39s 40c each, worst case -30s 54c, if sold -18s 45c",
+    "tam": "pequeno"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4304,
+      "nome": "Thick Leather",
+      "qtd": 15,
       "tem": 0
      },
      {
       "id": 4291,
       "nome": "Silken Thread",
-      "qtd": 10,
+      "qtd": 6,
       "tem": 14
      }
     ],
@@ -2854,7 +2887,7 @@
      "s": "AH 29s 00c"
     },
     "s": "Mender's Mail Boots  x5",
-    "sub": "41s 54c each, worst case +7s 30c",
+    "sub": "39s 76c each, worst case +16s 20c",
     "tam": "pequeno"
    },
    {
@@ -2884,57 +2917,14 @@
    {
     "t": "receita",
     "faixa": "205-207",
-    "icone": "item:7391",
-    "itemId": 7391,
-    "pilula": {
-     "cor": "dourado",
-     "s": "AH 13s 75c"
-    },
-    "s": "Swift Boots  x5",
-    "sub": "49s 60c each, worst case -35s 35c, if sold +13s 15c",
-    "tam": "pequeno"
-   },
-   {
-    "t": "materiais",
-    "lista": [
-     {
-      "id": 4234,
-      "nome": "Heavy Leather",
-      "qtd": 50,
-      "tem": 62
-     },
-     {
-      "id": 2459,
-      "nome": "Swiftness Potion",
-      "qtd": 10,
-      "tem": 0
-     },
-     {
-      "id": 4337,
-      "nome": "Thick Spider's Silk",
-      "qtd": 10,
-      "tem": 0
-     },
-     {
-      "id": 4291,
-      "nome": "Silken Thread",
-      "qtd": 5,
-      "tem": 14
-     }
-    ],
-    "recuo": 12
-   },
-   {
-    "t": "receita",
-    "faixa": "207-208",
     "icone": "item:8176",
     "itemId": 8176,
     "pilula": {
      "cor": "azul",
      "s": "Trainer"
     },
-    "s": "Nightscape Headband  x2",
-    "sub": "40s 50c each, worst case -22s 56c, if sold -10s 82c",
+    "s": "Nightscape Headband  x3",
+    "sub": "39s 40c each, worst case -30s 54c, if sold -18s 45c",
     "tam": "pequeno"
    },
    {
@@ -2943,13 +2933,13 @@
      {
       "id": 4304,
       "nome": "Thick Leather",
-      "qtd": 10,
+      "qtd": 15,
       "tem": 0
      },
      {
       "id": 4291,
       "nome": "Silken Thread",
-      "qtd": 4,
+      "qtd": 6,
       "tem": 14
      }
     ],
@@ -2957,52 +2947,15 @@
    },
    {
     "t": "receita",
-    "faixa": "208-211",
-    "icone": "item:8200",
-    "itemId": 8200,
-    "pilula": {
-     "cor": "verde",
-     "s": "Known"
-    },
-    "s": "Big Voodoo Robe  x3",
-    "sub": "91s 09c each, worst case -55s 02c, if sold +20s 25c",
-    "tam": "pequeno"
-   },
-   {
-    "t": "materiais",
-    "lista": [
-     {
-      "id": 4304,
-      "nome": "Thick Leather",
-      "qtd": 30,
-      "tem": 0
-     },
-     {
-      "id": 8151,
-      "nome": "Flask of Mojo",
-      "qtd": 12,
-      "tem": 0
-     },
-     {
-      "id": 8343,
-      "nome": "Heavy Silken Thread",
-      "qtd": 3,
-      "tem": 0
-     }
-    ],
-    "recuo": 12
-   },
-   {
-    "t": "receita",
-    "faixa": "211-225",
+    "faixa": "207-225",
     "icone": "item:8193",
     "itemId": 8193,
     "pilula": {
      "cor": "azul",
      "s": "Trainer"
     },
-    "s": "Nightscape Pants  x14",
-    "sub": "1g 05s 56c each, worst case -2g 58s 72c, if sold -2g 80s 84c",
+    "s": "Nightscape Pants  x18",
+    "sub": "1g 02s 32c each, worst case -2g 74s 32c, if sold -2g 85s 66c",
     "tam": "pequeno"
    },
    {
@@ -3011,13 +2964,13 @@
      {
       "id": 4304,
       "nome": "Thick Leather",
-      "qtd": 196,
+      "qtd": 252,
       "tem": 0
      },
      {
       "id": 4291,
       "nome": "Silken Thread",
-      "qtd": 56,
+      "qtd": 72,
       "tem": 14
      }
     ],
@@ -3027,16 +2980,8 @@
     "t": "sec",
     "id": "crafts:padroes",
     "limite": 6,
-    "qtd": 8,
+    "qtd": 6,
     "s": "Patterns"
-   },
-   {
-    "t": "item",
-    "estado": "agora",
-    "icone": "item:7453",
-    "itemId": 7453,
-    "s": "Pattern: Swift Boots",
-    "sub": "Buy the pattern on the AH: 13s 75c (46 listed)"
    },
    {
     "t": "item",
@@ -3044,15 +2989,7 @@
     "icone": "item:252899",
     "itemId": 252899,
     "s": "Pattern: Mender's Mail Boots",
-    "sub": "Buy the pattern on the AH: 29s 00c (9 listed)"
-   },
-   {
-    "t": "item",
-    "estado": "falta",
-    "icone": "item:7452",
-    "itemId": 7452,
-    "s": "Pattern: Dusky Boots",
-    "sub": "Not on the AH now; seen 11/16 at 1g 50s 00c. Cheaper route if you find it."
+    "sub": "Buy the pattern on the AH: 29s 00c (10 listed)"
    },
    {
     "t": "item",
@@ -3061,6 +2998,13 @@
     "itemId": 8404,
     "s": "Pattern: Wild Leather Vest",
     "sub": "Not on the AH now; never seen there. Cheaper route if you find it."
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\INV_Misc_Book_11",
+    "s": "Dusky Leather Armor",
+    "sub": "Learn it at the Leatherworking trainer (skill 145)."
    },
    {
     "t": "item",
@@ -3084,17 +3028,14 @@
     "sub": "Learn it at the Leatherworking trainer (skill 200)."
    },
    {
-    "t": "item",
-    "estado": "feito",
-    "icone": "Interface\\Icons\\INV_Misc_Book_11",
-    "s": "Big Voodoo Robe",
-    "sub": "You know this recipe."
-   },
-   {
     "t": "sec",
     "id": "crafts:compras",
     "qtd": "rest of the route",
     "s": "Shopping list"
+   },
+   {
+    "t": "nota",
+    "s": "Still to buy: 33g 85s 12c, at today's AH prices."
    },
    {
     "t": "materiais",
@@ -3102,50 +3043,38 @@
      {
       "id": 4234,
       "nome": "Heavy Leather",
-      "qtd": 274,
+      "qtd": 456,
       "tem": 62
      },
      {
       "id": 4304,
       "nome": "Thick Leather",
-      "qtd": 236,
+      "qtd": 282,
       "tem": 0
      },
      {
       "id": 4291,
       "nome": "Silken Thread",
-      "qtd": 75,
+      "qtd": 84,
       "tem": 14
-     },
-     {
-      "id": 2459,
-      "nome": "Swiftness Potion",
-      "qtd": 30,
-      "tem": 0
-     },
-     {
-      "id": 4337,
-      "nome": "Thick Spider's Silk",
-      "qtd": 30,
-      "tem": 0
      },
      {
       "id": 2321,
       "nome": "Fine Thread",
-      "qtd": 12,
+      "qtd": 72,
       "tem": 12
      },
      {
-      "id": 8151,
-      "nome": "Flask of Mojo",
-      "qtd": 12,
+      "id": 3824,
+      "nome": "Shadow Oil",
+      "qtd": 22,
       "tem": 0
      },
      {
-      "id": 5500,
-      "nome": "Iridescent Pearl",
-      "qtd": 10,
-      "tem": 0
+      "id": 7071,
+      "nome": "Iron Buckle",
+      "qtd": 14,
+      "tem": 3
      },
      {
       "id": 4233,
@@ -3154,15 +3083,9 @@
       "tem": 0
      },
      {
-      "id": 7071,
-      "nome": "Iron Buckle",
-      "qtd": 6,
-      "tem": 3
-     },
-     {
-      "id": 8343,
-      "nome": "Heavy Silken Thread",
-      "qtd": 3,
+      "id": 5500,
+      "nome": "Iridescent Pearl",
+      "qtd": 10,
       "tem": 0
      }
     ],
@@ -3176,7 +3099,11 @@
    },
    {
     "t": "nota",
-    "s": "Worst case = you sell every craft to a vendor. Prices are a snapshot: they get old in a few hours."
+    "s": "Worst case = you sell every craft to a vendor. Costs use the Auctionator price of each item seen today (search it on the AH or scan); without it, the route's prices."
+   },
+   {
+    "t": "nota",
+    "s": "What you already bought counts at today's price (what it is worth now). An orange card means another recipe got cheaper for that range: ask the agent for a new route."
    },
    {
     "t": "nota",
