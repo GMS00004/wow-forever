@@ -1,0 +1,15 @@
+## Interface: 16001
+## Title: CompraForever
+## Notes: Scan the AH, buy, craft and vendor for profit
+## Author: Bruno
+## Version: 0.1.0
+## SavedVariables: CompraForeverDB
+## SavedVariablesPerCharacter: CompraForeverCharDB
+## OptionalDeps: GuiaForever
+
+Dados.lua
+Nucleo.lua
+Planejador.lua
+Scanner.lua
+Compra.lua
+Painel.lua

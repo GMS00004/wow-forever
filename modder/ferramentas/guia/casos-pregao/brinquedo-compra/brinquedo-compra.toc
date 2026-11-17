@@ -1,0 +1,9 @@
+## Interface: 16001
+## Title: CompraForever brinquedo
+## Notes: Addon minimo que so existe para a bancada conferir os falsos de compra
+## Author: Bruno
+## Version: 0.0.1
+## SavedVariables: CompraForeverDB
+## SavedVariablesPerCharacter: CompraForeverCharDB
+
+Base.lua

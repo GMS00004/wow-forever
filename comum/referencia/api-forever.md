@@ -133,6 +133,10 @@ Posições de NPC `[local]`: `NaowhForever\Shared\Game\Towns.lua` tem `ns.TownNP
 - **Expressway não tem dígitos de largura fixa:** no arquivo `ElvUI\Game\Shared\Media\Fonts\Expressway.ttf`, o "1" avança 256/1000 de em e os outros dígitos cerca de 580; a PT Sans Narrow é tabular (478). Lido da tabela de métricas da fonte por um subagente, não reconferido pela sessão principal. Número que muda rápido vai em caixa de largura fixa alinhada à direita. `[local]`
 - **A confirmar no jogo (o diário da CentralForever grava):** segredo de cada campo de dano e de threat em mundo, dungeon e chefe; duração legível em combate; pet somado na linha do dono; threat solo sem pet; o texto exato de cada formatador; o que é a sessão Expired; quando chega `DAMAGE_METER_RESET`.
 
+## 3g. Leilão, profissão e vendedor (2026-11-17, para o CompraForever)
+
+`[página]`: documentação gerada do espelho `Ketho/wow-ui-source-forever`, branch `forever`, commit "1.60.1 (70938)" de 2026-11-13, lida pelo `gh` em 2026-11-17 (`AuctionHouseDocumentation.lua`, `AuctionHouseEnumsDocumentation.lua`, `TradeSkillUIDocumentation.lua`, `ContainerDocumentation.lua`); o cliente instalado já está no 70959. `HasRestrictions = true` (função que exige clique de hardware): `StartCommoditiesPurchase`, `PlaceBid`, `CancelAuction`, `PostItem`/`PostCommodity` e as confirmações de postagem. Sem `HasRestrictions`: `ConfirmCommoditiesPurchase`, `SendSearchQuery`, `RequestMoreCommoditySearchResults`, `ReplicateItems`, `C_TradeSkillUI.CraftRecipe(recipeSpellID, numCasts)` e `C_Container.UseContainerItem`. `Enum.AuctionHouseSortOrder.Price = 0`. A janela de profissão é o `ProfessionsFrame` (há `Blizzard_Professions\Camelot\`). `BuyMerchantItem` não está na documentação gerada (função global antiga). Nada disso rodou no jogo; o `/compra sonda` do CompraForever confere commodity e tempo de busca.
+
 ## 4. Fluxo de desenvolvimento
 
 1. Editar em `addons-proprios\<Nome>` (modelo em `addons-proprios\_modelo\Modelo`; instruções em `addons-proprios\LEIA-ME.md`).

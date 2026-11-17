@@ -1,0 +1,1 @@
+-- Addon minimo: nao faz nada. Existe so para os cenarios de falsos (compra-00) terem um addon para carregar.

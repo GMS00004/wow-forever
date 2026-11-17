@@ -710,8 +710,8 @@ function SetOverrideBindingClick(dono, prioridade, tecla, botao, mouse)
     B.violar("combate", "SetOverrideBindingClick(" .. tostring(tecla) .. ") em combate")
     return
   end
-  if type(botao) ~= "string" or string.sub(botao, 1, 13) ~= "PregaoForever" then
-    B.violar("binding", "SetOverrideBindingClick aponta para botao que nao e PregaoForever*: " .. tostring(botao))
+  if not B.temPrefixo(botao) then
+    B.violar("binding", "SetOverrideBindingClick aponta para botao que nao e " .. B.nomeAddon() .. "*: " .. tostring(botao))
   end
   local d = B.bindings[dono]
   if not d then d = {}; B.bindings[dono] = d end
@@ -739,6 +739,26 @@ end
 function ReloadUI()
   registrar("ReloadUI")
   B.reloadPendente = true
+end
+
+-- ---------------------------------------------------------------------------
+-- Nome do addon carregado (vem do .toc, via __ADDON, que o node cria depois deste arquivo: leitura sempre tardia)
+-- ---------------------------------------------------------------------------
+function B.nomeAddon() return (type(__ADDON) == "table" and __ADDON.nome) or "PregaoForever" end
+function B.temPrefixo(s)
+  local p = B.nomeAddon()
+  return type(s) == "string" and string.sub(s, 1, #p) == p
+end
+function B.svPrimeira() return (type(__ADDON) == "table" and __ADDON.svs and __ADDON.svs[1]) or "PregaoForeverDB" end
+function B.svCharPrimeira() return (type(__ADDON) == "table" and __ADDON.svs_char and __ADDON.svs_char[1]) or "PregaoForeverCharDB" end
+function B.svNomes()
+  local out = {}
+  if type(__ADDON) == "table" and __ADDON.svs then
+    for _, n in ipairs(__ADDON.svs) do out[#out + 1] = n end
+    for _, n in ipairs(__ADDON.svs_char or {}) do out[#out + 1] = n end
+    return out
+  end
+  return { "PregaoForeverDB", "PregaoForeverCharDB" }
 end
 
 -- ---------------------------------------------------------------------------
@@ -798,7 +818,7 @@ B.serie = serie
 
 function B.serializarSV()
   local out = {}
-  for _, nome in ipairs({ "PregaoForeverDB", "PregaoForeverCharDB" }) do
+  for _, nome in ipairs(B.svNomes()) do
     local v = rawget(_G, nome)
     if v ~= nil then out[#out + 1] = nome .. " = " .. serie(v, 0, {}) .. "\n" end
   end
@@ -851,7 +871,7 @@ C_AddOns = {
   IsAddOnLoaded = function() return false end,
   GetAddOnMetadata = function(_, campo)
     if campo == "Version" then return "0.1.0" end
-    if campo == "Title" then return "PregaoForever" end
+    if campo == "Title" then return B.nomeAddon() end
     return nil
   end,
 }

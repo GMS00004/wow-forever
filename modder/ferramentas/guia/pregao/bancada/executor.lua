@@ -56,7 +56,7 @@ end
 local b = {}
 B.b = b
 b.ns = nil
-function b.db() return rawget(_G, "PregaoForeverDB") end
+function b.db() return rawget(_G, B.svPrimeira()) end
 function b.tela() return b.ns and b.ns.__tela end
 function b.contar(nome) return B.cont[nome] or 0 end
 function b.chamadas(nome) return B.regs[nome] or {} end
@@ -98,7 +98,7 @@ local function carregarAddon()
       B.cargaFalhou[#B.cargaFalhou + 1] = f.nome .. ": " .. tostring(err)
       return false
     end
-    local ok, e = xpcall(fn, function(m) return tostring(m) end, "PregaoForever", ns)
+    local ok, e = xpcall(fn, function(m) return tostring(m) end, B.nomeAddon(), ns)
     if not ok then
       B.cargaFalhou[#B.cargaFalhou + 1] = f.nome .. ": " .. tostring(e)
       return false
@@ -108,7 +108,7 @@ local function carregarAddon()
 end
 
 local function ciclo(recarga)
-  B.disparar("ADDON_LOADED", "PregaoForever")
+  B.disparar("ADDON_LOADED", B.nomeAddon())
   B.disparar("PLAYER_LOGIN")
   B.disparar("PLAYER_ENTERING_WORLD", not recarga, recarga)
 end
@@ -156,7 +156,7 @@ PASSOS.ate_ocioso = function()
   end
 end
 PASSOS.tecla = function(x)
-  local nome = "PregaoForeverTecla" .. tostring(x)
+  local nome = B.nomeAddon() .. "Tecla" .. tostring(x)
   local e = B.quadroPorNome(nome)
   if not e then error("tecla " .. tostring(x) .. ": o botao " .. nome .. " nao existe", 0) end
   B.ultimaTecla = B.agoraUs()
@@ -165,8 +165,12 @@ end
 PASSOS.clique = function(nome)
   local e = B.quadroPorNome(nome)
   if not e then error("clique: o botao " .. tostring(nome) .. " nao existe", 0) end
-  if not e.desab then B.despacharClique(e, string.sub(nome, 1, 13) == "PregaoForever") end
+  local hw = B.temPrefixo(nome)
+  if hw then B.ultimaTecla = B.agoraUs() end   -- clique de hardware num botao do addon tambem e acao do dono (I9)
+  if not e.desab then B.despacharClique(e, hw) end
 end
+-- acao do dono sem clicar em botao (ex.: comando de barra): marca a ultima acao para o I9
+PASSOS.tecla_dono = function() B.ultimaTecla = B.agoraUs() end
 PASSOS.injetar = function(spec) B.injetar(spec) end
 PASSOS.evento = function(spec)
   if type(spec) == "string" then spec = { spec } end
@@ -182,7 +186,14 @@ PASSOS.chamar = function(fn)
   fn(b)
 end
 
-local ORDEM = { "abrir_leilao", "fechar_leilao", "avancar", "ate_ocioso", "tecla", "clique", "injetar", "evento", "reload", "salvar_sv", "chamar" }
+local ORDEM = { "abrir_leilao", "fechar_leilao", "avancar", "ate_ocioso", "tecla", "tecla_dono", "clique", "injetar", "evento", "reload", "salvar_sv", "chamar" }
+-- passos de falsos extras (compra.lua): nome -> funcao
+do
+  local extras = {}
+  for nome, fn in pairs(B.PASSOS_EXTRA or {}) do extras[#extras + 1] = nome; PASSOS[nome] = fn end
+  table.sort(extras)
+  for _, nome in ipairs(extras) do ORDEM[#ORDEM + 1] = nome end
+end
 
 local function rodarPasso(p, i)
   if type(p) ~= "table" then error("passo " .. i .. " nao e tabela", 0) end
@@ -257,8 +268,8 @@ function B.rodar(textoCenario, nomeArquivo)
     B.configurar(c.inicio)
     for k in pairs(_G) do B.baseG[k] = true end
     local ini = c.inicio or {}
-    if ini.sv ~= nil then rawset(_G, "PregaoForeverDB", B.copiaProfunda(ini.sv)) end
-    if ini.sv_char ~= nil then rawset(_G, "PregaoForeverCharDB", B.copiaProfunda(ini.sv_char)) end
+    if ini.sv ~= nil then rawset(_G, B.svPrimeira(), B.copiaProfunda(ini.sv)) end
+    if ini.sv_char ~= nil then rawset(_G, B.svCharPrimeira(), B.copiaProfunda(ini.sv_char)) end
   end)
   if not ok2 then return resultado("cenario", "estado inicial invalido: " .. tostring(e2), extra) end
 

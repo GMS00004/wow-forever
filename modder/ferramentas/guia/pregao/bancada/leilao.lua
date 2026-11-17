@@ -601,7 +601,7 @@ local function acao(nome, fn)
   AH(nome, function(...)
     local c = B.clique
     if not (c and c.hw) then
-      B.violar("hardware", nome .. " fora de clique de botao PregaoForever*")
+      B.violar("hardware", nome .. " fora de clique de botao " .. B.nomeAddon() .. "*")
       return nil
     end
     c.acoes = c.acoes + 1
@@ -704,6 +704,11 @@ acao("StartCommoditiesPurchase", function(id, qtd)
     A.cotacao = { itemID = id, qtd = qtd, total = total, unit = un }
     B.disparar("COMMODITY_PRICE_UPDATED", un, total)
   end)
+end)
+
+-- nao e funcao de acao: descarta a cotacao aberta (sem clique de hardware, sem evento)
+AH("CancelCommoditiesPurchase", function()
+  A.cotacao = nil
 end)
 
 local function removerDoMercado(id, qtd)

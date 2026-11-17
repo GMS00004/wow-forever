@@ -3,7 +3,8 @@
 // Contrato: addons-proprios\PregaoForever\ARQUITETURA.md, secao 5.
 //
 // Uso: node pregao/bancada-pregao.mjs [--addon <pasta>] [--auto-teste] [--cenarios <grupo>] [--cenario <id>] [--injecoes]
-//   --addon       pasta do addon (padrao: ..\..\addons-proprios\PregaoForever; no --auto-teste, o brinquedo)
+//   --addon       pasta do addon (padrao: ..\..\addons-proprios\PregaoForever; no --auto-teste, o brinquedo).
+//                 Prefixo de botao e nomes das SVs vem do .toc do addon (Title e SavedVariables*)
 //   --auto-teste  roda casos-pregao\cenarios\autoteste contra casos-pregao\brinquedo (so confere o falso)
 //   --cenarios    roda os cenarios de casos-pregao\cenarios\<grupo>\*.lua
 //   --cenario     roda so este (arquivo <id>.lua ou campo id), em qualquer grupo (ou no grupo dado por --cenarios)
@@ -53,8 +54,19 @@ function rodarChunk(L, texto, nomeChunk, nres = 0) {
   return { ok: false, erro };
 }
 
-function globalArquivos(L, arquivos) {
-  lua.lua_createtable(L, 0, 1);
+function empurrarLista(L, lista) {
+  lua.lua_createtable(L, lista.length, 0);
+  lista.forEach((t, i) => { lua.lua_pushstring(L, to_luastring(t)); lua.lua_rawseti(L, -2, i + 1); });
+}
+
+function globalArquivos(L, arquivos, meta) {
+  lua.lua_createtable(L, 0, 4);
+  lua.lua_pushstring(L, to_luastring(meta.nome));
+  lua.lua_setfield(L, -2, to_luastring('nome'));
+  empurrarLista(L, meta.svs);
+  lua.lua_setfield(L, -2, to_luastring('svs'));
+  empurrarLista(L, meta.svsChar);
+  lua.lua_setfield(L, -2, to_luastring('svs_char'));
   lua.lua_createtable(L, arquivos.length, 0);
   arquivos.forEach((a, i) => {
     lua.lua_createtable(L, 0, 2);
@@ -73,18 +85,20 @@ function globalTexto(L, nome, texto) {
   lua.lua_setglobal(L, to_luastring(nome));
 }
 
-const textosFalso = ['nucleo.lua', 'leilao.lua', 'executor.lua'].map((n) => ({ nome: n.replace(/\.lua$/, ''), texto: readFileSync(join(pastaFalso, n), 'utf8') }));
+const textosFalso = ['nucleo.lua', 'leilao.lua', 'compra.lua', 'executor.lua'].map((n) => ({ nome: n.replace(/\.lua$/, ''), texto: readFileSync(join(pastaFalso, n), 'utf8') }));
 
-function novoEstado(arquivos) {
+const metaPadrao = { nome: 'PregaoForever', svs: ['PregaoForeverDB'], svsChar: ['PregaoForeverCharDB'] };
+
+function novoEstado(arquivos, meta = metaPadrao) {
   const L = lauxlib.luaL_newstate();
   lualib.luaL_openlibs(L);
-  for (const f of textosFalso.slice(0, 2)) {
+  for (const f of textosFalso.slice(0, 3)) {
     const r = rodarChunk(L, f.texto, f.nome);
     if (!r.ok) throw new Error(`${f.nome}: ${r.erro}`);
   }
-  globalArquivos(L, arquivos);
-  const r = rodarChunk(L, textosFalso[2].texto, textosFalso[2].nome);
-  if (!r.ok) throw new Error(`${textosFalso[2].nome}: ${r.erro}`);
+  globalArquivos(L, arquivos, meta);
+  const r = rodarChunk(L, textosFalso[3].texto, textosFalso[3].nome);
+  if (!r.ok) throw new Error(`${textosFalso[3].nome}: ${r.erro}`);
   return L;
 }
 
@@ -93,7 +107,18 @@ function lerAddon(pasta) {
   if (!existsSync(pasta)) return { erro: `pasta do addon nao existe: ${pasta}` };
   const tocs = readdirSync(pasta).filter((f) => f.toLowerCase().endsWith('.toc'));
   if (tocs.length === 0) return { erro: `sem .toc em ${pasta}` };
-  const linhas = readFileSync(join(pasta, tocs[0]), 'utf8').split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !l.startsWith('#'));
+  const brutas = readFileSync(join(pasta, tocs[0]), 'utf8').split(/\r?\n/).map((l) => l.trim());
+  const diretivas = {};
+  for (const l of brutas) {
+    const m = /^##\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/.exec(l);
+    if (m) diretivas[m[1].toLowerCase()] = m[2].trim();
+  }
+  const lista = (t) => (t || '').split(/[,\s]+/).filter(Boolean);
+  // nome do addon = primeiro token do Title; sem Title, o nome do .toc; sem nada, a pasta. Define o prefixo de botao e o
+  // nome que o addon recebe em ADDON_LOADED. As SVs saem do .toc.
+  const nome = (/^[A-Za-z0-9_]+/.exec(diretivas.title || '') || [])[0] || basename(tocs[0], '.toc') || basename(pasta);
+  const meta = { nome, svs: lista(diretivas.savedvariables), svsChar: lista(diretivas.savedvariablespercharacter) };
+  const linhas = brutas.filter((l) => l && !l.startsWith('#'));
   const arquivos = [];
   const cargaFalhou = [];
   for (const nome of linhas.filter((l) => /\.lua$/i.test(l))) {
@@ -101,7 +126,7 @@ function lerAddon(pasta) {
     if (!existsSync(caminho)) { cargaFalhou.push(`${nome}: arquivo do .toc nao existe`); continue; }
     arquivos.push({ nome: basename(nome), texto: readFileSync(caminho, 'utf8') });
   }
-  return { arquivos, cargaFalhou };
+  return { arquivos, cargaFalhou, meta };
 }
 
 // ---------- cenarios ----------
@@ -120,7 +145,7 @@ function rodarArquivo(addon, arquivo) {
   const texto = readFileSync(arquivo, 'utf8');
   let L;
   try {
-    L = novoEstado(addon.arquivos);
+    L = novoEstado(addon.arquivos, addon.meta);
   } catch (e) {
     return { status: 'bancada', motivo: `erro da bancada: ${e.message}`, saidas: [], nao_simuladas: [], carga: [] };
   }
