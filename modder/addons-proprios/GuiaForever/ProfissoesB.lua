@@ -36,16 +36,15 @@ GuiaForeverProfissoesB = {
   -- Os treinadores e os padroes do ReptilioPlays ficam em treino, como dado de referencia.
   -- Materiais = o que a rota calculou; o que esta entre parenteses fica fora da soma da aba Professions.
   ["Leatherworking"] = {
-    fonte = "crafts tool (rota.mjs)", url = "", data = "prices of 2026-11-17 11:29",
+    fonte = "crafts tool (rota.mjs)", url = "", data = "prices of 2026-11-17 13:20",
     passos = {
       { de = 1, ate = 189, texto = "Done before the tool route (skill 189 on 2026-11-17)" },
-      { de = 189, ate = 190, texto = "Dusky Leather Armor (20x): 200 Heavy Leather, 20 Shadow Oil, 40 Fine Thread (trainer; worst case +4s 00c; if sold -24s 00c)" },
-      { de = 190, ate = 197, texto = "Barbaric Harness (13x): 182 Heavy Leather, 26 Fine Thread, 13 Iron Buckle (trainer; worst case -52s 26c; if sold -62s 40c)" },
-      { de = 197, ate = 200, texto = "Nightscape Headband (3x): 15 Thick Leather, 6 Silken Thread (trainer; worst case -27s 54c; if sold -15s 45c)" },
-      { de = 200, ate = 205, texto = "Mender's Mail Boots (5x): 40 Heavy Leather, 10 Cured Medium Hide, 10 Iridescent Pearl (buy the pattern on the AH 29s 00c; worst case +22s 30c)" },
-      { de = 205, ate = 207, texto = "Nightscape Headband (3x): 15 Thick Leather, 6 Silken Thread (trainer; worst case -27s 54c; if sold -15s 45c)" },
-      { de = 207, ate = 225, texto = "Nightscape Pants (18x): 252 Thick Leather, 72 Silken Thread (trainer; worst case -2g 38s 32c; if sold -2g 49s 66c)" },
-      -- route from the crafts tool (rota.mjs), prices of 2026-11-17 11:29
+      { de = 189, ate = 197, texto = "Barbaric Harness (14x): 196 Heavy Leather, 28 Fine Thread, 14 Iron Buckle (known; worst case -63s 42c; if sold -74s 34c)" },
+      { de = 197, ate = 200, texto = "Nightscape Headband (3x): 15 Thick Leather, 6 Silken Thread (trainer; worst case -32s 64c; if sold -20s 58c)" },
+      { de = 200, ate = 205, texto = "Mender's Mail Boots (5x): 40 Heavy Leather, 10 Cured Medium Hide, 10 Iridescent Pearl (buy the pattern on the AH 25s 00c; worst case +13s 80c)" },
+      { de = 205, ate = 208, texto = "Nightscape Headband (5x): 25 Thick Leather, 10 Silken Thread (trainer; worst case -54s 40c; if sold -34s 30c)" },
+      { de = 208, ate = 225, texto = "Nightscape Pants (17x): 238 Thick Leather, 68 Silken Thread (trainer; worst case -3g 06s 00c; if sold -3g 16s 71c)" },
+      -- route from the crafts tool (rota.mjs), prices of 2026-11-17 13:20
       { de = 225, ate = 300, texto = "Next route: run the crafts tool at 225 (train Artisan first: skill 200 and level 35)" },
     },
     treino = {
