@@ -907,6 +907,7 @@ end
 
 function ns.abaVisivel(id)
   if id == "pet" or id == "familias" then return temDadosDePet() end
+  if id == "crafts" then return ns.craftsVisivel ~= nil and ns.craftsVisivel() or false end
   return true
 end
 

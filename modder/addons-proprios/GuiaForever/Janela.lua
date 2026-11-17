@@ -24,6 +24,7 @@ local ABAS = {
   { id = "profissoes", rotulo = "Professions", icone = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01", subs = {
     { id = "minhas", rotulo = "Mine" }, { id = "zona", rotulo = "Zone" }, { id = "treinos", rotulo = "Trainers" },
   } },
+  { id = "crafts", rotulo = "Crafts", icone = "Interface\\Icons\\INV_Misc_ArmorKit_17", subs = {} },
   { id = "ajuda", rotulo = "Help", icone = "Interface\\Icons\\INV_Misc_QuestionMark", subs = {
     { id = "perguntas", rotulo = "Questions" }, { id = "addons", rotulo = "Addons" }, { id = "sinais", rotulo = "Signs" },
   } },

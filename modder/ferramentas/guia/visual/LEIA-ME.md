@@ -10,6 +10,7 @@ Este arquivo guarda o diagnóstico, a proposta e as decisões, para que outra se
 |---|---|
 | `quadros.html` | os quatro quadros (`#q1` a `#q4`): à esquerda a janela 1.1.0 reconstruída do código, à direita o esboço da proposta |
 | `renderizar.mjs` | fotografa os quadros pelo Edge sem tela em `png\q1.png` a `png\q4.png` (`node renderizar.mjs [q1 ...]`) |
+| `itens-icones.json` | 1.4: id de item para nome do icone, para o real.html desenhar a aba Crafts; refeito por `node itens-icones.mjs` (tabelas Item e ManifestInterfaceData do wago.tools no build do cliente, so os ids do RotaCrafts.lua), que diz os icones que faltam baixar; versionado |
 | `icones.txt` | nomes dos ícones usados; `icones\` e `png\` ficam fora do git |
 
 Para refazer os ícones (Git Bash, nesta pasta): `mkdir -p icones && for n in $(cat icones.txt); do curl -s -f -o icones/$n.jpg https://wow.zamimg.com/images/wow/icons/large/$n.jpg; done`. As fontes vêm do ElvUI instalado (PT Sans Narrow e Expressway) e o fundo de um print do dono (`Screenshots\WoWScrnShot_110626_022013.jpg`), então o render só funciona no Avell.

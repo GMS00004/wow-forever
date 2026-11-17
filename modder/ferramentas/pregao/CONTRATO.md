@@ -136,6 +136,7 @@ node gerar-receitas.mjs                 # so quando o build do cliente mudar (BU
 node rota.mjs --de 186 --ate 225        # a rota mais barata no pior caso (secao 6)
 node rota.mjs --de 186 --ate 225 --sem "Dusky Boots" --lua   # sem uma receita, no formato do J
 node testes/testar-rota.mjs             # casos de preco fixo da rota
+node testes/testar-padroes.mjs          # padroes: situacao, escolha, RotaCrafts.lua e receitas conhecidas (secao 6.1)
 ```
 
 Forma do arquivo:
@@ -343,3 +344,64 @@ texto escapadas para Lua. A última linha é o comentário
 `      -- route from the crafts tool (rota.mjs), prices of <AAAA-MM-DD HH:MM>`, com a hora da exportação do
 Auctionator, ou da foto pública se não houver exportação. Se a rota parou, uma linha de comentário antes dela:
 `      -- stopped at <s>: no recipe gives a point`.
+
+## 6.1 Padrões: o que o personagem consegue fazer (2026-11-16, noite)
+
+Pedido do dono em 2026-11-16, depois de achar que o padrão da Dusky Boots nem estava no leilão: a rota não pode
+supor padrão na mão. `calcularRota` continua igual (é a rota "com todos os padrões"); a linha de comando passa a usar
+`escolherRota`, que só deixa entrar o que dá para fazer.
+
+`export function situacaoPadroes(receitas, precos, { agora, conhecidas })`, pura. Para cada receita, por `magia`:
+- `conhecida`, se `conhecidas` (um `Set` de magias) tem a magia;
+- `treinador`, se a receita não tem `itemReceita` (o custo do treino fica fora da conta);
+- `vendedor`, se o padrão está em `precos.vendedor` e tem `compra` maior que 0 (preço = `compra`);
+- `leilao`, se a exportação do Auctionator tem até 6 horas e o padrão com idade 0 (preço = o dela), ou se a foto
+  pública tem o padrão (preço = `min`); `listados` = `unid` da foto, quando houver;
+- `fora`, nos outros casos, com `visto` = o último dia do histórico (`{ dia, min, med, unid }`) ou `null`.
+
+`export function escolherRota(receitas, precos, { de, ate, agora, sem, so, conhecidas })`, pura:
+1. Receitas `fora` saem. As de `leilao` e `vendedor` que dão ponto na faixa (`aprende < ate` e `cinza > de`) são as
+   compráveis.
+2. Busca local: começa sem nenhum padrão comprável e, a cada volta, põe ou tira o padrão que mais melhora a nota;
+   para quando nada melhora (no máximo 50 voltas). Nota: quem chega mais longe vence; no empate, o maior
+   `piorCaso - soma dos preços dos padrões comprados` (cada padrão conta uma vez, mesmo em dois passos).
+3. `livre` = a mesma rota com todos os padrões; o que ela usa e está `fora` vira `esperar`
+   (`{ magia, nome, padrao: { id, nome }, visto }`): padrões que vale vigiar no leilão.
+4. Cada passo ganha `padrao = { situacao, preco, id, nome, listados }`; `totais` ganha `padroes` e
+   `piorCasoComPadroes`; a rota ganha `esperar` e `livre = { totais, chegou }`.
+
+`calcularRota` aceita `opcoes.linhas` (o resultado de um `calcular()` já feito), para a busca não refazer a conta.
+
+**Receitas conhecidas.** O GuiaForever 1.4 grava, quando o dono abre a janela de Leatherworking, o bloco
+`GuiaForeverDB.personagens[<personagem>].receitasLW = { quem, em, pericia, max, ids = { [magia] = true }, n }`.
+`export function lerConhecidas(texto)` lê o primeiro bloco `["receitasLW"]` do `GuiaForever.lua` (SavedVariables) e
+devolve `{ quem, em, pericia, ids }` ou `null`. O arquivo só muda no disco depois de um `/reload` ou ao sair do jogo.
+
+**Linha de comando:** `--conheco "A,B"` soma receitas conhecidas à mão (nomes, como `--sem`); `--todos-padroes` volta
+ao `calcularRota` puro (sem ler as conhecidas); `--addon <arquivo>` grava o `RotaCrafts.lua` (seção 6.2). O
+relatório ganha a linha `conhecidas: ...`, a linha `padroes a comprar: ...` (quando há), uma linha por receita da rota
+com a situação do padrão, as linhas `esperar no leilao: ...` e `com todos os padroes na mao: pior caso ...`. No
+`--lua`, a nota `pattern` vira `known`, `trainer`, `buy the pattern on the AH <preço>`, `pattern from a vendor <preço>`
+ou, na segunda vez da mesma receita comprada, `same pattern as above`.
+
+Teste: `node testes/testar-padroes.mjs` (24 campos sobre `caso-base.json`: as cinco situações, a escolha com o padrão
+fora, conhecido e à venda, as notas do `--lua`, o `dadosAddon` e o `lerConhecidas`).
+
+## 6.2 `RotaCrafts.lua`: os dados da aba Crafts do GuiaForever
+
+`export function dadosAddon(rota, receitas, { quando, agora, conhecidasEm, conhecidasTxt })`, pura, devolve o texto do
+arquivo `addons-proprios\GuiaForever\RotaCrafts.lua`, que define a global `GuiaForeverRotaCrafts`:
+`{ profissao, de, ate, chegou, precos (texto da hora), geradoEm, conhecidasEm, totais = { crafts, custo, piorCaso,
+seVender, padroes }, passos = { { de, ate, magia, produto (id do item feito), nome, crafts, custo, vendaNpc, piorCaso,
+seVender, aprende, aprendeEstimado, padrao = { id, nome, situacao, preco, listados } ou { situacao },
+materiais = { { id, nome, qtd } } } }, esperar = { { magia, nome, padrao (id), padraoNome, visto } }, parou }`.
+Dinheiro em cobre (inteiro). Só ASCII. O arquivo é gerado: não se edita à mão.
+
+Uso, depois de uma consulta (seção 4.1):
+
+```
+node rota.mjs --de <pericia> --ate 225 --addon ..\..\addons-proprios\GuiaForever\RotaCrafts.lua
+node rota.mjs --de <pericia> --ate 225 --lua      # o texto da aba Professions > Mine, como antes
+```
+
+O dono dá `/reload` (arquivo já listado no `.toc`; só a primeira vez pediu reiniciar o jogo).

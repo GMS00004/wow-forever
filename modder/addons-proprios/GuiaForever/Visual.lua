@@ -197,11 +197,40 @@ function ui.icone(x)
           r = ic
         end
       end)
+    elseif x:find("^item:") then
+      -- icone de item pelo id (1.4): vem dos dados do cliente, sem esperar o cache do item
+      local id = tonumber(x:sub(6))
+      if id then
+        pcall(function()
+          if C_Item and C_Item.GetItemIconByID then r = C_Item.GetItemIconByID(id) end
+        end)
+      end
     end
   end
   if type(r) ~= "number" and type(r) ~= "string" then return ICO_PADRAO end
   if r == "" then return ICO_PADRAO end
   return r
+end
+
+-- Dinheiro em cobre -> texto com as moedas do jogo (1.4); sem a API, "1g 02s 03c". Negativo com "-".
+function ui.moeda(cobre)
+  local n = tonumber(cobre)
+  if not n then return "-" end
+  local neg = n < 0
+  n = math.floor(math.abs(n) + 0.5)
+  local s
+  pcall(function()
+    if C_CurrencyInfo and C_CurrencyInfo.GetCoinTextureString then s = C_CurrencyInfo.GetCoinTextureString(n) end
+  end)
+  if type(s) ~= "string" or s == "" then
+    local g, p, c = math.floor(n / 10000), math.floor((n % 10000) / 100), n % 100
+    local t = {}
+    if g > 0 then t[#t + 1] = g .. "g" end
+    if g > 0 or p > 0 then t[#t + 1] = (g > 0 and string.format("%02d", p) or tostring(p)) .. "s" end
+    t[#t + 1] = ((g > 0 or p > 0) and string.format("%02d", c) or tostring(c)) .. "c"
+    s = table.concat(t, " ")
+  end
+  return (neg and "-" or "") .. s
 end
 
 -- Painel e skins ---------------------------------------------------------------------------
@@ -396,6 +425,26 @@ function ui.tooltip(dono, titulo, dica)
   GameTooltip:Show()
 end
 
+-- Tooltip de item (1.4): o do jogo pelo id, mais as linhas da dica. Em combate, so o texto.
+function ui.tooltipItem(dono, id, titulo, dica)
+  if not GameTooltip or not dono then return end
+  local ok = false
+  if not (InCombatLockdown and InCombatLockdown()) and GameTooltip.SetItemByID and tonumber(id) then
+    GameTooltip:SetOwner(dono, "ANCHOR_RIGHT")
+    ok = pcall(GameTooltip.SetItemByID, GameTooltip, tonumber(id))
+  end
+  if not ok then
+    ui.tooltip(dono, titulo, dica)
+    return
+  end
+  if type(dica) == "string" then
+    GameTooltip:AddLine(dica, 0.9, 0.9, 0.9, true)
+  elseif type(dica) == "table" then
+    for _, l in ipairs(dica) do GameTooltip:AddLine(tostring(l), 0.9, 0.9, 0.9, true) end
+  end
+  GameTooltip:Show()
+end
+
 function ui.selecionado(id, padrao)
   local s = type(GuiaForeverDB) == "table" and GuiaForeverDB.sel
   if type(s) == "table" and s[id] ~= nil then return s[id] end
@@ -503,8 +552,12 @@ end
 -- Base de linha clicavel (item, linha de tabela, item de lista) -----------------------------
 
 local function entrar(self)
-  if self.hl and (self.clicavel or self.dica ~= nil) then self.hl:Show() end
-  if self.dica ~= nil then ui.tooltip(self, self.tit, self.dica) end
+  if self.hl and (self.clicavel or self.dica ~= nil or self.itemId) then self.hl:Show() end
+  if self.itemId then
+    ui.tooltipItem(self, self.itemId, self.tit, self.dica)
+  elseif self.dica ~= nil then
+    ui.tooltip(self, self.tit, self.dica)
+  end
 end
 
 local function sair(self)
@@ -538,9 +591,10 @@ end
 local function configBase(f, bl, titulo, zebra)
   f.dica = bl.dica
   f.tit = titulo
+  f.itemId = tonumber(bl.itemId)
   f.aoClicar = bl.aoClicar
   f.clicavel = type(bl.aoClicar) == "function"
-  f:EnableMouse(f.clicavel or bl.dica ~= nil)
+  f:EnableMouse(f.clicavel or bl.dica ~= nil or f.itemId ~= nil)
   f.hl:Hide()
   vis(f.zeb, zebra)
   f:SetAlpha(bl.apagado and 0.55 or 1)
@@ -1231,6 +1285,198 @@ desenhistas.grade = function(E, bl, y)
   for i = usados + 1, #g.tl do g.tl[i]:Hide() end
   local h = top
   if usados > 0 then h = top + linha * 68 + 66 end
+  posiciona(g, E.conteudo, 0, y, w, max(h, 1))
+  return h + 6
+end
+
+-- receita e materiais (aba Crafts, 1.4; ARQUITETURA.md, secao 13) ---------------------------------------
+
+local function novaPilula(pai)
+  local f = CreateFrame("Frame", nil, pai)
+  f:SetHeight(20)
+  f.bg = tex(f, "BACKGROUND", -1)
+  f.bg:SetAllPoints()
+  bordas(f)
+  f.fs = novoFs(f, "menor", "texto")
+  f.fs:SetPoint("CENTER", f, "CENTER", 0, 0)
+  f.fs:SetJustifyH("CENTER")
+  function f:Definir(s, cor)
+    local r, g, b = ui.cor(cor or "cinza")
+    self.bg:SetColorTexture(r, g, b, 0.18)
+    self.fs:SetTextColor(r, g, b, 1)
+    self.fs:SetText(tostring(s or ""))
+    local w = larg(self.fs) + 16
+    self:SetWidth(w)
+    self.larg = w
+  end
+  return f
+end
+
+desenhistas.receita = function(E, bl, y)
+  local f = pegar(E, "receita", function(p)
+    local c = novaBase(p)
+    c.zeb:SetColorTexture(1, 1, 1, 0.04)
+    c.faixa = tex(c, "ARTWORK")
+    c.faixa:SetWidth(4)
+    c.faixa:SetPoint("TOPLEFT", c, "TOPLEFT", 0, 0)
+    c.faixa:SetPoint("BOTTOMLEFT", c, "BOTTOMLEFT", 0, 0)
+    bordas(c)
+    c.ic = novoIcone(c, 36)
+    c.t = novoFs(c, "cartao", "texto")
+    c.s = novoFs(c, "menor", "cinza")
+    c.nvBg = tex(c, "ARTWORK", -1)
+    c.nvBg:SetColorTexture(1, 1, 1, 0.08)
+    c.nv = novoFs(c, "numero", "texto")
+    c.nv:SetJustifyH("CENTER")
+    c.pil = novaPilula(c)
+    return c
+  end)
+  local w = E.larg
+  local grande = bl.tam ~= "pequeno"
+  local tam = grande and 36 or 28
+  configBase(f, bl, bl.s, true)
+  f.faixa:SetColorTexture(ui.cor(bl.cor or (bl.destaque and "destaque" or "cinza")))
+  local x = 12
+  f.ic:SetSize(tam, tam)
+  f.ic:ClearAllPoints()
+  f.ic:SetPoint("LEFT", f, "LEFT", x, 0)
+  f.ic:SetTexture(ui.icone(bl.icone))
+  f.ic:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+  mostraIcone(f.ic, true)
+  x = x + tam + 10
+  -- direita: a faixa de pericia numa caixa e, antes dela, a pilula do padrao
+  local dir = 8
+  if bl.faixa ~= nil and tostring(bl.faixa) ~= "" then
+    f.nv:SetText(tostring(bl.faixa))
+    local nw = larg(f.nv) + 14
+    f.nvBg:SetSize(nw, 20)
+    f.nvBg:ClearAllPoints()
+    f.nvBg:SetPoint("RIGHT", f, "RIGHT", -dir, 0)
+    f.nv:ClearAllPoints()
+    f.nv:SetPoint("CENTER", f.nvBg, "CENTER", 0, 0)
+    f.nvBg:Show()
+    f.nv:Show()
+    dir = dir + nw + 8
+  else
+    f.nvBg:Hide()
+    f.nv:Hide()
+  end
+  if type(bl.pilula) == "table" and bl.pilula.s then
+    f.pil:Definir(bl.pilula.s, bl.pilula.cor)
+    f.pil:ClearAllPoints()
+    f.pil:SetPoint("RIGHT", f, "RIGHT", -dir, 0)
+    f.pil:Show()
+    dir = dir + (f.pil.larg or 40) + 8
+  else
+    f.pil:Hide()
+  end
+  local tw = max(w - x - dir - 4, 40)
+  f.t:SetWidth(tw)
+  f.t:SetText(tostring(bl.s or ""))
+  local th = max(alt(f.t), 17)
+  local sh = 0
+  if bl.sub ~= nil and tostring(bl.sub) ~= "" then
+    f.s:SetWidth(tw)
+    f.s:SetText(tostring(bl.sub))
+    sh = max(alt(f.s), 15)
+    f.s:Show()
+  else
+    f.s:Hide()
+  end
+  local h = max(grande and 56 or 44, th + sh + 14)
+  local off = (h - th - sh) / 2
+  f.t:ClearAllPoints()
+  f.t:SetPoint("TOPLEFT", f, "TOPLEFT", x, -off)
+  f.s:ClearAllPoints()
+  f.s:SetPoint("TOPLEFT", f, "TOPLEFT", x, -(off + th))
+  posiciona(f, E.conteudo, 0, y, w, h)
+  return h + 4
+end
+
+local function novoMat(p)
+  local f = CreateFrame("Button", nil, p)
+  f:SetSize(40, 58)
+  f.ok = f:CreateTexture(nil, "BACKGROUND", nil, -3)
+  f.ok:SetSize(44, 44)
+  f.ok:SetPoint("TOPLEFT", f, "TOPLEFT", -2, 2)
+  f.preto = f:CreateTexture(nil, "BACKGROUND", nil, -2)
+  f.preto:SetSize(42, 42)
+  f.preto:SetPoint("TOPLEFT", f, "TOPLEFT", -1, 1)
+  f.preto:SetColorTexture(0, 0, 0, 1)
+  f.ic = f:CreateTexture(nil, "ARTWORK")
+  f.ic:SetSize(40, 40)
+  f.ic:SetPoint("TOPLEFT", f, "TOPLEFT", 0, 0)
+  f.q = novoFs(f, "tecla", "texto")
+  f.q:SetPoint("BOTTOMRIGHT", f.ic, "BOTTOMRIGHT", -2, 3)
+  f.q:SetJustifyH("RIGHT")
+  f.tem = novoFs(f, "mini", "cinza")
+  f.tem:SetPoint("TOP", f.ic, "BOTTOM", 0, -3)
+  f.tem:SetWidth(54)
+  f.tem:SetJustifyH("CENTER")
+  f.tem:SetWordWrap(false)
+  f:SetScript("OnEnter", function(self) seguro(entrar, self) end)
+  f:SetScript("OnLeave", function(self) seguro(sair, self) end)
+  return f
+end
+
+desenhistas.materiais = function(E, bl, y)
+  local g = pegar(E, "materiais", function(p)
+    local c = CreateFrame("Frame", nil, p)
+    c.tl = {}
+    c.tt = novoFs(c, "menor", "cinza")
+    c.tt:SetPoint("TOPLEFT", c, "TOPLEFT", 2, 0)
+    return c
+  end)
+  local w = E.larg
+  local top = 0
+  if bl.titulo ~= nil and tostring(bl.titulo) ~= "" then
+    g.tt:SetText(tostring(bl.titulo))
+    g.tt:Show()
+    top = 18
+  else
+    g.tt:Hide()
+  end
+  local x0 = tonumber(bl.recuo) or 0
+  local x, linha, usados = x0, 0, 0
+  for _, m in ipairs(bl.lista or {}) do
+    if type(m) == "table" then
+      if x > x0 and x + 40 > w then
+        x = x0
+        linha = linha + 1
+      end
+      usados = usados + 1
+      local tl = g.tl[usados]
+      if not tl then
+        tl = novoMat(g)
+        g.tl[usados] = tl
+      end
+      tl:ClearAllPoints()
+      tl:SetPoint("TOPLEFT", g, "TOPLEFT", x, -(top + linha * 66 + 4))
+      tl:Show()
+      tl.ic:SetTexture(ui.icone(m.icone or ("item:" .. tostring(m.id))))
+      tl.ic:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+      local qtd = tonumber(m.qtd)
+      tl.q:SetText(qtd and tostring(qtd) or "")
+      local tem = tonumber(m.tem)
+      local basta = tem ~= nil and qtd ~= nil and tem >= qtd
+      if tem ~= nil and qtd ~= nil then
+        tl.tem:SetText(tostring(tem) .. "/" .. tostring(qtd))
+        tl.tem:SetTextColor(ui.cor(basta and "verde" or "laranja"))
+      else
+        tl.tem:SetText("")
+      end
+      vis(tl.ok, basta)
+      tl.ok:SetColorTexture(ui.cor("verde"))
+      tl.itemId = tonumber(m.id)
+      tl.tit = m.nome
+      tl.dica = m.dica
+      tl:EnableMouse(true)
+      x = x + 58
+    end
+  end
+  for i = usados + 1, #g.tl do g.tl[i]:Hide() end
+  local h = top
+  if usados > 0 then h = top + linha * 66 + 62 end
   posiciona(g, E.conteudo, 0, y, w, max(h, 1))
   return h + 6
 end

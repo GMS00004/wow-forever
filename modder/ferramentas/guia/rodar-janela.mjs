@@ -12,6 +12,7 @@
 //   (mapa 1429), Mining 75/75 e Blacksmithing 55/100; grava visual\real-PALADIN.json e .html (o real.json e .html
 //   continuam sendo do cacador). Com PALADIN o banco tambem simula C_UnitAuras, issecretvalue e as APIs de macro.
 // --nivel N / --livres K: nivel e pontos de talento livres do personagem simulado (padroes acima).
+// --lw N: pericia de Leatherworking do cacador simulado (padrao 55; acima de 150 o teto vira 225), para a aba Crafts.
 // --com-furia: o buff Righteous Fury ativo (GetAuraDataBySpellName devolve a aura).
 // --sem "<magia>" (repetivel): tira a magia do livro de magias simulado.
 // --paladino (so com --classe PALADIN): cenario do paladino 1.3 (ARQUITETURA.md 12.2 a 12.4). Imprime uma linha por
@@ -53,13 +54,14 @@ const PAL = CLASSE === "PALADIN";
 const NIVEL_CFG = Number(valorDe("--nivel") ?? (PAL ? 27 : 16));
 const LIVRES_CFG = Number(valorDe("--livres") ?? (PAL ? 1 : 0));
 const COM_FURIA = args.includes("--com-furia");
+const LW_CFG = Number(valorDe("--lw") ?? 55); // pericia de Leatherworking do cacador simulado (aba Crafts, 1.4)
 const SEM = args.flatMap((a, i) => (a === "--sem" && args[i + 1] !== undefined ? [args[i + 1]] : []));
 const SO_MACROS = args.includes("--macros"); // uso interno do processo filho do cacador (verificacao e)
 const CASO_FILHO = args.includes("--filho-cacador");
 if (args.includes("--paladino") && !PAL) { console.error("--paladino exige --classe PALADIN"); process.exit(2); }
-if (![NIVEL_CFG, LIVRES_CFG].every(Number.isInteger)) { console.error("--nivel e --livres: numeros inteiros"); process.exit(2); }
+if (![NIVEL_CFG, LIVRES_CFG, LW_CFG].every(Number.isInteger)) { console.error("--nivel e --livres: numeros inteiros"); process.exit(2); }
 const luaStr = (s) => JSON.stringify(String(s));
-const CFG_LUA = `__CFG = { classe = ${luaStr(CLASSE)}, nivel = ${NIVEL_CFG}, livres = ${LIVRES_CFG}, furia = ${COM_FURIA}, novas = ${PAL || SO_MACROS}, sem = { ${SEM.map(luaStr).join(", ")} } }\n`;
+const CFG_LUA = `__CFG = { classe = ${luaStr(CLASSE)}, nivel = ${NIVEL_CFG}, livres = ${LIVRES_CFG}, furia = ${COM_FURIA}, lw = ${LW_CFG}, novas = ${PAL || SO_MACROS}, sem = { ${SEM.map(luaStr).join(", ")} } }\n`;
 
 // ---------- o ambiente Lua ----------
 const PRELUDIO = String.raw`
@@ -490,7 +492,7 @@ mkapi("C_SkillInfo", {
       return nil
     end
     if i == 1 then return { name = "Skinning", rank = 75, maxRank = 75, isHeader = false } end
-    if i == 2 then return { name = "Leatherworking", rank = 55, maxRank = 100, isHeader = false } end
+    if i == 2 then return { name = "Leatherworking", rank = __CFG.lw, maxRank = (__CFG.lw > 150 and 225 or 100), isHeader = false } end
   end,
 })
 mkapi("C_QuestLog", {
@@ -525,7 +527,12 @@ mkapi("C_Minimap", {
   GetTrackingFilter = function() return nil end,
   SetTracking = function() end,
 })
-mkapi("C_Item", { GetItemInfo = function() return nil end })
+mkapi("C_Item", {
+  GetItemInfo = function() return nil end,
+  -- aba Crafts (1.4): contagem fixa nas bolsas para a previa (Heavy Leather 62, Fine Thread 12, Iron Buckle 3, Silken Thread 14)
+  GetItemCount = function(id) local t = { [4234] = 62, [2321] = 12, [7071] = 3, [4291] = 14 } return t[id] or 0 end,
+  GetItemIconByID = function() return nil end,
+})
 mkapi("C_Container", {
   GetContainerNumSlots = function() return 0 end,
   GetContainerItemInfo = function() return nil end,
@@ -960,12 +967,12 @@ if (CASO_FILHO) { // processo filho da verificacao e do --paladino: so confere o
 }
 
 // ---------- conferencia ----------
-const TIPOS = new Set(["sec", "card", "item", "nota", "vazio", "tabela", "passos", "checklist", "grade", "regua", "perfil", "titulo", "etiquetas", "segs", "duas", "botao"]);
+const TIPOS = new Set(["sec", "card", "item", "nota", "vazio", "tabela", "passos", "checklist", "grade", "regua", "perfil", "titulo", "etiquetas", "segs", "duas", "botao", "receita", "materiais"]);
 const COMPAT_TIPOS = new Set(["texto", "cab", "linha", "espaco"]);
 const OBRIGATORIOS = {
   sec: ["s"], card: ["s"], item: ["s"], nota: ["s"], vazio: ["s"], titulo: ["s"], tabela: ["colunas", "linhas"], passos: ["lista"],
   checklist: ["itens"], grade: ["teclas"], regua: ["linhas"], perfil: ["titulo"], etiquetas: ["lista"], segs: ["aba", "opcoes", "atual"],
-  duas: ["id", "lista", "detalhe"], botao: ["s"], texto: ["s"], cab: ["s"], linha: ["s"], espaco: [],
+  duas: ["id", "lista", "detalhe"], botao: ["s"], receita: ["s", "icone"], materiais: ["lista"], texto: ["s"], cab: ["s"], linha: ["s"], espaco: [],
 };
 const NAO_TEXTO = new Set(["t", "id", "estado", "cor", "icone", "aba", "atual", "alinha", "retrato", "tecla_id"]);
 const semCodigos = (s) => String(s).replace(/\|c[0-9a-fA-F]{8}/g, "").replace(/\|r/g, "");
@@ -1167,6 +1174,8 @@ const dados = {
   entradas: listaEntradas,
   meta: plano.meta,
   blocos: saidaAbas,
+  // icones de item (aba Crafts, 1.4): id -> nome do icone, de visual/itens-icones.json (refeito por visual/itens-icones.mjs)
+  itensIcones: existsSync(join(pastaVisual, "itens-icones.json")) ? JSON.parse(readFileSync(join(pastaVisual, "itens-icones.json"), "utf8")) : {},
 };
 const sufixo = PAL ? "-PALADIN" : "";
 writeFileSync(join(pastaVisual, "real" + sufixo + ".json"), JSON.stringify(dados, null, 1));
@@ -1210,6 +1219,21 @@ body { width: 844px; height: auto; overflow: visible; padding: 12px; background:
 .tit40 .nm { font-size: 20px; line-height: 20px; }
 .eixo .rotH .ph { width: 18px; height: 18px; }
 .lista .it .ph { width: 18px; height: 18px; }
+/* aba Crafts (1.4): receita e materiais */
+.rec { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 8px 6px 12px; margin: 0 0 4px; background: rgba(255,255,255,.04); border: 1px solid #000; box-shadow: inset 4px 0 0 #777; }
+.rec.grande { min-height: 56px; box-shadow: inset 4px 0 0 var(--ac); }
+.rec.dim { opacity: .55; }
+.rec img, .rec .ph { width: 28px; height: 28px; border: 1px solid #000; }
+.rec.grande img, .rec.grande .ph { width: 36px; height: 36px; }
+.rec .tx { flex: 1; min-width: 0; } .rec .t { font-size: 15px; } .rec .s { color: #9a9a9a; font-size: 12.5px; }
+.rec .pil { font-size: 12px; padding: 2px 8px; border: 1px solid #000; }
+.rec .fx { font: 12px Expressway, Arial; padding: 3px 7px; background: rgba(255,255,255,.08); }
+.mats { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 4px 0 8px; }
+.mat { width: 40px; text-align: center; position: relative; }
+.mat .q { width: 40px; height: 40px; border: 1px solid #000; background-size: cover; position: relative; }
+.mat.ok .q { outline: 2px solid #6be06b; }
+.mat .n { position: absolute; right: 2px; bottom: 1px; font: bold 12px Expressway, Arial; color: #fff; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000; }
+.mat .h { font-size: 11px; margin-top: 3px; white-space: nowrap; margin-left: -8px; margin-right: -8px; }
 </style></head>
 <body>
 <div id="raiz"></div>
@@ -1234,6 +1258,8 @@ function cc(s) {
 }
 function iconeUrl(x) {
   if (typeof x !== "string") return null;
+  var mi = x.match(/^item:([0-9]+)$/);
+  if (mi) { var nI = D.itensIcones && D.itensIcones[mi[1]]; return nI ? "icones/" + nI + ".jpg" : null; }
   var m = x.replace(/\//g, "\\").match(/^Interface\\Icons\\([^\\]+)$/i);
   return m ? "icones/" + m[1].toLowerCase() + ".jpg" : null;
 }
@@ -1327,6 +1353,21 @@ R.segs = function (b) { return '<div class="segs">' + (b.opcoes || []).map(funct
 R.duas = function (b) {
   var lista = (b.lista || []).map(function (e) { return '<div class="it' + (e.id === b.atual ? " on" : "") + '">' + (e.icone ? ico(e.icone) : "") + cc(e.s) + (e.marca ? '<span class="seu">' + cc(e.marca) + "</span>" : e.sub ? '<span class="p">' + cc(e.sub) + "</span>" : "") + "</div>"; }).join("");
   return '<div class="duas"><div class="lista"' + (b.largura ? ' style="width:' + b.largura + 'px"' : "") + ">" + lista + '</div><div class="detalhe">' + render(b.detalhe || []) + "</div></div>";
+};
+
+R.receita = function (b) {
+  var p = b.pilula || {};
+  return '<div class="rec' + (b.tam === "pequeno" ? "" : " grande") + (b.apagado ? " dim" : "") + '"' + dicaAttr(b) + ">" + ico(b.icone) +
+    '<div class="tx"><div class="t">' + cc(b.s) + "</div>" + (b.sub ? '<div class="s">' + cc(b.sub) + "</div>" : "") + "</div>" +
+    (p.s ? '<span class="pil" style="color:' + cor(p.cor) + ";background:rgba(255,255,255,.06)" + '">' + cc(p.s) + "</span>" : "") +
+    (b.faixa ? '<span class="fx">' + esc(b.faixa) + "</span>" : "") + "</div>";
+};
+R.materiais = function (b) {
+  return (b.titulo ? '<div class="gtit">' + cc(b.titulo) + "</div>" : "") + '<div class="mats" style="margin-left:' + (b.recuo || 0) + 'px">' + (b.lista || []).map(function (m) {
+    var u = iconeUrl(m.icone || ("item:" + m.id)), ok = m.tem != null && m.tem >= m.qtd;
+    return '<div class="mat' + (ok ? " ok" : "") + '" title="' + esc(m.nome) + '"><div class="q' + (u ? "" : " ph2") + '" style="' + (u ? "background-image:url(" + u + ")" : "background:#4a4a4a") + '"><span class="n">' + esc(m.qtd) + "</span></div>" +
+      (m.tem != null ? '<div class="h" style="color:' + (ok ? "#6be06b" : "#ff8c1a") + '">' + esc(m.tem) + "/" + esc(m.qtd) + "</div>" : "") + "</div>";
+  }).join("") + "</div>";
 };
 
 function um(b) {

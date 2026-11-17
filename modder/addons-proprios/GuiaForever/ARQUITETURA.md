@@ -561,3 +561,45 @@ Executado em duas ondas: na primeira, dados (T1), opções na árvore e na janel
 | Banco | `--classe PALADIN` (Elwynn, Mining e Blacksmithing), `--nivel`, `--livres`, `--com-furia`, `--sem`, `--paladino` (a a e numa chamada, o caçador num processo filho); Cleanse no 42 vem de uma tabela do banco, porque não está nas `magias` do paladino |
 
 Portão final: `checar-lua` e `checar-combate --toc` com 0 erro nos dois addons; `checar-dicas` (PALADIN com 22 magias, 4 marcos e 1 lembrete) e `checar-ajuda` (8 perguntas) ok; 18 e 16 casos; o banco do caçador com `RESUMO erros=0 avisos=0` e o `real.json` igual ao de antes da 1.3 (fora a data); o do paladino com `PALADINO falhas=0` (e limpo também no nível 2, o atual dele); `--pular` com 0 falha. Nada disso rodou no jogo ainda.
+
+## 13. Aba Crafts (1.4, 2026-11-16, noite)
+
+Pedido do dono em 2026-11-16: "Eu preciso que isso seja visual para mim dentro do jogo. Preciso que tenha uma aba própria no J com ícones dos itens e UI agradável", e, sobre a rota, que ela não supusesse padrão que nem está no leilão. Decisão do dono na mesma noite: as duas coisas juntas (a rota pesa padrão e preço, e o J ganha a aba). Isso fecha a decisão aberta "onde nasce o painel de crafts no jogo": aba própria no J do GuiaForever.
+
+### 13.1 Arquivos
+
+| Arquivo | O quê |
+|---|---|
+| `RotaCrafts.lua` | dados, gerados por `ferramentas\pregao\rota.mjs --addon` (contrato da ferramenta, seção 6.2); define `GuiaForeverRotaCrafts`. Carrega logo depois do `ProfissoesB.lua` |
+| `Crafts.lua` | o registro das receitas conhecidas e o construtor `ns.abasConstrutores.crafts`; publica `ns.rotaCrafts()` e `ns.craftsVisivel()`. Carrega por último |
+| `Janela.lua` | a aba `crafts` (rótulo Crafts, ícone `INV_Misc_ArmorKit_17`, sem sub-abas), depois de Professions |
+| `Abas.lua` | `ns.abaVisivel("crafts")` = `ns.craftsVisivel()`: há rota nos dados e o personagem tem Leatherworking |
+| `Visual.lua` | `ui.icone("item:<id>")` (`C_Item.GetItemIconByID`), `ui.moeda(cobre)` (`C_CurrencyInfo.GetCoinTextureString`, reserva "1g 02s 03c"), `ui.tooltipItem(dono, id, titulo, dica)` (`GameTooltip:SetItemByID`, em combate só o texto), campo `itemId` em qualquer bloco de linha, e os blocos `receita` e `materiais` |
+
+### 13.2 Receitas conhecidas
+
+Nos eventos `TRADE_SKILL_SHOW`, `TRADE_SKILL_LIST_UPDATE` e `TRADE_SKILL_DATA_SOURCE_CHANGED` (por `ns.ao`, com `ns.agendar` de 0,5 s), se `C_TradeSkillUI.IsTradeSkillReady()` e a janela não é de outro jogador, de guilda nem de NPC (`IsTradeSkillLinked`, `IsTradeSkillGuild`, `IsNPCCrafting`), e se `GetBaseProfessionInfo()` ou `GetChildProfessionInfo()` tem `professionName` ou `parentProfessionName` igual a "Leatherworking", grava em `ns.dbPersonagem().receitasLW` os `recipeID` de `GetAllRecipeIDs()` com `GetRecipeInfo(id).learned`, mais `quem`, `em`, `pericia`, `max` e `n`. O `recipeID` é a magia da receita, que é a `magia` dos dados (a confirmar no primeiro uso). Janela de outra profissão: anota o nome visto uma vez em `ns.log` ("crafts: profession window ..."), para calibrar. Só leitura: nada é treinado, fabricado ou comprado (regra 7).
+
+### 13.3 Blocos novos
+
+| `t` | Campos | Como desenha |
+|---|---|---|
+| `receita` | `icone`, `s`, `sub`, `faixa`, `pilula = { s, cor }`, `tam` ("grande" padrão, ou "pequeno"), `destaque`, `apagado`, `itemId`, `cor` | cartão com faixa de 4 px (`cor`, ou `destaque` quando `destaque`, ou cinza), ícone de 36 (28 no pequeno), `s` em fonte `cartao`, `sub` cinza; à direita, a faixa de perícia numa caixa e a pílula (fundo da cor a 18%, texto na cor). Altura mínima 56 (44 no pequeno). Passar o mouse mostra o tooltip do item |
+| `materiais` | `lista = { { id, nome, qtd, tem, icone, dica } }`, `titulo`, `recuo` | quadrados de 40 com o ícone do item, `qtd` no canto inferior direito (fonte `tecla`), embaixo `tem/qtd` em verde quando basta (e moldura verde) ou laranja; quebra de linha a cada largura; tooltip do item |
+
+Nenhum dos dois conta para o `limite` da seção.
+
+### 13.4 A aba
+
+1. `perfil`: "Leatherworking route", crafts e faixa, materiais e padrões, pior caso e "se tudo vender", hora dos preços; barra da perícia até o `ate` da rota.
+2. Rota terminada (perícia no `ate`): um `card` pedindo a próxima rota ao agente.
+3. `Done` (só com "Show all", recolhida): os passos já feitos, apagados.
+4. `Now`: o passo da perícia atual, grande, com os materiais e quanto se tem (`C_Item.GetItemCount(id, true)`, bolsas e banco).
+5. `Next`: os passos seguintes, pequenos, cada um com os materiais.
+6. `Patterns` (limite 6): uma linha por receita que falta e pelos padrões a vigiar, na ordem comprar agora (`agora`), vigiar no leilão (`falta`, do `esperar`), aprender no treinador (`depois`) e já conhecida (`feito`). A situação conhecida vem do jogo (`receitasLW`) antes dos dados.
+7. `Shopping list`: os materiais do resto da rota somados, maior primeiro.
+8. `About this route` (recolhida): três notas (pior caso, de onde vêm as conhecidas, a fórmula de chance não conferida no Forever).
+
+### 13.5 Banco de prova
+
+`rodar-janela.mjs` conhece os tipos `receita` e `materiais` (desenho no `real.html` incluso), simula `C_Item.GetItemCount` (Heavy Leather 62, Fine Thread 12, Iron Buckle 3, Silken Thread 14) e `GetItemIconByID`, e aceita `--lw N` (perícia de Leatherworking do caçador simulado; acima de 150, teto 225). O `real.html` desenha ícone de item pelo mapa `visual\itens-icones.json` (id para nome do ícone, versionado, refeito por `node visual\itens-icones.mjs` a partir das tabelas `Item` e `ManifestInterfaceData` do wago.tools no build do cliente, que também lista os ícones que faltam baixar) e baixa o ícone como os outros (`visual\LEIA-ME.md`). Resultado em 2026-11-16: `--estrito --abrir --desenhar` com `RESUMO erros=0 avisos=0` e 30 passos de abertura; `--classe PALADIN --estrito --desenhar` também 0. Nada disso rodou no jogo ainda.

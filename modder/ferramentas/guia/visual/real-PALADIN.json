@@ -1,10 +1,10 @@
 {
- "gerado": "2026-11-08T23:41:30.639Z",
+ "gerado": "2026-11-17T00:37:11.692Z",
  "estrito": true,
  "personagem": {
   "nome": "Ignatius Stonejaw",
   "classe": "Paladin",
-  "nivel": 2
+  "nivel": 27
  },
  "entradas": [
   {
@@ -71,6 +71,12 @@
    "chave": "profissoes-treinos",
    "id": "profissoes",
    "sub": "treinos",
+   "modo": "novo"
+  },
+  {
+   "chave": "crafts",
+   "id": "crafts",
+   "sub": null,
    "modo": "novo"
   },
   {
@@ -161,6 +167,12 @@
     ]
    },
    {
+    "icone": "Interface\\Icons\\INV_Misc_ArmorKit_17",
+    "id": "crafts",
+    "rotulo": "Crafts",
+    "subs": []
+   },
+   {
     "icone": "Interface\\Icons\\INV_Misc_QuestionMark",
     "id": "ajuda",
     "rotulo": "Help",
@@ -204,47 +216,90 @@
    {
     "t": "sec",
     "id": "agora:itens",
-    "qtd": 0,
+    "qtd": 3,
     "s": "Now"
    },
    {
-    "t": "vazio",
-    "s": "Nothing needs you right now."
+    "t": "card",
+    "aoClicar": "<fn>",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Keys"
+    },
+    "cor": "vermelho",
+    "dica": [
+     "Checked out of combat only.",
+     "Key: not on your bars"
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_QuestionMark",
+    "s": "Righteous Fury is off: turn it on before you pull.",
+    "sub": "Checked out of combat only."
+   },
+   {
+    "t": "card",
+    "aoClicar": "<fn>",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Arrow"
+    },
+    "cor": "laranja",
+    "dica": [
+     "Class quests at 20: Test of Righteousness gives Verigan's Fist, a two-handed mace; The Tome of Valor (Duthorian Rall) gives Bastion of Stormwind, a shield."
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_Book_11",
+    "s": "Class quests at 20",
+    "sub": "Test of Righteousness gives Verigan's Fist, a two-handed mace; The Tome of..."
+   },
+   {
+    "t": "card",
+    "aoClicar": "<fn>",
+    "botao": {
+     "acao": "<fn>",
+     "rotulo": "Show"
+    },
+    "cor": "amarelo",
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Precision 1/3",
+     "B (Mana): Precision 1/3",
+     "C (More mana): Divine Intellect 1/5",
+     "Compare A, B and C in the Talents tab (J)."
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_Book_09",
+    "s": "Talent point: Precision 1/3 or Divine Intellect 1/5",
+    "sub": "Your pick: 6 free Protection points"
    },
    {
     "t": "sec",
     "id": "agora:prox",
-    "qtd": "levels 3-4",
+    "qtd": "levels 28-29",
     "s": "Coming up"
    },
    {
     "t": "item",
-    "dica": "New spell: Judgement: off the GCD and no longer uses the seal. Press it whenever it is ready.",
-    "icone": 20271,
-    "nivel": 4,
-    "s": "New spell: Judgement: off the GCD and no longer uses the..."
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Precision 2/3",
+     "B (Mana): Precision 2/3",
+     "C (More mana): Divine Intellect 2/5"
+    ],
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 28,
+    "s": "Talent: Precision 2/3 or Divine Intellect 2/5",
+    "sub": "A, B: Precision 2/3 / C: Divine Intellect 2/5"
    },
    {
     "t": "item",
-    "icone": 19740,
-    "nivel": "",
-    "s": "New spell: Blessing of Might."
-   },
-   {
-    "t": "item",
-    "icone": 20271,
-    "nivel": "",
-    "s": "judge_Start: starts auto attack and casts Judgement",
-    "sub": "New key",
-    "tecla": "2"
-   },
-   {
-    "t": "item",
-    "icone": 19740,
-    "nivel": "",
-    "s": "Blessing of Might",
-    "sub": "New key",
-    "tecla": "S4"
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Precision 3/3",
+     "B (Mana): Precision 3/3",
+     "C (More mana): Divine Intellect 3/5"
+    ],
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 29,
+    "s": "Talent: Precision 3/3 or Divine Intellect 3/5",
+    "sub": "A, B: Precision 3/3 / C: Divine Intellect 3/5"
    },
    {
     "t": "sec",
@@ -293,7 +348,7 @@
      },
      {
       "t": "regua",
-      "atual": 2,
+      "atual": 27,
       "linhas": [
        {
         "icone": 17253,
@@ -652,7 +707,7 @@
       ],
       "max": 60,
       "min": 1,
-      "rotuloAtual": "you 2"
+      "rotuloAtual": "you 27"
      },
      {
       "t": "sec",
@@ -814,108 +869,73 @@
    },
    {
     "t": "item",
-    "estado": "depois",
-    "icone": "Interface\\Icons\\Ability_Marksmanship",
-    "nivel": 10,
-    "s": "Benediction 1/5"
-   },
-   {
-    "t": "item",
-    "estado": "depois",
-    "icone": "Interface\\Icons\\Ability_Marksmanship",
-    "nivel": 11,
-    "s": "Benediction 2/5"
-   },
-   {
-    "t": "item",
-    "estado": "depois",
-    "icone": "Interface\\Icons\\Ability_Marksmanship",
-    "nivel": 12,
-    "s": "Benediction 3/5"
-   },
-   {
-    "t": "item",
-    "estado": "depois",
-    "icone": "Interface\\Icons\\Ability_Marksmanship",
-    "nivel": 13,
-    "s": "Benediction 4/5"
-   },
-   {
-    "t": "item",
-    "estado": "depois",
-    "icone": "Interface\\Icons\\Ability_Marksmanship",
-    "nivel": 14,
-    "s": "Benediction 5/5"
-   },
-   {
-    "t": "sec",
-    "aberta": true,
-    "id": "talentos:op:ret",
-    "s": "Your pick: Order from 15 to 19"
-   },
-   {
-    "t": "item",
-    "icone": "Interface\\Icons\\Ability_Marksmanship",
-    "s": "B: Improved Judgement first"
-   },
-   {
-    "t": "item",
-    "icone": "Interface\\Icons\\Ability_Marksmanship",
-    "s": "C: Sanctified Judgement first"
-   },
-   {
-    "t": "tabela",
-    "colunas": [
-     {
-      "largura": 50,
-      "s": "Level"
-     },
-     {
-      "s": "B Improved Judgement first"
-     },
-     {
-      "s": "C Sanctified Judgement first"
-     }
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Precision 1/3",
+     "B (Mana): Precision 1/3",
+     "C (More mana): Divine Intellect 1/5"
     ],
-    "id": "talentos:op:ret:tab",
-    "limite": 6,
-    "linhas": [
-     {
-      "celulas": [
-       "15",
-       "Improved Judgement 1/2",
-       "Sanctified Judgement 1/3"
-      ]
-     },
-     {
-      "celulas": [
-       "16",
-       "Improved Judgement 2/2",
-       "Sanctified Judgement 2/3"
-      ]
-     },
-     {
-      "celulas": [
-       "17",
-       "Sanctified Judgement 1/3",
-       "Sanctified Judgement 3/3"
-      ]
-     },
-     {
-      "celulas": [
-       "18",
-       "Sanctified Judgement 2/3",
-       "Improved Judgement 1/2"
-      ]
-     },
-     {
-      "celulas": [
-       "19",
-       "Sanctified Judgement 3/3",
-       "Improved Judgement 2/2"
-      ]
-     }
-    ]
+    "estado": "agora",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 27,
+    "s": "Precision 1/3 or Divine Intellect 1/5",
+    "sub": "A, B: Precision 1/3 / C: Divine Intellect 1/5"
+   },
+   {
+    "t": "item",
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Precision 2/3",
+     "B (Mana): Precision 2/3",
+     "C (More mana): Divine Intellect 2/5"
+    ],
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 28,
+    "s": "Precision 2/3 or Divine Intellect 2/5",
+    "sub": "A, B: Precision 2/3 / C: Divine Intellect 2/5"
+   },
+   {
+    "t": "item",
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Precision 3/3",
+     "B (Mana): Precision 3/3",
+     "C (More mana): Divine Intellect 3/5"
+    ],
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 29,
+    "s": "Precision 3/3 or Divine Intellect 3/5",
+    "sub": "A, B: Precision 3/3 / C: Divine Intellect 3/5"
+   },
+   {
+    "t": "item",
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Sacred Duty 1/2",
+     "B (Mana): Sacred Duty 1/2",
+     "C (More mana): Divine Intellect 4/5"
+    ],
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 30,
+    "s": "Sacred Duty 1/2 or Divine Intellect 4/5",
+    "sub": "A, B: Sacred Duty 1/2 / C: Divine Intellect 4/5"
+   },
+   {
+    "t": "item",
+    "dica": [
+     "Your pick: 6 free Protection points",
+     "A (Defense): Sacred Duty 2/2",
+     "B (Mana): Sacred Duty 2/2",
+     "C (More mana): Divine Intellect 5/5"
+    ],
+    "estado": "depois",
+    "icone": "Interface\\Icons\\Ability_Marksmanship",
+    "nivel": 31,
+    "s": "Sacred Duty 2/2 or Divine Intellect 5/5",
+    "sub": "A, B: Sacred Duty 2/2 / C: Divine Intellect 5/5"
    },
    {
     "t": "sec",
@@ -1129,17 +1149,8 @@
     "s": "New spells"
    },
    {
-    "t": "item",
-    "dica": "Judgement: off the GCD and no longer uses the seal. Press it whenever it is ready.",
-    "icone": 20271,
-    "nivel": 4,
-    "s": "Judgement: off the GCD and no longer uses the seal...."
-   },
-   {
-    "t": "item",
-    "icone": 19740,
-    "nivel": "",
-    "s": "Blessing of Might."
+    "t": "vazio",
+    "s": "No new spells in these levels."
    },
    {
     "t": "sec",
@@ -1237,11 +1248,53 @@
    {
     "t": "sec",
     "id": "combate:rotacao",
+    "qtd": 8,
     "s": "Rotation"
    },
    {
-    "t": "vazio",
-    "s": "No rotation tip for this range."
+    "t": "item",
+    "destaque": true,
+    "dica": "Judgement is off the GCD and does not use up the seal: press it whenever it is ready.",
+    "s": "Judgement is off the GCD and does not use up the seal",
+    "sub": "press it whenever it is ready."
+   },
+   {
+    "t": "item",
+    "destaque": true,
+    "s": "Holy Strike whenever it is ready."
+   },
+   {
+    "t": "item",
+    "destaque": true,
+    "s": "Before every pull: Righteous Fury on."
+   },
+   {
+    "t": "item",
+    "destaque": true,
+    "dica": "Seal of Fury all the time. Renew it only when its 30 s run out.",
+    "s": "Seal of Fury all the time. Renew it only when its 30 s..."
+   },
+   {
+    "t": "item",
+    "destaque": true,
+    "dica": "Judgement at 10 yards with Seal of Fury is the taunt: 3 s hold, on the mob coming to you.",
+    "s": "Judgement at 10 yards with Seal of Fury is the taunt",
+    "sub": "3 s hold, on the mob coming to you."
+   },
+   {
+    "t": "item",
+    "destaque": true,
+    "s": "Before a pull: Retribution Aura on, with a blessing up."
+   },
+   {
+    "t": "item",
+    "dica": "Consecration on melee while mana allows: only the first 4 enemies take full damage.",
+    "s": "Consecration on melee while mana allows",
+    "sub": "only the first 4 enemies take full damage."
+   },
+   {
+    "t": "item",
+    "s": "Exorcism on undead and demons only."
    },
    {
     "t": "sec",
@@ -1294,7 +1347,7 @@
    {
     "t": "sec",
     "id": "teclas-tuas",
-    "qtd": "level 2",
+    "qtd": "level 27",
     "s": "Your keys"
    },
    {
@@ -1302,42 +1355,32 @@
     "teclas": [
      {
       "dica": "strike_Holy: starts auto attack and casts Holy Strike",
-      "estado": "travado",
       "icone": 679,
       "k": "1",
-      "nivel": 6,
       "nome": "strike_Holy"
      },
      {
       "dica": "judge_Start: starts auto attack and casts Judgement",
-      "estado": "travado",
       "icone": 20271,
       "k": "2",
-      "nivel": 4,
       "nome": "judge_Start"
      },
      {
       "dica": "Seal of Fury",
-      "estado": "travado",
       "icone": 1311649,
       "k": "3",
-      "nivel": 10,
       "nome": "Seal of Fury"
      },
      {
       "dica": "Consecration",
-      "estado": "travado",
       "icone": 26573,
       "k": "4",
-      "nivel": 20,
       "nome": "Consecration"
      },
      {
       "dica": "Exorcism",
-      "estado": "travado",
       "icone": 879,
       "k": "5",
-      "nivel": 20,
       "nome": "Exorcism"
      },
      {
@@ -1351,10 +1394,8 @@
      false,
      {
       "dica": "Hammer of Justice",
-      "estado": "travado",
       "icone": 853,
       "k": "Q",
-      "nivel": 8,
       "nome": "Hammer of Justice"
      },
      {
@@ -1367,10 +1408,8 @@
      },
      {
       "dica": "Flash of Light",
-      "estado": "travado",
       "icone": 19750,
       "k": "R",
-      "nivel": 20,
       "nome": "Flash of Light"
      },
      {
@@ -1381,10 +1420,8 @@
      },
      {
       "dica": "Lay on Hands",
-      "estado": "travado",
       "icone": 633,
       "k": "T",
-      "nivel": 10,
       "nome": "Lay on Hands"
      },
      {
@@ -1403,42 +1440,32 @@
     "teclas": [
      {
       "dica": "Righteous Fury",
-      "estado": "travado",
       "icone": 25780,
       "k": "S1",
-      "nivel": 10,
       "nome": "Righteous Fury"
      },
      {
       "dica": "Retribution Aura",
-      "estado": "travado",
       "icone": 7294,
       "k": "S2",
-      "nivel": 16,
       "nome": "Retribution Aura"
      },
      {
       "dica": "Blessing of Kings",
-      "estado": "travado",
       "icone": 20217,
       "k": "S3",
-      "nivel": 20,
       "nome": "Blessing of Kings"
      },
      {
       "dica": "Blessing of Might",
-      "estado": "travado",
       "icone": 19740,
       "k": "S4",
-      "nivel": 4,
       "nome": "Blessing of Might"
      },
      {
       "dica": "Holy Light",
-      "estado": "travado",
       "icone": 639,
       "k": "S5",
-      "nivel": 6,
       "nome": "Holy Light"
      },
      {
@@ -1450,34 +1477,26 @@
      false,
      {
       "dica": "Divine Protection",
-      "estado": "travado",
       "icone": 498,
       "k": "SQ",
-      "nivel": 6,
       "nome": "Divine Protection"
      },
      {
       "dica": "Seal of the Crusader",
-      "estado": "travado",
       "icone": 21082,
       "k": "SE",
-      "nivel": 6,
       "nome": "Seal of the Crusader"
      },
      {
       "dica": "Seal of Righteousness",
-      "estado": "travado",
       "icone": 20287,
       "k": "SR",
-      "nivel": 10,
       "nome": "Seal of Righteousness"
      },
      {
       "dica": "Redemption",
-      "estado": "travado",
       "icone": 7328,
       "k": "SF",
-      "nivel": 12,
       "nome": "Redemption"
      },
      {
@@ -1504,18 +1523,14 @@
     "teclas": [
      {
       "dica": "Blessing of Wisdom",
-      "estado": "travado",
       "icone": 19742,
       "k": "Z",
-      "nivel": 14,
       "nome": "Blessing of Wisdom"
      },
      {
       "dica": "cleanse_Mouse: Purify on mouseover (Cleanse from 42) Complete at 42.",
-      "estado": "travado",
       "icone": 1152,
       "k": "X",
-      "nivel": 8,
       "nome": "cleanse_Mouse"
      },
      {
@@ -1527,26 +1542,20 @@
      false,
      {
       "dica": "Seal of Justice",
-      "estado": "travado",
       "icone": 20164,
       "k": "C1",
-      "nivel": 22,
       "nome": "Seal of Justice"
      },
      {
       "dica": "Concentration Aura",
-      "estado": "travado",
       "icone": 19746,
       "k": "C2",
-      "nivel": 22,
       "nome": "Concentration Aura"
      },
      {
       "dica": "Turn Undead",
-      "estado": "travado",
       "icone": 2878,
       "k": "C3",
-      "nivel": 24,
       "nome": "Turn Undead"
      },
      {
@@ -1560,18 +1569,14 @@
      false,
      {
       "dica": "bop_Mouse: Blessing of Protection on mouseover, else target or you; press again to cancel yours",
-      "estado": "travado",
       "icone": 1022,
       "k": "M4",
-      "nivel": 10,
       "nome": "bop_Mouse"
      },
      {
       "dica": "bof_Mouse: Blessing of Freedom on mouseover, else target or you",
-      "estado": "travado",
       "icone": 1044,
       "k": "M5",
-      "nivel": 18,
       "nome": "bof_Mouse"
      }
     ],
@@ -1580,72 +1585,24 @@
    {
     "t": "sec",
     "id": "teclas-proximas",
-    "qtd": "up to level 8",
+    "qtd": "up to level 33",
     "s": "Coming next"
    },
    {
     "t": "item",
-    "dica": "judge_Start: starts auto attack and casts Judgement",
-    "icone": 20271,
-    "nivel": 4,
-    "s": "judge_Start",
-    "tecla": "2"
+    "dica": "Seal of Light",
+    "icone": 20165,
+    "nivel": 30,
+    "s": "Seal of Light",
+    "tecla": "ST"
    },
    {
     "t": "item",
-    "dica": "Blessing of Might",
-    "icone": 19740,
+    "dica": "Divine Intervention",
+    "icone": 19752,
     "nivel": "",
-    "s": "Blessing of Might",
-    "tecla": "S4"
-   },
-   {
-    "t": "item",
-    "dica": "strike_Holy: starts auto attack and casts Holy Strike",
-    "icone": 679,
-    "nivel": 6,
-    "s": "strike_Holy",
-    "tecla": "1"
-   },
-   {
-    "t": "item",
-    "dica": "Holy Light",
-    "icone": 639,
-    "nivel": "",
-    "s": "Holy Light",
-    "tecla": "S5"
-   },
-   {
-    "t": "item",
-    "dica": "Divine Protection",
-    "icone": 498,
-    "nivel": "",
-    "s": "Divine Protection",
-    "tecla": "SQ"
-   },
-   {
-    "t": "item",
-    "dica": "Seal of the Crusader",
-    "icone": 21082,
-    "nivel": "",
-    "s": "Seal of the Crusader",
-    "tecla": "SE"
-   },
-   {
-    "t": "item",
-    "dica": "Hammer of Justice",
-    "icone": 853,
-    "nivel": 8,
-    "s": "Hammer of Justice",
-    "tecla": "Q"
-   },
-   {
-    "t": "item",
-    "dica": "cleanse_Mouse: Purify on mouseover (Cleanse from 42) Complete at 42.",
-    "icone": 1152,
-    "nivel": "",
-    "s": "cleanse_Mouse",
-    "tecla": "X"
+    "s": "Divine Intervention",
+    "tecla": "SG"
    },
    {
     "t": "sec",
@@ -1718,13 +1675,8 @@
    {
     "t": "sec",
     "id": "combate:armas",
-    "qtd": 4,
+    "qtd": 5,
     "s": "Weapons"
-   },
-   {
-    "t": "item",
-    "nivel": "1-21",
-    "s": "Level with a two-handed weapon until 21."
    },
    {
     "t": "item",
@@ -1743,6 +1695,17 @@
     "t": "item",
     "nivel": "1-60",
     "s": "Exception: a weapon with a lot of spell power can be slower."
+   },
+   {
+    "t": "item",
+    "nivel": "10-60",
+    "s": "Seal of Fury absorbs damage only with a shield."
+   },
+   {
+    "t": "item",
+    "dica": "From 22: a one-hander and shield, with the first Redoubt point.",
+    "nivel": "22-60",
+    "s": "From 22: a one-hander and shield, with the first Redoubt..."
    }
   ],
   "combate-atributos": [
@@ -2769,6 +2732,461 @@
     "s": "|cff999999Undo: /guia trainers undo|r"
    }
   ],
+  "crafts": [
+   {
+    "t": "perfil",
+    "barras": [
+     {
+      "cor": "verde",
+      "max": 225,
+      "s": "?/225",
+      "valor": 186
+     }
+    ],
+    "icone": "Interface\\Icons\\INV_Misc_ArmorKit_17",
+    "sub": [
+     "45 crafts, skill 186 to 225",
+     "Materials 29g 77s 85c, patterns 42s 75c",
+     "Worst case -5g 07s 56c, if all sells -2g 48s 90c",
+     "Prices of 2026-11-16 21:13"
+    ],
+    "titulo": "Leatherworking route"
+   },
+   {
+    "t": "sec",
+    "id": "crafts:agora",
+    "s": "Now"
+   },
+   {
+    "t": "receita",
+    "destaque": true,
+    "faixa": "186-191",
+    "icone": "item:5739",
+    "itemId": 5739,
+    "pilula": {
+     "cor": "azul",
+     "s": "Trainer"
+    },
+    "s": "Barbaric Harness  x6",
+    "sub": "32s 34c each, worst case -29s 76c, if sold -24s 24c",
+    "tam": "grande"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4234,
+      "nome": "Heavy Leather",
+      "qtd": 84,
+      "tem": 62
+     },
+     {
+      "id": 2321,
+      "nome": "Fine Thread",
+      "qtd": 12,
+      "tem": 12
+     },
+     {
+      "id": 7071,
+      "nome": "Iron Buckle",
+      "qtd": 6,
+      "tem": 3
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "sec",
+    "id": "crafts:prox",
+    "qtd": "6 steps",
+    "s": "Next"
+   },
+   {
+    "t": "receita",
+    "faixa": "191-200",
+    "icone": "item:7391",
+    "itemId": 7391,
+    "pilula": {
+     "cor": "dourado",
+     "s": "AH 13s 75c"
+    },
+    "s": "Swift Boots  x10",
+    "sub": "49s 60c each, worst case -70s 70c, if sold +26s 30c",
+    "tam": "pequeno"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4234,
+      "nome": "Heavy Leather",
+      "qtd": 100,
+      "tem": 62
+     },
+     {
+      "id": 2459,
+      "nome": "Swiftness Potion",
+      "qtd": 20,
+      "tem": 0
+     },
+     {
+      "id": 4337,
+      "nome": "Thick Spider's Silk",
+      "qtd": 20,
+      "tem": 0
+     },
+     {
+      "id": 4291,
+      "nome": "Silken Thread",
+      "qtd": 10,
+      "tem": 14
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "receita",
+    "faixa": "200-205",
+    "icone": "item:252565",
+    "itemId": 252565,
+    "pilula": {
+     "cor": "dourado",
+     "s": "AH 29s 00c"
+    },
+    "s": "Mender's Mail Boots  x5",
+    "sub": "41s 54c each, worst case +7s 30c",
+    "tam": "pequeno"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4234,
+      "nome": "Heavy Leather",
+      "qtd": 40,
+      "tem": 62
+     },
+     {
+      "id": 4233,
+      "nome": "Cured Medium Hide",
+      "qtd": 10,
+      "tem": 0
+     },
+     {
+      "id": 5500,
+      "nome": "Iridescent Pearl",
+      "qtd": 10,
+      "tem": 0
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "receita",
+    "faixa": "205-207",
+    "icone": "item:7391",
+    "itemId": 7391,
+    "pilula": {
+     "cor": "dourado",
+     "s": "AH 13s 75c"
+    },
+    "s": "Swift Boots  x5",
+    "sub": "49s 60c each, worst case -35s 35c, if sold +13s 15c",
+    "tam": "pequeno"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4234,
+      "nome": "Heavy Leather",
+      "qtd": 50,
+      "tem": 62
+     },
+     {
+      "id": 2459,
+      "nome": "Swiftness Potion",
+      "qtd": 10,
+      "tem": 0
+     },
+     {
+      "id": 4337,
+      "nome": "Thick Spider's Silk",
+      "qtd": 10,
+      "tem": 0
+     },
+     {
+      "id": 4291,
+      "nome": "Silken Thread",
+      "qtd": 5,
+      "tem": 14
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "receita",
+    "faixa": "207-208",
+    "icone": "item:8176",
+    "itemId": 8176,
+    "pilula": {
+     "cor": "azul",
+     "s": "Trainer"
+    },
+    "s": "Nightscape Headband  x2",
+    "sub": "40s 50c each, worst case -22s 56c, if sold -10s 82c",
+    "tam": "pequeno"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4304,
+      "nome": "Thick Leather",
+      "qtd": 10,
+      "tem": 0
+     },
+     {
+      "id": 4291,
+      "nome": "Silken Thread",
+      "qtd": 4,
+      "tem": 14
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "receita",
+    "faixa": "208-211",
+    "icone": "item:8200",
+    "itemId": 8200,
+    "pilula": {
+     "cor": "verde",
+     "s": "Known"
+    },
+    "s": "Big Voodoo Robe  x3",
+    "sub": "91s 09c each, worst case -55s 02c, if sold +20s 25c",
+    "tam": "pequeno"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4304,
+      "nome": "Thick Leather",
+      "qtd": 30,
+      "tem": 0
+     },
+     {
+      "id": 8151,
+      "nome": "Flask of Mojo",
+      "qtd": 12,
+      "tem": 0
+     },
+     {
+      "id": 8343,
+      "nome": "Heavy Silken Thread",
+      "qtd": 3,
+      "tem": 0
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "receita",
+    "faixa": "211-225",
+    "icone": "item:8193",
+    "itemId": 8193,
+    "pilula": {
+     "cor": "azul",
+     "s": "Trainer"
+    },
+    "s": "Nightscape Pants  x14",
+    "sub": "1g 05s 56c each, worst case -2g 58s 72c, if sold -2g 80s 84c",
+    "tam": "pequeno"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4304,
+      "nome": "Thick Leather",
+      "qtd": 196,
+      "tem": 0
+     },
+     {
+      "id": 4291,
+      "nome": "Silken Thread",
+      "qtd": 56,
+      "tem": 14
+     }
+    ],
+    "recuo": 12
+   },
+   {
+    "t": "sec",
+    "id": "crafts:padroes",
+    "limite": 6,
+    "qtd": 8,
+    "s": "Patterns"
+   },
+   {
+    "t": "item",
+    "estado": "agora",
+    "icone": "item:7453",
+    "itemId": 7453,
+    "s": "Pattern: Swift Boots",
+    "sub": "Buy the pattern on the AH: 13s 75c (46 listed)"
+   },
+   {
+    "t": "item",
+    "estado": "agora",
+    "icone": "item:252899",
+    "itemId": 252899,
+    "s": "Pattern: Mender's Mail Boots",
+    "sub": "Buy the pattern on the AH: 29s 00c (9 listed)"
+   },
+   {
+    "t": "item",
+    "estado": "falta",
+    "icone": "item:7452",
+    "itemId": 7452,
+    "s": "Pattern: Dusky Boots",
+    "sub": "Not on the AH now; seen 11/16 at 1g 50s 00c. Cheaper route if you find it."
+   },
+   {
+    "t": "item",
+    "estado": "falta",
+    "icone": "item:8404",
+    "itemId": 8404,
+    "s": "Pattern: Wild Leather Vest",
+    "sub": "Not on the AH now; never seen there. Cheaper route if you find it."
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\INV_Misc_Book_11",
+    "s": "Barbaric Harness",
+    "sub": "Learn it at the Leatherworking trainer (skill 160)."
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\INV_Misc_Book_11",
+    "s": "Nightscape Headband",
+    "sub": "Learn it at the Leatherworking trainer (skill 175)."
+   },
+   {
+    "t": "item",
+    "estado": "depois",
+    "icone": "Interface\\Icons\\INV_Misc_Book_11",
+    "s": "Nightscape Pants",
+    "sub": "Learn it at the Leatherworking trainer (skill 200)."
+   },
+   {
+    "t": "item",
+    "estado": "feito",
+    "icone": "Interface\\Icons\\INV_Misc_Book_11",
+    "s": "Big Voodoo Robe",
+    "sub": "You know this recipe."
+   },
+   {
+    "t": "sec",
+    "id": "crafts:compras",
+    "qtd": "rest of the route",
+    "s": "Shopping list"
+   },
+   {
+    "t": "materiais",
+    "lista": [
+     {
+      "id": 4234,
+      "nome": "Heavy Leather",
+      "qtd": 274,
+      "tem": 62
+     },
+     {
+      "id": 4304,
+      "nome": "Thick Leather",
+      "qtd": 236,
+      "tem": 0
+     },
+     {
+      "id": 4291,
+      "nome": "Silken Thread",
+      "qtd": 75,
+      "tem": 14
+     },
+     {
+      "id": 2459,
+      "nome": "Swiftness Potion",
+      "qtd": 30,
+      "tem": 0
+     },
+     {
+      "id": 4337,
+      "nome": "Thick Spider's Silk",
+      "qtd": 30,
+      "tem": 0
+     },
+     {
+      "id": 2321,
+      "nome": "Fine Thread",
+      "qtd": 12,
+      "tem": 12
+     },
+     {
+      "id": 8151,
+      "nome": "Flask of Mojo",
+      "qtd": 12,
+      "tem": 0
+     },
+     {
+      "id": 5500,
+      "nome": "Iridescent Pearl",
+      "qtd": 10,
+      "tem": 0
+     },
+     {
+      "id": 4233,
+      "nome": "Cured Medium Hide",
+      "qtd": 10,
+      "tem": 0
+     },
+     {
+      "id": 7071,
+      "nome": "Iron Buckle",
+      "qtd": 6,
+      "tem": 3
+     },
+     {
+      "id": 8343,
+      "nome": "Heavy Silken Thread",
+      "qtd": 3,
+      "tem": 0
+     }
+    ],
+    "titulo": "On the icon: what the rest of the route needs. Below: what you have (bags and bank) / needed."
+   },
+   {
+    "t": "sec",
+    "aberta": false,
+    "id": "crafts:sobre",
+    "s": "About this route"
+   },
+   {
+    "t": "nota",
+    "s": "Worst case = you sell every craft to a vendor. Prices are a snapshot: they get old in a few hours."
+   },
+   {
+    "t": "nota",
+    "s": "Known recipes are read when you open your Leatherworking window."
+   },
+   {
+    "t": "nota",
+    "s": "The chance of a skill point uses the Classic formula, not yet checked on Forever."
+   }
+  ],
   "ajuda-perguntas": [
    {
     "t": "segs",
@@ -3087,7 +3505,7 @@
      {
       "celulas": [
        "UIForever",
-       "this layout, keys, rotation cooldown bar under your character, number fonts",
+       "this layout, keys, number fonts",
        "automatic on login"
       ]
      }
@@ -3175,5 +3593,27 @@
     "sub": "Talent tree: options side by side; pick one, see Talents."
    }
   ]
+ },
+ "itensIcones": {
+  "2321": "inv_fabric_wool_02",
+  "2459": "inv_potion_95",
+  "4233": "inv_misc_pelt_bear_02",
+  "4234": "inv_misc_leatherscrap_07",
+  "4291": "inv_fabric_silk_02",
+  "4304": "inv_misc_leatherscrap_08",
+  "4337": "spell_nature_web",
+  "5500": "inv_misc_gem_pearl_02",
+  "5739": "inv_chest_leather_04",
+  "7071": "inv_misc_armorkit_12",
+  "7391": "inv_boots_08",
+  "7452": "inv_scroll_03",
+  "7453": "inv_scroll_03",
+  "8151": "inv_potion_15",
+  "8176": "inv_belt_24",
+  "8193": "inv_pants_11",
+  "8200": "inv_chest_cloth_25",
+  "8343": "inv_fabric_silk_02",
+  "8404": "inv_scroll_03",
+  "252899": "inv_scroll_06"
  }
 }

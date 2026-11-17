@@ -1,6 +1,14 @@
 # GuiaForever
 
-Addon próprio do dono, versão 1.3.1 (2026-11-13: a rota de Leatherworking, os treinadores e os padrões trocados pelo vídeo do ReptilioPlays, fonte máxima do dono para a profissão; ver `..\..\..\comum\fontes\profissoes\reptilio-leatherworking.md`). Antes: 1.3.0 (2026-11-08, noite: o paladino Ignatius Stonejaw, com talentos em opções lado a lado, lembrete de Righteous Fury, marcos de nível e macros; ver "O que mudou na 1.3"). Antes: 1.2.0 (2026-11-08, tarde: a janela J refeita no estilo do ElvUI, organizada por tipo de informação; ver "O que mudou na 1.2"), 1.1.0 (2026-11-08, madrugada: guia de habilidades de pet por família, aba Families e seção Next ability upgrades na aba Pet) e 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+Addon próprio do dono, versão 1.4.0 (2026-11-16, noite: a aba Crafts do J, com a rota de Leatherworking da ferramenta em ícones; ver "O que mudou na 1.4"). Antes: 1.3.2 (2026-11-16: a rota de Leatherworking da aba Professions > Mine passou a vir da ferramenta `ferramentas\pregao\rota.mjs`, por decisão do dono). Antes: 1.3.1 (2026-11-13: a rota de Leatherworking, os treinadores e os padrões trocados pelo vídeo do ReptilioPlays, fonte máxima do dono para a profissão; ver `..\..\..\comum\fontes\profissoes\reptilio-leatherworking.md`). Antes: 1.3.0 (2026-11-08, noite: o paladino Ignatius Stonejaw, com talentos em opções lado a lado, lembrete de Righteous Fury, marcos de nível e macros; ver "O que mudou na 1.3"). Antes: 1.2.0 (2026-11-08, tarde: a janela J refeita no estilo do ElvUI, organizada por tipo de informação; ver "O que mudou na 1.2"), 1.1.0 (2026-11-08, madrugada: guia de habilidades de pet por família, aba Families e seção Next ability upgrades na aba Pet) e 1.0.1 (2026-11-07; a 1.0.1 só acrescenta à aba Help, seção Addons, as marcas de recompensa do RestedXP, o pular magia do Naowh e os preços no tooltip do Auctionator). Leva para dentro do jogo o que as fontes do dono dizem e o que ele decidiu sobre elas. Está ligado ao jogo por junction (`ferramentas\dev-link.ps1`, manifesto `estado\addons\dev-guiaforever.json`): editar aqui é editar o que o jogo carrega.
+
+## O que mudou na 1.4
+
+Aba Crafts no J (pedido do dono em 2026-11-16: "uma aba própria no J com ícones dos itens e UI agradável"). Mostra a rota de Leatherworking que a ferramenta `ferramentas\pregao\rota.mjs` escolheu: o passo de agora em destaque, os seguintes, cada um com o ícone do item, a faixa de perícia, o preço por craft, o pior caso e de onde vem o padrão (Known, AH com o preço, Vendor ou Trainer); embaixo de cada passo, os materiais em ícones com a quantidade e quanto você tem (bolsas e banco), em verde quando basta. Depois, os padrões (comprar agora, vigiar no leilão, aprender no treinador) e a lista de compras do resto da rota. Passar o mouse mostra o tooltip do item. A aba só aparece para quem tem Leatherworking e quando há rota nos dados.
+
+Ao abrir a janela de Leatherworking, o addon anota as receitas que o personagem conhece (`receitasLW` no banco do personagem); a ferramenta lê isso na próxima rota, e a aba já marca como Known na hora.
+
+Arquivos novos: `RotaCrafts.lua` (dados gerados por `rota.mjs --addon`; nunca editar à mão) e `Crafts.lua`. Instalar a 1.4 pediu reiniciar o jogo (arquivos novos no `.toc`); trocar a rota depois só pede `/reload`. Contrato na seção 13 de `ARQUITETURA.md`.
 
 ## O que mudou na 1.3
 
@@ -74,6 +82,7 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 | `PetGuia.lua` | gerado (1.1): `GuiaForeverPetGuia`, famílias, habilidades, ranks, professores, regras e notas; nunca editar à mão |
 | `Ajuda.lua` | `GuiaForeverAjuda[CLASSE]`: 14 perguntas (13 até a 1.0.1) do dono com as respostas das fontes, para a aba Help (1.0) |
 | `ProfissoesA.lua`, `ProfissoesB.lua` | roteiros das 10 profissões |
+| `RotaCrafts.lua` | 1.4, gerado: `GuiaForeverRotaCrafts`, a rota de Leatherworking da ferramenta (`rota.mjs --addon`) com ids de itens, padrões e materiais, para a aba Crafts; nunca editar à mão |
 | `GuiaForever.lua` | núcleo: profissões, gráficos, macros e comandos `/guia`; funções compartilhadas em `ns` |
 | `Estado.lua` | base comum da 1.0: eventos (`ns.ao`), debounce, fila de depois do combate, estado do jogo (`ns.estado`), magias conhecidas, livro do pet, pontos de talento por `C_Traits`, missões, uma seta só (`ns.seta`, pelo TomTom ou pela seta nativa), tecla de uma ação (`ns.teclaDe`) e o filtro das dicas (`ns.relevante`) |
 | `Visual.lua` | `ns.ui` (1.2): skin do ElvUI com reserva plana, fontes, cores, ícones e o desenhista dos blocos (`ns.ui.desenhar`) |
@@ -90,6 +99,7 @@ Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\
 | `Arvore.lua` | plano de talentos (`ns.arvore.plano`, `ns.arvore.proximo`) e as marcas na árvore de talentos do Forever |
 | `Tooltips.lua` | linhas do guia nos tooltips de item ("Your pet can eat this"), de magia (tecla e uso) e de ação do pet (autocast) |
 | `Abas.lua` | construtores das abas (1.2): Now, Pet, Families (repasse), Talents, Combat, Professions e Help, mais `ns.abasEstado` e `ns.abaVisivel` |
+| `Crafts.lua` | 1.4: a aba Crafts e o registro das receitas conhecidas de Leatherworking, lido da janela de profissão |
 | `Bindings.xml` | a ação `GUIAFOREVER_JANELA` |
 
 Classes com dados: HUNTER (Hexumlite Bull), SHAMAN (Rurik Thunderfist) e, desde a 1.3, PALADIN (Ignatius Stonejaw). O pet é do caçador; o painel, as marcas na árvore, as teclas e as macros valem para o caçador e o paladino; o xamã usa a janela.

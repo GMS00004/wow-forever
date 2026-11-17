@@ -2,7 +2,7 @@
 ## Title: GuiaForever
 ## Notes: Your next steps on screen (Now panel), pet care with a smart feed key, guide marks at the pet trainer and talent tree, tooltips, and a guide window with search: talents, spells, pets, keys, professions and trainers.
 ## Author: Bruno
-## Version: 1.3.2
+## Version: 1.4.0
 ## SavedVariables: GuiaForeverDB
 ## OptionalDeps: Questie, QuestieDB, TomTom, NaowhForever, NaowhForever_Training, RXPGuides
 Dados.lua
@@ -11,6 +11,7 @@ PetGuia.lua
 Ajuda.lua
 ProfissoesA.lua
 ProfissoesB.lua
+RotaCrafts.lua
 GuiaForever.lua
 Estado.lua
 Visual.lua
@@ -27,3 +28,4 @@ Familias.lua
 Arvore.lua
 Tooltips.lua
 Abas.lua
+Crafts.lua
