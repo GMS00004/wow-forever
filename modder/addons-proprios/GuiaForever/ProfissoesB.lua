@@ -16,32 +16,9 @@ GuiaForeverProfissoesB = {
       { de = 165, ate = 180, texto = "Enchant Bracer - Spirit (15x): 15 Lesser Mystic Essence" },
       { de = 180, ate = 200, texto = "Enchant Bracer - Strength (20x): 20 Vision Dust" },
       { de = 200, ate = 205, texto = "Runed Truesilver Rod (1x): 1 Truesilver Rod, 1 Black Pearl, 2 Greater Mystic Essence, 2 Vision Dust" },
-      { de = 205, ate = 225, texto = "Enchant Cloak - Greater Defense (20x): 60 Vision Dust" },
-      { de = 225, ate = 235, texto = "Enchant Gloves - Agility (10x): 10 Vision Dust, 10 Lesser Nether Essence" },
-      { de = 235, ate = 245, texto = "Enchant Chest - Superior Health (10x): 60 Vision Dust" },
-      { de = 245, ate = 265, texto = "Enchant Bracer - Greater Strength (20x): 40 Dream Dust, 20 Greater Nether Essence" },
-      { de = 265, ate = 290, texto = "Enchant Shield - Greater Stamina (25x): 250 Dream Dust" },
-      { de = 290, ate = 299, texto = "Enchant Cloak - Superior Defense (9x): 72 Illusion Dust" },
-      { de = 299, ate = 300, texto = "Runed Arcanite Rod (1x): 1 Arcanite Rod, 1 Golden Pearl, 10 Illusion Dust, 4 Greater Eternal Essence, 4 Small Brilliant Shard, 2 Large Brilliant Shard" },
-    },
-    treino = {
-      "Apprentice (up to 75): Lucan Cordell (Mage Quarter, Stormwind City), Gimrizz Shadowcog (Tinker Town, Ironforge), Alanna Raveneye (Craftsmen's Terrace, Darnassus), Lalina Summerbreeze (Eastvale Logging Camp, Elwynn Forest), Thonys Pillarstone (Kharanos, Dun Morogh)",
-      "Journeyman (up to 150): same trainers; next tier (Expert): level 20",
-      "Expert (up to 225): Kitta Firewind (top floor of the Tower of Azora, Elwynn Forest); next tier (Artisan): level 35",
-      "Artisan (up to 300): Annora (inside the Uldaman dungeon, Badlands; you must enter the instance)",
-    },
-  },
-  -- Leatherworking do Hexumlite: rota do dono, montada com a ferramenta de crafts
-  -- (ferramentas/pregao/rota.mjs), sem roteiro de terceiro desde 2026-11-16 (decisao do dono).
-  -- Os treinadores e os padroes do ReptilioPlays ficam em treino, como dado de referencia.
-  -- Materiais = o que a rota calculou; o que esta entre parenteses fica fora da soma da aba Professions.
-  ["Leatherworking"] = {
-    fonte = "crafts tool (rota.mjs)", url = "", data = "prices of 2026-11-17 21:11",
-    passos = {
-      { de = 1, ate = 205, texto = "Done before this route (skill 205 on 2026-11-17; about 310 Heavy Leather left of the 350 bought at 1s 68c)" },
-      { de = 205, ate = 210, texto = "Swift Boots (13x): 130 Heavy Leather, 26 Swiftness Potion, 26 Thick Spider's Silk, 13 Silken Thread (known; worst case -48s 75c; if sold +75s 14c)" },
-      { de = 210, ate = 225, texto = "Nightscape Pants (15x): 210 Thick Leather, 60 Silken Thread (trainer; worst case -2g 15s 40c; if sold -2g 39s 10c)" },
-      -- route from the crafts tool (rota.mjs), prices of 2026-11-17 21:11, Heavy Leather at the 1s 68c paid
+      { de = 205, ate = 210, texto = "Nightscape Headband (~8x, yellow): 40 Thick Leather, 16 Silken Thread (Telonis, 27s; Nightscape Pants is not with him, only recipes up to 200)" },
+      { de = 210, ate = 225, texto = "Nightscape Pants (15x): 210 Thick Leather, 60 Silken Thread (Artisan trainer Drakk Stonehand, Aerie Peak; learn skill not confirmed, the ReptilioPlays route starts it at 210)" },
+      -- route from the crafts tool (rota.mjs), prices of 2026-11-17 21:45; owner chose Nightscape (2026-11-17)
       { de = 225, ate = 300, texto = "Next route: run the crafts tool at 225 (train Artisan first: skill 200 and level 35)" },
     },
     treino = {
