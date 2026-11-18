@@ -10,11 +10,19 @@ com lucro. Substitui o PregaoForever, que saiu do jogo em 2026-11-17 (o código 
 2. Abra a AH. O painel aparece à direita. Clique Scan (busca só os materiais das suas receitas, menos de 1 minuto).
    Full scan busca a AH inteira (recarga de 15 min) e acha também item anunciado abaixo do preço de vendedor.
 3. Clique o botão grande quantas vezes ele pedir. Cada clique faz uma coisa: "Buy" cota, "Confirm" compra;
-   lote de item é um clique por lote. Se o preço subiu entre o Scan e a compra, ele cancela e pede novo Scan.
+   lote de item é um clique por lote. Compra primeiro o material mais caro da leva. Se o preço subiu um pouco e a leva
+   ainda paga, pede Confirm com o total novo; se subiu demais, cancela, busca de novo só aquele item e refaz o plano
+   contando o que você já comprou.
 4. O que a AH vende chega pelo correio: pegue na caixa de correio (o painel mostra quantos itens faltam).
 5. No vendedor (linha, tinta, sal): o botão compra os reagentes de vendedor do plano.
 6. Na janela de Leatherworking: o botão crafta, uma receita por clique (intermediários primeiro, como curar hide).
 7. No vendedor: o botão vende só o que você craftou nesta sessão pelo plano. Nada mais sai da bolsa.
+
+## Categorias
+
+Cada linha do plano tem cor e etiqueta. Cor pelo lucro: BIG (verde, 1g ou mais), small (amarelo, 30s a 1g), skip
+(cinza, abaixo de 30s: "not worth it"). Etiqueta pelo tipo: [CRAFT] crafta com material comprado, [BAGS] usa material
+que já está na bolsa (sobra de leva anterior), [RESALE] compra e vende direto no vendedor (só com full scan).
 
 ## Comandos
 
@@ -24,6 +32,8 @@ com lucro. Substitui o PregaoForever, que saiu do jogo em 2026-11-17 (o código 
 | `/compra reserva 1g` | dinheiro que o plano nunca gasta (padrão 0) |
 | `/compra desconto 10` | desconto de reputação no vendedor, em % (padrão 10, o de Darnassus) |
 | `/compra lucro 50c` | lucro mínimo por craft (padrão 50c; e 5% do custo) |
+| `/compra grande 1g` | a partir de quanto a leva é BIG, em verde (padrão 1g) |
+| `/compra pequena 30s` | a partir de quanto é small, em amarelo; abaixo é skip, em cinza (padrão 30s) |
 | `/compra sonda` | diagnóstico do leilão (commodity ou item, tempo das buscas) |
 
 ## Para desfazer

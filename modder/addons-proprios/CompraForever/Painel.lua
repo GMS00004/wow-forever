@@ -78,6 +78,17 @@ local function nomeItem(id)
   return it and it.nome or tostring(id)
 end
 
+-- BIG >= config.grande (1g), small >= config.pequena (30s), skip abaixo; ajustavel por /compra grande e /compra pequena
+local CORES = { BIG = "|cff33ff33", small = "|cffffd100", skip = "|cff999999" }
+local ORDEM_CAT = { "BIG", "small", "skip" }
+local function categoria(lucro)
+  local cfg = ns.config()
+  if lucro >= (cfg.grande or 10000) then return "BIG" end
+  if lucro >= (cfg.pequena or 3000) then return "small" end
+  return "skip"
+end
+ns.categoria = categoria
+
 local function montarLinhas()
   local L = {}
   local plano, S = ns.plano, ns.sessao or {}
@@ -97,8 +108,45 @@ local function montarLinhas()
     L[#L + 1] = "Nothing pays now (" .. (MOTIVOS[plano.motivo] or tostring(plano.motivo or "?")) .. ")"
   end
 
-  for _, c in ipairs(fabricar) do L[#L + 1] = c.n .. "x " .. c.nome .. " (make)" end
-  for _, c in ipairs(crafts) do L[#L + 1] = c.n .. "x " .. c.nome .. " +" .. ns.moeda(c.lucro) end
+  for _, c in ipairs(fabricar) do L[#L + 1] = "|cff999999" .. c.n .. "x " .. c.nome .. " (make)|r" end
+
+  -- Categorias (pedido do dono, 2026-11-17): cor pelo tamanho do lucro, etiqueta pelo tipo de cada linha.
+  local d = rawget(_G, "CompraForeverDados") or {}
+  local daBolsa = {}
+  for _, e in ipairs(plano and plano.doEstoque or {}) do
+    local it = d.itens and d.itens[e.id]
+    if not (it and it.vendedor) then daBolsa[e.id] = true end   -- linha e tinta na bolsa nao contam como sobra
+  end
+  local function usaBolsa(magia)
+    local r = d.receitas and d.receitas[magia]
+    for _, rg in ipairs(r and r.reagentes or {}) do
+      if daBolsa[rg[1]] then return true end
+    end
+    return false
+  end
+  local grupos = {}
+  for _, c in ipairs(crafts) do
+    grupos[#grupos + 1] = { cat = categoria(c.lucro or 0), lucro = c.lucro or 0,
+      texto = (usaBolsa(c.magia) and "[BAGS] " or "[CRAFT] ") .. c.n .. "x " .. c.nome .. " +" .. ns.moeda(c.lucro or 0) }
+  end
+  for _, r in ipairs(plano and plano.revenda or {}) do
+    grupos[#grupos + 1] = { cat = categoria(r.lucro or 0), lucro = r.lucro or 0,
+      texto = "[RESALE] " .. r.qtd .. "x " .. r.nome .. " +" .. ns.moeda(r.lucro or 0) }
+  end
+  for _, cat in ipairs(ORDEM_CAT) do
+    local soma, grupo = 0, {}
+    for _, x in ipairs(grupos) do
+      if x.cat == cat then soma = soma + x.lucro; grupo[#grupo + 1] = x end
+    end
+    if #grupo > 0 then
+      table.sort(grupo, function(a, b)
+        if a.lucro ~= b.lucro then return a.lucro > b.lucro end
+        return a.texto < b.texto
+      end)
+      L[#L + 1] = CORES[cat] .. cat .. " +" .. ns.moeda(soma) .. (cat == "skip" and " (not worth it)" or "") .. "|r"
+      for _, x in ipairs(grupo) do L[#L + 1] = CORES[cat] .. "  " .. x.texto .. "|r" end
+    end
+  end
   local magias = {}
   for magia in pairs(S.craftado or {}) do
     if not noPlano["m" .. magia] then magias[#magias + 1] = magia end
@@ -126,7 +174,8 @@ local function montarLinhas()
   for _, id in ipairs(ids) do L[#L + 1] = "[x] sold " .. S.vendido[id] .. " " .. nomeItem(id) end
 
   if plano and #plano.crafts > 0 then
-    L[#L + 1] = "Spend " .. ns.moeda(plano.totais.gasto) .. ", profit +" .. ns.moeda(plano.totais.lucro)
+    L[#L + 1] = CORES[categoria(plano.totais.lucro or 0)] .. "Spend " .. ns.moeda(plano.totais.gasto) .. ", profit +"
+      .. ns.moeda(plano.totais.lucro) .. "|r"
   end
   -- o que o leilao entrega chega pelo correio: craftar so depois de pegar na caixa de correio
   local noCorreio = 0
@@ -134,6 +183,7 @@ local function montarLinhas()
   if noCorreio > 0 then L[#L + 1] = "Mailbox: " .. noCorreio .. " bought items to collect" end
   return L
 end
+ns.montarLinhas = montarLinhas   -- usado pela bancada (cenario compra-11)
 
 -- Atualizacao ------------------------------------------------------------------------------------------------
 

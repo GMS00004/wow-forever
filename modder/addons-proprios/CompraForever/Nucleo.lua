@@ -5,7 +5,7 @@ local addon, ns = ...
 
 local floor, max = math.floor, math.max
 
-local PADROES = { reserva = 0, desconto = 10, lucroMin = 50, margemMin = 5 }
+local PADROES = { reserva = 0, desconto = 10, lucroMin = 50, margemMin = 5, grande = 10000, pequena = 3000 }
 local PROF = "Leatherworking"
 
 -- Eventos --------------------------------------------------------------------------------------------
@@ -224,8 +224,8 @@ local function comando(msg)
   local cfg = ns.config()
   if sub == "" then
     if ns.alternarPainel then ns.alternarPainel() else dizer("panel not available") end
-  elseif sub == "reserva" or sub == "lucro" then
-    local campo = sub == "reserva" and "reserva" or "lucroMin"
+  elseif sub == "reserva" or sub == "lucro" or sub == "grande" or sub == "pequena" then
+    local campo = (sub == "reserva" and "reserva") or (sub == "lucro" and "lucroMin") or sub
     if arg == "" then
       dizer(sub .. " is " .. ns.moeda(cfg[campo]))
       return
@@ -235,6 +235,7 @@ local function comando(msg)
     cfg[campo] = v
     dizer(sub .. " set to " .. ns.moeda(v))
     ns.replanejar()
+    if ns.atualizarPainel then ns.atualizarPainel() end
   elseif sub == "desconto" then
     if arg == "" then dizer("desconto is " .. cfg.desconto .. "%") return end
     local v = tonumber(arg)
@@ -245,7 +246,7 @@ local function comando(msg)
   elseif sub == "sonda" then
     if ns.sonda then ns.sonda() else dizer("probe not available") end
   else
-    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | sonda]")
+    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | sonda]")
   end
 end
 
