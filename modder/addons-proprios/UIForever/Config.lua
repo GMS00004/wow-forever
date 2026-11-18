@@ -324,7 +324,7 @@ UIForeverConfig.barras = {
     [4] = { magia = "Aimed Shot" },
     [5] = { macro = "mark_Conc", magia = "Hunter's Mark" },  -- marca e manda o pet, depois Concussive Shot (dono, 2026-11-06, noite); antes mark_Pet (leak) e a do Gladius
     [6] = { macro = "Burst", magia = "Rapid Fire" },
-    [7] = { magia = "Raptor Strike" },
+    [7] = { macro = "raptor_Mongoose", magia = "Raptor Strike" },  -- macro do GuiaForever, Raptor Strike + Mongoose Bite (leak; dono, 2026-11-18)
     [8] = { magia = "Wing Clip" },
     [9] = { macro = "pet_AllInOne", magia = "Mend Pet" },
     [10] = { magia = "Auto Shot" },

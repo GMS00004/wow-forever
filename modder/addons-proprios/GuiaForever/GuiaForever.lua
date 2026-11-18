@@ -312,15 +312,23 @@ local function maxMacrosPersonagem()
   return 18
 end
 
+local function maxMacrosConta()
+  if Constants and Constants.MacroConsts and Constants.MacroConsts.MAX_ACCOUNT_MACROS then
+    return Constants.MacroConsts.MAX_ACCOUNT_MACROS
+  end
+  return 120
+end
+
 local function conjuntoTeclasPersonagem()
   return (Enum and Enum.BindingSet and Enum.BindingSet.Character) or 2
 end
 
 -- fora-de-combate (criarMacros sai em combate antes de chamar)
-local function criarUmaMacro(m)
+-- porPersonagem false = aba geral da conta (so quando as do personagem acabaram).
+local function criarUmaMacro(m, porPersonagem)
   for _, icone in ipairs({ m.icone, "INV_MISC_QUESTIONMARK", 134400 }) do
     if icone then
-      local ok, idx = pcall(CreateMacro, m.nome, icone, m.corpo, true)
+      local ok, idx = pcall(CreateMacro, m.nome, icone, m.corpo, porPersonagem ~= false)
       if ok and type(idx) == "number" and idx > 0 then return idx end
     end
   end
@@ -346,19 +354,24 @@ local function criarMacros(automatico)
   reg.criadas = reg.criadas or {}
   reg.teclas = reg.teclas or {}
 
-  local _, nPersonagem = GetNumMacros()
-  nPersonagem = tonumber(nPersonagem) or 0
-  local max = maxMacrosPersonagem()
+  local nConta, nPersonagem = GetNumMacros()
+  nConta, nPersonagem = tonumber(nConta) or 0, tonumber(nPersonagem) or 0
+  local max, maxConta = maxMacrosPersonagem(), maxMacrosConta()
   local criadas, jaTinha, falhas = {}, {}, {}
   for _, m in ipairs(conj.lista) do
     if (GetMacroIndexByName(m.nome) or 0) > 0 then
       jaTinha[#jaTinha + 1] = m.nome
-    elseif nPersonagem >= max then
-      falhas[#falhas + 1] = m.nome .. " (no room in the character macros)"
-    elseif criarUmaMacro(m) then
+    elseif nPersonagem < max and criarUmaMacro(m, true) then
       criadas[#criadas + 1] = m.nome
       reg.criadas[m.nome] = m.corpo
       nPersonagem = nPersonagem + 1
+    elseif nPersonagem >= max and nConta < maxConta and criarUmaMacro(m, false) then
+      -- sem lugar nas do personagem: vai para a aba geral (o desfazer acha pelo nome)
+      criadas[#criadas + 1] = m.nome .. " (General tab: character macros full)"
+      reg.criadas[m.nome] = m.corpo
+      nConta = nConta + 1
+    elseif nPersonagem >= max then
+      falhas[#falhas + 1] = m.nome .. " (no room in the character or general macros)"
     else
       falhas[#falhas + 1] = m.nome
     end

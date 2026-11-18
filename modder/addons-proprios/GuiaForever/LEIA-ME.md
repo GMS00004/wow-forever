@@ -199,6 +199,7 @@ Ainda sem teste no jogo:
 |---|---|
 | macro `sting_Auto` (o "!" e o "null") | 0.4.0 |
 | `mark_Conc` | 0.8.0 |
+| `raptor_Mongoose` no Q, e a aba geral quando as macros do personagem acabam | 1.5.1 |
 | ligação zona → faixa do rastreador | 0.6.0 |
 
 **Lacunas sem fonte:**

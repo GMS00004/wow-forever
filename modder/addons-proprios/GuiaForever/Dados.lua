@@ -225,7 +225,7 @@ GuiaForeverDados = {
 -- Teclas e escolha das macros do leak: dono, em 2026-11-05.
 GuiaForeverMacros = {
   HUNTER = {
-    versao = 4,  -- 2: sting_Auto (2026-11-05, noite); 3: mark_Pet (2026-11-06); 4: mark_Conc (2026-11-06, noite)
+    versao = 5,  -- 2: sting_Auto (2026-11-05, noite); 3: mark_Pet (2026-11-06); 4: mark_Conc (2026-11-06, noite); 5: raptor_Mongoose (2026-11-18)
     fonte = "Gladius Gaming and leak",
     lista = {
       { nome = "send_Pet", icone = "Ability_GhoulFrenzy", tecla = "SHIFT-MOUSEWHEELUP",
@@ -277,6 +277,12 @@ GuiaForeverMacros = {
       -- Recomeca so com alvo novo. Mesmo truque do "null" da sting_Auto.
       { nome = "mark_Conc", icone = "INV_MISC_QUESTIONMARK",
         corpo = "#showtooltip\n/petattack\n/castsequence reset=target Hunter's Mark, null\n/cast Concussive Shot" },
+      -- pedido do dono (2026-11-18): "um macro de Raptor Strike e Mongoose Bite". Texto do leak
+      -- (Raptor Strike Macros, 07:46 do video; comum\fontes\builds\leak-hunter-macros.md): o Raptor
+      -- Strike entra no proximo golpe e o Mongoose Bite sai quando estiver liberado (depois de uma
+      -- esquiva do alvo). Fica no Q (UIForever, slot 7), no lugar do Raptor Strike sozinho.
+      { nome = "raptor_Mongoose", icone = "INV_MISC_QUESTIONMARK",
+        corpo = "#showtooltip Mongoose Bite\n/cast Raptor Strike\n/cast Mongoose Bite" },
     },
   },
 
