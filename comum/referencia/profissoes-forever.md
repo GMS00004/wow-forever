@@ -105,3 +105,46 @@ Fonte máxima de Leatherworking por decisão do dono (2026-11-13). Vídeo de 202
 | 48 receitas de Leatherworking pedem o rack por perto. Entre elas estão as peças Mender's, Prowler's, Skirmisher's, Skulker's, Skycaller's, Stalker's e Warden's de cinto (150), luva (175), sapato e bota de mail (200), ombreira de mail (210) e bracelete de mail (225); a Barbaric Bracers (130); a Gem-studded Leather Belt (160); a Shadowskin Gloves (175); a Cured Rugged Hide (225); e as Dragonscale. A Swift Boots e a Nightscape Pants não estão na lista. Não há rack fixo nas cidades: alguém monta um num acampamento, e quem estiver ali pode usar | [página] | wow-professions.com/forever/tanning-rack (feita no beta, sem data); a Mender's Mail Boots foi confirmada no jogo pelo dono em 2026-11-17 |
 | O `rota.mjs` não sabe quais receitas pedem o rack; a rota do 200 rodou com as 48 em `--sem` | [local] | `modder\ferramentas\pregao\rota.mjs` |
 | Não é preciso ter o blueprint para usar o rack. O item Tanning Rack (279941) pede só Leatherworking 125 e é usado direto da bolsa: põe o rack ao lado de uma fogueira (Campfire). Ele empilha até 20 e é vendido no leilão: em 2026-11-17 às 19:57, o Auctionator via 10s 14c a unidade, com 498 à venda, e o blueprint (273096) a 9g | [página] e [local] | tooltip `nether.wowhead.com/forever/tooltip/item/279941`; `modder\dados\pregao\precos.json` |
+
+## Waylaid Crates (conferido em 2026-11-18)
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| A Waylaid Crate (248549, empilha 20) cai de mobs a partir do nível 10. Ao usar, ela vira uma caixa tipada (lê o rótulo). Cada caixa tipada aceita um pacote, à escolha, da lista do tooltip ("Fill the crate with any bundle from the following list"). A caixa cheia se entrega à Marcy Baker, da Azeroth Commerce Authority, em Three Corners (Redridge Mountains), em troca de Merchant's Favor; do lado da Horda, a Dokimi, perto da Crossroads. As caixas tipadas vendem no leilão | [página] | tooltips em nether.wowhead.com/forever/tooltip/item/<id> (2026-11-18); allthings.how (24/09/2026, beta); u4n.com (atualizado em 18/11/2026); outof.games/realms/forever/auctions/waylaid-crates (2026-11-18) |
+| Favor por caixa, segundo relatos de jogadores (a Blizzard não publica): Apprentice 5 (coleta) e 10 (fabricado), Journeyman 10 e 20, Expert 15 e 30, Artisan 20 e 40 (esperado). A primeira caixa cheia abre uma missão única, Shipping Label, que dá 50 de Favor e 2.000 de reputação. A allthings.how, feita no beta, dizia 5 por caixa | [página] | outof.games (2026-11-18); allthings.how |
+| Coleta = Herbs, Ore, Textiles e Curiosities; fabricado = Fabrics, Ingots e Parts. O tooltip da Journeyman Fabrics aceita 2 Cured Medium Hide, que o Leatherworking faz | [página] | tooltips da Wowhead Forever |
+
+Caixas tipadas e pacotes aceitos, lidos dos tooltips da Wowhead Forever em 2026-11-18 [página]:
+
+| Item | Caixa | Tipo | Nível | Empilha | Pacotes (um deles enche) |
+|---|---|---|---|---|---|
+| 248682 | Apprentice Herbs | coleta | 10 | 5 | 20 Peacebloom; 20 Silverleaf; 10 Earthroot; 10 Mageroyal; 10 Briarthorn |
+| 248683 | Apprentice Ore | coleta | 10 | 5 | 20 Copper Ore; 20 Tin Ore |
+| 248684 | Apprentice Textiles | coleta | 10 | 5 | 40 Linen Cloth; 20 Light Leather |
+| 248685 | Apprentice Curiosities | coleta | 10 | 5 | 20 Strange Dust; 4 Greater Magic Essence; 6 Small Glimmering Shard; 2 Large Glimmering Shard |
+| 248686 | Journeyman Herbs | coleta | 10 | 5 | 10 Stranglekelp; 10 Bruiseweed; 10 Wild Steelbloom; 10 Grave Moss; 10 Kingsblood |
+| 248687 | Journeyman Ore | coleta | 10 | 5 | 10 Silver Ore; 20 Iron Ore |
+| 248688 | Journeyman Textiles | coleta | 10 | 5 | 20 Wool Cloth; 40 Silk Cloth; 20 Medium Leather |
+| 248689 | Journeyman Curiosities | coleta | 10 | 5 | 20 Soul Dust; 4 Greater Astral Essence; 6 Small Glowing Shard; 2 Large Glowing Shard |
+| 248690 | Earthly Expert Herbs | coleta | 20 | 5 | 20 Liferoot; 10 Fadeleaf; 10 Goldthorn; 10 Khadgar's Whisker |
+| 248691 | Flowering Expert Herbs | coleta | 20 | 5 | 10 Wintersbite; 10 Firebloom; 20 Purple Lotus; 10 Arthas' Tears |
+| 248692 | Expert Ore | coleta | 20 | 5 | 10 Gold Ore; 20 Mithril Ore |
+| 248693 | Expert Textiles | coleta | 20 | 5 | 40 Mageweave Cloth; 20 Heavy Leather |
+| 248694 | Expert Curiosities | coleta | 20 | 5 | 20 Vision Dust; 4 Greater Mystic Essence; 6 Small Radiant Shard; 2 Large Radiant Shard |
+| 248695 | Earthly Artisan Herbs | coleta | 35 | 5 | 10 Golden Sansam; 20 Sungrass; 10 Blindweed; 10 Ghost Mushroom; 10 Gromsblood |
+| 248696 | Flowering Artisan Herbs | coleta | 35 | 5 | 20 Dreamfoil; 20 Mountain Silversage; 20 Plaguebloom; 20 Icecap |
+| 248697 | Artisan Ore | coleta | 35 | 5 | 10 Truesilver Ore; 20 Thorium Ore; 20 Dark Iron Ore |
+| 248698 | Artisan Textiles | coleta | 35 | 5 | 40 Runecloth; 20 Thick Leather; 20 Rugged Leather |
+| 248699 | Artisan Curiosities | coleta | 35 | 5 | 20 Dream Dust; 4 Greater Nether Essence; 6 Small Brilliant Shard; 2 Large Brilliant Shard |
+| 248702 | Apprentice Fabrics | fabricado | 10 | 5 | 2 Cured Light Hide; 20 Bolt of Linen Cloth |
+| 248703 | Apprentice Ingots | fabricado | 10 | 5 | 20 Copper Bar; 20 Tin Bar; 10 Bronze Bar |
+| 248704 | Apprentice Parts | fabricado | 10 | 5 | 16 Handful of Copper Bolts; 16 Copper Tube; 4 Copper Modulator |
+| 248705 | Journeyman Fabrics | fabricado | 10 | 5 | 6 Bolt of Woolen Cloth; 10 Bolt of Silk Cloth; 2 Cured Medium Hide |
+| 248706 | Journeyman Ingots | fabricado | 10 | 5 | 10 Silver Bar; 20 Iron Bar |
+| 248707 | Journeyman Parts | fabricado | 10 | 5 | 8 Bronze Tube; 7 Whirring Bronze Gizmo; 4 Bronze Framework; 45 Gold Power Core |
+| 248708 | Expert Fabrics | fabricado | 20 | 5 | 8 Bolt of Mageweave; 2 Cured Heavy Hide |
+| 248709 | Expert Ingots | fabricado | 20 | 5 | 20 Mithril Bar; 15 Steel Bar; 10 Gold Bar |
+| 248710 | Expert Parts | fabricado | 20 | 5 | 8 Iron Strut; 5 Mithril Tube; 12 Unstable Trigger; 5 Mithril Casing |
+| 248711 | Artisan Fabrics | fabricado | 35 | 5 | 8 Bolt of Runecloth; 2 Cured Thick Hide |
+| 248712 | Artisan Ingots | fabricado | 35 | 5 | 2 Dark Iron Bar; 10 Truesilver Bar; 20 Thorium Bar |
+| 248713 | Artisan Parts | fabricado | 35 | 5 | 5 Thorium Widget; 5 Truesilver Transformer; 2 Thorium Tube |
