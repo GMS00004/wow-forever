@@ -137,6 +137,12 @@ node rota.mjs --de 186 --ate 225        # a rota mais barata no pior caso (secao
 node rota.mjs --de 186 --ate 225 --sem "Dusky Boots" --lua   # sem uma receita, no formato do J
 node testes/testar-rota.mjs             # casos de preco fixo da rota
 node testes/testar-padroes.mjs          # padroes: situacao, escolha, RotaCrafts.lua e receitas conhecidas (secao 6.1)
+node coletar-foto.mjs                   # guarda a foto publica da hora, sem sobrescrever as anteriores (secao 7)
+node tendencia.mjs --item 4234          # curva de um item: fotos de hoje e ontem, diario, faixa e percentil (secao 9)
+node tendencia.mjs --elasticidade       # ranking de materiais com gap de preco (secao 9)
+node tendencia.mjs --vigia              # itens da lista de vigia do CompraForever (secao 9)
+node testes/testar-coletor.mjs          # coletor, com --fonte e sem rede (secao 7)
+node testes/testar-tendencia.mjs        # tendencia, com fotos falsas (secao 9)
 ```
 
 Forma do arquivo:
@@ -183,6 +189,9 @@ diz que a API da Blizzard só dá anúncios, não vendas). Vale também para ite
 com pelo menos 3 dias; toda entrada com 4 inteiros, data de 8 dígitos dentro de `historicoDias`, `min` maior que
 0, `min` menor ou igual à mediana e unidades maiores ou iguais a 0; dias em ordem crescente sem repetição. A linha
 final ganha `historico=<n>` (ou `historico=null`).
+
+`testes/checar-precos.mjs` também aceita até 25 horas cobertas num dia de `publico.horas` (o `<horas cobertas>` do
+`us-111-sales.txt`, seção 4), porque a fonte pública declarou 24,12 horas para 2026-11-17.
 
 ## 5. `crafts.mjs` (tarefa 3)
 
@@ -464,3 +473,165 @@ custo por unidade que o faz (um nível), com `qtd` unidades por craft e os reage
 todo item de `precosMat` ganha também `nome`. A conta da ferramenta já usava o fabricar (o candidato `F` do
 `crafts.mjs`): em 2026-11-17, a Cured Medium Hide da Mender's Mail Boots saía a 3s 15c fabricada (Medium Hide 2s 70c
 mais Salt 45c) contra 4s 35c no leilão. Teste: casos V5, N1 e N2 do `testes\testar-padroes.mjs`.
+
+## 7. `coletar-foto.mjs` e a pasta de fotos (2026-11-18)
+
+Por quê: a foto pública (`us-111.txt`) é sobrescrita a cada `baixar-precos`. Só ficava a última hora, e a série
+intradiária se perdia. `coletar-foto.mjs` guarda cada foto pública como veio, uma por snapshot, para a `tendencia.mjs`
+(seção 9) ter a curva por hora.
+
+Uso, a partir de `wow/modder/ferramentas/pregao`:
+
+```
+node coletar-foto.mjs                    # baixa a foto publica us-111 e guarda, se for nova
+node coletar-foto.mjs --pasta <dir>      # guarda em outra pasta
+node coletar-foto.mjs --fonte <dir>      # le index.txt e us-111.txt desse diretorio, sem rede (teste)
+node testes/testar-coletor.mjs           # casos com --fonte, em pasta temporaria
+```
+
+| Opção | Padrão | Efeito |
+|---|---|---|
+| `--pasta <dir>` | `dados/pregao/publico/fotos` | pasta de destino |
+| `--fonte <dir>` | nenhum: baixa de `URL_PUBLICA` | lê `index.txt` e `us-111.txt` do diretório, com uma tentativa só |
+
+Um argumento desconhecido, ou uma opção sem valor, sai com `erro ...` e código 1.
+
+Fluxo: lê o `index.txt` (exige a linha `#qmi 1`, `built=` numérico e a linha `file=us-111.txt` com `snapshot=` numérico
+e `sha256=` de 64 caracteres hexadecimais). Confere o SHA-256 do `us-111.txt` contra essa linha. Sem `--fonte`, se não
+bater, espera 20 s e baixa os dois de novo uma vez.
+
+Formato da pasta (congelado):
+
+| Arquivo | Conteúdo |
+|---|---|
+| `us-111-<snapshot>.txt.gz` | o texto cru de `us-111.txt`, em gzip (gunzip dá o arquivo idêntico) |
+| `indice.txt` | uma linha por foto: `<snapshot> <built> <arquivo> <itens> <sha256>`. `itens` conta as linhas que começam com `c ` ou `i `. `sha256` é do texto cru, não do `.gz` |
+| `coletor.log` | uma linha por execução: `<AAAA-MM-DD HH:MM:SS> <novo\|repetida\|erro> <detalhe>`, na hora local; guarda as últimas 2000 linhas |
+
+Detalhes por tipo no log: `novo snapshot=<s> itens=<n>`; `repetida snapshot=<s> ja gravada`; `erro <mensagem>`. A
+saída do terminal é a mesma linha, sem a data.
+
+Idempotência: se o `snapshot` já está no `indice.txt` ou o `.gz` já existe, a execução sai `repetida` e não grava foto
+nem linha de índice. Só o log cresce. O `.gz` é criado com `wx`, então nunca sobrescreve.
+
+| Código | Quando |
+|---|---|
+| 0 | `novo` ou `repetida` |
+| 1 | erro: argumento, HTTP, índice inválido, falha de gravação. Se o log não puder ser gravado, a saída traz `(log nao gravado: ...)` |
+| 2 | SHA-256 não bate depois da tentativa (ou a única, com `--fonte`) |
+
+Nos erros, nada é gravado na pasta de fotos.
+
+`sha256`, `baixarTexto` e `lerKv` saíram de `baixar-precos.mjs` e agora vivem em `comum.mjs`, que `coletar-foto.mjs`
+importa. `tendencia.mjs` ainda importa `lerCasa` de `baixar-precos.mjs`, então esse export precisa continuar.
+
+`testes/testar-coletor.mjs` confere: a primeira execução grava (gunzip do `.gz` igual ao `us-111.txt`, `indice.txt`
+com uma linha de 5 campos e o snapshot do índice); a segunda sai `repetida` e o log fica com 2 linhas; com um byte
+alterado, sai com código 2 e nenhum `.gz` é gravado.
+
+## 8. Tarefa agendada (`coletor-tarefa.ps1`)
+
+Dois arquivos: `coletor-tarefa.ps1` gera e, se pedido, registra a tarefa. `coletor-oculto.vbs` é o lançador sem janela.
+
+| Item | Valor |
+|---|---|
+| Nome | `GMS WoW Precos Hora` |
+| Gatilho | diário, com repetição de 1 h durante 1 dia; `StartBoundary` é 00:50 do dia em que o script roda. Assim cai no minuto 50 de cada hora |
+| Ação | `wscript.exe //B //Nologo "<pasta>\coletor-oculto.vbs" "<node>" "<pasta>\coletar-foto.mjs"` |
+| Limites | 10 min de execução; `IgnoreNew` (uma instância por vez); `StartWhenAvailable`; `RunOnlyIfNetworkAvailable`; roda na bateria |
+| Conta | `DOMINIO\usuario` atual, `InteractiveToken`, `LeastPrivilege` |
+
+Por que minuto 50: a foto pública sai perto do minuto 25 UTC e o índice uns 15 min depois. Às hh:50, a foto e o
+índice já estão lá.
+
+Por que `wscript` e não `powershell -WindowStyle Hidden`: no Windows 11 desta máquina, o `-WindowStyle Hidden` abre
+janela e a execução morre. O `coletor-oculto.vbs` roda o node com janela oculta e espera o fim (`Run ..., 0, True`).
+Ele sai com código 0 mesmo se o coletor falhar, e sai em silêncio se o `.mjs` não existir. O resultado de cada execução
+está no `coletor.log`, não no "Último resultado" do Agendador.
+
+Parâmetros:
+
+| Parâmetro | Efeito |
+|---|---|
+| `-Simular` (padrão) | grava o XML em `-Saida` e imprime `TAREFA`, `ACAO`, `XML`, `EXISTE` e, se a tarefa existe, `DIFERE`. Não toca no Agendador |
+| `-Registrar` | cria a tarefa, ou substitui se a definição difere. Se for igual, imprime `IGUAL (nada feito)` |
+| `-Remover` | remove a tarefa. Imprime `REMOVIDA` ou `NAO EXISTIA` |
+| `-Node <caminho>` | `node.exe`; padrão `C:\Program Files\nodejs\node.exe` |
+| `-Saida <pasta>` | pasta do XML gerado; padrão `%TEMP%\gms-wow-precos` |
+
+`-Registrar` com `-Remover` dá erro. Qualquer erro imprime `ERRO <mensagem>` e sai com código 1.
+
+Comparação por assinatura: a definição atual e a nova são comparadas só nos campos que importam. São a ação (comando e
+argumentos), cada gatilho (tipo, `Interval`, `Duration`, `DaysInterval`, `Enabled`), os itens escolhidos de `Settings`
+e o usuário, o `LogonType` e o `RunLevel`. Ficam fora o `StartBoundary`, que muda todo dia, e os elementos padrão que o
+Agendador acrescenta ao exportar. Se a comparação falhar, a tarefa é tratada como diferente e é registrada de novo.
+
+A tarefa vale só na máquina em que foi registrada (o Avell). A pasta `dados\pregao` fica fora do git, e o
+registro não vai junto com o projeto. Em outra máquina, rode o `-Simular` e depois o `-Registrar` de lá.
+
+## 9. `tendencia.mjs`
+
+Três modos, um por vez:
+
+```
+node tendencia.mjs --item <id|nome>                                  # curva de um item
+node tendencia.mjs --elasticidade [--min-vendas 800] [--linhas 25]   # ranking de materiais com gap de preco
+node tendencia.mjs --vigia                                           # lista de vigia do CompraForever
+node testes/testar-tendencia.mjs                                     # casos com fotos, precos e SavedVariables falsos
+```
+
+| Opção | Padrão | Efeito |
+|---|---|---|
+| `--pasta <dir>` | `dados/pregao/publico/fotos` | pasta das fotos horárias (seção 7) |
+| `--precos <arq>` | `dados/pregao/precos.json` | o `precos.json` da seção 4 |
+| `--sv <CompraForever.lua>` | `CompraForever.lua` na pasta SavedVariables da conta | a vigia |
+| `--hoje AAAA-MM-DD` | hoje, na hora local | o dia de referência; dias depois dele são ignorados |
+
+Erro de uso (modo ausente ou repetido, valor que falta, `--min-vendas` ou `--linhas` não inteiro) sai com código 2 e
+mostra a linha de uso. Dado ausente ou item ambíguo sai com código 1. A saída é só ASCII, sem acento.
+
+Janelas: `janela` são os últimos 4 dias do histórico até `--hoje`; `faixa` são os últimos 7. As vendas por dia são a
+média das saídas da janela, com dia sem registro contando zero. Os preços vêm do `publico.historico` (diário) e do
+`publico.itens` (agora).
+
+Estatística: quantil por interpolação linear (tipo 7); a mediana é o quantil 0,5. Percentil de `x` é a porcentagem
+inteira dos valores menores ou iguais a `x`, inclusive; lista vazia dá `-`.
+
+**Modo `--item <id|nome>`.** O nome é buscado, sem acento e sem caixa, só entre os itens que têm dado no `precos.json`.
+Um nome exato e único vence; um só candidato também vence; senão lista até 10 candidatos e sai com código 1. Linhas:
+
+- `agora`: min, p25, med e unid do `publico.itens`, com a hora da foto.
+- A tabela das fotos de hoje e de ontem: dia, hora, min, p25, med, unid e lotes do item em cada foto.
+- `diario (historico)`: dia, min, mediana, unidades listadas e saídas do dia.
+- `faixa 7 dias`: o menor min e a mediana das medianas dos últimos 7 dias.
+- O percentil de `agora.min` entre os `min` de todas as fotos do item. Sem fotos, entre os `min` do histórico, com o
+  sufixo `(base: diario)`.
+- `vendas/dia`: a média das saídas dos 4 dias da janela.
+
+Sem fotos, a linha é `sem fotos horarias ainda (coletor)`.
+
+**Modo `--elasticidade`.** Candidatos: item com vendas por dia na janela de pelo menos `--min-vendas` (800) e mediana
+das medianas diárias da janela de pelo menos 150 cobre. Para cada um:
+
+- `gap%`: mediana, nos dias da janela com med maior que 0, de `(med - min) / med`, em %.
+- `ganho/un`: mediana, nos dias da janela, de `med * 0,95 - min`. O 0,95 é o corte de 5% do leilão.
+- `score = ganho * ln(vendas/dia)`. O ranking sai do maior para o menor score, até `--linhas` (25).
+- `gapH%`: só quando a pasta tem 12 fotos ou mais (conta todas as fotos da pasta) e o item tem p25 nelas. Então é
+  (mediana dos p25 horários menos o quantil 0,1 dos p25 horários) dividido pela mediana dos p25. Senão, `-`.
+- `agora min/p25`, e `dias min/med` com os dias da janela.
+
+Linha de rodapé: `fonte: diario <primeiro>-<ultimo>, fotos=<n>`. Sem candidato:
+`nenhum item passa o filtro (...)`.
+
+Ressalva: o mínimo diário pode ser um lote de 1 unidade mal precificado. As Waylaid Crates aparecem no topo do ranking
+por isso. Por isso o `gapH` usa o p25, e não o min.
+
+**Modo `--vigia`.** Lê `["vigia"]["itens"]` do `CompraForever.lua` (SavedVariables): cada `[<id>] = { ["nome"], ["teto"] }`.
+O nome é opcional (sem ele, usa o nome das receitas ou do ItemSparse), e entrada sem `teto` é ignorada. Sem o bloco,
+a saída é `vigia vazia`. Para cada item: `teto`, o preço agora (ou `sem preco`), quantas fotos de hoje têm min igual ou
+abaixo do teto (`abaixo do teto em X de Y fotos de hoje`) e o percentil do min atual entre todas as fotos (ou o
+diário, com `(base: diario)`).
+
+Teste: `node testes/testar-tendencia.mjs` monta quatro fotos sintéticas (ontem às 20:00, hoje às 08:00, 12:00 e 16:00),
+um `precos.json` e um `CompraForever.lua` em pasta temporária, e confere os três modos com os números que o código
+calcula (percentil 50%, gap 22,8, ganho 1s 09c, `gapH` como traço com quatro fotos, vigia com 2 de 3 abaixo do teto).

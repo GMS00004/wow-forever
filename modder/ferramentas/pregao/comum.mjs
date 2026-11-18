@@ -1,6 +1,7 @@
 // Funcoes comuns das ferramentas de precos e receitas do PregaoForever (fora do jogo).
 // Node 24, sem dependencias. Contrato em CONTRATO.md, nesta pasta.
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -87,3 +88,22 @@ export async function gravarJson(arq, obj) {
   await writeFile(arq, JSON.stringify(obj));
 }
 export async function lerJson(arq) { return JSON.parse(await readFile(arq, 'utf8')); }
+
+export const sha256 = (texto) => createHash('sha256').update(texto).digest('hex');
+
+export async function baixarTexto(nome) {
+  const url = `${URL_PUBLICA}/${nome}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status} em ${url}`);
+  return await r.text();
+}
+
+// "a=1 b=x y=2" -> { a: '1', b: 'x', y: '2' }; so pega os pares com "=".
+export function lerKv(linha) {
+  return Object.fromEntries(
+    linha.trim().split(/\s+/).filter((p) => p.includes('=')).map((p) => {
+      const i = p.indexOf('=');
+      return [p.slice(0, i), p.slice(i + 1)];
+    }),
+  );
+}

@@ -137,6 +137,39 @@ Posições de NPC `[local]`: `NaowhForever\Shared\Game\Towns.lua` tem `ns.TownNP
 
 `[página]`: documentação gerada do espelho `Ketho/wow-ui-source-forever`, branch `forever`, commit "1.60.1 (70938)" de 2026-11-13, lida pelo `gh` em 2026-11-17 (`AuctionHouseDocumentation.lua`, `AuctionHouseEnumsDocumentation.lua`, `TradeSkillUIDocumentation.lua`, `ContainerDocumentation.lua`); o cliente instalado já está no 70959. `HasRestrictions = true` (função que exige clique de hardware): `StartCommoditiesPurchase`, `PlaceBid`, `CancelAuction`, `PostItem`/`PostCommodity` e as confirmações de postagem. Sem `HasRestrictions`: `ConfirmCommoditiesPurchase`, `SendSearchQuery`, `RequestMoreCommoditySearchResults`, `ReplicateItems`, `C_TradeSkillUI.CraftRecipe(recipeSpellID, numCasts)` e `C_Container.UseContainerItem`. `Enum.AuctionHouseSortOrder.Price = 0`. A janela de profissão é o `ProfessionsFrame` (há `Blizzard_Professions\Camelot\`). `BuyMerchantItem` não está na documentação gerada (função global antiga). Nada disso rodou no jogo; o `/compra sonda` do CompraForever confere commodity e tempo de busca.
 
+### 3g.1 Postagem no leilao (2026-11-18)
+
+`[página]`: documentação gerada do espelho `Ketho/wow-ui-source-forever`, branch `forever`, arquivos
+`Interface/AddOns/Blizzard_APIDocumentationGenerated/AuctionHouseDocumentation.lua` (namespace `C_AuctionHouse`) e
+`AuctionHouseEnumsDocumentation.lua`, lidos por `gh api` em 2026-11-18. Nada disto foi testado no jogo.
+
+| Função (`C_AuctionHouse`) | Argumentos (tipo) | Retorno | `HasRestrictions` |
+|---|---|---|---|
+| `PostCommodity` | `item` (`ItemLocation`), `duration` (`luaIndex`), `quantity` (`number`), `unitPrice` (`BigUInteger`) | `needsConfirmation` (`bool`) | sim |
+| `ConfirmPostCommodity` | os mesmos quatro de `PostCommodity` | nenhum | sim |
+| `PostItem` | `item`, `duration`, `quantity`, `bid` (`BigUInteger`, `Nilable`), `buyout` (`BigUInteger`, `Nilable`) | `needsConfirmation` (`bool`) | sim |
+| `ConfirmPostItem` | os mesmos de `PostItem` | nenhum | sim |
+| `CalculateCommodityDeposit` | `itemID` (`number`), `duration` (`luaIndex`), `quantity` (`number`) | `depositCost` (`number`, `Nilable`) | não |
+| `CalculateItemDeposit` | `item` (`ItemLocation`), `duration` (`luaIndex`), `quantity` (`number`) | `depositCost` (`number`, `Nilable`) | não |
+
+Todas levam `SecretArguments = "AllowedWhenUntainted"`. `ItemLocation` tem o mixin `ItemLocationMixin`.
+
+Eventos de postagem, todos `SynchronousEvent = true`:
+
+| Evento | Literal | Payload |
+|---|---|---|
+| `AuctionHousePostError` | `AUCTION_HOUSE_POST_ERROR` | nenhum |
+| `AuctionHousePostWarning` | `AUCTION_HOUSE_POST_WARNING` | nenhum |
+| `AuctionHouseAuctionCreated` | `AUCTION_HOUSE_AUCTION_CREATED` | `auctionID` (`number`); a própria documentação diz que a UI base não usa |
+| `OwnedAuctionsUpdated` | `OWNED_AUCTIONS_UPDATED` | nenhum |
+
+Enum `AuctionHouseTimeLeftBand` (`AuctionHouseEnumsDocumentation.lua`, 4 valores): `Short` 0, `Medium` 1, `Long` 2,
+`VeryLong` 3. Não é o tipo do argumento `duration` da postagem, que é `luaIndex`.
+
+Pendência: a documentação não dá a faixa de `duration`. O dono leu o índice como 1 a 3, e a correspondência com as
+durações de 2 h, 8 h e 24 h, lidas no jogo pela sonda S0 do PregaoForever em 2026-11-16, não foi confirmada. Antes de
+postar com `duration`, confirmar no cliente.
+
 ## 4. Fluxo de desenvolvimento
 
 1. Editar em `addons-proprios\<Nome>` (modelo em `addons-proprios\_modelo\Modelo`; instruções em `addons-proprios\LEIA-ME.md`).

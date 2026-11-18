@@ -655,7 +655,7 @@ function IsShiftKeyDown() return false end
 function IsControlKeyDown() return false end
 function IsAltKeyDown() return false end
 function GetCursorPosition() return 0, 0 end
-function PlaySound() end
+B.def(_G, nil, "PlaySound", function() end)   -- contavel: b.contar("PlaySound")
 
 -- ---------------------------------------------------------------------------
 -- Ganchos, bindings, combate, recarga

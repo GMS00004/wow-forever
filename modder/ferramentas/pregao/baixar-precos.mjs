@@ -1,10 +1,9 @@
 // Baixa os arquivos publicos de preco do leilao, le a exportacao do Auctionator e grava dados/pregao/precos.json.
 // Contrato em CONTRATO.md, secao 4. Uso: node baixar-precos.mjs
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { PUBLICO, URL_PUBLICA, CASA_PUBLICA, ARQ_PRECOS, gravarJson, pastaSavedVariables } from './comum.mjs';
+import { PUBLICO, CASA_PUBLICA, ARQ_PRECOS, gravarJson, pastaSavedVariables, sha256, baixarTexto, lerKv } from './comum.mjs';
 
 // Troca por espacos o conteudo de strings Lua que tem chaves e os comentarios "--".
 // O tamanho do texto nao muda, entao as posicoes continuam valendo. Assim as chaves contam certo.
@@ -72,25 +71,6 @@ export function lerExportacao(texto) {
     }
   }
   return { em, itens };
-}
-
-const sha256 = (texto) => createHash('sha256').update(texto).digest('hex');
-
-async function baixarTexto(nome) {
-  const url = `${URL_PUBLICA}/${nome}`;
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`HTTP ${r.status} em ${url}`);
-  return await r.text();
-}
-
-// "a=1 b=x y=2" -> { a: '1', b: 'x', y: '2' }; so pega os pares com "=".
-function lerKv(linha) {
-  return Object.fromEntries(
-    linha.trim().split(/\s+/).filter((p) => p.includes('=')).map((p) => {
-      const i = p.indexOf('=');
-      return [p.slice(0, i), p.slice(i + 1)];
-    }),
-  );
 }
 
 // Baixa o indice e os dois arquivos da casa; confere o SHA-256. Se nao bater, tenta uma vez de novo.

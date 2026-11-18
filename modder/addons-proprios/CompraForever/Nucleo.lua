@@ -5,7 +5,7 @@ local addon, ns = ...
 
 local floor, max = math.floor, math.max
 
-local PADROES = { reserva = 0, desconto = 10, lucroMin = 50, margemMin = 5, grande = 10000, pequena = 3000 }
+local PADROES = { duracao = 3, reserva = 0, desconto = 10, lucroMin = 50, margemMin = 5, grande = 10000, pequena = 3000 }
 local PROF = "Leatherworking"
 
 -- Eventos --------------------------------------------------------------------------------------------
@@ -217,6 +217,106 @@ local function dizer(texto)
   print("CompraForever: " .. texto)
 end
 
+-- "<item> resto": item e um id numerico ou um link de item colado no chat (o nome do link tem espacos)
+local function lerItem(arg)
+  local id = string.match(arg, "|Hitem:(%d+)")
+  if id then
+    local nome = string.match(arg, "%[(.-)%]")
+    local _, fim = string.find(arg, "|h%[.-%]|h")
+    local resto = fim and string.sub(arg, fim + 1) or ""
+    resto = strtrim((string.gsub(resto, "^|r", "")))
+    return tonumber(id), nome, resto
+  end
+  local num, resto = string.match(arg, "^(%d+)%s*(.-)$")
+  if num then return tonumber(num), nil, resto end
+  return nil
+end
+
+local function comandoVigia(sub, arg)
+  local db = ns.vigiaDB()
+  if sub == "unwatch" then
+    local id = lerItem(arg)
+    if not id then dizer("usage: /compra unwatch <item id or link>") return end
+    if ns.vigiaTirar(id) then dizer("unwatched " .. id) else dizer("not watched: " .. id) end
+    return
+  end
+  if arg == "" then
+    local lista = ns.vigiaListar()
+    if #lista == 0 then dizer("watch list is empty") return end
+    for _, x in ipairs(lista) do
+      dizer(x.nome .. " (" .. x.id .. ") <= " .. ns.moeda(x.teto) .. ", buy " .. x.qtd .. ", last " .. ns.moeda(ns.vigiaUltimo(x.id)))
+    end
+    dizer("every " .. db.intervalo .. " s")
+    return
+  end
+  local seg = string.match(string.lower(arg), "^every%s+(%S+)$")
+  if seg then
+    local n = tonumber(seg)
+    if not n or n < 10 or n > 300 then dizer("every must be 10 to 300 seconds") return end
+    ns.vigiaCada(floor(n))
+    dizer("watch every " .. floor(n) .. " s")
+    return
+  end
+  local id, nome, resto = lerItem(arg)
+  local t, q = string.match(resto or "", "^(%S+)%s*(%S*)$")
+  local teto = t and ns.lerValor(t)
+  local qtd = nil
+  if q and q ~= "" then
+    qtd = tonumber(q)
+    if not qtd or qtd < 1 or qtd ~= floor(qtd) then teto = nil end
+  end
+  if not id or not teto or teto < 1 then
+    dizer("usage: /compra watch <item id or link> <max price> [qty] | watch every <10-300 s>")
+    return
+  end
+  local it, novo = ns.vigiaPor(id, nome, teto, qtd)
+  dizer((novo and "watching " or "updated ") .. it.nome .. " (" .. id .. ") <= " .. ns.moeda(it.teto) .. ", buy " .. it.qtd)
+end
+
+local function comandoVenda(sub, arg)
+  if sub == "post" then
+    if arg == "" then
+      local lista = ns.vendaPendentes()
+      if #lista == 0 then dizer("post queue is empty") return end
+      for _, x in ipairs(lista) do
+        dizer(x.qtd .. " " .. x.nome .. " @ " .. ns.moeda(x.preco) .. (x.auto and " (auto)" or ""))
+      end
+      return
+    end
+    if string.lower(arg) == "clear" then
+      ns.vendaLimpar()
+      dizer("post queue cleared")
+      return
+    end
+    local id, nome, resto = lerItem(arg)
+    local t, q = string.match(resto or "", "^(%S+)%s*(%S*)$")
+    local auto = t and string.lower(t) == "auto"
+    local preco = t and (auto and true or ns.lerValor(t))
+    local qtd = nil
+    if q and q ~= "" then
+      qtd = tonumber(q)
+      if not qtd or qtd < 1 or qtd ~= floor(qtd) then preco = nil end
+    end
+    if not id or not preco or (preco ~= true and preco < 1) then
+      dizer("usage: /compra post <item id or link> <price|auto> [qty] | post | post clear")
+      return
+    end
+    local p, erro = ns.vendaPedir(id, nome, preco ~= true and preco or nil, qtd)
+    if not p then dizer(erro) return end
+    dizer("queued " .. (qtd or "all") .. " " .. p.nome .. " @ " .. ns.moeda(p.preco))
+    return
+  end
+  -- sell
+  local id, _, resto = lerItem(arg)
+  local piso = resto and (string.lower(resto) == "off" and "off" or ns.lerValor(resto))
+  if not id or not piso or (piso ~= "off" and piso < 1) then
+    dizer("usage: /compra sell <item id or link> <floor price|off>")
+    return
+  end
+  if not ns.vendaPiso(id, piso ~= "off" and piso or nil) then dizer("watch it first") return end
+  dizer(piso == "off" and ("sell floor off for " .. id) or ("sell floor for " .. id .. " is " .. ns.moeda(piso)))
+end
+
 local function comando(msg)
   msg = strtrim(msg or "")
   local sub, arg = string.match(msg, "^(%S+)%s*(.-)$")
@@ -245,8 +345,20 @@ local function comando(msg)
     ns.replanejar()
   elseif sub == "sonda" then
     if ns.sonda then ns.sonda() else dizer("probe not available") end
+  elseif sub == "watch" or sub == "unwatch" then
+    if not (ns.vigiaDB and ns.vigiaDB()) then dizer("watch not available") return end
+    comandoVigia(sub, arg)
+  elseif sub == "post" or sub == "sell" then
+    if not (ns.vendaPedir and ns.vigiaDB and ns.vigiaDB()) then dizer("post not available") return end
+    comandoVenda(sub, arg)
+  elseif sub == "duration" then
+    if arg == "" then dizer("dur " .. (cfg.duracao or 3)) return end
+    local v = tonumber(arg)
+    if not v or v < 1 or v > 3 or v ~= floor(v) then dizer("duration must be 1-3") return end
+    cfg.duracao = v
+    dizer("dur " .. v)
   else
-    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | sonda]")
+    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | sonda | watch | unwatch | post | sell | duration]")
   end
 end
 

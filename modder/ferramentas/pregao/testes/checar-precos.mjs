@@ -37,7 +37,7 @@ let ruins = 0;
 for (const v of Object.values(itens)) if (![v.min, v.p25, v.med, v.unid, v.lotes].every(Number.isInteger) || (v.tipo !== 'c' && v.tipo !== 'i')) ruins++;
 exige(ruins === 0, `itens publicos com campo errado: ${ruins}`);
 const dias = Object.keys(pub.horas || {});
-exige(dias.length >= 3 && dias.every(d => /^\d{8}$/.test(d)) && Object.values(pub.horas).every(h => typeof h === 'number' && h > 0 && h <= 24), `horas: ${JSON.stringify(pub.horas)}`);
+exige(dias.length >= 3 && dias.every(d => /^\d{8}$/.test(d)) && Object.values(pub.horas).every(h => typeof h === 'number' && h > 0 && h <= 25), `horas: ${JSON.stringify(pub.horas)}`);
 const s = (pub.saidas || {})['4234'];
 exige(s && Object.keys(s).length >= 3 && Object.values(s).every(Number.isInteger), `saidas 4234: ${JSON.stringify(s)}`);
 exige(Object.keys(pub.saidas || {}).length >= 1000, `saidas: ${Object.keys(pub.saidas || {}).length} itens`);

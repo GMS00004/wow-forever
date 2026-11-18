@@ -54,6 +54,8 @@ local function encerrar(S, scan, motivo)
   if scan and not S.sonda then
     ns.scan = scan
     ns.replanejar()
+    -- historico de precos dos itens vigiados (so o que esta busca leu: no refresh, S.escadas e o subconjunto)
+    if ns.vigiaRegistrar then ns.vigiaRegistrar(S.escadas, time(), S.sem) end
   end
   if S.aoTerminar then S.aoTerminar(scan, motivo) end
 end
@@ -174,6 +176,19 @@ proximo = function(S)
   if i > #S.ids then
     if S.sonda then
       encerrar(S, nil, "probe")
+    elseif S.tipo == "vigia" then
+      -- busca da vigia: nao toca em ns.scan (so troca a escada de quem ja tinha) nem replaneja
+      local sem = {}
+      for _, sid in ipairs(S.sem) do sem[sid] = true end
+      if ns.scan and ns.scan.escadas then
+        for id, esc in pairs(S.escadas) do
+          if ns.scan.escadas[id] and not sem[id] then ns.scan.escadas[id] = esc end
+        end
+      end
+      S.fim = true
+      ativo = nil
+      ns.scanEstado = { ocupado = false, feito = ns.scanEstado.feito, total = ns.scanEstado.total }
+      if S.aoTerminar then S.aoTerminar(S.escadas, S.sem) end
     elseif S.tipo == "refresh" and ns.scan and ns.scan.escadas then
       -- nova busca de poucos itens: troca so a escada deles no scan atual
       for id, esc in pairs(S.escadas) do ns.scan.escadas[id] = esc end
@@ -219,6 +234,13 @@ end
 function ns.atualizarItens(ids, aoTerminar)
   if type(ids) ~= "table" or #ids == 0 then return false, "nothing" end
   local ok, motivo = iniciarBusca(ns.scan and "refresh" or "dirigido", ids, aoTerminar, false)
+  return ok, (not ok) and motivo or nil
+end
+
+-- busca da vigia de precos: mesma fila, mas no fim nao mexe em ns.scan nem replaneja; aoTerminar(escadas, semResposta)
+function ns.buscarVigia(ids, aoTerminar)
+  if type(ids) ~= "table" or #ids == 0 then return false, "nothing" end
+  local ok, motivo = iniciarBusca("vigia", ids, aoTerminar, false)
   return ok, (not ok) and motivo or nil
 end
 

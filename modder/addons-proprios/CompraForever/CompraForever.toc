@@ -2,7 +2,7 @@
 ## Title: CompraForever
 ## Notes: Scan the AH, buy, craft and vendor for profit
 ## Author: Bruno
-## Version: 0.1.0
+## Version: 0.2.0
 ## SavedVariables: CompraForeverDB
 ## SavedVariablesPerCharacter: CompraForeverCharDB
 ## OptionalDeps: GuiaForever
@@ -11,5 +11,7 @@ Dados.lua
 Nucleo.lua
 Planejador.lua
 Scanner.lua
+Vigia.lua
 Compra.lua
+Venda.lua
 Painel.lua

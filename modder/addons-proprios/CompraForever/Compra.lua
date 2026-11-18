@@ -13,7 +13,7 @@ local floor, min, max = math.floor, math.min, math.max
 
 local TOLERANCIA = 1.02
 
-ns.sessao = { comprado = {}, craftado = {}, vendido = {}, lotes = {}, principal = {}, revenda = {}, correio = {} }
+ns.sessao = { comprado = {}, craftado = {}, vendido = {}, lotes = {}, principal = {}, revenda = {}, correio = {}, vigiaComprado = {}, postado = {} }
 local S = ns.sessao
 local estado = {}          -- cot, lote, busca, pend, msg, aviso
 local aberto = { ah = false, vend = false, prof = false }
@@ -47,18 +47,20 @@ function ns.contexto()
   return { ah = aberto.ah, vend = aberto.vend, prof = profissaoLW() }
 end
 
+-- cotacao, lote, busca de item ou pendencia no meio: a vigia nao busca agora
+function ns.compraOcupada()
+  return (estado.cot or estado.lote or estado.busca or estado.pend) ~= nil or (ns.vendaOcupada and ns.vendaOcupada()) == true
+end
+
 function ns.mensagem()
   local a = estado.aviso
   if a and a.scan == ns.scan then return a.texto end
-  return estado.msg
+  return estado.msg or (ns.venda and ns.venda.msg)
 end
 
 -- Registro do que foi comprado --------------------------------------------------------------------------
 
-local function consumir(id, qtd, leilao)
-  local sc = ns.scan
-  local l = sc and sc.escadas and sc.escadas[id]
-  if not l then return end
+local function consumirEm(l, qtd, leilao)
   if leilao then
     for i, d in ipairs(l) do
       if d.leilao == leilao then table.remove(l, i) break end
@@ -80,8 +82,18 @@ local function consumir(id, qtd, leilao)
   end
 end
 
-local function compraFeita(id, qtd, leilao)
+-- consome da escada do scan e da escada da vigia (podem ser a mesma tabela: consome uma vez so)
+local function consumir(id, qtd, leilao)
+  local sc = ns.scan
+  local a = sc and sc.escadas and sc.escadas[id]
+  local b = ns.vigia and ns.vigia.escadas and ns.vigia.escadas[id]
+  if a then consumirEm(a, qtd, leilao) end
+  if b and b ~= a then consumirEm(b, qtd, leilao) end
+end
+
+local function compraFeita(id, qtd, leilao, vigia)
   S.comprado[id] = (S.comprado[id] or 0) + qtd
+  if vigia then S.vigiaComprado[id] = (S.vigiaComprado[id] or 0) + qtd end
   S.correio[id] = (S.correio[id] or 0) + qtd
   visto[id] = estoqueBolsa(id)
   for _, r in ipairs(ns.plano and ns.plano.revenda or {}) do
@@ -89,7 +101,8 @@ local function compraFeita(id, qtd, leilao)
   end
   consumir(id, qtd, leilao)
   estado.msg = nil
-  ns.replanejar()
+  if ns.vigiaAvaliar then ns.vigiaAvaliar() end
+  if vigia and not ns.scan then atualizar() else ns.replanejar() end
 end
 
 -- o que o correio ja entregou deixa de contar como pendente
@@ -199,9 +212,9 @@ local function buyoutDe(id, leilao)
 end
 
 local function comprarLote(row, lote)
-  local valor = buyoutDe(row.id, lote.leilao)
+  local valor = (row.vigia and lote.total) or buyoutDe(row.id, lote.leilao)
   if not valor then buscarItem(row) return end   -- sem o buyout exato: busca o item de novo, sem comprar
-  local l = { id = row.id, nome = row.nome, leilao = lote.leilao, qtd = lote.qtd }
+  local l = { id = row.id, nome = row.nome, leilao = lote.leilao, qtd = lote.qtd, vigia = row.vigia }
   estado.lote = l
   estado.msg = nil
   C_Timer.After(15, function()
@@ -225,6 +238,33 @@ local function acaoLeilao()
   if estado.lote then return { texto = "Buying " .. estado.lote.nome } end
   if estado.busca then return { texto = "Searching " .. estado.busca.nome } end
   if ns.scanEstado and ns.scanEstado.ocupado then return { texto = "Scanning..." } end
+  -- postagem em andamento (Venda.lua): uma funcao de acao por clique, o Confirm no clique seguinte
+  local em = ns.venda and ns.venda.em
+  if em then
+    if em.fase == "confirmar" then
+      return { texto = "Confirm post " .. em.p.qtd .. " " .. em.p.nome, executar = ns.vendaConfirmar }
+    end
+    return { texto = "Posting " .. em.p.nome }
+  end
+  -- preco da vigia abaixo do teto: vem antes do plano
+  local vrow = ns.vigiaOportunidade and ns.vigiaOportunidade()
+  if vrow then
+    if not vrow.inteiro then
+      return { texto = "Buy " .. vrow.qtd .. " " .. vrow.nome .. " (" .. ns.moeda(vrow.custo) .. ") [WATCH]",
+               executar = function() iniciarCotacao(vrow) end }
+    end
+    local lote = vrow.lotes[1]
+    return { texto = textoLote(vrow) .. " (" .. ns.moeda(lote.preco * lote.qtd) .. ") [WATCH]",
+             executar = function() comprarLote(vrow, lote) end }
+  end
+  -- postagem nova depois da oportunidade da vigia
+  local p = ns.vendaProxima and ns.vendaProxima()
+  if p then
+    local dep = ns.vendaDeposito(p)
+    return { texto = "Post " .. p.qtd .. " " .. p.nome .. " @ " .. ns.moeda(p.preco)
+               .. (dep and (" (dep " .. ns.moeda(dep) .. ")") or "") .. " [SELL]",
+             executar = function() ns.vendaExecutar(p) end }
+  end
   -- compra primeiro o que custa mais: se um preco mudar depois, sobra menos comprado pela metade
   local ordem = {}
   for _, row in ipairs(ns.plano and ns.plano.leilao or {}) do ordem[#ordem + 1] = row end
@@ -253,7 +293,8 @@ end
 
 -- Quanto a cotacao pode passar do planejado: 2% mais metade do lucro do plano. Uma alta pequena come parte do lucro
 -- mas ainda paga; nao vale largar a leva comprada pela metade por ela.
-local function limiteCotacao(custo)
+local function limiteCotacao(custo, row)
+  if row and row.vigia then return row.precoMax * row.qtd end   -- vigia: o teto por unidade, sem folga
   local lucro = ns.plano and ns.plano.totais and ns.plano.totais.lucro or 0
   return floor(custo * TOLERANCIA) + 1 + max(0, floor(lucro / 2))
 end
@@ -261,8 +302,14 @@ end
 ns.ao("COMMODITY_PRICE_UPDATED", function(unit, total)
   local c = estado.cot
   if not c or c.fase ~= "cotando" then return end
-  if total <= limiteCotacao(c.custo) then
+  if total <= limiteCotacao(c.custo, c.row) then
     c.fase, c.total = "confirmar", total
+  elseif c.row and c.row.vigia then
+    -- acima do teto da vigia: so cancela; a escada guardada ficou velha e a proxima busca da vigia a refaz
+    C_AuctionHouse.CancelCommoditiesPurchase()
+    estado.cot = nil
+    estado.msg = "Price rose above watch"
+    if ns.vigiaInvalidar then ns.vigiaInvalidar(c.id) end
   else
     -- subiu demais: cancela, busca de novo so este item e refaz o plano com o que ja foi comprado em estoque
     C_AuctionHouse.CancelCommoditiesPurchase()
@@ -293,7 +340,7 @@ ns.ao("COMMODITY_PURCHASE_SUCCEEDED", function()
   local c = estado.cot
   if not c or c.fase ~= "comprando" then return end
   estado.cot = nil
-  compraFeita(c.id, c.qtd, nil)
+  compraFeita(c.id, c.qtd, nil, c.row and c.row.vigia)
 end)
 
 ns.ao("COMMODITY_PURCHASE_FAILED", function()
@@ -308,7 +355,7 @@ ns.ao("AUCTION_HOUSE_PURCHASE_COMPLETED", function(leilao)
   if not l or l.leilao ~= leilao then return end
   estado.lote = nil
   S.lotes[l.id] = (S.lotes[l.id] or 0) + 1
-  compraFeita(l.id, l.qtd, l.leilao)
+  compraFeita(l.id, l.qtd, l.leilao, l.vigia)
 end)
 
 ns.ao("AUCTION_HOUSE_SHOW_ERROR", function(codigo)

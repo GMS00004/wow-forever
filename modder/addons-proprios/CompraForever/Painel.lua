@@ -8,7 +8,7 @@ local floor, max, min = math.floor, math.max, math.min
 local LARG = 300
 local Y_LINHAS = 80       -- topo da primeira linha de plano
 local ALT_LINHA = 13
-local MAX_LINHAS = 22
+local MAX_LINHAS = 30
 local RECARGA_FULL = 900
 local MOTIVOS = { dinheiro = "money", espaco = "bags", lucro = "profit", limite = "limit" }
 
@@ -75,7 +75,9 @@ end
 local function nomeItem(id)
   local d = rawget(_G, "CompraForeverDados")
   local it = d and d.itens and d.itens[id]
-  return it and it.nome or tostring(id)
+  if it and it.nome then return it.nome end
+  local w = ns.vigiaDB and ns.vigiaDB()
+  return w and w.itens[id] and w.itens[id].nome or tostring(id)
 end
 
 -- BIG >= config.grande (1g), small >= config.pequena (30s), skip abaixo; ajustavel por /compra grande e /compra pequena
@@ -101,6 +103,40 @@ local function montarLinhas()
   for _, c in ipairs(crafts) do noPlano["m" .. c.magia] = true end
   for _, r in ipairs(leilao) do noPlano["i" .. r.id] = true end
   for _, r in ipairs(vendedor) do noPlano["i" .. r.id] = true end
+
+  -- vigia de precos: uma linha por item vigiado (verde com BUY quando o minimo esta no teto ou abaixo)
+  local vdb = ns.vigiaDB and ns.vigiaDB()
+  local vitens = ns.vigiaListar and ns.vigiaListar() or {}
+  if vdb and #vitens > 0 then
+    local V = ns.vigia
+    L[#L + 1] = V.em and ("WATCH " .. date("%H:%M", V.em)) or "WATCH (waiting)"
+    for _, x in ipairs(vitens) do
+      local esc = V.escadas[x.id]
+      local now, buy = "-", false
+      if esc and esc[1] then
+        local unid = 0
+        for _, d in ipairs(esc) do unid = unid + d.qtd end
+        now = ns.moeda(esc[1].preco) .. " (" .. unid .. ")"
+        buy = esc[1].preco <= x.teto
+      end
+      L[#L + 1] = (buy and "|cff33ff33BUY " or "|cff999999  ") .. x.nome .. " <= " .. ns.moeda(x.teto) .. " | now " .. now .. "|r"
+    end
+  end
+
+  -- venda no leilao: pedidos da fila e sugestoes (item vigiado com piso), mais o que ja foi postado
+  local pend = ns.vendaPendentes and ns.vendaPendentes() or {}
+  local postados = {}
+  for id, n in pairs(S.postado or {}) do
+    if n > 0 then postados[#postados + 1] = id end
+  end
+  table.sort(postados)
+  if #pend > 0 or #postados > 0 then
+    L[#L + 1] = "SELL"
+    for _, x in ipairs(pend) do
+      L[#L + 1] = "  " .. x.qtd .. " " .. x.nome .. " @ " .. ns.moeda(x.preco) .. (x.auto and " (auto)" or "") .. " [SELL]"
+    end
+    for _, id in ipairs(postados) do L[#L + 1] = "[x] posted " .. S.postado[id] .. " " .. nomeItem(id) end
+  end
 
   if not ns.scan then
     L[#L + 1] = "No scan yet: open the AH and click Scan"
