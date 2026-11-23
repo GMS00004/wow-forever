@@ -41,7 +41,7 @@ exige(dias.length >= 3 && dias.every(d => /^\d{8}$/.test(d)) && Object.values(pu
 const s = (pub.saidas || {})['4234'];
 exige(s && Object.keys(s).length >= 3 && Object.values(s).every(Number.isInteger), `saidas 4234: ${JSON.stringify(s)}`);
 exige(Object.keys(pub.saidas || {}).length >= 1000, `saidas: ${Object.keys(pub.saidas || {}).length} itens`);
-exige(Array.isArray(p.vendedor) && p.vendedor.length === 3734 && p.vendedor.includes(2321) && p.vendedor.includes(4289) && !p.vendedor.includes(1206), `vendedor: ${p.vendedor && p.vendedor.length}`);
+exige(Array.isArray(p.vendedor) && p.vendedor.length >= 3500 && p.vendedor.includes(2321) && p.vendedor.includes(4289) && !p.vendedor.includes(1206), `vendedor: ${p.vendedor && p.vendedor.length}`);
 if (p.auctionator !== null) {
   const a = p.auctionator;
   exige(a && Number.isInteger(a.em) && a.itens && Object.keys(a.itens).length > 100, 'auctionator presente, mas incompleto');

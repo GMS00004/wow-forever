@@ -1,11 +1,12 @@
-// Calculadora de receitas de Leatherworking do PregaoForever (fora do jogo).
-// Contrato em CONTRATO.md, secao 5. Uso: node crafts.mjs --pericia 180 [--linhas 8] [--todas]
+// Calculadora de receitas do PregaoForever (fora do jogo): Leatherworking pelo receitas-lw.json e, com --profissao,
+// as seis profissoes de oficio (secao 10). Contrato em CONTRATO.md, secao 5.
+// Uso: node crafts.mjs --pericia 180 [--linhas 8] [--todas] [--profissao <nome>]
 import { pathToFileURL } from 'node:url';
-import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda } from './comum.mjs';
+import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda, arqReceitas, acharProfissao, PROFISSOES } from './comum.mjs';
 
 const JANELA_AUCTIONATOR = 21600; // segundos: a exportacao do Auctionator so vale ate 6 horas
 const PROF_MAX = 3;               // niveis de receita encadeada (candidato F) a partir do reagente direto
-const USO = 'uso: node crafts.mjs --pericia 180 [--linhas 8] [--todas] [--desconto-vendedor 10]';
+const USO = 'uso: node crafts.mjs --pericia 180 [--linhas 8] [--todas] [--desconto-vendedor 10] [--profissao <nome>]';
 
 // Desconto de reputacao no vendedor, em %, padrao da linha de comando (secao 6.4). Dito pelo dono em 2026-11-17:
 // o Hexumlite tem 10% em todo item de vendedor de Darnassus, linhas incluidas. 0 desliga.
@@ -48,6 +49,7 @@ export function calcular(receitas, precos, opcoes) {
   // Receitas agrupadas pelo produto, para o candidato F.
   const porProduto = new Map();
   for (const r of receitas.receitas) {
+    if (!r.produto) continue; // encantamento (secao 10): nao faz item
     const k = chave(r.produto.id);
     if (!porProduto.has(k)) porProduto.set(k, []);
     porProduto.get(k).push(r);
@@ -130,14 +132,15 @@ export function calcular(receitas, precos, opcoes) {
 
   // Monta a linha de uma receita, com todos os campos da tabela do contrato.
   function linhaDe(r) {
-    const prod = r.produto;
-    const pk = chave(prod.id);
-    const itemProd = itens[pk] || null;
+    const prod = r.produto; // null no encantamento (secao 10)
+    const pk = prod ? chave(prod.id) : null;
+    const itemProd = pk ? itens[pk] || null : null;
+    const guarda = () => (pk ? new Set([pk]) : new Set());
     const reag = reagentesDe(r).map((g) => ({
       id: g.id,
       qtd: g.qtd,
-      min: cu(g.id, 'min', 1, new Set([pk])),
-      cons: cu(g.id, 'cons', 1, new Set([pk])),
+      min: cu(g.id, 'min', 1, guarda()),
+      cons: cu(g.id, 'cons', 1, guarda()),
     }));
 
     const semPreco = reag.some((g) => g.min.preco === null);
@@ -149,7 +152,9 @@ export function calcular(receitas, precos, opcoes) {
     for (const g of reag) if (g.min.preco !== null) fontes[chave(g.id)] = g.min.letra;
 
     // Venda ao vendedor: o produto nao depende de preco de reagente, mas, com sem preco, os campos de dinheiro saem null.
-    const vendaNpc = !semPreco && itemProd ? prod.qtd * itemProd.vende : null;
+    // Encantamento: nao ha produto, a venda e 0.
+    let vendaNpc = null;
+    if (!semPreco) vendaNpc = prod ? (itemProd ? prod.qtd * itemProd.vende : null) : 0;
     const lucroNpc = vendaNpc !== null && custo !== null ? vendaNpc - custo : null;
     const lucroNpcCons = vendaNpc !== null && custoCons !== null ? vendaNpc - custoCons : null;
 
@@ -187,7 +192,7 @@ export function calcular(receitas, precos, opcoes) {
 
     // Leilao do produto: nao entra se o produto e vinculado (vinculo 1) ou sem preco.
     const vinculado = itemProd !== null && itemProd.vinculo === 1;
-    const plProd = !semPreco && !vinculado ? pl(prod.id) : null;
+    const plProd = !semPreco && !vinculado && prod ? pl(prod.id) : null;
     const precoLeilao = plProd ? plProd.preco : null;
     const fontePrecoLeilao = plProd ? plProd.fonte : null;
     const lucroLeilao = precoLeilao !== null && custo !== null
@@ -195,7 +200,7 @@ export function calcular(receitas, precos, opcoes) {
       : null;
 
     // Media de saidas por dia, so nos dias com 23 horas ou mais de cobertura.
-    const saidas = pub.saidas?.[pk];
+    const saidas = pk ? pub.saidas?.[pk] : undefined;
     const horas = pub.horas || {};
     const diasCheios = Object.keys(horas).filter((d) => horas[d] >= 23);
     let saiDia = null;
@@ -203,12 +208,12 @@ export function calcular(receitas, precos, opcoes) {
       saiDia = diasCheios.reduce((t, d) => t + (saidas[d] || 0), 0) / diasCheios.length;
     }
 
-    const listados = pubItens[pk]?.unid ?? null;
+    const listados = pk ? pubItens[pk]?.unid ?? null : null;
 
     // Divergencia: Auctionator (idade 0) e minimo publico diferem mais de 20% do minimo publico.
     const divergencias = [];
     const vistos = new Set();
-    for (const id of [...reag.map((g) => g.id), prod.id]) {
+    for (const id of [...reag.map((g) => g.id), ...(prod ? [prod.id] : [])]) {
       const k = chave(id);
       if (vistos.has(k)) continue;
       vistos.add(k);
@@ -217,11 +222,19 @@ export function calcular(receitas, precos, opcoes) {
       if (a !== null && p && p.min > 0 && Math.abs(a - p.min) > 0.2 * p.min) divergencias.push(Number(id));
     }
 
-    // Pericia para aprender: a do item de receita; sem item, estimada a partir da cor amarela.
-    const aprendeItem = r.itemReceita != null;
-    const aprende = aprendeItem ? r.itemReceita.periciaExigida : Math.max(1, amarela - 25);
-    const aprendeEstimado = !aprendeItem;
+    // Pericia para aprender: a do item de receita; sem item, estimada a partir da cor amarela. No esquema 2
+    // (secao 10): a receita que vem com a profissao e 1; a de treinador pelo Naowh usa a pericia dele.
+    const nw = r.naowh || null;
+    let aprende, aprendeFonte;
+    if (r.inicial) { aprende = 1; aprendeFonte = 'inicial'; }
+    else if (nw && nw.origem === 'trainer' && nw.aprende != null) { aprende = nw.aprende; aprendeFonte = 'naowh'; }
+    else if (r.itemReceita != null) { aprende = r.itemReceita.periciaExigida; aprendeFonte = 'item'; }
+    else if (nw && nw.aprende != null) { aprende = nw.aprende; aprendeFonte = 'naowh'; }
+    else { aprende = Math.max(1, amarela - 25); aprendeFonte = 'estimada'; }
+    const aprendeEstimado = aprendeFonte === 'estimada';
     const podeFazer = aprende <= pericia;
+    // Custo de treino da receita, quando o Naowh diz que e de treinador (cobre); senao null.
+    const treino = nw && nw.origem === 'trainer' && typeof nw.custo === 'number' ? nw.custo : null;
 
     // Ralo: ha preco de leilao, mas poucos anuncios (ou nenhum).
     const ralo = precoLeilao !== null && (listados === null || listados < 5);
@@ -229,8 +242,8 @@ export function calcular(receitas, precos, opcoes) {
     return {
       magia: r.magia,
       nome: r.nome,
-      produtoId: prod.id,
-      qtd: prod.qtd,
+      produtoId: prod ? prod.id : null,
+      qtd: prod ? prod.qtd : 0,
       semPreco,
       fontes,
       // preco unitario e letra (L, V ou F) de cada reagente no modo min, para os numeros vivos do J (secao 6.3)
@@ -252,6 +265,8 @@ export function calcular(receitas, precos, opcoes) {
       divergencias,
       aprende,
       aprendeEstimado,
+      aprendeFonte,
+      treino,
       podeFazer,
       ralo,
     };
@@ -284,8 +299,14 @@ function idade(seg) {
   return h ? `${h} h ${String(m).padStart(2, '0')} min` : `${m} min`;
 }
 
-// Coluna aprende: "145 i" quando vem do item, "~140" quando e estimada.
-const aprendeTxt = (l) => (l.aprendeEstimado ? `~${l.aprende}` : `${l.aprende} i`);
+// Coluna aprende: "145 i" quando vem do item, "~140" quando e estimada, "120 t" do treinador pelo Naowh e "1 s"
+// quando vem com a profissao (secao 10).
+export const aprendeTxt = (l) => {
+  if (l.aprendeEstimado) return `~${l.aprende}`;
+  if (l.aprendeFonte === 'naowh') return `${l.aprende} t`;
+  if (l.aprendeFonte === 'inicial') return `${l.aprende} s`;
+  return `${l.aprende} i`;
+};
 
 // Monta uma secao: titulo, cabecalho, ate "limite" linhas e a linha "mais N".
 function secao(titulo, cabs, larguras, dados, limite) {
@@ -313,7 +334,7 @@ function relatorio(res, receitas, precos, agora, limite, todas) {
     aucTxt = `Auctionator: exportado ${hora(precos.auctionator.em)} (ha ${idade(seg)})`;
     if (seg > JANELA_AUCTIONATOR) aucTxt += ', velha: nao usada';
   }
-  const cab = [`PREGAO - Leatherworking - pericia ${res.pericia}`, `${fotoTxt} | ${aucTxt}`];
+  const cab = [`PREGAO - ${receitas.profissao?.nome ?? 'Leatherworking'} - pericia ${res.pericia}`, `${fotoTxt} | ${aucTxt}`];
 
   // Sem --todas, as secoes so mostram receitas que a pericia atual deixa aprender.
   const mostra = (l) => todas || l.podeFazer;
@@ -384,11 +405,15 @@ function relatorio(res, receitas, precos, agora, limite, todas) {
 
 // Le --pericia, --linhas e --todas. Devolve { erro } se faltar ou vier errado.
 function lerOpcoes(argv) {
-  const op = { pericia: null, linhas: 8, todas: false, desconto: DESCONTO_VENDEDOR };
+  const op = { pericia: null, linhas: 8, todas: false, desconto: DESCONTO_VENDEDOR, profissao: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--todas') {
       op.todas = true;
+    } else if (a === '--profissao') {
+      const p = acharProfissao(argv[++i]);
+      if (!p) return { erro: `--profissao pede uma de: ${Object.keys(PROFISSOES).join(', ')}` };
+      op.profissao = p;
     } else if (a === '--desconto-vendedor') {
       const d = lerDesconto(argv[++i]);
       if (d.erro) return d;
@@ -425,7 +450,9 @@ async function linhaDeComando(argv) {
     console.error(`${op.erro}\n${USO}`);
     process.exit(2);
   }
-  const receitas = comDesconto(await lerEntrada(ARQ_RECEITAS, 'gerar-receitas.mjs'), op.desconto);
+  const arq = op.profissao ? arqReceitas(op.profissao.slug) : ARQ_RECEITAS;
+  const gerar = op.profissao ? `gerar-receitas.mjs --profissao ${op.profissao.slug}` : 'gerar-receitas.mjs';
+  const receitas = comDesconto(await lerEntrada(arq, gerar), op.desconto);
   const precos = await lerEntrada(ARQ_PRECOS, 'baixar-precos.mjs');
   const agora = Math.floor(Date.now() / 1000);
   const res = calcular(receitas, precos, { pericia: op.pericia, agora });

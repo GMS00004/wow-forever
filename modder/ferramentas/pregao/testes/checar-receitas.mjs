@@ -1,11 +1,11 @@
 // Confere dados/pregao/receitas-lw.json contra o contrato (secao 3). Uso: node testes/checar-receitas.mjs
-import { ARQ_RECEITAS, lerJson } from '../comum.mjs';
+import { ARQ_RECEITAS, BUILD, lerJson } from '../comum.mjs';
 
 const r = await lerJson(ARQ_RECEITAS);
 const erros = [];
 const exige = (cond, msg) => { if (!cond) erros.push(msg); };
 
-exige(r.esquema === 1 && r.build === '1.60.1.70938', 'esquema ou build');
+exige(r.esquema === 1 && r.build === BUILD, 'esquema ou build');
 exige(r.profissao && r.profissao.id === 165, 'profissao');
 // 592 magias criam item; 110 delas tem produto fora do ItemSparse neste build (contrato, secao 3).
 exige(Array.isArray(r.receitas) && r.receitas.length >= 470 && r.receitas.length <= 592, `receitas: ${r.receitas && r.receitas.length} (esperado 470 a 592)`);

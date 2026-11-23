@@ -1,15 +1,16 @@
-// Rota de Leatherworking entre duas pericias, fora do jogo (PregaoForever).
-// Contrato em CONTRATO.md, secao 6. Uso: node rota.mjs --de 186 --ate 225 [--sem "A,B"] [--so "A,B"] [--lua]
+// Rota de uma profissao entre duas pericias, fora do jogo (PregaoForever): Leatherworking pelo receitas-lw.json e,
+// com --profissao, as seis profissoes de oficio (secao 10). Contrato em CONTRATO.md, secao 6.
+// Uso: node rota.mjs --de 186 --ate 225 [--sem "A,B"] [--so "A,B"] [--lua] [--profissao <nome>]
 import { pathToFileURL } from 'node:url';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda, pastaSavedVariables } from './comum.mjs';
-import { calcular, comDesconto, lerDesconto, DESCONTO_VENDEDOR } from './crafts.mjs';
+import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda, pastaSavedVariables, arqReceitas, acharProfissao, PROFISSOES } from './comum.mjs';
+import { calcular, comDesconto, lerDesconto, DESCONTO_VENDEDOR, aprendeTxt } from './crafts.mjs';
 
 const JANELA_AUCTIONATOR = 21600; // segundos: a exportacao do Auctionator so vale ate 6 horas (como no crafts.mjs)
 const TOLERANCIA = 1e-9;
 const MAX_PASSOS = 20;
-const USO = 'uso: node rota.mjs --de 186 --ate 225 [--sem "A,B"] [--so "A,B"] [--conheco "A,B"] [--todos-padroes] [--desconto-vendedor 10] [--lua | --addon <RotaCrafts.lua>]';
+const USO = 'uso: node rota.mjs --de 186 --ate 225 [--sem "A,B"] [--so "A,B"] [--conheco "A,B"] [--todos-padroes] [--desconto-vendedor 10] [--lua | --addon <RotaCrafts.lua>] [--profissao <nome>]';
 
 const chave = (id) => String(id);
 const minusc = (s) => String(s).toLowerCase();
@@ -31,7 +32,7 @@ function chanceEm(r, s) {
 // `fab`, a receita mais barata que o faz (um nivel): quantos saem por craft e os reagentes dela, para o J refazer o
 // preco de fabricar com o leilao de agora (por exemplo, curar a Medium Hide em vez de comprar a Cured Medium Hide).
 function dadosVivos(r, l, receitas, vendedor, linhas) {
-  const prod = receitas.itens?.[chave(r.produto.id)];
+  const prod = r.produto ? receitas.itens?.[chave(r.produto.id)] : null; // encantamento: sem produto (secao 10)
   const fab = linhas ? mapaFab(receitas, linhas) : null;
   const mat = (g) => {
     const it = receitas.itens?.[chave(g.id)];
@@ -45,8 +46,8 @@ function dadosVivos(r, l, receitas, vendedor, linhas) {
     };
   };
   return {
-    produto: r.produto.id,
-    produtoQtd: r.produto.qtd,
+    produto: r.produto ? r.produto.id : null,
+    produtoQtd: r.produto ? r.produto.qtd : 0,
     vinculado: prod ? prod.vinculo === 1 : false,
     precoLeilao: l.precoLeilao ?? null,
     precosMat: (l.reagentes || []).map((g) => {
@@ -66,7 +67,7 @@ function mapaFab(receitas, linhas) {
   m = new Map();
   receitas.receitas.forEach((r, i) => {
     const l = linhas[i];
-    if (!l || l.semPreco || l.custo === null) return;
+    if (!l || l.semPreco || l.custo === null || !r.produto) return;
     const k = chave(r.produto.id);
     const un = l.custo / r.produto.qtd;
     const atual = m.get(k);
@@ -81,6 +82,11 @@ export function calcularRota(receitas, precos, opcoes) {
   const { de, ate, agora } = opcoes;
   const sem = new Set((opcoes.sem || []).map(minusc));
   const so = opcoes.so == null ? null : new Set(opcoes.so.map(minusc));
+  // semMagias (secao 10): receitas a tirar pelo ID da magia, para o legado.mjs testar a rota sem uma ferramenta.
+  const semMagias = opcoes.semMagias instanceof Set ? opcoes.semMagias : new Set(opcoes.semMagias || []);
+  // custoPonto (secao 10.3): funcao (r, l, e) => custo do ponto, para o legado.mjs pesar o tempo de cada craft e nao
+  // premiar lucro de vendedor com craft a mais. Sem ela, o custo do ponto no pior caso, como sempre.
+  const custoPonto = typeof opcoes.custoPonto === 'function' ? opcoes.custoPonto : null;
 
   // Constantes por receita: calcular() nao depende da pericia para custo, venda, leilao, limite e aprende.
   // opcoes.linhas (as linhas de um calcular() ja feito) poupa a conta quando a rota roda muitas vezes.
@@ -97,13 +103,14 @@ export function calcularRota(receitas, precos, opcoes) {
     rec.forEach(({ r, l }, i) => {
       if (l.semPreco || l.vendaNpc === null) return;
       if (l.aprende > s) return;
+      if (semMagias.has(r.magia)) return;
       const nome = minusc(r.nome);
       if (sem.has(nome) || (so !== null && !so.has(nome))) return;
       const c = chanceEm(r, s);
       if (!(c > 0)) return;
       const e = 1 / (c * r.pontos);
       if (l.ate !== null && n[i] + e > l.ate) return;
-      cands.push({ i, e, k: (l.custo - l.vendaNpc) * e });
+      cands.push({ i, e, k: custoPonto ? custoPonto(r, l, e) : (l.custo - l.vendaNpc) * e });
     });
     if (cands.length === 0) {
       parou = { pericia: s, motivo: 'sem receita' };
@@ -149,7 +156,7 @@ export function calcularRota(receitas, precos, opcoes) {
       nome: receitas.itens?.[chave(x.id)]?.nome ?? chave(x.id),
       qtd: x.qtd * crafts,
     }));
-    const h = precos.publico?.historico?.[chave(r.produto.id)];
+    const h = r.produto ? precos.publico?.historico?.[chave(r.produto.id)] : null;
     return {
       ...dadosVivos(r, l, receitas, vendedor, linhas),
       de: g.de,
@@ -163,6 +170,8 @@ export function calcularRota(receitas, precos, opcoes) {
       lucroLeilao: l.lucroLeilao,
       aprende: l.aprende,
       aprendeEstimado: l.aprendeEstimado,
+      aprendeFonte: l.aprendeFonte,
+      treino: l.treino,
       itemReceita: r.itemReceita != null,
       listados: l.listados,
       saiDia: l.saiDia,
@@ -199,19 +208,29 @@ export function situacaoPadroes(receitas, precos, opcoes) {
   const auc = precos.auctionator && agora - precos.auctionator.em <= JANELA_AUCTIONATOR ? precos.auctionator.itens : null;
   const mapa = new Map();
   for (const r of receitas.receitas) {
-    if (conhecidas.has(r.magia)) {
+    if (conhecidas.has(r.magia) || r.inicial) {
       mapa.set(r.magia, { situacao: 'conhecida', preco: 0 });
       continue;
     }
+    const nw = r.naowh || null;
     const ir = r.itemReceita;
-    if (!ir) {
+    // Esquema 2 (secao 10): o Naowh diz quem ensina. Treinador vale mesmo com item de receita; sem item e sem
+    // treinador (quest, drop, vendedor, origem desconhecida ou receita que o Naowh nao tem), a receita fica fora.
+    if (nw && nw.origem === 'trainer') {
       mapa.set(r.magia, { situacao: 'treinador', preco: 0 });
+      continue;
+    }
+    if (!ir) {
+      if (receitas.esquema >= 2) mapa.set(r.magia, { situacao: 'fora', preco: null, visto: null, motivo: nw ? `origem ${nw.origem}` : 'sem dado do Naowh' });
+      else mapa.set(r.magia, { situacao: 'treinador', preco: 0 });
       continue;
     }
     const base = { id: ir.id, nome: ir.nome };
     const pub = precos.publico?.itens?.[chave(ir.id)];
     const a = auc?.[chave(ir.id)];
-    if (vendedor.has(ir.id) && ir.compra > 0) {
+    // Com o Naowh, padrao de vendedor so conta se algum vendedor dele e da Alianca ou neutro ("A" ou "AH").
+    const aliancaVende = !nw || !nw.lados || nw.lados.length === 0 || nw.lados.some((x) => x.includes('A'));
+    if (vendedor.has(ir.id) && ir.compra > 0 && aliancaVende) {
       mapa.set(r.magia, { ...base, situacao: 'vendedor', preco: ir.compra });
     } else if (a && a.idadeDias === 0) {
       mapa.set(r.magia, { ...base, situacao: 'leilao', preco: a.preco, listados: pub ? pub.unid : null });
@@ -264,7 +283,7 @@ export function escolherRota(receitas, precos, opcoes) {
 
   const rodar = (aceitos) => {
     const sem = [...semBase, ...fora, ...compraveis.filter((n) => !aceitos.has(n))];
-    const rota = calcularRota(receitas, precos, { de, ate, agora, sem, so: opcoes.so ?? null, linhas });
+    const rota = calcularRota(receitas, precos, { de, ate, agora, sem, so: opcoes.so ?? null, linhas, semMagias: opcoes.semMagias, custoPonto: opcoes.custoPonto });
     return { rota, nota: avaliar(rota, sit) };
   };
 
@@ -286,7 +305,7 @@ export function escolherRota(receitas, precos, opcoes) {
 
   // A mesma rota supondo todos os padroes na mao: o que ela usa e nao esta a venda e o que vale
   // esperar no leilao.
-  const livre = calcularRota(receitas, precos, { de, ate, agora, sem: [...semBase], so: opcoes.so ?? null, linhas });
+  const livre = calcularRota(receitas, precos, { de, ate, agora, sem: [...semBase], so: opcoes.so ?? null, linhas, semMagias: opcoes.semMagias, custoPonto: opcoes.custoPonto });
   const esperar = [];
   for (const p of livre.passos) {
     const s = sit.get(p.magia);
@@ -584,8 +603,6 @@ function idade(seg) {
   return h ? `${h} h ${String(m).padStart(2, '0')} min` : `${m} min`;
 }
 
-// Coluna aprende: "175 i" quando vem do item, "~180" quando e estimada.
-const aprendeTxt = (p) => (p.aprendeEstimado ? `~${p.aprende}` : `${p.aprende} i`);
 
 // Linha da tabela: oito colunas com largura fixa e a ultima (ultimos dias) sem corte.
 const LARGURAS = [7, 22, 6, 7, 14, 14, 14, 8];
@@ -649,8 +666,8 @@ function quebrarMateriais(mats) {
   return L;
 }
 
-function relatorio(res, precos, agora) {
-  const out = [`ROTA - Leatherworking - de ${res.de} a ${res.ate}`, horasTxt(precos, agora)];
+function relatorio(res, precos, agora, nome = 'Leatherworking') {
+  const out = [`ROTA - ${nome} - de ${res.de} a ${res.ate}`, horasTxt(precos, agora)];
 
   out.push(linhaTab(['faixa', 'receita', 'crafts', 'aprende', 'custo/craft', 'pior caso', 'se vender', 'listados', 'ultimos dias']));
   if (res.passos.length === 0) out.push('nenhum passo');
@@ -715,13 +732,17 @@ const nomesDe = (v) => v.split(',').map((s) => s.trim());
 
 // Le --de, --ate, --sem, --so e --lua. Devolve { erro } se faltar ou vier errado.
 function lerOpcoes(argv) {
-  const op = { de: null, ate: null, sem: [], so: null, lua: false, conheco: [], todosPadroes: false, addon: null, desconto: DESCONTO_VENDEDOR };
+  const op = { de: null, ate: null, sem: [], so: null, lua: false, conheco: [], todosPadroes: false, addon: null, desconto: DESCONTO_VENDEDOR, profissao: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--lua') {
       op.lua = true;
     } else if (a === '--todos-padroes') {
       op.todosPadroes = true;
+    } else if (a === '--profissao') {
+      const p = acharProfissao(argv[++i]);
+      if (!p) return { erro: `--profissao pede uma de: ${Object.keys(PROFISSOES).join(', ')}` };
+      op.profissao = p;
     } else if (a === '--desconto-vendedor') {
       const d = lerDesconto(argv[++i]);
       if (d.erro) return d;
@@ -772,7 +793,14 @@ async function linhaDeComando(argv) {
     process.exit(2);
   }
   // Desconto de reputacao no vendedor (secao 6.4): vale para a compra de itens e padroes de vendedor.
-  const receitas = comDesconto(await lerEntrada(ARQ_RECEITAS, 'gerar-receitas.mjs'), op.desconto);
+  // --profissao (secao 10): o arquivo da profissao; sem ele, o receitas-lw.json da rota do J.
+  if (op.profissao && op.addon) {
+    console.error('--addon so vale para a rota do J (Leatherworking, sem --profissao)');
+    process.exit(2);
+  }
+  const arq = op.profissao ? arqReceitas(op.profissao.slug) : ARQ_RECEITAS;
+  const gerar = op.profissao ? `gerar-receitas.mjs --profissao ${op.profissao.slug}` : 'gerar-receitas.mjs';
+  const receitas = comDesconto(await lerEntrada(arq, gerar), op.desconto);
   const precos = await lerEntrada(ARQ_PRECOS, 'baixar-precos.mjs');
 
   const nomes = new Set(receitas.receitas.map((r) => minusc(r.nome)));
@@ -784,8 +812,8 @@ async function linhaDeComando(argv) {
   }
 
   const agora = Math.floor(Date.now() / 1000);
-  // Conhecidas: as que o GuiaForever gravou ao abrir a janela de Leatherworking, mais as de --conheco.
-  const sv = op.todosPadroes ? null : await conhecidasDoDisco();
+  // Conhecidas: as que o GuiaForever gravou ao abrir a janela de Leatherworking (so na rota do J), mais as de --conheco.
+  const sv = op.todosPadroes || op.profissao ? null : await conhecidasDoDisco();
   const conhecidas = new Set(sv ? sv.ids : []);
   const porNome = new Map(receitas.receitas.map((r) => [minusc(r.nome), r.magia]));
   for (const n of op.conheco) conhecidas.add(porNome.get(minusc(n)));
@@ -810,7 +838,7 @@ async function linhaDeComando(argv) {
     console.log(textoLua(res, quando).map(ASCII).join('\n'));
   } else {
     if (!op.todosPadroes) console.log(`conhecidas: ${conhecidasTxt}`);
-    console.log(relatorio(res, precos, agora).map(ASCII).join('\n'));
+    console.log(relatorio(res, precos, agora, receitas.profissao?.nome ?? 'Leatherworking').map(ASCII).join('\n'));
     console.log(`desconto de vendedor: ${op.desconto}% na compra${op.desconto ? ' (Darnassus; fora de la, --desconto-vendedor 0)' : ''}`);
   }
 }

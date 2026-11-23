@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
-export const BUILD = '1.60.1.70938';
+export const BUILD = '1.60.1.71037';
 export const RAIZ_MODDER = path.resolve(AQUI, '..', '..');
 export const DADOS = path.join(RAIZ_MODDER, 'dados', 'pregao');
 export const CACHE = path.join(DADOS, 'cache');
@@ -15,6 +15,34 @@ export const ARQ_RECEITAS = path.join(DADOS, 'receitas-lw.json');
 export const ARQ_PRECOS = path.join(DADOS, 'precos.json');
 export const CASA_PUBLICA = 'us-111';
 export const URL_PUBLICA = 'https://github.com/RuslanMunasipov/quest-murder-prices/releases/download/current';
+
+// As seis profissoes de oficio que dao Legacy point, pelo ID da tabela SkillLine do cliente (CONTRATO.md, secao 10).
+export const PROFISSOES = {
+  alchemy: { id: 171, nome: 'Alchemy' },
+  blacksmithing: { id: 164, nome: 'Blacksmithing' },
+  enchanting: { id: 333, nome: 'Enchanting' },
+  engineering: { id: 202, nome: 'Engineering' },
+  leatherworking: { id: 165, nome: 'Leatherworking' },
+  tailoring: { id: 197, nome: 'Tailoring' },
+};
+
+// Receitas de uma profissao no formato da secao 10 (esquema 2). O receitas-lw.json (esquema 1) continua o da rota do J.
+export const arqReceitas = (slug) => path.join(DADOS, `receitas-${slug}.json`);
+
+// Profissao por slug ou nome, sem diferenciar maiusculas: { slug, id, nome } ou null.
+export function acharProfissao(v) {
+  const k = String(v || '').trim().toLowerCase();
+  for (const [slug, p] of Object.entries(PROFISSOES)) {
+    if (k === slug || k === p.nome.toLowerCase() || k === String(p.id)) return { slug, ...p };
+  }
+  return null;
+}
+
+// Pasta Interface\AddOns do Forever, a partir do instalacao.json (so leitura).
+export async function pastaAddOns() {
+  const inst = JSON.parse(await readFile(path.resolve(RAIZ_MODDER, '..', 'comum', 'instalacao.json'), 'utf8'));
+  return path.join(inst.raiz, inst.flavor || '_forever_', 'Interface', 'AddOns');
+}
 
 // CSV com aspas (campo pode ter virgula, aspas dobradas e quebra de linha). Devolve objetos por cabecalho.
 export function lerCsv(texto, nome = 'csv') {

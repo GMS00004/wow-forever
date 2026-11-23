@@ -25,6 +25,8 @@ item ao vendedor, subindo a perícia sem perder ouro, ou vendendo no leilão. S�
 | `testes/caso-base.json`, `testes/testar-crafts.mjs` | sessão principal | casos de preço fixo da tarefa 3 (não editar) |
 | `rota.mjs` | tarefa R2 | exporta `calcularRota()` e imprime a rota de uma perícia a outra (seção 6) |
 | `testes/caso-rota.json`, `testes/testar-rota.mjs` | sessão principal | casos de preço fixo da rota (não editar) |
+| `naowh.mjs` | sessão principal, 2026-11-23 | lê a tabela de receitas e a lista de reagentes sem limite do Naowh Forever (seção 10.2) |
+| `legado.mjs`, `testes/testar-legado.mjs` | sessão principal, 2026-11-23 | custo do 150 nas seis profissões de ofício e o teste de casos fixos (seção 10) |
 
 ## 3. `receitas-lw.json` (tarefa 1)
 
@@ -143,6 +145,10 @@ node tendencia.mjs --elasticidade       # ranking de materiais com gap de preco 
 node tendencia.mjs --vigia              # itens da lista de vigia do CompraForever (secao 9)
 node testes/testar-coletor.mjs          # coletor, com --fonte e sem rede (secao 7)
 node testes/testar-tendencia.mjs        # tendencia, com fotos falsas (secao 9)
+node gerar-receitas.mjs --profissao todas   # as seis profissoes de oficio, com o Naowh (secao 10)
+node rota.mjs --profissao enchanting --de 1 --ate 150 --desconto-vendedor 0   # rota de outra profissao
+node legado.mjs                         # custo do 150 nas seis, comprando tudo, e o relatorio (secao 10)
+node testes/testar-legado.mjs           # casos fixos do legado e do esquema 2 (secao 10.6)
 ```
 
 Forma do arquivo:
@@ -635,3 +641,107 @@ diário, com `(base: diario)`).
 Teste: `node testes/testar-tendencia.mjs` monta quatro fotos sintéticas (ontem às 20:00, hoje às 08:00, 12:00 e 16:00),
 um `precos.json` e um `CompraForever.lua` em pasta temporária, e confere os três modos com os números que o código
 calcula (percentil 50%, gap 22,8, ganho 1s 09c, `gapH` como traço com quatro fotos, vigia com 2 de 3 abaixo do teto).
+
+## 10. As seis profissões de ofício e o custo do Legacy point (2026-11-23)
+
+Pedido do dono em 2026-11-23: quanto custa levar cada profissão de ofício ao 150 (1 Legacy point por profissão, para
+a conta inteira) comprando todo o material, e quanto volta vendendo o que foi feito no vendedor ou no leilão, com dado
+público do leilão. Decisões dele: a perícia de aprender e o custo do treino vêm da tabela do Naowh Forever; execução na
+sessão principal. A rota do J (Leatherworking, `receitas-lw.json`) não muda: sem `--profissao`, tudo funciona como
+antes, e a rota de 189 a 225 saiu idêntica antes e depois (conferido em 2026-11-23, builds 70938 e 71037).
+
+### 10.1 `receitas-<slug>.json` (esquema 2)
+
+`node gerar-receitas.mjs --profissao <nome|todas> [--sem-naowh]` grava um arquivo por profissão de `PROFISSOES`
+(`comum.mjs`): Alchemy 171, Blacksmithing 164, Enchanting 333, Engineering 202, Leatherworking 165 e Tailoring 197, os
+IDs da tabela `SkillLine` do cliente. O formato é o da seção 3, com `esquema: 2` e:
+
+| Campo | Regra |
+|---|---|
+| `receitas[].inicial` | `AcquireMethod` 1 da `SkillLineAbility`: vem com a profissão (aprende na perícia 1) |
+| fora | `AcquireMethod` 3 nunca se aprende (na Alchemy, as seis poções de cura que foram para o First Aid); conta `nunca` |
+| `produto: null`, `encantamento: true` | magia sem efeito 24 e com efeito 53 ou 54 (encanta um item); conta `encantamentos` |
+| `receitas[].ferramentas` | `SpellTotems`: `{ categoria, nome, itens }` por `RequiredTotemCategoryID_N` (vale todo item do `ItemSparse.TotemCategoryID` de mesmo tipo cuja máscara contém a pedida: a Runed Silver Rod serve onde se pede a Copper) e `{ categoria: null, itens: [id] }` por `Totem_N`; os itens entram em `itens` |
+| `receitas[].naowh` | `{ aprende, origem, custo, lados }` do Naowh (seção 10.2); sem `itemReceita` no cliente, o `recipe` do Naowh vira o `itemReceita` (conta `padraoDoNaowh`) |
+| `naowh` | `{ versao, ranks: [{ cap, pericia, custo, nivel, nome }], comDado, semDado, divergenciasCor, padraoDoNaowh }`, ou `null` |
+
+Contagens em 2026-11-23 (build 1.60.1.71037, Naowh 1.4.7): alchemy 179 receitas (3 iniciais, 9 nunca), blacksmithing
+419, enchanting 239 (179 encantamentos), engineering 242 (5 nunca), leatherworking 482, tailoring 405. O Naowh cobre
+98% ou mais das receitas de cada profissão, com `divergenciasCor` 0 nas seis (amarela e cinza iguais às do cliente).
+Do build 70938 para o 71037 só mudou a Orcish War Leggings (Blacksmithing ganhou item de receita).
+
+### 10.2 `naowh.mjs`
+
+Lê, na hora e sem copiar nada para o projeto, `<AddOns>\NaowhForever_Professions\Data\RecipeData.lua` ("by hand from
+Wowhead Forever", README do autor) e `VendorReagents.lua` ("the reagents trade-goods vendors sell for gold without
+limit"), com um leitor próprio do subconjunto de Lua desses arquivos (`lerTabelaLua`). `naowhDaProfissao(dados, id)`
+devolve, por magia, `{ aprende (skill), origem (source: trainer, vendor, drop, quest, teacher, unknown), custo (cost, em
+cobre), padrao (recipe), produto (item), amarela, cinza, lados }`, com `lados` as facções ("A", "H", "AH") dos
+vendedores do padrão, e os `ranks` (Journeyman 500c, Expert 5.000c, Artisan 45.000 a 50.000c; o Apprentice não vem).
+
+Regras que o esquema 2 liga (sem o campo, nada muda):
+
+1. `crafts.mjs`, perícia de aprender: `inicial` dá 1; `origem` trainer dá a perícia do Naowh; senão a do item de
+   receita; senão a do Naowh; senão a estimativa (amarela menos 25). Campos novos na linha: `aprendeFonte` (`inicial`,
+   `naowh`, `item`, `estimada`) e `treino` (custo do Naowh quando a origem é trainer). Coluna aprende: `1 s` (vem com a
+   profissão), `120 t` (treinador pelo Naowh), `145 i` (item), `~140` (estimada).
+2. `rota.mjs`, `situacaoPadroes`: `inicial` é `conhecida`; origem trainer é `treinador` mesmo com item de receita;
+   esquema 2 sem item e sem trainer (quest, drop, vendor, unknown ou sem dado) fica `fora`; padrão de vendedor só conta
+   se algum vendedor do Naowh é da Aliança ou neutro.
+3. Encantamento: venda 0, sem leilão, fora do candidato F; `dadosVivos`, `mapaFab` e o histórico aceitam produto nulo.
+
+### 10.3 `legado.mjs`: rota, tempo e o custo do ponto
+
+`node legado.mjs [--ate 150] [--de "Enchanting=37,Alchemy=12"] [--profissoes "alchemy,tailoring"]
+[--desconto-vendedor 0] [--tempo-craft 10] [--relatorio <arq.md>] [--sem-faixas]`. Por profissão, de 1 (ou do `--de`) a
+150, `escolherRota` sem padrão na mão (iniciais, treinador e padrão à venda), com dois ganchos novos do `rota.mjs`:
+`semMagias` (Set de magias fora) e `custoPonto(r, l, e)` (o custo do ponto; sem ele, o de sempre).
+
+Achado de 2026-11-23: com o custo do ponto de sempre, `(custo - venda) * e`, receita que dá lucro no vendedor fica mais
+"barata" quanto mais crafts pede, e a rota de 1 a 150 fazia 175 Linen Bags (Tailoring) e fabricava 1.626 Light
+Leather de retalho (Leatherworking). No legado, o custo do ponto é `max(0, m - venda) * e + tempo * cpu * e`: o lucro
+não vira motivo para craftar mais, e cada craft, inclusive o de reagente fabricado (`cpu`), custa `tempo` (padrão 10c,
+`TEMPO_CRAFT`, algo como 1g 20s por hora a 20 crafts por minuto). O tempo só pesa na escolha; os totais são só ouro.
+
+`custosComTempo` dá a fonte de cada item, L (leilão), V (vendedor) ou F (fabricar, até 3 níveis), pelo menor
+`m + tempo * cpu`, e por receita `{ m, cpu }`. A rota escolhe pelo preço mínimo, mas a compra anda no livro de ofertas;
+então a conta se refaz com cada item pelo preço médio do livro na quantidade que a rota anterior comprou (`ajuste`), até
+a rota repetir (no máximo 4 vezes), e vale a de melhor nota (chega mais longe; depois, líquido no vendedor menos o tempo
+dos crafts). Depois da rota, a busca de ferramentas tira as receitas de cada ferramenta paga e fica sem elas se a nota
+melhora (em 2026-11-23, a Engineering até 150 dispensa a Arclight Spanner).
+
+### 10.4 Balanço e livro de ofertas
+
+`balanco(receitas, precos, rota, linhas, { agora, custos })`, puro, anda nos passos em ordem: a ferramenta, no primeiro
+passo que pede, sai do estoque ou é obtida uma vez e fica (não se vende); cada reagente sai primeiro do estoque (o que um
+passo anterior fez), depois pela fonte (F abre nos reagentes da receita e a sobra volta ao estoque); o produto vai para
+o estoque. O que sobra no fim é a venda.
+
+`custoLivro(pub, q)`: os 5 lotes mais baratos da foto e, depois deles, o preço sobe em linha reta até o p25 (25% das
+unidades) e até a mediana (50%); acima disso fica na mediana. Aviso `metade` quando q passa da metade do que está à
+venda, `falta` quando passa do total. Compra de leilão custa o maior entre o livro e o mínimo vezes q; de vendedor, o
+preço dele.
+
+Totais: `materiais` (livro), `materiaisMin` (tudo ao mínimo), `padroes` (cada um uma vez), `treino` (rank cujo teto
+anterior a rota cruza, a partir do Apprentice 75, mais cada receita de treinador usada, pelo Naowh), `custoTotal`;
+`vendaVendedor` (sobras pelo `SellPrice`) e `vendaLeilao` (cada sobra onde paga mais: mínimo de hoje vezes 0,95, só sem
+vínculo, ou o vendedor), e os dois líquidos.
+
+### 10.5 Vendedor no legado
+
+`precosParaLegado`: reagente de vendedor só da lista sem limite do Naowh (32 itens em 2026-11-23: linhas, frascos,
+tintas, sal, fluxos, varetas, madeira, carvão, temperos); ferramenta e padrão, de que basta uma unidade, pela lista
+pública inteira. Motivo: a lista pública (QuestieDB) traz vendedor de estoque limitado, e a primeira conta comprou 79
+Peacebloom de um deles.
+
+### 10.6 Saída e teste
+
+Terminal: uma linha por profissão, da de melhor líquido no vendedor para a pior, com faixa, crafts (rota e reagentes),
+compra, volta no vendedor, líquido, teto no leilão e líquido. Relatório em
+`dados\pregao\relatorios\legado-<ate>-<AAAA-MM-DD-HHMM>.md` (fora do git): a tabela e, por profissão, passos, lista de
+compras (onde, total, à venda, saídas por dia, aviso), ferramentas, fabricados, padrões, treino, sobras e onde vender, e
+o custo a partir de 50, 75, 100 e 125; avisos no fim.
+
+`node testes/testar-legado.mjs`: 8 casos, 32 campos (livro de ofertas, crafts com esquema 2, situação dos padrões,
+fabricar com e sem tempo, balanço de uma rota fixa com estoque, ferramenta, encantamento e treino, avaliação de ponta a
+ponta, leitor do Naowh e lista de vendedor).

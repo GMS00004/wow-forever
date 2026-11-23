@@ -1,13 +1,23 @@
-// Gera dados/pregao/receitas-lw.json (contrato, secao 3) a partir das tabelas do cliente.
-// Uso: node gerar-receitas.mjs                      grava receitas-lw.json e imprime as contagens
-//      node gerar-receitas.mjs --conferir-vendedor  so confere o preco de vendedor (nao grava nada)
+// Gera as receitas a partir das tabelas do cliente.
+// Uso: node gerar-receitas.mjs                         grava receitas-lw.json (esquema 1, contrato secao 3) e imprime as contagens
+//      node gerar-receitas.mjs --profissao <nome|todas> grava receitas-<slug>.json (esquema 2, secao 10), com o Naowh
+//      node gerar-receitas.mjs --profissao todas --sem-naowh   o mesmo, sem a tabela do Naowh
+//      node gerar-receitas.mjs --conferir-vendedor        so confere o preco de vendedor (nao grava nada)
 import { createReadStream } from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline';
-import { tabela, ARQ_RECEITAS, gravarJson, pastaSavedVariables, BUILD, moeda } from './comum.mjs';
+import { tabela, ARQ_RECEITAS, arqReceitas, gravarJson, pastaSavedVariables, BUILD, moeda, PROFISSOES, acharProfissao } from './comum.mjs';
+import { carregarNaowh, naowhDaProfissao } from './naowh.mjs';
 
-const PROFISSAO = { id: 165, nome: 'Leatherworking' };
+const PROFISSAO_LW = { id: 165, nome: 'Leatherworking' };
 const MAX_DIVERGENCIAS = 30;
+// Efeitos de magia do cliente: 24 cria item; 53 e 54 encantam um item (permanente e temporario).
+const EFEITO_CRIAR = 24;
+const EFEITOS_ENCANTAR = new Set([53, 54]);
+// AcquireMethod da SkillLineAbility: 1 vem com a profissao (MinSkillLineRank 1); 3 nunca se aprende.
+const VEM_COM_A_PROFISSAO = 1;
+const NUNCA = 3;
+const USO = 'uso: node gerar-receitas.mjs [--profissao <nome|todas> [--sem-naowh]] | --conferir-vendedor';
 
 // Saida de terminal so em ASCII: tira acentos e troca o resto por '?'.
 const ascii = s => String(s).normalize("NFD").replace(/\p{Mn}/gu, "").replace(/[^ -~]/g, "?");
@@ -86,14 +96,32 @@ async function conferirVendedor() {
   process.exitCode = erros.length ? 1 : 0;
 }
 
-async function gerar() {
-  const sla = await tabela('SkillLineAbility', ['SkillLine', 'Spell', 'TrivialSkillLineRankLow', 'TrivialSkillLineRankHigh', 'NumSkillUps']);
-  const se = await tabela('SpellEffect', ['SpellID', 'Effect', 'EffectIndex', 'EffectItemType', 'EffectBasePointsF']);
-  const sr = await tabela('SpellReagents', ['SpellID', 'Reagent_0', 'Reagent_7', 'ReagentCount_0', 'ReagentCount_7']);
-  const sn = await tabela('SpellName', ['ID', 'Name_lang']);
-  const is = await tabela('ItemSparse', ['ID', 'Display_lang', 'SellPrice', 'BuyPrice', 'VendorStackCount', 'Stackable', 'Bonding', 'OverallQualityID', 'RequiredSkillRank']);
-  const ie = await tabela('ItemEffect', ['ID', 'TriggerType', 'SpellID']);
-  const ixi = await tabela('ItemXItemEffect', ['ItemEffectID', 'ItemID']);
+// Tabelas do cliente, lidas uma vez por execucao (as seis profissoes usam as mesmas).
+let memoTabelas = null;
+async function tabelas(esquema) {
+  if (memoTabelas && memoTabelas.esquema >= esquema) return memoTabelas;
+  const t = {
+    esquema,
+    sla: await tabela('SkillLineAbility', ['SkillLine', 'Spell', 'TrivialSkillLineRankLow', 'TrivialSkillLineRankHigh', 'NumSkillUps', 'AcquireMethod']),
+    se: await tabela('SpellEffect', ['SpellID', 'Effect', 'EffectIndex', 'EffectItemType', 'EffectBasePointsF']),
+    sr: await tabela('SpellReagents', ['SpellID', 'Reagent_0', 'Reagent_7', 'ReagentCount_0', 'ReagentCount_7']),
+    sn: await tabela('SpellName', ['ID', 'Name_lang']),
+    is: await tabela('ItemSparse', ['ID', 'Display_lang', 'SellPrice', 'BuyPrice', 'VendorStackCount', 'Stackable', 'Bonding', 'OverallQualityID', 'RequiredSkillRank']),
+    ie: await tabela('ItemEffect', ['ID', 'TriggerType', 'SpellID']),
+    ixi: await tabela('ItemXItemEffect', ['ItemEffectID', 'ItemID']),
+  };
+  if (esquema >= 2) {
+    t.st = await tabela('SpellTotems', ['SpellID', 'RequiredTotemCategoryID_0', 'RequiredTotemCategoryID_1', 'Totem_0', 'Totem_1']);
+    t.tc = await tabela('TotemCategory', ['ID', 'Name_lang', 'TotemCategoryType', 'TotemCategoryMask']);
+  }
+  memoTabelas = t;
+  return t;
+}
+
+// Monta o objeto de receitas de uma profissao. esquema 1: o formato da secao 3, sem nada a mais (receitas-lw.json);
+// esquema 2: secao 10 (inicial, nunca, encantamento, ferramentas e o Naowh, quando houver).
+async function montar(prof, esquema, naowh) {
+  const { sla, se, sr, sn, is, ie, ixi, st, tc } = await tabelas(esquema);
 
   // Indices por chave, para as juncoes sem varrer as tabelas grandes a cada receita.
   const itemPorId = new Map(is.map(r => [String(Number(r.ID)), r]));
@@ -101,10 +129,13 @@ async function gerar() {
   const reagPorMagia = new Map();
   for (const r of sr) if (!reagPorMagia.has(Number(r.SpellID))) reagPorMagia.set(Number(r.SpellID), r);
 
-  // Criar item (efeito 24): vale a linha de menor EffectIndex da magia.
+  // Criar item (efeito 24): vale a linha de menor EffectIndex da magia. Encantar (53 e 54): so a marca.
   const efeitoCriar = new Map();
+  const encanta = new Set();
   for (const r of se) {
-    if (Number(r.Effect) !== 24) continue;
+    const ef = Number(r.Effect);
+    if (EFEITOS_ENCANTAR.has(ef)) encanta.add(Number(r.SpellID));
+    if (ef !== EFEITO_CRIAR) continue;
     const magia = Number(r.SpellID);
     const atual = efeitoCriar.get(magia);
     if (!atual || Number(r.EffectIndex) < Number(atual.EffectIndex)) efeitoCriar.set(magia, r);
@@ -125,7 +156,16 @@ async function gerar() {
     itensPorEfeito.get(efeito).push(Number(r.ItemID));
   }
 
-  // Item de receita: entre os itens ligados que existem no ItemSparse, prefere "Pattern: <nome>"; depois, o menor ID.
+  const itemReceitaDe = (id, row) => ({
+    id,
+    nome: row.Display_lang,
+    periciaExigida: Number(row.RequiredSkillRank),
+    compra: Math.ceil(Number(row.BuyPrice) / vendorStack(row)),
+  });
+
+  // Item de receita: entre os itens ligados que existem no ItemSparse, prefere "Pattern: <nome>" (no esquema 2,
+  // tambem Recipe, Plans, Formula, Schematic e Design); depois, o menor ID.
+  const PREFIXOS = esquema >= 2 ? ['Pattern', 'Recipe', 'Plans', 'Formula', 'Schematic', 'Design', 'Manual'] : ['Pattern'];
   function itemDaReceita(magia, nome) {
     const candidatos = [];
     for (const efeito of efeitosPorMagia.get(magia) || []) {
@@ -135,16 +175,11 @@ async function gerar() {
       }
     }
     if (!candidatos.length) return null;
-    const padrao = `Pattern: ${nome}`;
-    const peso = c => (c.row.Display_lang === padrao ? 0 : 1);
+    const nomes = new Set(PREFIXOS.map(p => `${p}: ${nome}`));
+    const peso = c => (nomes.has(c.row.Display_lang) ? 0 : 1);
     candidatos.sort((a, b) => peso(a) - peso(b) || a.id - b.id);
     const c = candidatos[0];
-    return {
-      id: c.id,
-      nome: c.row.Display_lang,
-      periciaExigida: Number(c.row.RequiredSkillRank),
-      compra: Math.ceil(Number(c.row.BuyPrice) / vendorStack(c.row)),
-    };
+    return itemReceitaDe(c.id, c.row);
   }
 
   // Reagentes da magia; par com item 0 ou quantidade 0 e ignorado.
@@ -160,51 +195,112 @@ async function gerar() {
     return saida;
   }
 
-  // Magias de Leatherworking, sem repetir.
-  const magiasLW = new Map();
-  for (const r of sla) {
-    if (Number(r.SkillLine) !== 165) continue;
-    const magia = Number(r.Spell);
-    if (!magiasLW.has(magia)) magiasLW.set(magia, r);
+  // Ferramentas (esquema 2): SpellTotems da magia. Categoria pedida (RequiredTotemCategoryID) vale para todo item cuja
+  // categoria tem o mesmo tipo e contem a mascara pedida (a Runed Silver Rod serve onde se pede a Runed Copper Rod);
+  // Totem_N e um item exato.
+  const totemPorMagia = new Map();
+  const catPorId = new Map();
+  const itensPorCat = new Map();
+  if (esquema >= 2) {
+    for (const r of st) if (!totemPorMagia.has(Number(r.SpellID))) totemPorMagia.set(Number(r.SpellID), r);
+    for (const r of tc) catPorId.set(Number(r.ID), { nome: r.Name_lang, tipo: Number(r.TotemCategoryType), mascara: Number(r.TotemCategoryMask) >>> 0 });
+    for (const r of is) {
+      const c = Number(r.TotemCategoryID);
+      if (!c) continue;
+      if (!itensPorCat.has(c)) itensPorCat.set(c, []);
+      itensPorCat.get(c).push(Number(r.ID));
+    }
+  }
+  function satisfazem(cat) {
+    const pedida = catPorId.get(cat);
+    const out = [];
+    for (const [c2, ids] of itensPorCat) {
+      const k = catPorId.get(c2);
+      if (c2 === cat || (pedida && k && k.tipo === pedida.tipo && ((k.mascara & pedida.mascara) >>> 0) === pedida.mascara)) out.push(...ids);
+    }
+    return [...new Set(out)].sort((a, b) => a - b);
+  }
+  function ferramentasDe(magia) {
+    const r = totemPorMagia.get(magia);
+    if (!r) return [];
+    const out = [];
+    for (const k of [0, 1]) {
+      const cat = Number(r[`RequiredTotemCategoryID_${k}`]);
+      if (cat) out.push({ categoria: cat, nome: catPorId.get(cat)?.nome ?? String(cat), itens: satisfazem(cat).filter(id => itemPorId.has(String(id))) });
+      const tot = Number(r[`Totem_${k}`]);
+      if (tot) out.push({ categoria: null, nome: itemPorId.get(String(tot))?.Display_lang ?? String(tot), itens: itemPorId.has(String(tot)) ? [tot] : [] });
+    }
+    return out;
   }
 
+  // Magias da profissao, sem repetir.
+  const magias = new Map();
+  for (const r of sla) {
+    if (Number(r.SkillLine) !== prof.id) continue;
+    const magia = Number(r.Spell);
+    if (!magias.has(magia)) magias.set(magia, r);
+  }
+
+  const nw = esquema >= 2 && naowh ? naowhDaProfissao(naowh.dados, prof.id) : null;
   const receitas = [];
-  let semItem = 0, semReagente = 0, semItemSparse = 0;
-  for (const [magia, r] of magiasLW) {
+  let semItem = 0, semReagente = 0, semItemSparse = 0, nunca = 0, encantamentos = 0;
+  const cNaowh = { comDado: 0, semDado: 0, divergenciasCor: 0, padraoDoNaowh: 0 };
+  for (const [magia, r] of magias) {
+    const am = Number(r.AcquireMethod);
+    if (esquema >= 2 && am === NUNCA) { nunca++; continue; }
     const criar = efeitoCriar.get(magia);
-    if (!criar) { semItem++; continue; }
+    const soEncanta = esquema >= 2 && !criar && encanta.has(magia);
+    if (!criar && !soEncanta) { semItem++; continue; }
 
     const reagentes = reagentesDe(magia);
     if (!reagentes.length) { semReagente++; continue; }
 
-    const produtoId = Number(criar.EffectItemType);
-    const produtoQtd = Number(criar.EffectBasePointsF) || 1;
-    const faltaItem = !itemPorId.has(String(produtoId)) || reagentes.some(g => !itemPorId.has(String(g.id)));
+    const produto = criar ? { id: Number(criar.EffectItemType), qtd: Number(criar.EffectBasePointsF) || 1 } : null;
+    const faltaItem = (produto && !itemPorId.has(String(produto.id))) || reagentes.some(g => !itemPorId.has(String(g.id)));
     if (faltaItem) { semItemSparse++; continue; }
 
     const nome = nomePorMagia.get(magia);
     if (nome === undefined) throw new Error(`magia ${magia} sem nome em SpellName`);
 
-    receitas.push({
+    const rec = {
       magia,
       nome,
-      produto: { id: produtoId, qtd: produtoQtd },
+      produto,
       reagentes,
       amarela: Number(r.TrivialSkillLineRankLow),
       cinza: Number(r.TrivialSkillLineRankHigh),
       pontos: Number(r.NumSkillUps),
       itemReceita: itemDaReceita(magia, nome),
-    });
+    };
+    if (esquema >= 2) {
+      rec.inicial = am === VEM_COM_A_PROFISSAO;
+      if (soEncanta) { rec.encantamento = true; encantamentos++; }
+      const fer = ferramentasDe(magia);
+      if (fer.length) rec.ferramentas = fer;
+      const d = nw ? nw.receitas.get(magia) : null;
+      if (d) {
+        cNaowh.comDado++;
+        rec.naowh = { aprende: d.aprende, origem: d.origem, custo: d.custo, lados: d.lados };
+        if (d.amarela !== null && (d.amarela !== rec.amarela || d.cinza !== rec.cinza)) cNaowh.divergenciasCor++;
+        // Padrao que o cliente nao liga a receita, mas o Naowh da: vale o item do Naowh, se existir no ItemSparse.
+        if (!rec.itemReceita && d.padrao && itemPorId.has(String(d.padrao))) {
+          rec.itemReceita = itemReceitaDe(d.padrao, itemPorId.get(String(d.padrao)));
+          cNaowh.padraoDoNaowh++;
+        }
+      } else if (nw) cNaowh.semDado++;
+    }
+    receitas.push(rec);
   }
 
   receitas.sort((a, b) => a.amarela - b.amarela || cmpTexto(a.nome, b.nome));
 
-  // Itens citados (produto e reagentes) das receitas incluidas, com a chave em texto.
+  // Itens citados (produto, reagentes e, no esquema 2, ferramentas) das receitas incluidas, com a chave em texto.
   const itens = {};
   const pegar = id => {
     const k = String(id);
     if (itens[k]) return;
     const r = itemPorId.get(k);
+    if (!r) return;
     itens[k] = {
       nome: r.Display_lang,
       vende: Number(r.SellPrice),
@@ -215,31 +311,63 @@ async function gerar() {
     };
   };
   for (const x of receitas) {
-    pegar(x.produto.id);
+    if (x.produto) pegar(x.produto.id);
     for (const g of x.reagentes) pegar(g.id);
+    for (const f of x.ferramentas || []) for (const id of f.itens) pegar(id);
   }
 
   const comItemReceita = receitas.filter(x => x.itemReceita).length;
-  const contagem = {
-    receitas: receitas.length,
-    semItem,
-    semReagente,
-    semItemSparse,
-    comItemReceita,
-  };
-  const obj = {
-    esquema: 1,
-    build: BUILD,
-    geradoEm: new Date().toISOString(),
-    profissao: PROFISSAO,
-    contagem,
-    receitas,
-    itens,
-  };
-  await gravarJson(ARQ_RECEITAS, obj);
-
-  console.log(ascii(`magias=${magiasLW.size} receitas=${contagem.receitas} semItem=${semItem} semReagente=${semReagente} semItemSparse=${semItemSparse} comItemReceita=${comItemReceita} itens=${Object.keys(itens).length}`));
+  const contagem = { receitas: receitas.length, semItem, semReagente, semItemSparse, comItemReceita };
+  const obj = { esquema, build: BUILD, geradoEm: new Date().toISOString(), profissao: prof, contagem, receitas, itens };
+  if (esquema >= 2) {
+    Object.assign(contagem, {
+      nunca,
+      encantamentos,
+      iniciais: receitas.filter(x => x.inicial).length,
+      comFerramenta: receitas.filter(x => x.ferramentas).length,
+    });
+    obj.naowh = nw ? { versao: naowh.versao, ranks: nw.ranks, ...cNaowh } : null;
+  }
+  return { obj, magias: magias.size };
 }
 
-if (process.argv.includes('--conferir-vendedor')) await conferirVendedor();
-else await gerar();
+async function gerarLegado() {
+  const { obj, magias } = await montar(PROFISSAO_LW, 1, null);
+  await gravarJson(ARQ_RECEITAS, obj);
+  const c = obj.contagem;
+  console.log(ascii(`magias=${magias} receitas=${c.receitas} semItem=${c.semItem} semReagente=${c.semReagente} semItemSparse=${c.semItemSparse} comItemReceita=${c.comItemReceita} itens=${Object.keys(obj.itens).length}`));
+}
+
+async function gerarProfissoes(alvo, comNaowh) {
+  const lista = alvo === 'todas'
+    ? Object.entries(PROFISSOES).map(([slug, p]) => ({ slug, ...p }))
+    : [acharProfissao(alvo)];
+  if (lista.some(p => !p)) {
+    console.error(`profissao desconhecida: ${alvo} (use ${Object.keys(PROFISSOES).join(', ')} ou todas)`);
+    process.exit(2);
+  }
+  const naowh = comNaowh ? await carregarNaowh() : null;
+  if (comNaowh && !naowh) console.log('aviso: NaowhForever_Professions nao achado na pasta AddOns; segue sem o Naowh');
+  if (naowh) console.log(ascii(`naowh: versao ${naowh.versao}`));
+  for (const p of lista) {
+    const { obj, magias } = await montar({ id: p.id, nome: p.nome, slug: p.slug }, 2, naowh);
+    await gravarJson(arqReceitas(p.slug), obj);
+    const c = obj.contagem;
+    const n = obj.naowh;
+    console.log(ascii(`${p.slug}: magias=${magias} receitas=${c.receitas} iniciais=${c.iniciais} encantamentos=${c.encantamentos} nunca=${c.nunca} semItem=${c.semItem} semReagente=${c.semReagente} semItemSparse=${c.semItemSparse} comItemReceita=${c.comItemReceita} comFerramenta=${c.comFerramenta}`
+      + (n ? ` naowh=${n.comDado}/${n.comDado + n.semDado} divergenciasCor=${n.divergenciasCor} padraoDoNaowh=${n.padraoDoNaowh}` : ' naowh=nao')));
+  }
+}
+
+const argv = process.argv.slice(2);
+if (argv.includes('--conferir-vendedor')) await conferirVendedor();
+else if (argv.includes('--profissao')) {
+  const v = argv[argv.indexOf('--profissao') + 1];
+  if (!v || v.startsWith('--')) { console.error(USO); process.exit(2); }
+  const resto = argv.filter((a, i) => a !== '--profissao' && i !== argv.indexOf('--profissao') + 1 && a !== '--sem-naowh');
+  if (resto.length) { console.error(`argumento desconhecido: ${resto[0]}\n${USO}`); process.exit(2); }
+  await gerarProfissoes(v.toLowerCase(), !argv.includes('--sem-naowh'));
+} else if (argv.length) {
+  console.error(`argumento desconhecido: ${argv[0]}\n${USO}`);
+  process.exit(2);
+} else await gerarLegado();
