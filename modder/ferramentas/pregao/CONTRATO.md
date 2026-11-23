@@ -27,6 +27,7 @@ item ao vendedor, subindo a perícia sem perder ouro, ou vendendo no leilão. S�
 | `testes/caso-rota.json`, `testes/testar-rota.mjs` | sessão principal | casos de preço fixo da rota (não editar) |
 | `naowh.mjs` | sessão principal, 2026-11-23 | lê a tabela de receitas e a lista de reagentes sem limite do Naowh Forever (seção 10.2) |
 | `legado.mjs`, `testes/testar-legado.mjs` | sessão principal, 2026-11-23 | custo do 150 nas seis profissões de ofício e o teste de casos fixos (seção 10) |
+| `estimativas.mjs` | sessão principal, 2026-11-23 | preços da hora, scan exportado e a conta do legado num comando (seção 10.8) |
 
 ## 3. `receitas-lw.json` (tarefa 1)
 
@@ -148,6 +149,7 @@ node testes/testar-tendencia.mjs        # tendencia, com fotos falsas (secao 9)
 node gerar-receitas.mjs --profissao todas   # as seis profissoes de oficio, com o Naowh (secao 10)
 node rota.mjs --profissao enchanting --de 1 --ate 150 --desconto-vendedor 0   # rota de outra profissao
 node legado.mjs                         # custo do 150 nas seis, comprando tudo, e o relatorio (secao 10)
+node estimativas.mjs                    # precos da hora + scan exportado + conta ate o 225 com o marco 150 (secao 10.8)
 node testes/testar-legado.mjs           # casos fixos do legado e do esquema 2 (secao 10.6)
 ```
 
@@ -692,8 +694,12 @@ Regras que o esquema 2 liga (sem o campo, nada muda):
 
 ### 10.3 `legado.mjs`: rota, tempo e o custo do ponto
 
-`node legado.mjs [--ate 150] [--de "Enchanting=37,Alchemy=12"] [--profissoes "alchemy,tailoring"]
-[--desconto-vendedor 0] [--tempo-craft 10] [--relatorio <arq.md>] [--sem-faixas]`. Por profissão, de 1 (ou do `--de`) a
+`node legado.mjs [--ate 150] [--marcos "150"] [--de "Enchanting=37,Alchemy=12"] [--feito "Leatherworking=150"]
+[--treino-ate 200] [--profissoes "alchemy,tailoring"] [--desconto-vendedor 0] [--tempo-craft 10] [--relatorio <arq.md>]
+[--sem-faixas]`. Com `--marcos`, cada trecho entre marcos é uma conta própria, partindo do marco anterior (do 1 ao 150
+e do 150 ao 225, por exemplo), com o total por profissão; `--feito` marca como já feito o trecho que termina até a
+perícia dada (padrão `Leatherworking=150`, o Hexumlite); `--treino-ate` tira as receitas de treinador que se aprendem
+acima da perícia dada (seção 10.7). Por profissão, de 1 (ou do `--de`) a
 150, `escolherRota` sem padrão na mão (iniciais, treinador e padrão à venda), com dois ganchos novos do `rota.mjs`:
 `semMagias` (Set de magias fora) e `custoPonto(r, l, e)` (o custo do ponto; sem ele, o de sempre).
 
@@ -739,9 +745,44 @@ Peacebloom de um deles.
 Terminal: uma linha por profissão, da de melhor líquido no vendedor para a pior, com faixa, crafts (rota e reagentes),
 compra, volta no vendedor, líquido, teto no leilão e líquido. Relatório em
 `dados\pregao\relatorios\legado-<ate>-<AAAA-MM-DD-HHMM>.md` (fora do git): a tabela e, por profissão, passos, lista de
-compras (onde, total, à venda, saídas por dia, aviso), ferramentas, fabricados, padrões, treino, sobras e onde vender, e
-o custo a partir de 50, 75, 100 e 125; avisos no fim.
+compras (onde, total, à venda, saídas por dia, aviso), ferramentas, objetos de acampamento, fabricados, padrões, treino,
+sobras e onde vender, e o custo a partir de 50, 75, 100, 125, 150, 175, 200, 250 e 275, os que caem dentro de cada
+trecho; avisos no fim. Com `--marcos`, a tabela do topo tem uma linha por trecho, o total de cada profissão e as linhas
+"Todas" e "Todas, sem o já feito".
 
 `node testes/testar-legado.mjs`: 8 casos, 32 campos (livro de ofertas, crafts com esquema 2, situação dos padrões,
 fabricar com e sem tempo, balanço de uma rota fixa com estoque, ferramenta, encantamento e treino, avaliação de ponta a
 ponta, leitor do Naowh e lista de vendedor).
+
+### 10.7 Até o 225: objetos de acampamento, fabricar sem padrão e o teto do treinador (2026-11-23, noite)
+
+Pedido do dono: estender a conta até o 225. Três regras novas, que só mexem no legado (a rota do J não muda):
+
+1. Objeto por perto. `gerar-receitas.mjs` grava `receitas[].foco = { id, nome, acampamento, itens }` a partir de
+   `SpellCastingRequirements.RequiresSpellFocus` e `SpellFocusObject`. É objeto de acampamento quando há item com o mesmo
+   nome no `ItemSparse` (Tanning Rack 279941, Spinning Wheel 279943, Fermenter 279970, Anarchist's Workbench 279989);
+   Anvil e Forge as cidades têm e não contam. Até o 225: Anvil em 239 receitas de Blacksmithing e 71 de Engineering,
+   Tanning Rack em 39 de Leatherworking, Spinning Wheel em 47 de Tailoring, Fermenter em 3 de Alchemy e Anarchist's
+   Workbench em 7 de Engineering. No balanço, o item se compra e se gasta ao montar: passos seguidos que pedem o mesmo
+   objeto usam o mesmo, e cada volta a ele monta um novo. Receita cujo objeto não tem preço fica fora desde o começo,
+   e a busca de ferramentas também testa a rota sem as receitas de cada objeto. Quanto tempo um objeto montado dura não
+   está no cliente.
+2. Fabricar sem padrão. `fabricavel(receitas, r)`: no esquema 2, o candidato F só usa receita que vem com a profissão
+   ou de treinador pelo Naowh (fabricar um Tanning Rack pediria o Blueprint, que a conta não paga).
+3. Teto do treinador. O Telonis, Expert de Leatherworking, só ensina até a perícia 200 (visto pelo dono em 2026-11-17), e
+   não há fonte de que o treinador Artisan ensine a quem não tem o Artisan. `--treino-ate 200` tira as receitas de
+   treinador que se aprendem acima do 200: é a variante segura até o 225.
+
+Resultado de 2026-11-23 (foto pública das 15h25, `--ate 225 --marcos 150`): Engineering 24g 26s de compra e +48s no
+vendedor; Alchemy 6g 67s e -4g 78s; Enchanting 14g 97s e -10g 04s; Tailoring 65g 88s e -25g 62s; Leatherworking 62g 13s
+e -26g 10s; Blacksmithing 91g 78s e -30g 79s. Com `--treino-ate 200`, só mudam o Tailoring (87g 24s e -35g 70s) e o
+Blacksmithing (86g 42s e -33g 20s).
+
+### 10.8 `estimativas.mjs`: atualizar num comando
+
+Pedido do dono em 2026-11-23: "Gostaria que fosse fácil atualizar as estimativas de custos". `node estimativas.mjs`
+roda o `baixar-precos.mjs` (foto pública da hora e a exportação do scan do Auctionator, seção 4), diz se o scan entra
+(exportado há até 6 horas) ou não, e roda o `legado.mjs --ate 225 --marcos 150`. Qualquer opção do `legado.mjs` passa
+adiante e substitui a do padrão (`node estimativas.mjs --treino-ate 200`); `--sem-baixar` refaz a conta sem rede, com o
+`precos.json` que está no disco. O scan só chega à ferramenta pela exportação: o comando `/run` da seção 4 colado no
+jogo e um `/reload` (o arquivo de SavedVariables só muda no disco no `/reload` ou ao sair).

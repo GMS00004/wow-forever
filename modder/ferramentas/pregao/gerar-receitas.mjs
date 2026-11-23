@@ -113,6 +113,8 @@ async function tabelas(esquema) {
   if (esquema >= 2) {
     t.st = await tabela('SpellTotems', ['SpellID', 'RequiredTotemCategoryID_0', 'RequiredTotemCategoryID_1', 'Totem_0', 'Totem_1']);
     t.tc = await tabela('TotemCategory', ['ID', 'Name_lang', 'TotemCategoryType', 'TotemCategoryMask']);
+    t.scr = await tabela('SpellCastingRequirements', ['SpellID', 'RequiresSpellFocus']);
+    t.sfo = await tabela('SpellFocusObject', ['ID', 'Name_lang']);
   }
   memoTabelas = t;
   return t;
@@ -121,7 +123,7 @@ async function tabelas(esquema) {
 // Monta o objeto de receitas de uma profissao. esquema 1: o formato da secao 3, sem nada a mais (receitas-lw.json);
 // esquema 2: secao 10 (inicial, nunca, encantamento, ferramentas e o Naowh, quando houver).
 async function montar(prof, esquema, naowh) {
-  const { sla, se, sr, sn, is, ie, ixi, st, tc } = await tabelas(esquema);
+  const { sla, se, sr, sn, is, ie, ixi, st, tc, scr, sfo } = await tabelas(esquema);
 
   // Indices por chave, para as juncoes sem varrer as tabelas grandes a cada receita.
   const itemPorId = new Map(is.map(r => [String(Number(r.ID)), r]));
@@ -233,6 +235,29 @@ async function montar(prof, esquema, naowh) {
     return out;
   }
 
+  // Objeto por perto (esquema 2): SpellCastingRequirements.RequiresSpellFocus da magia e o nome no SpellFocusObject.
+  // E objeto de acampamento quando existe item com o mesmo nome no ItemSparse (Tanning Rack, Spinning Wheel, Fermenter):
+  // ele se compra e se gasta ao montar. Anvil e Forge existem nas cidades e nao contam como acampamento.
+  const focoPorMagia = new Map();
+  const nomeFoco = new Map();
+  const itensPorNome = new Map();
+  const NA_CIDADE = new Set(['Anvil', 'Forge']);
+  if (esquema >= 2) {
+    for (const r of scr) if (Number(r.RequiresSpellFocus) && !focoPorMagia.has(Number(r.SpellID))) focoPorMagia.set(Number(r.SpellID), Number(r.RequiresSpellFocus));
+    for (const r of sfo) nomeFoco.set(Number(r.ID), r.Name_lang);
+    for (const r of is) {
+      if (!itensPorNome.has(r.Display_lang)) itensPorNome.set(r.Display_lang, []);
+      itensPorNome.get(r.Display_lang).push(Number(r.ID));
+    }
+  }
+  function focoDe(magia) {
+    const id = focoPorMagia.get(magia);
+    if (!id) return null;
+    const nome = nomeFoco.get(id) ?? String(id);
+    const itens = NA_CIDADE.has(nome) ? [] : (itensPorNome.get(nome) || []).slice().sort((a, b) => a - b);
+    return { id, nome, acampamento: itens.length > 0, itens };
+  }
+
   // Magias da profissao, sem repetir.
   const magias = new Map();
   for (const r of sla) {
@@ -277,6 +302,8 @@ async function montar(prof, esquema, naowh) {
       if (soEncanta) { rec.encantamento = true; encantamentos++; }
       const fer = ferramentasDe(magia);
       if (fer.length) rec.ferramentas = fer;
+      const foco = focoDe(magia);
+      if (foco) rec.foco = foco;
       const d = nw ? nw.receitas.get(magia) : null;
       if (d) {
         cNaowh.comDado++;
@@ -314,6 +341,7 @@ async function montar(prof, esquema, naowh) {
     if (x.produto) pegar(x.produto.id);
     for (const g of x.reagentes) pegar(g.id);
     for (const f of x.ferramentas || []) for (const id of f.itens) pegar(id);
+    for (const id of x.foco?.itens || []) pegar(id);
   }
 
   const comItemReceita = receitas.filter(x => x.itemReceita).length;
@@ -325,6 +353,7 @@ async function montar(prof, esquema, naowh) {
       encantamentos,
       iniciais: receitas.filter(x => x.inicial).length,
       comFerramenta: receitas.filter(x => x.ferramentas).length,
+      comAcampamento: receitas.filter(x => x.foco?.acampamento).length,
     });
     obj.naowh = nw ? { versao: naowh.versao, ranks: nw.ranks, ...cNaowh } : null;
   }
@@ -354,7 +383,7 @@ async function gerarProfissoes(alvo, comNaowh) {
     await gravarJson(arqReceitas(p.slug), obj);
     const c = obj.contagem;
     const n = obj.naowh;
-    console.log(ascii(`${p.slug}: magias=${magias} receitas=${c.receitas} iniciais=${c.iniciais} encantamentos=${c.encantamentos} nunca=${c.nunca} semItem=${c.semItem} semReagente=${c.semReagente} semItemSparse=${c.semItemSparse} comItemReceita=${c.comItemReceita} comFerramenta=${c.comFerramenta}`
+    console.log(ascii(`${p.slug}: magias=${magias} receitas=${c.receitas} iniciais=${c.iniciais} encantamentos=${c.encantamentos} nunca=${c.nunca} semItem=${c.semItem} semReagente=${c.semReagente} semItemSparse=${c.semItemSparse} comItemReceita=${c.comItemReceita} comFerramenta=${c.comFerramenta} comAcampamento=${c.comAcampamento}`
       + (n ? ` naowh=${n.comDado}/${n.comDado + n.semDado} divergenciasCor=${n.divergenciasCor} padraoDoNaowh=${n.padraoDoNaowh}` : ' naowh=nao')));
   }
 }
