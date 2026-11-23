@@ -259,3 +259,14 @@ aceitam violação. Rodada de 2026-11-18: 17 cenários na bancada, 0 erros. Nada
 - **Decisão aberta para o dono**: a busca periódica da vigia roda sem tecla do dono enquanto a AH está aberta (a bancada
   marca I9, regra herdada do PregaoForever). Falta decidir se o addon pausa a vigia depois de N minutos sem tecla do
   dono. Nada foi implementado para isso.
+
+## 11. Full scan no disco (0.2.1, 2026-11-23)
+
+Pedido do dono: "Gostaria que fosse fácil atualizar as estimativas de custos", e a escolha "CompraForever guarda o
+Full". No fim do `lerFull` (antes do `encerrar`), `gravarFull` grava `CompraForeverDB.full = { em, n, itens }`, com
+`itens[id] = "unidades;anuncios;preco:qtd,preco:qtd,..."`: as unidades e os anúncios de todo o livro do item (sem os do
+dono, como a escada) e os 40 preços mais baratos (`NIVEIS`), com a quantidade somada dos anúncios de mesmo preço. Só
+o último full fica; um full abortado (AH fechada) não troca o livro gravado. A ferramenta lê esse bloco
+(`baixar-precos.mjs`, `lerFullCompra`) e usa o livro por 6 horas (`legado.mjs`, `comFullCompra`; seção 10.9 do
+`ferramentas\pregao\CONTRATO.md`). Bancada: o cenário 03 confere o livro gravado e o aborto; rodada de 2026-11-23,
+17 cenários, 0 erros. Nada rodou no jogo.

@@ -466,6 +466,34 @@ export function avaliarProfissao(receitas, precos, { de, ate, agora, tempo = TEM
 // Precos para o legado (secao 10.5): reagente de vendedor so se o vendedor vende sem limite (a lista
 // VendorReagents.lua do Naowh: linha, frasco, tinta, sal, fluxo, vareta e madeira); ferramenta e padrao, de que basta
 // uma unidade, continuam com a lista publica inteira. Sem a lista do Naowh, vale a lista publica. Funcao pura.
+// Livro do full scan do CompraForever (secao 10.9): com ate 6 horas, ele vale no lugar da foto publica para os itens
+// que estao nele (minimo, p25, mediana e unidades do livro inteiro, e os niveis mais baratos para o livro de ofertas), e
+// a exportacao do Auctionator sai (o full le o leilao inteiro). Item fora do full fica com a foto publica. Funcao pura.
+export function comFullCompra(precos, agora) {
+  const f = precos.fullCompra;
+  if (!f || !f.n || !(agora - f.em <= JANELA_AUCTIONATOR)) return precos;
+  const itens = { ...(precos.publico?.itens || {}) };
+  for (const [id, x] of Object.entries(f.itens)) {
+    const niveis = x.niveis;
+    const quantil = (q) => {
+      const alvo = q * x.unid;
+      let acc = 0;
+      for (const [p, n] of niveis) {
+        acc += n;
+        if (acc >= alvo) return p;
+      }
+      return niveis[niveis.length - 1][0];
+    };
+    itens[id] = { tipo: 'f', min: niveis[0][0], p25: quantil(0.25), med: quantil(0.5), unid: x.unid, lotes: x.lotes, baratos: niveis };
+  }
+  return {
+    ...precos,
+    publico: { ...precos.publico, itens, foto: f.em, fotoPublica: precos.publico?.foto ?? null },
+    auctionator: null,
+    fonteLeilao: { tipo: 'full', em: f.em, n: f.n },
+  };
+}
+
 export function precosParaLegado(precos, receitas, ilimitados) {
   if (!ilimitados) return precos;
   const cheia = new Set(precos.vendedor || []);
@@ -658,11 +686,12 @@ async function linhaDeComando(argv) {
     console.error(`${op.erro}\n${USO}`);
     process.exit(2);
   }
-  const precosBase = await lerJson(ARQ_PRECOS);
+  const agora = Math.floor(Date.now() / 1000);
+  // Full scan do CompraForever com ate 6 horas: vale no lugar da foto publica (secao 10.9).
+  const precosBase = comFullCompra(await lerJson(ARQ_PRECOS), agora);
   const naowh = await carregarNaowh();
   const ilimitados = naowh?.reagentesIlimitados ?? null;
   const precos = precosBase;
-  const agora = Math.floor(Date.now() / 1000);
   const resultados = [];
   for (const slug of op.profissoes) {
     let receitas;
@@ -705,7 +734,7 @@ async function linhaDeComando(argv) {
 
   // Resumo no terminal.
   const larg = [17, 8, 7, 13, 13, 13, 13, 13];
-  const out = [`LEGADO - custo ate ${op.ate}${op.marcos.length ? ` (marcos ${op.marcos.join(', ')})` : ''}, comprando tudo | foto publica ${precos.publico?.foto ? dataHora(precos.publico.foto) : 'sem data'} | desconto de vendedor ${op.desconto}% | tempo ${op.tempo}c por craft${op.treinoAte !== null ? ` | treinador so ate ${op.treinoAte}` : ''}`];
+  const out = [`LEGADO - custo ate ${op.ate}${op.marcos.length ? ` (marcos ${op.marcos.join(', ')})` : ''}, comprando tudo | ${precos.fonteLeilao?.tipo === 'full' ? 'full do CompraForever' : 'foto publica'} ${precos.publico?.foto ? dataHora(precos.publico.foto) : 'sem data'} | desconto de vendedor ${op.desconto}% | tempo ${op.tempo}c por craft${op.treinoAte !== null ? ` | treinador so ate ${op.treinoAte}` : ''}`];
   out.push(linhaTab(['profissao', 'faixa', 'crafts', 'compra', 'volta vend.', 'liq. vend.', 'teto leilao', 'liq. leilao'], larg));
   for (const r of resultados) {
     for (const s of r.segs) out.push(linhaTab(linhaSeg(r, s), larg));
@@ -719,10 +748,13 @@ async function linhaDeComando(argv) {
 
   // Relatorio em Markdown.
   const quando = precos.publico?.foto ? dataHora(precos.publico.foto) : 'sem data';
+  const fonteTxt = precos.fonteLeilao?.tipo === 'full'
+    ? `o full scan do CompraForever de ${quando} (${precos.fonteLeilao.n} itens; o que nao estava nele, pela foto publica us-111 de ${precos.publico.fotoPublica ? dataHora(precos.publico.fotoPublica) : 'sem data'})`
+    : `a foto publica do leilao us-111 de ${quando}${precos.auctionator && agora - precos.auctionator.em <= JANELA_AUCTIONATOR ? ` e o scan do Auctionator exportado em ${dataHora(precos.auctionator.em)}` : ''}`;
   const L = [
     `# Custo do ${op.ate} nas profissoes de oficio (Legacy point)`,
     '',
-    `Gerado em ${dataHora(agora)} pelo legado.mjs, com a foto publica do leilao us-111 de ${quando}, build ${resultados[0]?.build ?? '-'} e Naowh ${resultados[0]?.naowh ?? 'nao'}. Desconto de vendedor ${op.desconto}%. Na escolha da rota e do fabricar, cada craft vale ${op.tempo}c de tempo (so na escolha; os totais sao so ouro). Nada coletado: tudo comprado.${op.treinoAte !== null ? ` Receita de treinador so ate a pericia ${op.treinoAte}.` : ''}${op.marcos.length ? ` Cada trecho entre marcos (${op.marcos.join(', ')}) e uma conta propria, partindo do marco anterior.` : ''}`,
+    `Gerado em ${dataHora(agora)} pelo legado.mjs, com ${fonteTxt}, build ${resultados[0]?.build ?? '-'} e Naowh ${resultados[0]?.naowh ?? 'nao'}. Desconto de vendedor ${op.desconto}%. Na escolha da rota e do fabricar, cada craft vale ${op.tempo}c de tempo (so na escolha; os totais sao so ouro). Nada coletado: tudo comprado.${op.treinoAte !== null ? ` Receita de treinador so ate a pericia ${op.treinoAte}.` : ''}${op.marcos.length ? ` Cada trecho entre marcos (${op.marcos.join(', ')}) e uma conta propria, partindo do marco anterior.` : ''}`,
     '',
     '| Profissao | Faixa | Crafts | Compra total | Volta no vendedor | Liquido no vendedor | Teto no leilao | Liquido no leilao |',
     '|---|---|---|---|---|---|---|---|',

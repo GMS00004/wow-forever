@@ -1,5 +1,6 @@
 // Casos de preco fixo do legado.mjs e dos campos do esquema 2 (CONTRATO.md, secao 10). Uso: node testes/testar-legado.mjs
-import { custoLivro, custosComTempo, balanco, avaliarProfissao, precosParaLegado } from '../legado.mjs';
+import { custoLivro, custosComTempo, balanco, avaliarProfissao, precosParaLegado, comFullCompra } from '../legado.mjs';
+import { lerFullCompra } from '../baixar-precos.mjs';
 import { calcular } from '../crafts.mjs';
 import { situacaoPadroes } from '../rota.mjs';
 import { lerTabelaLua, naowhDaProfissao, lerVendorReagents } from '../naowh.mjs';
@@ -135,6 +136,21 @@ const agora = 2000;
   igual('V1 sem lista do Naowh', precosParaLegado(precos, receitas, null).vendedor, [2, 5, 9]);
 }
 
+// ---------- F1: livro do full scan do CompraForever ----------
+{
+  const sv = 'CompraForeverDB = {\n["ultimoFull"] = 100,\n["full"] = {\n["em"] = 1000,\n["n"] = 2,\n["itens"] = {\n[2589] = "54;2;9:14,11:40",\n[7000] = "2;2;300:1,1500:1",\n},\n},\n}\n';
+  const f = lerFullCompra(sv);
+  igual('F1 leitura', [f.em, f.n, f.itens['2589'], f.itens['7000'].niveis], [1000, 2, { unid: 54, lotes: 2, niveis: [[9, 14], [11, 40]] }, [[300, 1], [1500, 1]]]);
+  igual('F1 sem bloco', lerFullCompra('CompraForeverDB = {\n["ultimoFull"] = 100,\n}\n'), null);
+  const base = { publico: { foto: 900, itens: { 2589: pub(20), 1: pub(10) } }, auctionator: { em: 990, itens: {} }, fullCompra: f };
+  const m = comFullCompra(base, 2000);
+  igual('F1 full no lugar da foto', [m.publico.itens['2589'].min, m.publico.itens['2589'].p25, m.publico.itens['2589'].med, m.publico.itens['2589'].unid], [9, 9, 11, 54]);
+  igual('F1 item fora do full fica com a foto', m.publico.itens['1'].min, 10);
+  igual('F1 Auctionator sai e a fonte fica marcada', [m.auctionator, m.fonteLeilao, m.publico.foto, m.publico.fotoPublica], [null, { tipo: 'full', em: 1000, n: 2 }, 1000, 900]);
+  igual('F1 livro pelos niveis do full', custoLivro(m.publico.itens['2589'], 20).custo, 9 * 14 + 11 * 6);
+  igual('F1 full velho nao entra', comFullCompra(base, 1000 + 21601), base);
+}
+
 for (const e of erros) console.log('ERRO', e);
-console.log(`casos=8 campos=${campos} erros=${erros.length}`);
+console.log(`casos=9 campos=${campos} erros=${erros.length}`);
 process.exit(erros.length ? 1 : 0);

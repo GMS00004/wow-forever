@@ -43,6 +43,13 @@ return {
       b.igual(sc.revenda[7000], 1000, "revenda 7000")
       b.igual(ns.scanEstado.ocupado, false, "livre")
       b.igual(CompraForeverDB.ultimoFull, ini_t, "ultimoFull gravado no pedido")
+      -- livro do full no SavedVariables (CONTRATO secao 11): unidades;lotes;preco:qtd, sem o dono
+      local fu = CompraForeverDB.full
+      b.verdadeiro(type(fu) == "table" and fu.n == 3, "CompraForeverDB.full com 3 itens")
+      b.igual(fu and fu.em, sc.em, "hora do full no livro")
+      b.igual(fu and fu.itens[2589], "54;2;9:14,11:40", "livro de 2589")
+      b.igual(fu and fu.itens[2592], "5;1;35:5", "livro de 2592")
+      b.igual(fu and fu.itens[7000], "2;2;300:1,1500:1", "livro de 7000")
       -- revenda entra no plano so no full
       local p = ns.plano
       b.verdadeiro(p ~= nil, "ns.plano existe")
@@ -70,6 +77,7 @@ return {
     local ns = b.ns
     b.verdadeiro(ns.terminou ~= nil and ns.terminou.scan == nil and ns.terminou.m == "closed", "aoTerminar(nil, closed)")
     b.verdadeiro(ns.scan == ant, "mantem o scan anterior")
+    b.igual(CompraForeverDB.full and CompraForeverDB.full.em, ant.em, "o full abortado nao troca o livro gravado")
     b.igual(ns.scanEstado.ocupado, false, "livre depois do aborto")
     b.igual(#b.chamadas("ReplicateItems"), 2, "dois ReplicateItems")
     local ok, m = ns.fullScan()

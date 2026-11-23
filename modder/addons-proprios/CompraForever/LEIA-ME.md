@@ -1,4 +1,4 @@
-# CompraForever 0.2.0
+# CompraForever 0.2.1
 
 Um fluxo só: na AH, clicar Scan e seguir o botão grande. O painel diz quanto comprar de cada material, com o dinheiro e
 o espaço de bolsa que você tem agora, para craftar receitas de Leatherworking que você conhece e vender no vendedor
@@ -100,6 +100,14 @@ Posta no leilão o que está na bolsa, pelo botão grande ou por comando.
 | `/compra post` | lista a fila e as sugestões |
 | `/compra post clear` | esvazia a fila |
 | `/compra duration <1-3>` | duração do leilão postado (padrão 3; ver a nota na seção SELL) |
+
+## Full scan no disco (0.2.1)
+
+Desde a 0.2.1 (2026-11-23), ao terminar o botão Full, o addon guarda o livro de cada item (unidades, anúncios e os 40
+preços mais baratos, com a quantidade de cada um) em `CompraForeverDB.full`. O arquivo só vai ao disco no `/reload` ou
+ao sair do jogo. A ferramenta de estimativas (`ferramentas\pregao\estimativas.mjs`) usa esse livro por 6 horas, no
+lugar da foto pública e do scan do Auctionator. Fluxo: Full, esperar terminar, `/reload`, e pedir "atualiza" ao agente.
+Vale com `/reload` (nenhum arquivo novo no TOC).
 
 ## Para desfazer
 

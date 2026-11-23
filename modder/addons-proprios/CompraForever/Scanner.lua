@@ -253,6 +253,36 @@ end
 
 -- Full scan ------------------------------------------------------------------------------------------
 
+-- O livro do full scan fica no disco para a ferramenta de crafts (CONTRATO secao 11, pedido do dono em 2026-11-23):
+-- CompraForeverDB.full = { em, n, itens = { [id] = "unidades;lotes;preco:qtd,preco:qtd,..." } }, com os NIVEIS
+-- precos mais baratos de cada item (lotes do mesmo preco somados). So o ultimo full; o SavedVariables vai ao disco no
+-- /reload ou ao sair do jogo.
+local NIVEIS = 40
+
+local function gravarFull(escadas, em)
+  local itens, n = {}, 0
+  for id, l in pairs(escadas) do
+    local partes, unid, ultimo, k = {}, 0, nil, 0
+    for _, e in ipairs(l) do
+      unid = unid + e.qtd
+      if ultimo and ultimo.preco == e.preco then
+        ultimo.qtd = ultimo.qtd + e.qtd
+      elseif k < NIVEIS then
+        k = k + 1
+        ultimo = { preco = e.preco, qtd = e.qtd }
+        partes[k] = ultimo
+      else
+        ultimo = nil
+      end
+    end
+    local txt = {}
+    for i, p in ipairs(partes) do txt[i] = p.preco .. ":" .. p.qtd end
+    itens[id] = unid .. ";" .. #l .. ";" .. table.concat(txt, ",")
+    n = n + 1
+  end
+  CompraForeverDB.full = { em = em, n = n, itens = itens }
+end
+
 local function lerFull(S, n, total)
   local idx = 0
   local vistos = {}
@@ -283,7 +313,9 @@ local function lerFull(S, n, total)
       return
     end
     for _, l in pairs(S.escadas) do ordenar(l) end
-    encerrar(S, { tipo = "full", em = time(), escadas = S.escadas, revenda = S.revenda, semResposta = {} })
+    local em = time()
+    gravarFull(S.escadas, em)
+    encerrar(S, { tipo = "full", em = em, escadas = S.escadas, revenda = S.revenda, semResposta = {} })
   end
   quadro()
 end

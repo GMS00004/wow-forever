@@ -73,6 +73,40 @@ export function lerExportacao(texto) {
   return { em, itens };
 }
 
+// Le o livro do ultimo full scan do CompraForever (CONTRATO secao 11): o bloco ["full"] do CompraForeverDB, com
+// ["em"] e ["itens"] = { [id] = "unidades;lotes;preco:qtd,..." }. Devolve { em, n, itens: { "<id>": { unid, lotes,
+// niveis: [[preco, qtd], ...] } } } ou null sem o bloco. Funcao pura.
+export function lerFullCompra(texto) {
+  const m = mascarar(texto);
+  const full = acharBloco(m, 'full');
+  if (!full) return null;
+  const [ini, fim] = full;
+  const trecho = texto.slice(ini, fim);
+  const emM = /\["em"\]\s*=\s*(\d+)/.exec(trecho);
+  const itensB = acharBloco(m, 'itens', ini, fim);
+  const itens = {};
+  if (itensB) {
+    const re = /\[(\d+)\]\s*=\s*"(\d+);(\d+);([\d:,]*)"/g;
+    for (const r of texto.slice(itensB[0], itensB[1]).matchAll(re)) {
+      const niveis = r[4] ? r[4].split(',').map((s) => s.split(':').map(Number)).filter((x) => x.length === 2 && x[0] > 0 && x[1] > 0) : [];
+      if (niveis.length) itens[r[1]] = { unid: Number(r[2]), lotes: Number(r[3]), niveis };
+    }
+  }
+  return { em: emM ? Number(emM[1]) : null, n: Object.keys(itens).length, itens };
+}
+
+async function lerCompraForever() {
+  const pasta = await pastaSavedVariables();
+  let texto;
+  try {
+    texto = await readFile(path.join(pasta, 'CompraForever.lua'), 'utf8');
+  } catch (e) {
+    if (e.code === 'ENOENT') return null;
+    throw e;
+  }
+  return lerFullCompra(texto);
+}
+
 // Baixa o indice e os dois arquivos da casa; confere o SHA-256. Se nao bater, tenta uma vez de novo.
 async function baixarVerificado() {
   const nomeCasa = `${CASA_PUBLICA}.txt`;
@@ -247,11 +281,43 @@ async function baixarHistorico() {
 
 const iso = (s) => (Number.isFinite(s) ? new Date(s * 1000).toISOString() : 'sem data');
 
+// Linha do full scan do CompraForever no terminal.
+function linhaFull(f) {
+  return f && f.n ? `compraforever: full scan ${iso(f.em)} itens=${f.n}` : 'compraforever: sem full scan gravado';
+}
+
+// Linha do Auctionator no terminal.
+function linhaAuctionator(auct) {
+  if (!auct) return 'auctionator: sem exportacao';
+  const n = Object.keys(auct.itens).length;
+  const idade0 = Object.values(auct.itens).filter((x) => x.idadeDias === 0).length;
+  return `auctionator: exportacao ${iso(auct.em)} precos=${n} idade0=${idade0}`;
+}
+
 async function principal() {
   const baixado = await baixarVerificado();
   if (!baixado) {
-    console.log('ERRO sha256 nao bate apos nova tentativa; precos.json nao gravado');
-    process.exitCode = 2;
+    // Secao 4.3 (2026-11-23): a foto da hora pode estar sendo trocada no servidor (indice e arquivo de horas
+    // diferentes). Com um precos.json anterior, ele fica com a foto publica de antes e so a exportacao do Auctionator
+    // e relida; sem ele, nada e gravado, como antes.
+    let anterior = null;
+    try {
+      anterior = JSON.parse(await readFile(ARQ_PRECOS, 'utf8'));
+    } catch {
+      anterior = null;
+    }
+    if (!anterior?.publico) {
+      console.log('ERRO sha256 nao bate apos nova tentativa; precos.json nao gravado');
+      process.exitCode = 2;
+      return;
+    }
+    const auct = await lerAuctionator();
+    const fullCompra = await lerCompraForever();
+    await gravarJson(ARQ_PRECOS, { ...anterior, geradoEm: new Date().toISOString(), auctionator: auct, fullCompra });
+    console.log(`AVISO sha256 nao bate apos nova tentativa: mantida a foto publica de ${iso(anterior.publico.foto)}`);
+    console.log(linhaAuctionator(auct));
+    console.log(linhaFull(fullCompra));
+    console.log(`gravado: ${ARQ_PRECOS} (so as exportacoes do jogo foram relidas)`);
     return;
   }
   const vendorsTexto = await baixarTexto('vendors.txt');
@@ -265,6 +331,7 @@ async function principal() {
   const vendas = lerVendas(baixado.sales);
   const vend = lerVendedores(vendorsTexto);
   const auct = await lerAuctionator();
+  const fullCompra = await lerCompraForever();
   const hist = await baixarHistorico();
 
   const obj = {
@@ -281,6 +348,7 @@ async function principal() {
     },
     auctionator: auct,
     vendedor: vend.lista ?? null,
+    fullCompra,
   };
   await gravarJson(ARQ_PRECOS, obj);
 
@@ -290,13 +358,8 @@ async function principal() {
   else console.log(`historico: dias=${hist.dias[0]}-${hist.dias[1]} itens=${Object.keys(hist.historico).length} ignoradas=${hist.ignoradas}`);
   if (vend.lista) console.log(`vendedor: itens=${vend.lista.length}`);
   else console.log(`AVISO vendedor: null (${vend.erro})`);
-  if (auct) {
-    const n = Object.keys(auct.itens).length;
-    const idade0 = Object.values(auct.itens).filter((x) => x.idadeDias === 0).length;
-    console.log(`auctionator: exportacao ${iso(auct.em)} precos=${n} idade0=${idade0}`);
-  } else {
-    console.log('auctionator: sem exportacao');
-  }
+  console.log(linhaAuctionator(auct));
+  console.log(linhaFull(fullCompra));
   console.log(`gravado: ${ARQ_PRECOS}`);
 }
 

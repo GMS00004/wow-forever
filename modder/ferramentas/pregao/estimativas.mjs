@@ -33,9 +33,15 @@ else {
 const precos = await lerJson(ARQ_PRECOS);
 const agora = Math.floor(Date.now() / 1000);
 const auc = precos.auctionator;
-if (auc && agora - auc.em <= JANELA_AUCTIONATOR) console.log(`scan do Auctionator de ${hora(auc.em)}: entra no preco minimo (vale ate 6 horas)`);
-else if (auc) console.log(`scan do Auctionator de ${hora(auc.em)}: velho, nao entra; vale so a foto publica de ${hora(precos.publico.foto)}`);
-else console.log(`sem scan exportado; vale so a foto publica de ${hora(precos.publico.foto)}`);
+const full = precos.fullCompra;
+if (full && full.n && agora - full.em <= JANELA_AUCTIONATOR) {
+  console.log(`full scan do CompraForever de ${hora(full.em)} (${full.n} itens): vale no lugar da foto publica e do Auctionator (ate 6 horas)`);
+} else {
+  if (full && full.n) console.log(`full scan do CompraForever de ${hora(full.em)}: velho, nao entra`);
+  if (auc && agora - auc.em <= JANELA_AUCTIONATOR) console.log(`scan do Auctionator de ${hora(auc.em)}: entra no preco minimo (vale ate 6 horas)`);
+  else if (auc) console.log(`scan do Auctionator de ${hora(auc.em)}: velho, nao entra; vale so a foto publica de ${hora(precos.publico.foto)}`);
+  else console.log(`sem scan exportado; vale so a foto publica de ${hora(precos.publico.foto)}`);
+}
 
 const extra = process.argv.slice(2).filter((a) => a !== '--sem-baixar');
 // Opcao dada na linha de comando substitui a do padrao (a opcao e o valor dela).

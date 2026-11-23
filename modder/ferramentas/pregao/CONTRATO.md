@@ -786,3 +786,23 @@ roda o `baixar-precos.mjs` (foto pública da hora e a exportação do scan do Au
 adiante e substitui a do padrão (`node estimativas.mjs --treino-ate 200`); `--sem-baixar` refaz a conta sem rede, com o
 `precos.json` que está no disco. O scan só chega à ferramenta pela exportação: o comando `/run` da seção 4 colado no
 jogo e um `/reload` (o arquivo de SavedVariables só muda no disco no `/reload` ou ao sair).
+
+Achado da mesma noite: o botão Full do CompraForever não alimenta o banco do Auctionator (o scan das 16h32 exportou só
+preços de 1 a 3 dias atrás, com idade 0 em nenhum); só o scan do próprio Auctionator alimenta. Daí a seção 10.9.
+
+Foto pública que não confere (`baixar-precos.mjs`, 2026-11-23): quando o SHA-256 não bate nem na segunda tentativa (o
+autor troca o índice e o arquivo em horas diferentes, perto do minuto 25 a 45), o script fica com a foto pública do
+`precos.json` anterior, relê só as exportações do jogo (Auctionator e full do CompraForever) e grava, com a linha
+`AVISO ... mantida a foto publica de <hora>`. Sem `precos.json` anterior, nada é gravado, como antes (código 2).
+
+### 10.9 O livro do full scan do CompraForever
+
+Escolha do dono em 2026-11-23: "CompraForever guarda o Full". Desde a 0.2.1, o Full grava `CompraForeverDB.full`
+(seção 11 do `CONTRATO.md` do CompraForever). `baixar-precos.mjs` lê o bloco (`lerFullCompra`) e grava
+`precos.fullCompra = { em, n, itens: { "<id>": { unid, lotes, niveis: [[preco, qtd], ...] } } }`, ou `null`. No
+`legado.mjs`, `comFullCompra(precos, agora)`: com o full de até 6 horas, cada item dele substitui o da foto pública
+(`min` = o primeiro nível; `p25` e `med` pelas unidades acumuladas nos níveis; `unid` e `lotes` do livro inteiro;
+`baratos` = os níveis, que o `custoLivro` percorre um a um); a exportação do Auctionator sai, e o relatório diz "full
+scan do CompraForever". Item fora do full fica com a foto pública. A rota do J (`rota.mjs` direto) não usa o full.
+Fluxo do dono: Full no painel, esperar terminar, `/reload`, "atualiza" (`node estimativas.mjs`). Teste: caso F1 do
+`testes\testar-legado.mjs` (9 casos, 39 campos).
