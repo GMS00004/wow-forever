@@ -1,5 +1,5 @@
 // Casos de preco fixo do legado.mjs e dos campos do esquema 2 (CONTRATO.md, secao 10). Uso: node testes/testar-legado.mjs
-import { custoLivro, custosComTempo, balanco, avaliarProfissao, precosParaLegado, comFullCompra } from '../legado.mjs';
+import { custoLivro, livro, custosComTempo, balanco, avaliarProfissao, precosParaLegado, comFullCompra, creditarIntermediarios, avaliarTrechos, exportarRota } from '../legado.mjs';
 import { lerFullCompra } from '../baixar-precos.mjs';
 import { calcular } from '../crafts.mjs';
 import { situacaoPadroes } from '../rota.mjs';
@@ -151,6 +151,125 @@ const agora = 2000;
   igual('F1 full velho nao entra', comFullCompra(base, 1000 + 21601), base);
 }
 
+// ---------- L2: preco da ultima unidade (livro().ultimo) ----------
+{
+  // Mesmo livro do L1: lotes [10 x5] e [12 x5], U=100, p25=20, mediana=30. Curva depois dos lotes (acc=10, ultimo=12):
+  // pontos (10,12), (25,20), (50,30); acima de 50 fica em 30.
+  const pub = { min: 10, p25: 20, med: 30, unid: 100, baratos: [[10, 5], [12, 5]] };
+  const u = (q) => livro(pub, q).ultimo;
+  const r4 = (v) => Math.round(v * 1e4) / 1e4;
+  igual('L2 dentro do primeiro lote', u(3), 10);
+  igual('L2 fim do primeiro lote', u(5), 10);
+  igual('L2 dentro do segundo lote', u(7), 12);
+  igual('L2 fim do segundo lote', u(10), 12);
+  igual('L2 na curva, a meio do trecho', r4(u(15)), r4(12 + (8 * 5) / 15)); // 12 + (20-12) * (15-10)/(25-10)
+  igual('L2 na curva, no p25', u(25), 20);
+  igual('L2 na curva, na mediana', u(50), 30);
+  igual('L2 alem do total fica na mediana', u(120), 30);
+  igual('L2 sem compra', livro(pub, 0), { custo: 0, aviso: null, ultimo: null });
+  igual('L2 custoLivro sem o campo ultimo', Object.keys(custoLivro(pub, 25)), ['custo', 'aviso']);
+  igual('L2 custo igual ao do L1', livro(pub, 25).custo, 350);
+}
+
+// ---------- B2: intermediario fabricado so quando ja se aprende no passo; treino uma vez ----------
+const rB = {
+  esquema: 2,
+  profissao: { id: 2, nome: 'Teste2', slug: 'teste2' },
+  naowh: { versao: 't', ranks: [{ cap: 150, pericia: 50, custo: 500, nivel: null, nome: 'J' }, { cap: 225, pericia: 125, custo: 5000, nivel: 22, nome: 'E' }, { cap: 300, pericia: 200, custo: 50000, nivel: null, nome: 'A' }] },
+  receitas: [
+    { magia: 201, nome: 'Po Fino', produto: { id: 30, qtd: 1 }, reagentes: [{ id: 1, qtd: 1 }], amarela: 100, cinza: 140, pontos: 1, itemReceita: null, inicial: false,
+      naowh: { aprende: 125, origem: 'trainer', custo: 500, lados: [] }, ferramentas: [{ categoria: 7, nome: 'Pinca', itens: [5] }] },
+    { magia: 202, nome: 'Bomba', produto: { id: 31, qtd: 1 }, reagentes: [{ id: 30, qtd: 2 }], amarela: 100, cinza: 140, pontos: 1, itemReceita: null, inicial: true },
+  ],
+  itens: {
+    1: { nome: 'Pano', vende: 2, compra: 0, pilha: 20, vinculo: 0 },
+    5: { nome: 'Pinca', vende: 10, compra: 100, pilha: 1, vinculo: 0 },
+    30: { nome: 'Po Fino', vende: 5, compra: 0, pilha: 20, vinculo: 0 },
+    31: { nome: 'Bomba', vende: 9, compra: 0, pilha: 20, vinculo: 0 },
+  },
+};
+const precosB = { publico: { foto: 1000, itens: { 1: pub(10), 30: pub(500, 50) }, saidas: {}, horas: {} }, auctionator: null, vendedor: [5] };
+const passoB = (de, ate, crafts) => ({ magia: 202, nome: 'Bomba', de, ate, crafts, padrao: { situacao: 'conhecida', preco: 0 } });
+const rotaB = (passos) => ({ de: passos[0].de, ate: passos[passos.length - 1].ate, chegou: passos[passos.length - 1].ate, parou: null, passos, totais: { crafts: passos.reduce((t, x) => t + x.crafts, 0) } });
+{
+  const { linhas } = calcular(rB, precosB, { pericia: 1, agora });
+  const custos = custosComTempo(rB, precosB, { agora, tempo: 0 });
+  igual('B2 a conta pede fabricar o Po Fino', custos.fonte(30).letra, 'F');
+  // De 100: o Po Fino (aprende 125) nao se fabrica, e comprado: 10 unidades, teto = max(ultimo, minimo) = 500.
+  const a = balanco(rB, precosB, rotaB([passoB(100, 110, 5)]), linhas, { agora, custos });
+  igual('B2 comprado antes do aprender', [a.compras.map((c) => [c.id, c.qtd, c.onde, c.teto]), a.fabricados, a.treinoReceitas, a.totais.treino],
+    [[[30, 10, 'leilao', 500]], [], [], 0]);
+  igual('B2 fonte comprada', a.fontes, { 30: { f: 'L', qtd: 10, custo: 5000, teto: 500 } });
+  // De 130: fabrica; o treino do Po Fino entra uma vez (dois passos), a Pinca e obtida, o Pano e comprado.
+  const b = balanco(rB, precosB, rotaB([passoB(130, 135, 5), passoB(135, 140, 5)]), linhas, { agora, custos });
+  igual('B2 treino uma vez, fabricado', b.treinoReceitas, [{ nome: 'Po Fino', custo: 500, aprende: 125, magia: 201, fabricado: true }]);
+  igual('B2 treino no total', [b.totais.treino, b.totais.craftsExtra], [500, 20]);
+  igual('B2 ferramenta obtida', b.ferramentas.map((f) => [f.nome, f.origem, f.preco]), [['Pinca', 'vendedor', 100]]);
+  igual('B2 compras', b.compras.map((c) => [c.id, c.qtd, c.onde, c.teto ?? null, c.preco ?? null]).sort((x, y) => x[0] - y[0]), [[1, 20, 'leilao', 10, null], [5, 1, 'vendedor', null, 100]]);
+  igual('B2 fontes', b.fontes, { 1: { f: 'L', qtd: 20, custo: 200, teto: 10 }, 5: { f: 'V', qtd: 1, preco: 100 }, 30: { f: 'F', magia: 201, qtd: 20, teto: 500 } });
+}
+
+// ---------- C2: credito dos intermediarios (o caso C1 acima e do crafts.mjs) ----------
+{
+  const R = (extra302) => ({
+    esquema: 2, profissao: { id: 3, nome: 'Teste3', slug: 'teste3' }, naowh: { versao: 't', ranks: [] },
+    receitas: [
+      { magia: 301, nome: 'Bombinha', produto: { id: 20, qtd: 1 }, reagentes: [{ id: 40, qtd: 2 }], amarela: 10, cinza: 40, pontos: 1, itemReceita: null, inicial: true },
+      { magia: 302, nome: 'Po', produto: { id: 40, qtd: 1 }, reagentes: [{ id: 1, qtd: 1 }], amarela: 10, cinza: 40, pontos: 1, itemReceita: null, inicial: true, ...extra302 },
+    ],
+    itens: { 1: { nome: 'Pano', vende: 2, compra: 0, pilha: 20, vinculo: 0 }, 20: { nome: 'Bombinha', vende: 9, compra: 0, pilha: 20, vinculo: 0 }, 40: { nome: 'Po', vende: 1, compra: 0, pilha: 20, vinculo: 0 } },
+  });
+  const pr = { publico: { foto: 1000, itens: { 1: pub(10), 40: pub(1000) }, saidas: {}, horas: {} }, auctionator: null, vendedor: [] };
+  // Chance de 301 e 302 em x: (40 - x) / 30 (amarela 10, cinza 40). Cada Bombinha pede 2 Po, e cada Po fabricado vale um
+  // craft da mesma chance: ganho = 3 * chance; sem o credito, ganho = chance.
+  let semC = 0, comC = 0;
+  for (let x = 10; x < 30; x++) { const ch = (40 - x) / 30; semC += 1 / ch; comC += 1 / (3 * ch); }
+  const mk = (de, ate, crafts) => ({ de, ate, chegou: ate, parou: null, passos: [{ magia: 301, nome: 'Bombinha', de, ate, crafts, esperado: semC }], totais: { crafts } });
+  const rec = R({});
+  const custos = custosComTempo(rec, pr, { agora, tempo: 0 });
+  igual('C2 o Po e fabricado', custos.fonte(40).letra, 'F');
+  const rota = mk(10, 30, Math.ceil(semC - 1e-9));
+  const c = creditarIntermediarios(rec, rota, custos);
+  igual('C2 crafts com credito = ceil(soma de 1/(3 chance))', [c.passos[0].crafts, c.totais.crafts], [Math.ceil(comC - 1e-9), Math.ceil(comC - 1e-9)]);
+  igual('C2 esperado com credito', Math.round(c.passos[0].esperado * 1e6), Math.round(comC * 1e6));
+  igual('C2 a rota original nao muda', [rota.passos[0].crafts, rota.totais.crafts], [Math.ceil(semC - 1e-9), Math.ceil(semC - 1e-9)]);
+  igual('C2 o credito reduz os crafts', c.passos[0].crafts < rota.passos[0].crafts, true);
+  // Receita F que so se aprende em 20, com o passo comecando em 10: sem credito (a conta de antes).
+  const tardia = R({ inicial: false, naowh: { aprende: 20, origem: 'trainer', custo: 50, lados: [] } });
+  const ct = custosComTempo(tardia, pr, { agora, tempo: 0 });
+  igual('C2 F ainda nao aprendida nao da credito', creditarIntermediarios(tardia, rota, ct).passos[0].crafts, Math.ceil(semC - 1e-9));
+  // Ganho zero (passo alem do cinza): o passo fica como estava.
+  const quebrada = mk(35, 45, 7);
+  igual('C2 ganho zero mantem o passo', creditarIntermediarios(rec, quebrada, custos).passos[0].crafts, 7);
+}
+
+// ---------- X1: exportacao da rota para o CompraForever ----------
+{
+  const { linhas } = calcular(rB, precosB, { pericia: 1, agora });
+  const custos = custosComTempo(rB, precosB, { agora, tempo: 0 });
+  const rota = rotaB([passoB(130, 135, 5), passoB(135, 140, 5)]);
+  const bal = balanco(rB, precosB, rota, linhas, { agora, custos });
+  const { prof, itens } = exportarRota('tailoring', rB, [{ a: { de: 130, ate: 140, rota, bal }, faixas: [] }]);
+  igual('X1 chaves da profissao', Object.keys(prof), ['nome', 'curto', 'linha', 'ranks', 'receitas', 'trechos']);
+  igual('X1 nome, curto e linha', [prof.nome, prof.curto, prof.linha], ['Teste2', 'Tail', 2]);
+  igual('X1 nivel do rank: o do Naowh ou pelo teto', prof.ranks.map((k) => [k.cap, k.nivel]), [[150, 10], [225, 22], [300, 35]]);
+  igual('X1 receitas: passos e F', Object.keys(prof.receitas), ['201', '202']);
+  igual('X1 receita F de treinador', prof.receitas[201], {
+    nome: 'Po Fino', produto: 30, qtd: 1, reagentes: [[1, 1]], amarela: 100, cinza: 140, pontos: 1, aprende: 125, origem: 'treinador', treino: 500,
+    ferramentas: [{ nome: 'Pinca', itens: [5] }], foco: null, acampamento: null,
+  });
+  igual('X1 receita inicial', [prof.receitas[202].origem, prof.receitas[202].treino, prof.receitas[202].reagentes], ['inicial', null, [[30, 2]]]);
+  const t = prof.trechos[0];
+  igual('X1 trecho', [Object.keys(t), t.de, t.ate, t.chegou], [['de', 'ate', 'chegou', 'passos', 'fontes', 'totais'], 130, 140, 140]);
+  igual('X1 passos seguidos', [t.passos, t.passos[0].ate === t.passos[1].de], [[{ magia: 202, de: 130, ate: 135, crafts: 5 }, { magia: 202, de: 135, ate: 140, crafts: 5 }], true]);
+  igual('X1 letras das fontes', Object.fromEntries(Object.entries(t.fontes).map(([k, f]) => [k, f.f])), { 1: 'L', 5: 'V', 30: 'F' });
+  igual('X1 totais', t.totais, { custo: bal.totais.custoTotal, crafts: 10, craftsExtra: 20 });
+  igual('X1 itens citados', Object.keys(itens), ['1', '5', '30', '31']);
+  igual('X1 item', itens[5], { nome: 'Pinca', vende: 10, pilha: 1, vinculo: 0 });
+  const segs = avaliarTrechos(receitas, precos, { de: 1, ate: 40, marcos: [20, 99], agora, tempo: 0, faixas: false });
+  igual('X1 avaliarTrechos parte nos marcos', segs.map((x) => [x.a.de, x.a.ate, x.faixas.length]), [[1, 20, 0], [20, 40, 0]]);
+}
+
 for (const e of erros) console.log('ERRO', e);
-console.log(`casos=9 campos=${campos} erros=${erros.length}`);
+console.log(`casos=13 campos=${campos} erros=${erros.length}`);
 process.exit(erros.length ? 1 : 0);

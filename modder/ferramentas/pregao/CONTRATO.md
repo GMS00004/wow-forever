@@ -805,4 +805,64 @@ Escolha do dono em 2026-11-23: "CompraForever guarda o Full". Desde a 0.2.1, o F
 `baratos` = os níveis, que o `custoLivro` percorre um a um); a exportação do Auctionator sai, e o relatório diz "full
 scan do CompraForever". Item fora do full fica com a foto pública. A rota do J (`rota.mjs` direto) não usa o full.
 Fluxo do dono: Full no painel, esperar terminar, `/reload`, "atualiza" (`node estimativas.mjs`). Teste: caso F1 do
-`testes\testar-legado.mjs` (9 casos, 39 campos).
+`testes\testar-legado.mjs` (9 casos, 39 campos; 13 casos e 78 campos desde a seção 10.10).
+
+### 10.10 A rota para o CompraForever: `rotas.json`, teto, intermediários e crédito (2026-11-23, noite)
+
+Pedido do dono: comprar "ultra simples" ao subir qualquer das seis profissões, escolhendo a modalidade no CompraForever
+(seção 12 do `CONTRATO.md` do addon). A conta de fora continua sendo a fonte única da rota; o addon refaz as
+quantidades a partir da perícia real. Mudanças no `legado.mjs`, todas com teste no `testes\testar-legado.mjs`:
+
+1. Teto por unidade. `livro(pub, q)` (exportado) devolve `{ custo, aviso, ultimo }`: `ultimo` é o preço da última
+   unidade (o do último lote usado, ou o ponto da curva em `acc + resta`). `custoLivro(pub, q)` continua devolvendo só
+   `{ custo, aviso }` (o caso L1 não muda). Na lista de compras, a linha de leilão ganha `teto = max(ultimo, minimo)` e a de
+   vendedor ganha `preco` (o do vendedor por unidade).
+2. Fonte de cada item. `balanco` devolve `fontes`: Map id -> `{ f: 'L'|'V'|'F', magia (na F), qtd, custo, teto, preco }`,
+   do que o `obter()` e a ferramenta decidiram no trecho. Item F que também tem preço de leilão ganha `teto` pelo livro
+   na quantidade fabricada. `treinoReceitas` ganha `magia`.
+3. Intermediário fabricado (a lacuna de 2026-11-23: o Heavy Blasting Powder, de treinador por 500c e aprendido no 125,
+   era fabricado 144 vezes sem treino na conta). A receita F de treinador que não é passo da rota entra uma vez em
+   `treinoReceitas` (com `fabricado: true`) e no custo; a ferramenta e o objeto de acampamento dela passam pelo mesmo
+   caminho dos passos; se o `aprende` dela passa do `de` do passo que a pede, o item é comprado (o ramo "F aqui so quando
+   o limite de niveis cortou" já existente).
+4. Crédito dos intermediários. Fabricar intermediário também dá ponto no jogo (o Heavy Blasting Powder tem amarela 125 e
+   cinza 145, como o Heavy Dynamite). Depois do `escolherRota` e antes do `balanco`, `creditarIntermediarios(receitas,
+   rota, custos)` refaz `esperado` e `crafts` de cada passo com o ganho do pacote: `ganho(x) = chance(m, x) * pontos(m) +
+   soma de k * chance(f, x) * pontos(f)` sobre os reagentes de fonte F (até 3 níveis, `k` = reagentes pedidos / produto
+   da receita F, só os que podem ser fabricados nesse `de`); `crafts = ceil(soma de 1/ganho - 1e-9)`. A escolha da receita
+   de cada faixa não muda. `--sem-credito` desliga (a conta de antes). O relatório diz, acima dos passos, "crafts com o
+   credito dos intermediarios". O addon usa a mesma fórmula (`ns.rotaFaltam`), e o `ferramentas\compra\testar-rota.mjs`
+   (R20) confere que os dois dão o mesmo número.
+5. Nível do personagem por rank: `naowh.ranks[].nivel` vem `null`; a exportação põe 10, 20 e 35 pelos tetos 150, 225 e
+   300 (`comum\referencia\profissoes-forever.md:28`).
+6. Exportação. `avaliarTrechos(receitas, precos, { de, ate, marcos, agora, tempo, treinoAte, faixas, credito })`
+   (o laço de trechos do `linhaDeComando`) e `exportarRota(slug, receitas, segs)` viram exportações. `--rotas <arq>` grava,
+   da mesma rodada que faz o relatório:
+
+```json
+{ "esquema": 1, "build": "1.60.1.71037", "geradoEm": 1795470000,
+  "fonte": { "tipo": "full", "em": 1795467617, "n": 6944 },
+  "tempo": 10, "credito": true, "treinoAte": null, "ate": 225, "marcos": [150],
+  "itens": { "4357": { "nome": "Rough Blasting Powder", "vende": 4, "pilha": 20, "vinculo": 0 } },
+  "profs": { "engineering": {
+    "nome": "Engineering", "curto": "Eng", "linha": 202,
+    "ranks": [ { "nome": "Journeyman Engineering", "cap": 150, "pericia": 50, "custo": 500, "nivel": 10 } ],
+    "receitas": { "3919": { "nome": "Rough Dynamite", "produto": 4358, "qtd": 2, "reagentes": [[4357, 1], [2589, 1]],
+                  "amarela": 30, "cinza": 60, "pontos": 1, "aprende": 1, "origem": "inicial", "treino": null } },
+    "trechos": [ { "de": 1, "ate": 150, "chegou": 150,
+                   "passos": [ { "magia": 3919, "de": 1, "ate": 59, "crafts": 119 } ],
+                   "fontes": { "4357": { "f": "L", "qtd": 133, "custo": 1809, "teto": 14 } },
+                   "totais": { "custo": 105916, "crafts": 279, "craftsExtra": 144 } } ] } } }
+```
+
+   `fonte` vem de `precos.fonteLeilao` (full), ou `{ tipo: 'publica', em: publico.foto }`. `origem` é `inicial`,
+   `treinador`, `leilao` ou `vendedor` (a do padrão, ou o Naowh); `receitas` traz os passos, as receitas F e as que
+   fabricam ferramenta ou objeto; `encantar: true` no encantamento sem produto; `foco` e `acampamento` como no esquema 2.
+7. `estimativas.mjs` passa `--rotas <DADOS>\rotas.json` por padrão e, com o legado em 0, roda
+   `..\compra\gerar-dados.mjs` (grava o bloco `rotas` no `Dados.lua` do CompraForever, ao lado dos dados de lucro, que
+   ficam iguais; o `BUILD` passa a vir do `comum.mjs`) e `..\compra\checar-dados.mjs` (confere o bloco), e diz "de um
+   /reload no jogo". Sai com o primeiro código diferente de 0. O Full só chega pelo `baixar-precos.mjs`: depois de um
+   Full novo, `node estimativas.mjs` sem `--sem-baixar`.
+
+O Full vale 6 horas (`comFullCompra`); depois disso a conta cai na foto pública, e agora isso fica escrito em
+`rotas.fonte`, que o painel do addon mostra.

@@ -1,16 +1,17 @@
 // Atualiza as estimativas de custo das profissoes num comando so (CONTRATO.md, secao 10.8): baixa a foto publica da
 // hora, le a exportacao do scan do Auctionator (se houver) e refaz a conta do legado.mjs.
-// Uso: node estimativas.mjs [opcoes do legado.mjs]     sem opcoes: --ate 225 --marcos 150
+// Uso: node estimativas.mjs [opcoes do legado.mjs]     sem opcoes: --ate 225 --marcos 150 --rotas dados\pregao\rotas.json
 //      node estimativas.mjs --treino-ate 200           a variante segura (treinador so ate o 200)
 //      node estimativas.mjs --sem-baixar               refaz a conta sem baixar precos (usa o precos.json atual)
+// Com o legado em 0, roda ..\compra\gerar-dados.mjs (bloco rotas do Dados.lua do CompraForever) e ..\compra\checar-dados.mjs.
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ARQ_PRECOS, lerJson } from './comum.mjs';
+import { ARQ_PRECOS, DADOS, lerJson } from './comum.mjs';
 
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
 const JANELA_AUCTIONATOR = 21600; // a exportacao do scan vale 6 horas, como no crafts.mjs e no legado.mjs
-const PADRAO = ['--ate', '225', '--marcos', '150'];
+const PADRAO = ['--ate', '225', '--marcos', '150', '--rotas', path.join(DADOS, 'rotas.json')];
 
 const rodar = (script, args) => {
   const r = spawnSync(process.execPath, [path.join(AQUI, script), ...args], { cwd: AQUI, encoding: 'utf8' });
@@ -18,6 +19,8 @@ const rodar = (script, args) => {
   if (r.stderr) process.stderr.write(r.stderr);
   return r.status ?? 1;
 };
+// Script de outra pasta, com a saida direto no terminal.
+const herdando = (caminho) => spawnSync(process.execPath, [caminho], { stdio: 'inherit' }).status ?? 1;
 
 const p2 = (v) => String(v).padStart(2, '0');
 const hora = (s) => { const d = new Date(s * 1000); return `${p2(d.getDate())}/${p2(d.getMonth() + 1)} ${p2(d.getHours())}:${p2(d.getMinutes())}`; };
@@ -47,4 +50,11 @@ const extra = process.argv.slice(2).filter((a) => a !== '--sem-baixar');
 // Opcao dada na linha de comando substitui a do padrao (a opcao e o valor dela).
 const args = [...PADRAO.filter((a, i, l) => !extra.includes(i % 2 === 0 ? a : l[i - 1])), ...extra];
 console.log(`2) conta: node legado.mjs ${args.join(' ')}`);
-process.exit(rodar('legado.mjs', args));
+const cLegado = rodar('legado.mjs', args);
+if (cLegado !== 0) process.exit(cLegado);
+const cGerar = herdando(path.resolve(AQUI, '..', 'compra', 'gerar-dados.mjs'));
+if (cGerar !== 0) process.exit(cGerar);
+const cChecar = herdando(path.resolve(AQUI, '..', 'compra', 'checar-dados.mjs'));
+if (cChecar !== 0) process.exit(cChecar);
+console.log('3) Dados.lua do CompraForever gerado: de um /reload no jogo');
+process.exit(0);

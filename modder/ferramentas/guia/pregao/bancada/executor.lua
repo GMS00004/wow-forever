@@ -113,6 +113,8 @@ local function ciclo(recarga)
   B.disparar("PLAYER_ENTERING_WORLD", not recarga, recarga)
 end
 
+local iniAtual   -- inicio do cenario em curso (para B.aposCarregar depois de cada reload)
+
 local function recarregar()
   B.reloadPendente = false
   B.disparar("PLAYER_LOGOUT")
@@ -131,8 +133,10 @@ local function recarregar()
   if not fn then error("SV serializado nao recarrega: " .. tostring(err), 0) end
   fn()
   if not carregarAddon() then error("addon nao recarregou: " .. B.cargaFalhou[#B.cargaFalhou], 0) end
+  if B.aposCarregar then B.aposCarregar(iniAtual) end
   ciclo(true)
 end
+B.recarregar = recarregar
 
 -- ---------------------------------------------------------------------------
 -- Passos
@@ -274,6 +278,11 @@ function B.rodar(textoCenario, nomeArquivo)
   if not ok2 then return resultado("cenario", "estado inicial invalido: " .. tostring(e2), extra) end
 
   if not carregarAddon() then return resultado("carga", B.cargaFalhou[#B.cargaFalhou], extra) end
+  iniAtual = c.inicio
+  if B.aposCarregar then
+    local okh, eh = pcall(B.aposCarregar, c.inicio)
+    if not okh then return resultado("cenario", "inicio.dados invalido: " .. tostring(eh), extra) end
+  end
   local passosOk, passosErro = pcall(function()
     ciclo(false)
     for i, p in ipairs(c.passos or {}) do rodarPasso(p, i) end

@@ -77,6 +77,21 @@ end
 -- Ids da busca dirigida ------------------------------------------------------------------------------
 
 local function idsDirigido()
+  local modo = ns.modo and ns.modo() or nil
+  if modo and modo.tipo == "rota" then
+    local pl = ns.plano
+    if not (type(pl) == "table" and pl.modo == 2 and type(pl.rota) == "table" and pl.rota.prof == modo.prof) then
+      ns.replanejar()
+      pl = ns.plano
+    end
+    local ids = {}
+    local lista = type(pl) == "table" and type(pl.rota) == "table" and pl.rota.scan
+    if type(lista) == "table" then
+      for i = 1, #lista do ids[i] = lista[i] end
+    end
+    table.sort(ids)
+    return ids
+  end
   local dados = rawget(_G, "CompraForeverDados") or {}
   local receitas, itens, fabrica = dados.receitas or {}, dados.itens or {}, dados.fabrica or {}
   local conhecidas = ns.conhecidas()
@@ -383,4 +398,144 @@ function ns.sonda()
   end, true)
   if not ok then dizer("not started: " .. tostring(r)) return end
   sessao = r
+end
+
+-- /compra sonda prof (secao 12.8): o que as APIs de profissao devolvem no Forever. So leitura; tudo em pcall, com a
+-- existencia conferida por rawget (a bancada da erro em global que nao existe). Grava em CompraForeverDB.sonda.
+
+local LINHAS_PROF = { { 171, "Alchemy" }, { 164, "Blacksmithing" }, { 333, "Enchanting" }, { 202, "Engineering" },
+  { 165, "Leatherworking" }, { 197, "Tailoring" } }
+local CAMPOS_INFO = { "professionID", "professionName", "skillLevel", "maxSkillLevel", "skillModifier",
+  "parentProfessionID", "parentProfessionName" }
+local EXISTE = { "C_TradeSkillUI.CraftEnchant", "C_TradeSkillUI.StopRecipeRepeat", "C_TradeSkillUI.GetRemainingRecasts",
+  "C_TradeSkillUI.IsNearProfessionSpellFocus", "C_TradeSkillUI.GetRecipeRequirements", "C_TradeSkillUI.GetCraftableCount",
+  "C_TradeSkillUI.GetProfessionInfoBySkillLineID", "GetProfessions", "GetProfessionInfo", "GetInboxNumItems", "GetInboxItem" }
+
+-- "GetProfessions" ou "C_TradeSkillUI.CraftEnchant" -> a funcao, ou nil
+local function achar(nome)
+  local tab, fn = string.match(nome, "^([%w_]+)%.([%w_]+)$")
+  if tab then
+    local t = rawget(_G, tab)
+    local f = type(t) == "table" and rawget(t, fn) or nil
+    return type(f) == "function" and f or nil
+  end
+  local f = rawget(_G, nome)
+  return type(f) == "function" and f or nil
+end
+
+local function campos(t, nomes)
+  if type(t) ~= "table" then return tostring(t) end
+  local p = {}
+  for _, k in ipairs(nomes) do
+    if t[k] ~= nil then p[#p + 1] = k .. "=" .. tostring(t[k]) end
+  end
+  return #p > 0 and table.concat(p, " ") or "empty table"
+end
+
+function ns.sondaProf()
+  local linhas = {}
+  local function dizer(t)
+    linhas[#linhas + 1] = t
+    print("CompraForever probe: " .. t)
+  end
+  -- chama sem repetir erro na tela (para lacos); devolve a lista { ok, r1, r2, ... } ou nil
+  local function quieto(nome, ...)
+    local f = achar(nome)
+    if not f then return nil end
+    local r = { pcall(f, ...) }
+    if not r[1] then return nil end
+    return r
+  end
+  local function chamar(nome, ...)
+    local f = achar(nome)
+    if not f then dizer(nome .. ": missing") return nil end
+    local r = { pcall(f, ...) }
+    if not r[1] then dizer(nome .. ": error " .. tostring(r[2])) return nil end
+    return r
+  end
+
+  local nv = chamar("UnitLevel", "player")
+  if nv then dizer("level " .. tostring(nv[2])) end
+
+  local P = chamar("GetProfessions")
+  if P then
+    local idx = {}
+    for i = 2, 6 do idx[#idx + 1] = tostring(P[i]) end
+    dizer("GetProfessions " .. table.concat(idx, ","))
+    for i = 2, 6 do
+      local k = P[i]
+      if type(k) == "number" then
+        local I = chamar("GetProfessionInfo", k)
+        if I then
+          dizer("GetProfessionInfo(" .. k .. ") name=" .. tostring(I[2]) .. " skill=" .. tostring(I[4]) ..
+            " max=" .. tostring(I[5]) .. " line=" .. tostring(I[8]) .. " mod=" .. tostring(I[9]))
+        end
+      end
+    end
+  end
+
+  for _, x in ipairs(LINHAS_PROF) do
+    local R = chamar("C_TradeSkillUI.GetProfessionInfoBySkillLineID", x[1])
+    if R then dizer("BySkillLine " .. x[1] .. " " .. campos(R[2], CAMPOS_INFO)) end
+  end
+
+  local N = quieto("C_SkillInfo.GetNumSkillLines")
+  dizer("C_SkillInfo.GetNumSkillLines " .. (N and tostring(N[2]) or "missing or error"))
+  if achar("C_SkillInfo.GetSkillLineInfoByID") then
+    for _, x in ipairs(LINHAS_PROF) do
+      local R = quieto("C_SkillInfo.GetSkillLineInfoByID", x[1])
+      if R then
+        local v = R[2]
+        dizer("SkillLineInfoByID " .. x[1] .. " " .. (type(v) == "table" and campos(v, { "name", "skillLineRank",
+          "skillLineMaxRank", "rank", "maxRank", "skillLineDisplayName" }) or (tostring(v) .. " " .. tostring(R[3]) .. " " .. tostring(R[4]))))
+      end
+    end
+  end
+
+  local pronta = quieto("C_TradeSkillUI.IsTradeSkillReady")
+  if pronta and pronta[2] then
+    local B1 = chamar("C_TradeSkillUI.GetBaseProfessionInfo")
+    if B1 then dizer("Base " .. campos(B1[2], CAMPOS_INFO)) end
+    local C1 = chamar("C_TradeSkillUI.GetChildProfessionInfo")
+    if C1 then dizer("Child " .. campos(C1[2], CAMPOS_INFO)) end
+    local ids = chamar("C_TradeSkillUI.GetAllRecipeIDs")
+    local lista = ids and type(ids[2]) == "table" and ids[2] or {}
+    local aprendidas, primeira = 0, nil
+    for _, id in ipairs(lista) do
+      local G = quieto("C_TradeSkillUI.GetRecipeInfo", id)
+      if G and type(G[2]) == "table" and G[2].learned then
+        aprendidas = aprendidas + 1
+        primeira = primeira or id
+      end
+    end
+    dizer("recipes " .. #lista .. " learned " .. aprendidas)
+    if primeira then
+      local G = quieto("C_TradeSkillUI.GetRecipeInfo", primeira)
+      dizer("recipe " .. primeira .. " " .. campos(G and G[2], { "name", "learned", "relativeDifficulty", "numSkillUps",
+        "craftable", "disabled" }))
+      local Q = chamar("C_TradeSkillUI.GetCraftableCount", primeira)
+      if Q then dizer("GetCraftableCount " .. tostring(Q[2])) end
+      local Rq = chamar("C_TradeSkillUI.GetRecipeRequirements", primeira)
+      if Rq then
+        local p = {}
+        for _, q in ipairs(type(Rq[2]) == "table" and Rq[2] or {}) do
+          p[#p + 1] = tostring(type(q) == "table" and q.name) .. ":" .. tostring(type(q) == "table" and q.met)
+        end
+        dizer("GetRecipeRequirements " .. (#p > 0 and table.concat(p, ", ") or "none"))
+      end
+    end
+  else
+    dizer("profession window closed: open it and run /compra sonda prof again")
+  end
+
+  local tem = {}
+  for _, nome in ipairs(EXISTE) do
+    tem[#tem + 1] = string.gsub(nome, "^C_TradeSkillUI%.", "TS.") .. "=" .. (achar(nome) and "yes" or "no")
+  end
+  dizer(table.concat(tem, " "))
+
+  if type(CompraForeverDB) == "table" then
+    CompraForeverDB.sonda = { em = time(), linhas = linhas }
+    print("CompraForever probe: saved (/reload writes it to disk)")
+  end
 end

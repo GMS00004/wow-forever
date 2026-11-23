@@ -32,16 +32,18 @@ end
 local fsDinheiro = texto(8, "GameFontNormal")
 local fsScan = texto(24)
 
-local function botao(nome, rotulo, x, larg, altura)
+local function botao(nome, rotulo, x, larg, altura, y)
   local b = CreateFrame("Button", nome, f, "UIPanelButtonTemplate")
   b:SetSize(larg, altura)
-  b:SetPoint("TOPLEFT", f, "TOPLEFT", x, -40)
+  b:SetPoint("TOPLEFT", f, "TOPLEFT", x, -(y or 40))
   b:SetText(rotulo)
   return b
 end
 
-local btScan = botao("CompraForeverScan", "Scan", 8, 136, 22)
-local btFull = botao("CompraForeverFull", "Full scan", 148, 144, 22)
+local btScan = botao("CompraForeverScan", "Scan", 8, 90, 22)
+local btFull = botao("CompraForeverFull", "Full scan", 102, 96, 22)
+local btModo = botao("CompraForeverModo", "Profit", 202, 90, 22)
+btModo:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 
 local barraFundo = f:CreateTexture(nil, "BACKGROUND")
 barraFundo:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -68)
@@ -91,9 +93,156 @@ local function categoria(lucro)
 end
 ns.categoria = categoria
 
+local function emRota()
+  return ns.plano ~= nil and ns.plano.modo == 2
+end
+
+local MOTIVOS_ROTA = { dinheiro = "money", espaco = "bags", preco = "price", semPreco = "no price", bloqueio = "blocked",
+                       fim = "target", limite = "level cap" }
+local RED = "|cffff4040"
+
+local function itensNoCorreio()
+  local n = 0
+  for _, q in pairs((ns.sessao or {}).correio or {}) do n = n + q end
+  return n
+end
+
+-- Texto do NEXT da rota (sem cor); nil quando o plano nao diz nada
+local function textoProximo(plano)
+  local r = plano and plano.rota
+  if not r then return nil end
+  local p = plano.proximo or r.proximo
+  local nome = r.nome or "?"
+  if p == "ah" then return "NEXT: AH" end
+  if p == "mail" then return "NEXT: mailbox (" .. itensNoCorreio() .. " items)" end
+  if p == "vendor" then return "NEXT: vendor" end
+  if p == "trainer" then return "NEXT: trainer" end
+  if p == "craft" then return "NEXT: " .. nome .. " window" end
+  if p == "open" then return "NEXT: open " .. nome .. " once" end
+  if p == "done" then return "DONE: " .. nome .. " " .. tostring(r.alvo) end
+  return nil
+end
+
+-- Dicas da rota, por urgencia: sem preco (Scan), item acima do teto, item bloqueado, rank, foco/objeto/padrao, Full
+-- novo; depois o treino que o trecho de compra pede. No painel normal cabem 4 (o resto do treino vira "+N more"); no
+-- treinador e no correio (todas = true) vai tudo, com o treino inteiro.
+local function dicasRota(r, L, todas)
+  local u = {}
+  local semPreco = ns.plano ~= nil and ns.plano.motivo == "semPreco"
+  for _, c in ipairs(r.curtos or {}) do
+    if c.tipo == "semPreco" then semPreco = true end
+  end
+  if semPreco then u[#u + 1] = "Scan at the AH" end
+  for _, c in ipairs(r.curtos or {}) do
+    if c.tipo == "preco" then
+      u[#u + 1] = RED .. "SHORT " .. tostring(c.falta) .. " " .. tostring(c.nome) .. " > " .. ns.moeda(c.cap or 0) .. ": new estimate|r"
+    elseif c.tipo == "bloqueio" then
+      u[#u + 1] = RED .. "BLOCKED " .. tostring(c.nome) .. ": learn its recipe first|r"
+    end
+  end
+  if r.rank then
+    u[#u + 1] = "TRAIN " .. tostring(r.rank.nome) .. " " .. ns.moeda(r.rank.custo or 0)
+      .. (r.rank.bloqueado and (" (lvl " .. tostring(r.rank.nivel) .. ")") or "")
+  end
+  for _, d in ipairs(r.dicas or {}) do
+    if string.find(d, "^PLACE") or string.find(d, "^LEARN") or string.find(d, "needed") then u[#u + 1] = d
+    else u[#u + 1] = d .. " needed" end
+  end
+  if r.velho then u[#u + 1] = "Newer Full: say atualiza" end
+  local trein, ate = {}, r.chega or r.pericia or 0
+  for _, x in ipairs(r.treinar or {}) do
+    if todas or (x.aprende or 0) <= ate then
+      trein[#trein + 1] = "TRAIN " .. tostring(x.nome) .. " " .. ns.moeda(x.custo or 0)
+    end
+  end
+  if todas then
+    for _, s in ipairs(u) do L[#L + 1] = s end
+    for _, s in ipairs(trein) do L[#L + 1] = s end
+    return
+  end
+  local cabe = 4
+  for _, s in ipairs(u) do
+    if cabe > 0 then L[#L + 1] = s; cabe = cabe - 1 end
+  end
+  local resto = #trein
+  for _, s in ipairs(trein) do
+    if cabe > 1 or (cabe == 1 and resto == 1) then
+      L[#L + 1] = s
+      cabe, resto = cabe - 1, resto - 1
+    end
+  end
+  if resto > 0 and cabe > 0 then L[#L + 1] = "TRAIN +" .. resto .. " more (see them at the trainer)" end
+end
+
+local function montarLinhasRota(soDicas)
+  local L = {}
+  local plano = ns.plano
+  local r = plano and plano.rota
+  if not r then return L end
+  if soDicas then
+    dicasRota(r, L, true)
+    return L
+  end
+  local prox = textoProximo(plano)
+  if prox then L[#L + 1] = prox end
+  if r.estado ~= "feito" then
+    local t = tostring(r.nome) .. " " .. tostring(r.pericia or "?") .. "/" .. tostring(r.max or "?") .. " -> " .. tostring(r.alvo)
+    if r.limite and r.alvo and r.limite < r.alvo then
+      t = t .. " (" .. r.limite .. " until lvl " .. tostring(r.rank and r.rank.nivel or "?") .. ")"
+    end
+    L[#L + 1] = t
+  end
+  if r.atual then
+    L[#L + 1] = "Now " .. tostring(r.atual.nome) .. " " .. tostring(r.atual.de) .. "-" .. tostring(r.atual.ate) .. ": "
+      .. tostring(r.atual.faltam) .. " left"
+  end
+  local nl, nv = #(plano.leilao or {}), #(plano.vendedor or {})
+  if r.chega and nl + nv > 0 then
+    L[#L + 1] = "BUY to " .. r.chega .. " (" .. (MOTIVOS_ROTA[plano.motivo] or tostring(plano.motivo or "?")) .. ")"
+  end
+  dicasRota(r, L)
+  local mostra = 0
+  for _, x in ipairs(plano.leilao or {}) do
+    if mostra < 12 then
+      mostra = mostra + 1
+      L[#L + 1] = x.qtd .. " " .. x.nome .. " <= " .. ns.moeda(x.teto or x.precoMax or 0) .. "  " .. ns.moeda(x.custo or 0)
+    end
+  end
+  for _, x in ipairs(plano.vendedor or {}) do
+    if mostra < 12 then
+      mostra = mostra + 1
+      L[#L + 1] = x.qtd .. " " .. x.nome .. " (vendor)  " .. ns.moeda(x.custo or 0)
+    end
+  end
+  if nl + nv > mostra then L[#L + 1] = "+" .. (nl + nv - mostra) .. " more" end
+  for i, c in ipairs(plano.crafts or {}) do
+    if i > 3 then break end
+    L[#L + 1] = "[CRAFT] " .. c.n .. "x " .. tostring(c.nome) .. " " .. tostring(c.de) .. "-" .. tostring(c.ate)
+  end
+  local nv2, valor = 0, 0
+  local d = rawget(_G, "CompraForeverDados")
+  local itens = d and d.rotas and d.rotas.itens or {}
+  for id, q in pairs(r.vender or {}) do
+    nv2 = nv2 + q
+    valor = valor + q * ((itens[id] and itens[id].vende) or 0)
+  end
+  if nv2 > 0 then L[#L + 1] = "Sell " .. nv2 .. " leftovers (+" .. ns.moeda(valor) .. ")" end
+  L[#L + 1] = "Spend " .. ns.moeda((plano.totais and plano.totais.gasto) or 0) .. " | left ~" .. ns.moeda(r.restante or 0)
+  local noCorreio = itensNoCorreio()
+  if noCorreio > 0 then L[#L + 1] = "Mailbox: " .. noCorreio .. " bought items to collect" end
+  return L
+end
+
+local alvo   -- definido mais abaixo
+
 local function montarLinhas()
   local L = {}
   local plano, S = ns.plano, ns.sessao or {}
+  if emRota() then
+    local a = alvo and alvo()
+    local mf, tf = rawget(_G, "MailFrame"), rawget(_G, "ClassTrainerFrame")
+    if a ~= nil and (a == mf or a == tf) then return montarLinhasRota(true) end
+  end
   local crafts, fabricar, leilao, vendedor = {}, {}, {}, {}
   if plano then
     crafts, fabricar, leilao, vendedor = plano.crafts, plano.fabricar, plano.leilao, plano.vendedor
@@ -136,6 +285,11 @@ local function montarLinhas()
       L[#L + 1] = "  " .. x.qtd .. " " .. x.nome .. " @ " .. ns.moeda(x.preco) .. (x.auto and " (auto)" or "") .. " [SELL]"
     end
     for _, id in ipairs(postados) do L[#L + 1] = "[x] posted " .. S.postado[id] .. " " .. nomeItem(id) end
+  end
+
+  if emRota() then
+    for _, x in ipairs(montarLinhasRota(false)) do L[#L + 1] = x end
+    return L
   end
 
   if not ns.scan then
@@ -230,12 +384,40 @@ local function mmss(seg)
   return string.format("%d:%02d", floor(seg / 60), seg % 60)
 end
 
-local function alvo()
+alvo = function()
   local c = ns.contexto()
   if c.ah and AuctionHouseFrame then return AuctionHouseFrame end
   if c.vend and MerchantFrame then return MerchantFrame end
   if c.prof and _G.ProfessionsFrame then return _G.ProfessionsFrame end
+  if emRota() then
+    if c.mail and rawget(_G, "MailFrame") then return _G.MailFrame end
+    if c.trainer and rawget(_G, "ClassTrainerFrame") then return _G.ClassTrainerFrame end
+  end
   return nil
+end
+
+local function rotuloModo()
+  if ns.rotuloModo and ns.modo then return ns.rotuloModo(ns.modo()) end
+  return "Profit"
+end
+
+local function mesmoModo(a, b)
+  return a ~= nil and b ~= nil and a.tipo == b.tipo and a.prof == b.prof and a.alvo == b.alvo
+end
+
+local function trocarModo(passo)
+  if not (ns.modosDisponiveis and ns.definirModo and ns.modo) then return end
+  if ns.compraOcupada and ns.compraOcupada() then return end
+  local lista = ns.modosDisponiveis()
+  local n = #lista
+  if n == 0 then return end
+  local atual = ns.modo()
+  local i = 0
+  for k, m in ipairs(lista) do
+    if mesmoModo(m, atual) then i = k; break end
+  end
+  local novo = i == 0 and 1 or (((i - 1 + passo) % n) + 1)
+  ns.definirModo(lista[novo])
 end
 
 function ns.atualizarPainel()
@@ -251,6 +433,13 @@ function ns.atualizarPainel()
   else
     fsScan:SetText("No scan yet")
   end
+  if emRota() and not e.ocupado and ns.plano.rota and ns.plano.rota.fonte then
+    local r = ns.plano.rota
+    fsScan:SetText(fsScan:GetText() .. " | route " .. date("%d/%m %H:%M", r.fonte.em or 0) .. " "
+      .. (r.fonte.tipo == "full" and "full" or "public") .. (r.velho and " old" or ""))
+  end
+  btModo:SetText(rotuloModo())
+  btModo:SetEnabled(not (ns.compraOcupada and ns.compraOcupada()))
   local frac = (e.total or 0) > 0 and min(1, (e.feito or 0) / e.total) or 0
   barra:SetWidth(max(1, floor((LARG - 16) * frac)))
 
@@ -283,7 +472,8 @@ function ns.atualizarPainel()
   f:SetHeight(yMsg + 16 + 8 + 28 + 8)
 
   local a = ns.proximaAcao and ns.proximaAcao() or nil
-  btAcao:SetText(a and a.texto or "Nothing to do")
+  local prox = (a == nil and emRota()) and textoProximo(ns.plano) or nil
+  btAcao:SetText(a and a.texto or prox or "Nothing to do")
   btAcao:SetEnabled(a ~= nil and a.executar ~= nil)
 end
 
@@ -345,6 +535,11 @@ btFull:SetScript("OnClick", function()
   ns.atualizarPainel()
 end)
 
+btModo:SetScript("OnClick", function(_, botaoMouse)
+  trocarModo(botaoMouse == "RightButton" and -1 or 1)
+  ns.atualizarPainel()
+end)
+
 btAcao:SetScript("OnClick", function()
   local a = ns.proximaAcao()
   if a and a.executar then a.executar() end
@@ -353,7 +548,8 @@ end)
 
 -- Eventos e relogio ------------------------------------------------------------------------------------------
 
-for _, ev in ipairs({ "AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "MERCHANT_SHOW", "MERCHANT_CLOSED", "TRADE_SKILL_CLOSE" }) do
+for _, ev in ipairs({ "AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "MERCHANT_SHOW", "MERCHANT_CLOSED", "TRADE_SKILL_CLOSE",
+                         "MAIL_SHOW", "MAIL_CLOSED", "TRAINER_SHOW", "TRAINER_CLOSED" }) do
   ns.ao(ev, reavaliar)
 end
 ns.ao("TRADE_SKILL_SHOW", function()

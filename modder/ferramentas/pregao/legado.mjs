@@ -2,7 +2,7 @@
 // quanto volta vendendo o que sobrar no vendedor ou no leilao. Contrato em CONTRATO.md, secao 10.
 // Uso: node legado.mjs [--ate 150] [--marcos "150"] [--de "Enchanting=37,Alchemy=12"] [--feito "Leatherworking=150"]
 //                      [--profissoes "alchemy,tailoring"] [--desconto-vendedor 0] [--tempo-craft 10]
-//                      [--relatorio <arquivo.md>] [--sem-faixas]
+//                      [--relatorio <arquivo.md>] [--sem-faixas] [--sem-credito] [--rotas <arquivo.json>]
 import { pathToFileURL } from 'node:url';
 import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -18,7 +18,7 @@ const APPRENTICE_CAP = 75;        // teto do Apprentice; o Journeyman vai a 150
 const FAIXAS = [50, 75, 100, 125, 150, 175, 200, 250, 275];
 // Custo de um craft na escolha da rota e do fabricar (secao 10.3), em cobre. So pesa na escolha; os totais sao so ouro.
 export const TEMPO_CRAFT = 10;
-const USO = 'uso: node legado.mjs [--ate 150] [--marcos "150"] [--treino-ate 200] [--de "Enchanting=37"] [--feito "Leatherworking=150"] [--profissoes "alchemy,tailoring"] [--desconto-vendedor 0] [--tempo-craft 10] [--relatorio <arq.md>] [--sem-faixas]';
+const USO = 'uso: node legado.mjs [--ate 150] [--marcos "150"] [--treino-ate 200] [--de "Enchanting=37"] [--feito "Leatherworking=150"] [--profissoes "alchemy,tailoring"] [--desconto-vendedor 0] [--tempo-craft 10] [--relatorio <arq.md>] [--sem-faixas] [--sem-credito] [--rotas <arq.json>]';
 
 const chave = (id) => String(id);
 const reagentesDe = (r) => r.reagentes.filter((g) => Number(g.id) !== 0 && g.qtd > 0);
@@ -27,21 +27,25 @@ const reagentesDe = (r) => r.reagentes.filter((g) => Number(g.id) !== 0 && g.qtd
 
 // Custo de comprar q unidades no leilao pela foto publica (secao 10.4): os lotes mais baratos da foto e, depois deles,
 // o preco sobe em linha reta ate o p25 (25% das unidades) e a mediana (50%); acima disso fica na mediana.
-// Devolve { custo, aviso }: aviso 'metade' quando q passa da metade do que esta a venda, 'falta' quando passa do total.
-export function custoLivro(pub, q) {
-  if (!(q > 0)) return { custo: 0, aviso: null };
+// Devolve { custo, aviso, ultimo }: aviso 'metade' quando q passa da metade do que esta a venda, 'falta' quando passa do
+// total; ultimo e o preco da ultima unidade comprada (o do ultimo lote usado, ou o ponto da curva em acc + resta; null
+// sem compra). custoLivro devolve so { custo, aviso } (secao 10.10).
+export function livro(pub, q) {
+  if (!(q > 0)) return { custo: 0, aviso: null, ultimo: null };
   const U = Math.max(0, pub.unid || 0);
   const lotes = (pub.baratos || []).map(([p, n]) => [p, n]).sort((a, b) => a[0] - b[0]);
   let custo = 0;
   let resta = q;
   let acc = 0;
   let ultimo = pub.min;
+  let ultimoPreco = null; // preco da ultima unidade comprada
   for (const [p, n] of lotes) {
     const t = Math.min(n, resta);
     custo += t * p;
     resta -= t;
     acc += n;
     ultimo = p;
+    ultimoPreco = p;
     if (resta <= 0) break;
   }
   if (resta > 0) {
@@ -67,9 +71,15 @@ export function custoLivro(pub, q) {
       custo += ((precoEm(x) + precoEm(b)) / 2) * (b - x);
       x = b;
     }
+    ultimoPreco = precoEm(fim);
   }
   const aviso = U > 0 && q > U ? 'falta' : U > 0 && q > 0.5 * U ? 'metade' : U === 0 ? 'falta' : null;
-  return { custo: Math.round(custo), aviso };
+  return { custo: Math.round(custo), aviso, ultimo: ultimoPreco };
+}
+
+export function custoLivro(pub, q) {
+  const { custo, aviso } = livro(pub, q);
+  return { custo, aviso };
 }
 
 // ---------- precos e fontes ----------
@@ -178,6 +188,9 @@ export function custosComTempo(receitas, precos, { agora, tempo, ajuste = null }
 
 // ---------- balanco de uma rota ----------
 
+// Pericia em que a receita se aprende (secao 10.10): 1 se vem com a profissao, senao a do Naowh (ou a do item de receita).
+export const aprendeDeR = (r) => (r.inicial ? 1 : (r.naowh?.aprende ?? r.itemReceita?.periciaExigida ?? 1));
+
 // Balanco de estoque, compras, ferramentas, padroes, treino e sobras de uma rota ja escolhida. Funcao pura.
 // custos e o resultado do custosComTempo (as mesmas fontes que a rota usou para escolher).
 export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
@@ -196,19 +209,27 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
     if (t) estoque.set(k, estoque.get(k) - t);
     return q - t;
   };
-  // Obtem q unidades: primeiro do estoque, depois pela fonte mais barata. Fabricar abre nos reagentes da receita.
-  function obter(id, q, prof = 0, caminho = new Set()) {
+  // Obtem q unidades: primeiro do estoque, depois pela fonte mais barata. Fabricar abre nos reagentes da receita, mas so
+  // se a receita ja se aprende na pericia de do passo que pede (secao 10.10); senao o item e comprado.
+  const fabPorItem = new Map(); // id -> { magia, qtd (unidades fabricadas) }
+  const treinoFab = new Map(); // magia -> receita de treinador fabricada
+  function obter(id, q, de, prof = 0, caminho = new Set()) {
     const k = chave(id);
     const resta = tirar(id, q);
     if (resta <= 0) return;
     const f = fonte(id);
-    if (f.letra === 'F' && prof < PROF_MAX && !caminho.has(k)) {
+    if (f.letra === 'F' && prof < PROF_MAX && !caminho.has(k) && aprendeDeR(f.receita) <= de) {
       const r = f.receita;
       const n = Math.ceil(resta / r.produto.qtd);
       const c2 = new Set(caminho);
       c2.add(k);
-      for (const g of reagentesDe(r)) obter(g.id, g.qtd * n, prof + 1, c2);
+      exigencias(r, de, 'fabricar ' + r.nome, false);
+      for (const g of reagentesDe(r)) obter(g.id, g.qtd * n, de, prof + 1, c2);
       add(fabricados, r.magia, n);
+      const fb = fabPorItem.get(k) || { magia: r.magia, qtd: 0 };
+      fb.qtd += n * r.produto.qtd;
+      fabPorItem.set(k, fb);
+      if (!r.inicial && r.naowh?.origem === 'trainer') treinoFab.set(r.magia, r);
       const sobra = n * r.produto.qtd - resta;
       if (sobra > 0) add(estoque, k, sobra);
       return;
@@ -221,8 +242,8 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
   const jaTem = new Set();
   const totalDe = (f) => f.m + tempo * f.cpu;
   let objetoMontado = null;
-  for (const p of rota.passos) {
-    const { r } = porMagia.get(p.magia);
+  // Objeto de acampamento e ferramentas de uma receita (de um passo ou de um intermediario fabricado), na pericia de.
+  function exigencias(r, de, nomePasso, ehPasso) {
     // Objeto de acampamento (secao 10.7): o item se gasta ao montar; passos seguidos que pedem o mesmo objeto usam o
     // mesmo, e cada volta a ele depois de outro passo monta um novo.
     if (r.foco?.acampamento) {
@@ -233,12 +254,12 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
           if (f.m !== null && (melhor === null || totalDe(f) < totalDe(melhor.f))) melhor = { id, f };
         }
         if (melhor) {
-          obter(melhor.id, 1);
-          objetos.push({ nome: r.foco.nome, id: melhor.id, origem: { L: 'leilao', V: 'vendedor', F: 'fabricar' }[melhor.f.letra], preco: Math.round(melhor.f.m), passo: p.nome });
-        } else objetos.push({ nome: r.foco.nome, id: null, origem: 'sem preco', preco: null, passo: p.nome });
+          obter(melhor.id, 1, de);
+          objetos.push({ nome: r.foco.nome, id: melhor.id, origem: { L: 'leilao', V: 'vendedor', F: 'fabricar' }[melhor.f.letra], preco: Math.round(melhor.f.m), passo: nomePasso });
+        } else objetos.push({ nome: r.foco.nome, id: null, origem: 'sem preco', preco: null, passo: nomePasso });
         objetoMontado = r.foco.nome;
       }
-    } else objetoMontado = null;
+    } else if (ehPasso) objetoMontado = null;
     for (const fer of r.ferramentas || []) {
       const ch = fer.categoria ? `c${fer.categoria}` : `i${fer.itens.join('-')}`;
       if (jaTem.has(ch)) continue;
@@ -246,7 +267,7 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
       const doEstoque = fer.itens.find((id) => (estoque.get(chave(id)) || 0) > 0);
       if (doEstoque) {
         estoque.set(chave(doEstoque), estoque.get(chave(doEstoque)) - 1);
-        ferramentas.push({ nome: fer.nome, id: doEstoque, item: itens[chave(doEstoque)]?.nome ?? chave(doEstoque), origem: 'estoque', preco: 0, passo: p.nome });
+        ferramentas.push({ nome: fer.nome, id: doEstoque, item: itens[chave(doEstoque)]?.nome ?? chave(doEstoque), origem: 'estoque', preco: 0, passo: nomePasso });
         continue;
       }
       let melhor = null;
@@ -255,14 +276,19 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
         if (f.m !== null && (melhor === null || totalDe(f) < totalDe(melhor.f))) melhor = { id, f };
       }
       if (!melhor) {
-        ferramentas.push({ nome: fer.nome, id: null, item: null, origem: 'sem preco', preco: null, passo: p.nome });
+        ferramentas.push({ nome: fer.nome, id: null, item: null, origem: 'sem preco', preco: null, passo: nomePasso });
         continue;
       }
-      obter(melhor.id, 1);
+      obter(melhor.id, 1, de);
       const origem = { L: 'leilao', V: 'vendedor', F: 'fabricar' }[melhor.f.letra];
-      ferramentas.push({ nome: fer.nome, id: melhor.id, item: itens[chave(melhor.id)]?.nome ?? chave(melhor.id), origem, preco: Math.round(melhor.f.m), passo: p.nome });
+      ferramentas.push({ nome: fer.nome, id: melhor.id, item: itens[chave(melhor.id)]?.nome ?? chave(melhor.id), origem, preco: Math.round(melhor.f.m), passo: nomePasso });
     }
-    for (const g of reagentesDe(r)) obter(g.id, g.qtd * p.crafts);
+  }
+  for (const p of rota.passos) {
+    const { r } = porMagia.get(p.magia);
+    const de = p.de ?? rota.de;
+    exigencias(r, de, p.nome, true);
+    for (const g of reagentesDe(r)) obter(g.id, g.qtd * p.crafts, de);
     if (r.produto) add(estoque, chave(r.produto.id), r.produto.qtd * p.crafts);
   }
 
@@ -276,6 +302,7 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
     if (f.letra === 'V') {
       linha.onde = 'vendedor';
       linha.custo = linha.custoMin = q * pv(k);
+      linha.preco = pv(k);
     } else if (f.letra === 'L' || f.letra === 'F') {
       // F aqui so quando o limite de niveis cortou o fabricar: compra no leilao se houver preco.
       const L = pl(k);
@@ -286,12 +313,14 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
         linha.onde = 'leilao';
         linha.custoMin = q * L;
         if (pub) {
-          const lv = custoLivro(pub, q);
+          const lv = livro(pub, q);
           linha.custo = Math.max(lv.custo, linha.custoMin);
           linha.aviso = lv.aviso;
+          linha.teto = Math.ceil(Math.max(lv.ultimo ?? L, L));
         } else {
           linha.custo = linha.custoMin;
           linha.aviso = 'sem profundidade';
+          linha.teto = Math.ceil(L);
         }
       }
     } else {
@@ -334,9 +363,16 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
     vistas.add(p.magia);
     if (pd && pd.situacao === 'treinador') {
       const l = porMagia.get(p.magia).l;
-      if (l && typeof l.treino === 'number') treinoReceitas.push({ nome: p.nome, custo: l.treino, aprende: l.aprende });
+      if (l && typeof l.treino === 'number') treinoReceitas.push({ nome: p.nome, custo: l.treino, aprende: l.aprende, magia: p.magia });
       else semCustoTreino++;
     }
+  }
+  // Receita de treinador fabricada para servir de reagente e que nao e passo da rota: o treino entra uma vez (secao 10.10).
+  const magiasPasso = new Set(rota.passos.map((p) => p.magia));
+  for (const [magia, r] of treinoFab) {
+    if (magiasPasso.has(magia)) continue;
+    if (typeof r.naowh?.custo === 'number') treinoReceitas.push({ nome: r.nome, custo: r.naowh.custo, aprende: aprendeDeR(r), magia, fabricado: true });
+    else semCustoTreino++;
   }
   const ranks = (receitas.naowh?.ranks || []).slice().sort((a, b) => (a.cap ?? 0) - (b.cap ?? 0));
   const treinoNiveis = [];
@@ -345,6 +381,28 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
     if (k.cap === null) continue;
     if (rota.de <= capAnterior && rota.ate > capAnterior) treinoNiveis.push({ nome: k.nome ?? `ate ${k.cap}`, custo: k.custo, pericia: k.pericia, nivel: k.nivel });
     capAnterior = k.cap;
+  }
+
+  // Fonte de cada item no trecho (secao 10.10): L, V ou F; padroes comprados tambem entram.
+  const fontes = {};
+  for (const c of listaCompras) {
+    if (c.onde === 'leilao') fontes[c.id] = { f: 'L', qtd: c.qtd, custo: c.custo, teto: c.teto };
+    else if (c.onde === 'vendedor') fontes[c.id] = { f: 'V', qtd: c.qtd, preco: c.preco };
+  }
+  for (const pd of padroes.values()) {
+    if (fontes[pd.id]) continue;
+    if (pd.onde === 'leilao') fontes[pd.id] = { f: 'L', qtd: 1, custo: pd.preco, teto: Math.ceil(pd.preco) };
+    else fontes[pd.id] = { f: 'V', qtd: 1, preco: pd.preco };
+  }
+  for (const [k, fb] of fabPorItem) {
+    const e = { f: 'F', magia: fb.magia, qtd: fb.qtd };
+    const L = pl(k);
+    if (L !== null) {
+      const pub = pubItens[k] || null;
+      const lv = pub ? livro(pub, fb.qtd) : null;
+      e.teto = Math.ceil(Math.max(lv?.ultimo ?? L, L));
+    }
+    fontes[k] = e;
   }
 
   const soma = (lista, campo) => lista.reduce((t, x) => t + (x[campo] ?? 0), 0);
@@ -362,6 +420,7 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
     sobras,
     padroes: [...padroes.values()],
     treinoReceitas,
+    fontes,
     treinoNiveis,
     semCustoTreino,
     fabricados: [...fabricados].map(([magia, n]) => ({ magia, nome: porMagia.get(magia)?.r.nome ?? String(magia), crafts: n })),
@@ -375,6 +434,50 @@ export function balanco(receitas, precos, rota, linhas, { agora, custos }) {
       avisos: listaCompras.filter((c) => c.aviso).length,
     },
   };
+}
+
+// ---------- credito dos intermediarios ----------
+
+// Chance de ponto com um craft da receita na pericia s: copia fiel do chanceEm do rota.mjs (que nao o exporta).
+function chanceEm(r, s) {
+  if (r.pontos === 0) return 0;
+  if (s < r.amarela) return 1;
+  if (s >= r.cinza) return 0;
+  return Math.min(1, Math.max(0, (r.cinza - s) / (r.cinza - r.amarela)));
+}
+
+// Credito dos intermediarios (secao 10.10): fabricar reagente tambem da ponto. Devolve uma copia da rota com, em cada
+// passo, esperado e crafts refeitos pelo ganho do pacote (1 craft da receita do passo mais os intermediarios de fonte F
+// que ele pede, ate 3 niveis, sem ciclo, so os que se aprendem na pericia de do passo). Passo com ganho <= 0 fica como
+// estava. Funcao pura.
+export function creditarIntermediarios(receitas, rota, custos) {
+  const porMagia = new Map(receitas.receitas.map((r) => [r.magia, r]));
+  const ganhoDe = (r, x, de, k, nivel, caminho) => {
+    let g = k * chanceEm(r, x) * r.pontos;
+    for (const reag of reagentesDe(r)) {
+      const id = chave(reag.id);
+      if (nivel >= PROF_MAX || caminho.has(id)) continue;
+      const f = custos.fonte(reag.id);
+      if (f.letra !== 'F' || !f.receita || aprendeDeR(f.receita) > de) continue;
+      const c2 = new Set(caminho);
+      c2.add(id);
+      g += ganhoDe(f.receita, x, de, (k * reag.qtd) / f.receita.produto.qtd, nivel + 1, c2);
+    }
+    return g;
+  };
+  const passos = rota.passos.map((p) => {
+    const r = porMagia.get(p.magia);
+    if (!r) return p;
+    let esperado = 0;
+    for (let x = p.de; x < p.ate; x++) {
+      const g = ganhoDe(r, x, p.de, 1, 0, new Set());
+      if (!(g > 0)) return p;
+      esperado += 1 / g;
+    }
+    const crafts = Math.ceil(esperado - 1e-9);
+    return { ...p, esperado, crafts, materiais: p.materiais ? reagentesDe(r).map((g) => ({ id: Number(g.id), nome: receitas.itens?.[chave(g.id)]?.nome ?? chave(g.id), qtd: g.qtd * crafts })) : p.materiais };
+  });
+  return { ...rota, passos, totais: { ...rota.totais, crafts: passos.reduce((t, p) => t + p.crafts, 0) } };
 }
 
 // ---------- uma profissao ----------
@@ -395,11 +498,12 @@ const melhorQue = (a, b) => a.chegou > b.chegou || (a.chegou === b.chegou && a.v
 
 // Uma avaliacao com os precos de leilao ajustados (ajuste, ou null para o minimo): rota, balanco e a busca de
 // ferramentas (tira as receitas de uma ferramenta se a rota ainda chega e a nota melhora).
-function avaliarCom(receitas, precos, linhas, { de, ate, agora, tempo, ajuste, treinoAte = null }) {
+function avaliarCom(receitas, precos, linhas, { de, ate, agora, tempo, ajuste, treinoAte = null, credito = true }) {
   const custos = custosComTempo(receitas, precos, { agora, tempo, ajuste });
   const custoPonto = custoPontoLegado(custos);
   const rodar = (semMagias) => {
-    const rota = escolherRota(receitas, precos, { de, ate, agora, sem: [], so: null, conhecidas: new Set(), semMagias, custoPonto });
+    const escolhida = escolherRota(receitas, precos, { de, ate, agora, sem: [], so: null, conhecidas: new Set(), semMagias, custoPonto });
+    const rota = credito ? creditarIntermediarios(receitas, escolhida, custos) : escolhida;
     return { rota, bal: balanco(receitas, precos, rota, linhas, { agora, custos }), semMagias, custos };
   };
   // Receita que pede objeto de acampamento sem preco em lugar nenhum fica fora desde o comeco.
@@ -440,9 +544,9 @@ const assinatura = (rota) => rota.passos.map((p) => `${p.magia}x${p.crafts}`).jo
 // ponto do legado, e o balanco. A rota escolhe pelo preco minimo e a compra anda no livro de ofertas; entao a conta se
 // refaz com cada item pelo preco medio da quantidade que a rota anterior comprou, ate a rota repetir (no maximo 4
 // vezes), e vale a de melhor nota. tempo: custo de um craft, em cobre. Funcao pura.
-export function avaliarProfissao(receitas, precos, { de, ate, agora, tempo = TEMPO_CRAFT, treinoAte = null }) {
+export function avaliarProfissao(receitas, precos, { de, ate, agora, tempo = TEMPO_CRAFT, treinoAte = null, credito = true }) {
   const { linhas } = calcular(receitas, precos, { pericia: de, agora });
-  const base = { de, ate, agora, tempo, treinoAte };
+  const base = { de, ate, agora, tempo, treinoAte, credito };
   let atual = avaliarCom(receitas, precos, linhas, { ...base, ajuste: null });
   let melhor = atual;
   let voltas = 0;
@@ -460,7 +564,7 @@ export function avaliarProfissao(receitas, precos, { de, ate, agora, tempo = TEM
     if (vistas.has(s)) break;
     vistas.add(s);
   }
-  return { de, ate, tempo, rota: melhor.rota, bal: melhor.bal, linhas, custos: melhor.custos, semFerramentas: melhor.semFerramentas, voltas: voltas + 1 };
+  return { de, ate, tempo, credito, rota: melhor.rota, bal: melhor.bal, linhas, custos: melhor.custos, semFerramentas: melhor.semFerramentas, voltas: voltas + 1 };
 }
 
 // Precos para o legado (secao 10.5): reagente de vendedor so se o vendedor vende sem limite (a lista
@@ -544,7 +648,9 @@ function secaoMarkdown(nome, a, faixas, jaFeito, receitas) {
   L.push(`${t.crafts} crafts na rota${t.craftsExtra ? ` e ${t.craftsExtra} para fabricar reagente` : ''}. Compra total ${mo(t.custoTotal)} (materiais ${mo(t.materiais)} pelo livro de ofertas, ${mo(t.materiaisMin)} se tudo saisse ao minimo; padroes ${mo(t.padroes)}; treino ${mo(t.treino)}). Vendendo o que sobra no vendedor voltam ${mo(t.vendaVendedor)} (liquido ${sinal(t.liquidoVendedor)}); vendendo cada item onde paga mais, com o leilao como teto, voltam ${mo(t.vendaLeilao)} (liquido ${sinal(t.liquidoLeilao)}).`, '');
   if (a.semFerramentas.length) L.push(`A rota evita as receitas que pedem ${a.semFerramentas.join(' e ')}: sem elas o liquido fica melhor.`, '');
 
-  L.push('### Passos', '', '| Faixa | Receita | Crafts | Aprende | Custo por craft | Vendedor por craft | Padrao ou treino |', '|---|---|---|---|---|---|---|');
+  L.push('### Passos', '');
+  if (a.credito) L.push('Crafts com o credito dos intermediarios (secao 10.10).', '');
+  L.push('| Faixa | Receita | Crafts | Aprende | Custo por craft | Vendedor por craft | Padrao ou treino |', '|---|---|---|---|---|---|---|');
   for (const p of rota.passos) {
     const c = a.custos.porReceita.get(p.magia);
     const custo = c ? Math.round(c.m) : p.custo;
@@ -614,7 +720,7 @@ function avisosFixos(precos) {
 // ---------- linha de comando ----------
 
 function lerOpcoes(argv) {
-  const op = { ate: 150, de: {}, profissoes: Object.keys(PROFISSOES), desconto: 0, relatorio: null, faixas: true, tempo: TEMPO_CRAFT, treinoAte: null, marcos: [], feito: { leatherworking: 150 } };
+  const op = { ate: 150, de: {}, profissoes: Object.keys(PROFISSOES), desconto: 0, relatorio: null, faixas: true, tempo: TEMPO_CRAFT, treinoAte: null, marcos: [], feito: { leatherworking: 150 }, credito: true, rotas: null };
   const pares = (v, nome) => {
     const out = {};
     for (const par of v.split(',')) {
@@ -664,6 +770,11 @@ function lerOpcoes(argv) {
       op.treinoAte = Number(v);
     } else if (a === '--sem-faixas') {
       op.faixas = false;
+    } else if (a === '--sem-credito') {
+      op.credito = false;
+    } else if (a === '--rotas') {
+      op.rotas = argv[++i];
+      if (!op.rotas) return { erro: '--rotas pede um caminho' };
     } else return { erro: `argumento desconhecido: ${a}` };
   }
   return op;
@@ -679,6 +790,106 @@ const somaTotais = (lista) => {
   }
   return t;
 };
+
+// Trechos entre os marcos (secao 10.6): de 1 ao primeiro marco, de um marco ao seguinte e do ultimo ao ate. Cada um com
+// a avaliacao e, com faixas, o custo a partir de outras pericias. Devolve [{ a, faixas }]. Funcao pura.
+export function avaliarTrechos(receitas, precos, { de, ate, marcos = [], agora, tempo = TEMPO_CRAFT, treinoAte = null, faixas = true, credito = true }) {
+  const pontos = [de, ...marcos.filter((m) => m > de && m < ate), ate];
+  const base = { agora, tempo, treinoAte, credito };
+  const segs = [];
+  for (let i = 0; i + 1 < pontos.length; i++) {
+    const a = avaliarProfissao(receitas, precos, { ...base, de: pontos[i], ate: pontos[i + 1] });
+    const fx = faixas
+      ? FAIXAS.filter((f) => f > pontos[i] && f < pontos[i + 1]).map((f) => avaliarProfissao(receitas, precos, { ...base, de: f, ate: pontos[i + 1] }))
+      : [];
+    segs.push({ a, faixas: fx });
+  }
+  return segs;
+}
+
+// ---------- exportacao da rota para o CompraForever (secao 10.10) ----------
+
+const CURTO = { alchemy: 'Alch', blacksmithing: 'BS', enchanting: 'Ench', engineering: 'Eng', leatherworking: 'LW', tailoring: 'Tail' };
+const NIVEL_POR_CAP = { 150: 10, 225: 20, 300: 35 };
+
+// A profissao no formato do addon (CONTRATO.md do CompraForever, 12.1). Devolve { prof, itens }: itens e o objeto
+// id -> { nome, vende, pilha, vinculo } de todo item que a profissao cita (o que faltar em receitas.itens vira nome do
+// padrao ou o proprio id, vende 0, pilha 1). Funcao pura.
+export function exportarRota(slug, receitas, segs) {
+  const porMagia = new Map(receitas.receitas.map((r) => [r.magia, r]));
+  const situacao = new Map(); // magia -> situacao do padrao no passo
+  const usadas = new Set();
+  const ids = new Set();
+  const trechos = segs.map((sg) => {
+    const { rota, bal } = sg.a;
+    for (const p of rota.passos) {
+      usadas.add(p.magia);
+      if (p.padrao && !situacao.has(p.magia)) situacao.set(p.magia, p.padrao.situacao);
+      if (p.padrao?.id != null) ids.add(chave(p.padrao.id));
+    }
+    for (const [id, f] of Object.entries(bal.fontes)) {
+      ids.add(id);
+      if (f.f === 'F') usadas.add(f.magia);
+    }
+    return {
+      de: sg.a.de, ate: sg.a.ate, chegou: rota.chegou,
+      passos: rota.passos.map((p) => ({ magia: p.magia, de: p.de, ate: p.ate, crafts: p.crafts })),
+      fontes: bal.fontes,
+      totais: { custo: bal.totais.custoTotal, crafts: bal.totais.crafts, craftsExtra: bal.totais.craftsExtra },
+    };
+  });
+  const nomesExtra = new Map();
+  const rec = {};
+  for (const magia of [...usadas].sort((a, b) => a - b)) {
+    const r = porMagia.get(magia);
+    const treinador = r.naowh?.origem === 'trainer';
+    const sit = situacao.get(magia);
+    let origem = 'treinador';
+    if (r.inicial) origem = 'inicial';
+    else if (treinador) origem = 'treinador';
+    else if (sit === 'vendedor' || sit === 'leilao') origem = sit;
+    else if (r.itemReceita) origem = 'leilao';
+    const e = {
+      nome: r.nome,
+      produto: r.produto ? r.produto.id : null,
+      qtd: r.produto ? r.produto.qtd : 0,
+      reagentes: reagentesDe(r).map((g) => [Number(g.id), g.qtd]),
+      amarela: r.amarela, cinza: r.cinza, pontos: r.pontos,
+      aprende: aprendeDeR(r),
+      origem,
+      treino: treinador && typeof r.naowh.custo === 'number' ? r.naowh.custo : null,
+    };
+    if (origem === 'leilao' || origem === 'vendedor') {
+      e.padrao = r.itemReceita?.id ?? null;
+      if (r.itemReceita) nomesExtra.set(chave(r.itemReceita.id), r.itemReceita.nome);
+    }
+    e.ferramentas = (r.ferramentas || []).map((x) => ({ nome: x.nome, itens: [...x.itens] }));
+    e.foco = r.foco && !r.foco.acampamento ? r.foco.nome : null;
+    e.acampamento = r.foco?.acampamento ? { nome: r.foco.nome, itens: [...r.foco.itens] } : null;
+    if (!r.produto) e.encantar = true;
+    rec[magia] = e;
+    if (e.produto != null) ids.add(chave(e.produto));
+    for (const [id] of e.reagentes) ids.add(chave(id));
+    for (const x of e.ferramentas) for (const id of x.itens) ids.add(chave(id));
+    if (e.acampamento) for (const id of e.acampamento.itens) ids.add(chave(id));
+    if (e.padrao != null) ids.add(chave(e.padrao));
+  }
+  const itens = {};
+  for (const id of [...ids].sort((a, b) => a - b)) {
+    const it = receitas.itens?.[id];
+    itens[id] = it
+      ? { nome: it.nome, vende: it.vende, pilha: it.pilha, vinculo: it.vinculo }
+      : { nome: nomesExtra.get(id) ?? id, vende: 0, pilha: 1, vinculo: 0 };
+  }
+  const ranks = (receitas.naowh?.ranks || [])
+    .filter((k) => k.cap !== null && k.cap !== undefined)
+    .slice().sort((a, b) => a.cap - b.cap)
+    .map((k) => ({ nome: k.nome ?? `ate ${k.cap}`, cap: k.cap, pericia: k.pericia, custo: k.custo, nivel: k.nivel ?? NIVEL_POR_CAP[k.cap] ?? null }));
+  return {
+    prof: { nome: receitas.profissao.nome, curto: CURTO[slug] ?? receitas.profissao.nome, linha: receitas.profissao.id, ranks, receitas: rec, trechos },
+    itens,
+  };
+}
 
 async function linhaDeComando(argv) {
   const op = lerOpcoes(argv);
@@ -707,16 +918,8 @@ async function linhaDeComando(argv) {
     const de = op.de[slug] ?? 1;
     if (de >= op.ate) continue;
     const pr = precosParaLegado(precosBase, receitas, ilimitados);
-    // Trechos entre os marcos (secao 10.6): de 1 ao primeiro marco, de um marco ao seguinte e do ultimo ao --ate.
-    const pontos = [de, ...op.marcos.filter((m) => m > de && m < op.ate), op.ate];
-    const segs = [];
-    for (let i = 0; i + 1 < pontos.length; i++) {
-      const a = avaliarProfissao(receitas, pr, { de: pontos[i], ate: pontos[i + 1], agora, tempo: op.tempo, treinoAte: op.treinoAte });
-      const faixas = op.faixas
-        ? FAIXAS.filter((f) => f > pontos[i] && f < pontos[i + 1]).map((f) => avaliarProfissao(receitas, pr, { de: f, ate: pontos[i + 1], agora, tempo: op.tempo, treinoAte: op.treinoAte }))
-        : [];
-      segs.push({ a, faixas, feito: op.feito[slug] != null && pontos[i + 1] <= op.feito[slug] });
-    }
+    const segs = avaliarTrechos(receitas, pr, { de, ate: op.ate, marcos: op.marcos, agora, tempo: op.tempo, treinoAte: op.treinoAte, faixas: op.faixas, credito: op.credito })
+      .map((sg) => ({ ...sg, feito: op.feito[slug] != null && sg.a.ate <= op.feito[slug] }));
     const total = somaTotais(segs.map((s) => s.a.bal.totais));
     resultados.push({ slug, nome: PROFISSOES[slug].nome, segs, total, receitas, build: receitas.build, naowh: receitas.naowh?.versao ?? null });
   }
@@ -745,6 +948,22 @@ async function linhaDeComando(argv) {
   if (temFeito) out.push(`* ja feito (--feito ${Object.entries(op.feito).map(([k, v]) => `${PROFISSOES[k]?.nome ?? k}=${v}`).join(',')})`);
   const paradas = resultados.flatMap((r) => r.segs.filter((s) => s.a.rota.parou).map((s) => `${r.nome} em ${s.a.rota.parou.pericia}`));
   if (paradas.length) out.push(`parou: ${paradas.join(', ')}`);
+
+  // rotas.json para o CompraForever (secao 10.10), da mesma rodada do relatorio.
+  if (op.rotas) {
+    const profs = {};
+    const itens = {};
+    for (const r of [...resultados].sort((x, y) => (x.slug < y.slug ? -1 : 1))) {
+      const ex = exportarRota(r.slug, r.receitas, r.segs);
+      profs[r.slug] = ex.prof;
+      Object.assign(itens, ex.itens);
+    }
+    const fonte = precos.fonteLeilao?.tipo === 'full' ? { tipo: 'full', em: precos.fonteLeilao.em, n: precos.fonteLeilao.n } : { tipo: 'publica', em: precos.publico?.foto ?? null };
+    const json = { esquema: 1, build: resultados[0]?.build ?? null, geradoEm: agora, fonte, tempo: op.tempo, credito: op.credito, treinoAte: op.treinoAte, ate: op.ate, marcos: op.marcos, itens, profs };
+    await mkdir(path.dirname(path.resolve(op.rotas)), { recursive: true });
+    await writeFile(op.rotas, JSON.stringify(json));
+    out.push(`rotas: ${op.rotas} profs=${Object.keys(profs).length}`);
+  }
 
   // Relatorio em Markdown.
   const quando = precos.publico?.foto ? dataHora(precos.publico.foto) : 'sem data';

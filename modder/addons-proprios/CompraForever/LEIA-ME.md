@@ -1,6 +1,9 @@
-# CompraForever 0.2.1
+# CompraForever 0.3.0
 
-Um fluxo só: na AH, clicar Scan e seguir o botão grande. O painel diz quanto comprar de cada material, com o dinheiro e
+Desde a 0.3.0 há duas modalidades: Profit (lucro, o texto abaixo) e a de rota, para subir uma profissão (seção no fim).
+O botão `CompraForeverModo`, no alto do painel, troca entre as duas.
+
+Na modalidade Profit, o fluxo é este: na AH, clicar Scan e seguir o botão grande. O painel diz quanto comprar de cada material, com o dinheiro e
 o espaço de bolsa que você tem agora, para craftar receitas de Leatherworking que você conhece e vender no vendedor
 com lucro. Desde a 0.2.0, o mesmo botão também compra quando um item vigiado cai no teto (WATCH) e posta no leilão
 (SELL). Substitui o PregaoForever, que saiu do jogo em 2026-11-17 (o código continua no git).
@@ -108,6 +111,86 @@ preços mais baratos, com a quantidade de cada um) em `CompraForeverDB.full`. O 
 ao sair do jogo. A ferramenta de estimativas (`ferramentas\pregao\estimativas.mjs`) usa esse livro por 6 horas, no
 lugar da foto pública e do scan do Auctionator. Fluxo: Full, esperar terminar, `/reload`, e pedir "atualiza" ao agente.
 Vale com `/reload` (nenhum arquivo novo no TOC).
+
+## Modalidade de rota (subir profissão)
+
+Desde a 0.3.0 há uma segunda modalidade. A de rota sobe uma profissão de ofício (Alchemy, Blacksmithing, Enchanting,
+Engineering, Leatherworking ou Tailoring) do nível atual até o 150 ou o 225, seguindo a rota da ferramenta. O botão
+grande compra, crafta e vende como no lucro, mas o plano é a rota, não o lucro, e o painel diz sempre o próximo passo.
+
+Como escolher:
+
+1. Abra a janela da profissão uma vez neste personagem. Sem isso, o addon não sabe a perícia dela.
+2. Clique no botão `CompraForeverModo`, no alto do painel, até aparecer, por exemplo, `Eng 150`. Clique esquerdo vai
+   para o próximo modo; clique direito volta. `Profit` é a modalidade de lucro.
+3. Ou digite `/compra mode eng 150`. A profissão aceita o nome, a sigla (`alch`, `bs`, `ench`, `eng`, `lw`, `tail`) ou o
+   nome em inglês. O alvo é 150 ou 225; sem alvo, vale 150.
+4. Se aparecer "not seen on this character: open it once", o modo fica escolhido mesmo assim. O painel então pede
+   `NEXT: open <Prof> once`: abra a profissão.
+
+O ciclo na AH e fora dela
+
+O painel mostra uma linha NEXT, que diz onde ir:
+
+1. `NEXT: AH`: na AH, clique Scan (ou Full, para a rota mais atual). O botão grande compra como no lucro: "Buy" cota,
+   "Confirm" compra. As linhas vêm na ordem da rota, cada uma com o teto por unidade. Commodity leva dois cliques.
+2. `NEXT: mailbox (N items)`: o que a AH entregou está no correio. Pegue à mão; o painel conta o que falta.
+3. `NEXT: vendor`: no vendedor, o botão vende primeiro a sobra craftada na rota e depois compra o que falta de
+   vendedor, como o Blacksmith Hammer e as linhas.
+4. `NEXT: trainer`: no treinador, aprenda a receita ou o próximo rank à mão. O painel mostra o custo
+   (`TRAIN <nome> <custo>`).
+5. `NEXT: <Prof> window`: abra a janela da profissão. O botão crafta em lotes de até 20, na ordem da rota: primeiro os
+   intermediários (`Make <n> <nome>`), depois o principal (`Craft <n> <nome>`).
+6. Repita a partir do passo 1 enquanto o NEXT pedir. O fim é `DONE: <Prof> 150` (ou 225).
+
+O botão só fica ligado quando o passo pode ser feito onde você está. Se não puder, mostra o NEXT e fica desligado.
+
+O que fica à mão, e por quê:
+
+- Treino: o addon nunca compra treino. Você aprende a receita ou o rank no treinador; o painel diz só o que falta e
+  quanto custa.
+- Correio: o addon não pega item do correio sozinho. Você pega; o addon não compra de novo o que já está lá.
+- Encantamento sem item (Enchant Bracer, por exemplo): o botão mostra `Enchant manually (N left)`. Você faz o encanto
+  na janela da profissão. O addon compra os materiais e conta a perícia pelo progresso.
+
+Por quê: o addon só compra, crafta ou vende a partir de um clique num botão dele. Essas três ações (treinar, pegar
+correio e encantar sem item) ficam fora dos botões.
+
+Limites de segurança:
+
+- Teto: cada compra no leilão tem um teto por unidade, o preço máximo da rota. O addon não compra acima de teto mais a
+  tolerância (padrão 10%). Na cotação, o limite também é 5% acima do custo previsto; acima disso, cancela e busca de
+  novo aquele item.
+- Venda: no vendedor, o addon só vende o que craftou na rota e ainda não vendeu. Nunca vende o que já estava na bolsa
+  nem o que a rota ainda precisa.
+- Correio: o que está no correio conta como estoque, então não é comprado de novo.
+- Quantidade: compra só a quantidade da rota (margem 0%). `/compra margin` põe folga, em %, se você quiser.
+- Dinheiro e bolsa: compra até onde o dinheiro e os espaços deixam. A linha `BUY to <nível> (<motivo>)` mostra até
+  que perícia a compra leva e por que para (dinheiro, espaço, preço).
+
+Atualizar a rota:
+
+A rota vem da ferramenta fora do jogo. Quando a linha do scan mostrar ` old` ou o painel disser
+`Newer Full: say atualiza`:
+
+1. Na AH, faça um Full scan e espere terminar.
+2. `/reload`, para gravar o livro no disco.
+3. Peça ao agente "atualiza". Ele roda `node ferramentas\pregao\estimativas.mjs` e refaz a rota.
+4. `/reload` de novo.
+
+Sem Full, a rota usa a foto pública (`public` na linha do scan). Esta versão não traz arquivo novo: `/reload` basta.
+
+Comandos da rota:
+
+| Comando | O que faz |
+|---|---|
+| `/compra mode` | mostra o modo atual e os disponíveis |
+| `/compra mode profit` | volta para a modalidade de lucro |
+| `/compra mode <prof> [150\|225]` | escolhe a rota de uma profissão, como `/compra mode eng 150` (alvo padrão 150) |
+| `/compra tolerance [0-100]` | folga sobre o teto da rota, em % (padrão 10) |
+| `/compra margin [0-50]` | quantidade a mais comprada, em % (padrão 0) |
+| `/compra steps` | imprime os passos da rota do modo atual, com feito, agora e próximo |
+| `/compra sonda prof` | diagnóstico das APIs de profissão; grava em `CompraForeverDB.sonda` (vai ao disco no `/reload`) |
 
 ## Para desfazer
 

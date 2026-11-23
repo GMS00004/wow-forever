@@ -2,7 +2,7 @@
 ## Title: CompraForever
 ## Notes: Scan the AH, buy, craft and vendor for profit
 ## Author: Bruno
-## Version: 0.2.1
+## Version: 0.3.0
 ## SavedVariables: CompraForeverDB
 ## SavedVariablesPerCharacter: CompraForeverCharDB
 ## OptionalDeps: GuiaForever

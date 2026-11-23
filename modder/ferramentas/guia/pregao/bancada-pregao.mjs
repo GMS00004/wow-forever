@@ -85,20 +85,21 @@ function globalTexto(L, nome, texto) {
   lua.lua_setglobal(L, to_luastring(nome));
 }
 
-const textosFalso = ['nucleo.lua', 'leilao.lua', 'compra.lua', 'executor.lua'].map((n) => ({ nome: n.replace(/\.lua$/, ''), texto: readFileSync(join(pastaFalso, n), 'utf8') }));
+const textosFalso = ['nucleo.lua', 'leilao.lua', 'compra.lua', 'rota.lua', 'executor.lua'].map((n) => ({ nome: n.replace(/\.lua$/, ''), texto: readFileSync(join(pastaFalso, n), 'utf8') }));
 
 const metaPadrao = { nome: 'PregaoForever', svs: ['PregaoForeverDB'], svsChar: ['PregaoForeverCharDB'] };
 
 function novoEstado(arquivos, meta = metaPadrao) {
   const L = lauxlib.luaL_newstate();
   lualib.luaL_openlibs(L);
-  for (const f of textosFalso.slice(0, 3)) {
+  for (const f of textosFalso.slice(0, -1)) {
     const r = rodarChunk(L, f.texto, f.nome);
     if (!r.ok) throw new Error(`${f.nome}: ${r.erro}`);
   }
   globalArquivos(L, arquivos, meta);
-  const r = rodarChunk(L, textosFalso[3].texto, textosFalso[3].nome);
-  if (!r.ok) throw new Error(`${textosFalso[3].nome}: ${r.erro}`);
+  const ultimo = textosFalso[textosFalso.length - 1];
+  const r = rodarChunk(L, ultimo.texto, ultimo.nome);
+  if (!r.ok) throw new Error(`${ultimo.nome}: ${r.erro}`);
   return L;
 }
 

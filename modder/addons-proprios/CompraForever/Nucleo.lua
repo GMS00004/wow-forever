@@ -5,8 +5,25 @@ local addon, ns = ...
 
 local floor, max = math.floor, math.max
 
-local PADROES = { duracao = 3, reserva = 0, desconto = 10, lucroMin = 50, margemMin = 5, grande = 10000, pequena = 3000 }
-local PROF = "Leatherworking"
+local PADROES = { duracao = 3, reserva = 0, desconto = 10, lucroMin = 50, margemMin = 5, grande = 10000, pequena = 3000,
+  tolerancia = 10, margem = 0 }
+
+-- Profissoes da modalidade de rota (CONTRATO 12.3)
+ns.PROFS = {
+  { slug = "alchemy", nome = "Alchemy", curto = "Alch", linha = 171 },
+  { slug = "blacksmithing", nome = "Blacksmithing", curto = "BS", linha = 164 },
+  { slug = "enchanting", nome = "Enchanting", curto = "Ench", linha = 333 },
+  { slug = "engineering", nome = "Engineering", curto = "Eng", linha = 202 },
+  { slug = "leatherworking", nome = "Leatherworking", curto = "LW", linha = 165 },
+  { slug = "tailoring", nome = "Tailoring", curto = "Tail", linha = 197 },
+}
+
+local function profPorSlug(slug)
+  for _, p in ipairs(ns.PROFS) do
+    if p.slug == slug then return p end
+  end
+  return nil
+end
 
 -- Eventos --------------------------------------------------------------------------------------------
 
@@ -18,7 +35,7 @@ function ns.ao(evento, fn)
   if not l then
     l = {}
     ouvintes[evento] = l
-    quadro:RegisterEvent(evento)
+    pcall(quadro.RegisterEvent, quadro, evento)
   end
   l[#l + 1] = fn
 end
@@ -74,6 +91,21 @@ local function iniciarSV()
   end
   if type(CompraForeverDB.ultimoFull) ~= "number" then CompraForeverDB.ultimoFull = 0 end
   if type(CompraForeverCharDB) ~= "table" then CompraForeverCharDB = {} end
+  local c = CompraForeverCharDB
+  local novo = c.versao == nil
+  if type(c.modo) ~= "table" or type(c.modo.tipo) ~= "string" then c.modo = { tipo = "lucro" } end
+  for _, k in ipairs({ "prof", "rota", "correio", "correioVisto", "correioEm" }) do
+    if type(c[k]) ~= "table" then c[k] = {} end
+  end
+  if novo then
+    local k = c.conhecidas
+    if type(k) == "table" and type(k.ids) == "table" and not c.prof.leatherworking then
+      local ids = {}
+      for id, v in pairs(k.ids) do ids[id] = v end
+      c.prof.leatherworking = { pericia = k.pericia, ids = ids, n = k.n, em = k.em, idsEm = k.em }
+    end
+    c.versao = 2
+  end
 end
 
 ns.ao("ADDON_LOADED", function(nome)
@@ -98,20 +130,45 @@ end
 
 -- Receitas conhecidas --------------------------------------------------------------------------------
 
-local function ehLW(info)
-  return type(info) == "table" and (info.professionName == PROF or info.parentProfessionName == PROF)
+function ns.slugDe(info)
+  if type(info) ~= "table" then return nil end
+  for _, p in ipairs(ns.PROFS) do
+    if info.professionName == p.nome or info.parentProfessionName == p.nome
+      or info.professionID == p.linha or info.parentProfessionID == p.linha then
+      return p.slug
+    end
+  end
+  return nil
 end
 
--- copia da leitura do GuiaForever (Crafts.lua): so a janela do proprio personagem e so Leatherworking
+-- slug da janela de profissao do proprio personagem, pronta; e a info usada (a do filho, senao a da base)
+function ns.slugDaJanela()
+  local T = C_TradeSkillUI
+  if type(T) ~= "table" then return nil end
+  if T.IsTradeSkillReady and not T.IsTradeSkillReady() then return nil end
+  if (T.IsTradeSkillLinked and T.IsTradeSkillLinked()) or (T.IsTradeSkillGuild and T.IsTradeSkillGuild())
+    or (T.IsNPCCrafting and T.IsNPCCrafting()) then return nil end
+  local filho = T.GetChildProfessionInfo and T.GetChildProfessionInfo()
+  local slug = ns.slugDe(filho)
+  if slug then return slug, filho end
+  local base = T.GetBaseProfessionInfo and T.GetBaseProfessionInfo()
+  slug = ns.slugDe(base)
+  if slug then return slug, base end
+  return nil
+end
+
+local function tabelaChar(k)
+  if type(CompraForeverCharDB) ~= "table" then return nil end
+  if type(CompraForeverCharDB[k]) ~= "table" then CompraForeverCharDB[k] = {} end
+  return CompraForeverCharDB[k]
+end
+
+-- copia da leitura do GuiaForever (Crafts.lua): so a janela do proprio personagem
 local function gravarConhecidas()
   local T = C_TradeSkillUI
   if type(T) ~= "table" or not T.GetAllRecipeIDs or not T.GetRecipeInfo then return end
-  if T.IsTradeSkillReady and not T.IsTradeSkillReady() then return end
-  if (T.IsTradeSkillLinked and T.IsTradeSkillLinked()) or (T.IsTradeSkillGuild and T.IsTradeSkillGuild())
-    or (T.IsNPCCrafting and T.IsNPCCrafting()) then return end
-  local base = T.GetBaseProfessionInfo and T.GetBaseProfessionInfo()
-  local filho = T.GetChildProfessionInfo and T.GetChildProfessionInfo()
-  if not (ehLW(base) or ehLW(filho)) then return end
+  local slug, info = ns.slugDaJanela()
+  if not slug then return end
   local ids, n = {}, 0
   local lista = T.GetAllRecipeIDs()
   for _, id in ipairs(type(lista) == "table" and lista or {}) do
@@ -122,12 +179,75 @@ local function gravarConhecidas()
     end
   end
   if n == 0 then return end
-  local info = (ehLW(filho) and filho) or base
-  if type(CompraForeverCharDB) ~= "table" then return end
-  CompraForeverCharDB.conhecidas = {
-    quem = UnitName("player"), em = time(), pericia = tonumber(info.skillLevel), ids = ids, n = n,
+  local prof = tabelaChar("prof")
+  if not prof then return end
+  local agora = time()
+  local ant = prof[slug]
+  prof[slug] = {
+    pericia = tonumber(info.skillLevel) or (ant and ant.pericia), max = tonumber(info.maxSkillLevel) or (ant and ant.max),
+    em = agora, ids = ids, n = n, idsEm = agora,
   }
+  if slug == "leatherworking" then
+    CompraForeverCharDB.conhecidas = {
+      quem = UnitName("player"), em = agora, pericia = tonumber(info.skillLevel), ids = ids, n = n,
+    }
+  end
   ns.replanejar()
+end
+
+-- Pericia sem a janela (reserva): so atualiza profissao ja gravada; a janela aberta sempre vence
+local function aplicarPericia(slug, pericia, maximo, soAlta)
+  local prof = type(CompraForeverCharDB) == "table" and CompraForeverCharDB.prof
+  local reg = type(prof) == "table" and prof[slug]
+  if type(reg) ~= "table" then return false end
+  local mudou = false
+  if type(pericia) == "number" and pericia ~= reg.pericia and (not soAlta or pericia > (reg.pericia or 0)) then
+    reg.pericia = pericia
+    mudou = true
+  end
+  if type(maximo) == "number" and maximo > 0 and maximo ~= reg.max then
+    reg.max = maximo
+    mudou = true
+  end
+  if mudou then reg.em = time() end
+  return mudou
+end
+
+local function lerPericiaReserva()
+  local janela = ns.slugDaJanela()
+  local mudou = false
+  local T = C_TradeSkillUI
+  if type(T) == "table" and type(T.GetProfessionInfoBySkillLineID) == "function" then
+    for _, p in ipairs(ns.PROFS) do
+      if p.slug ~= janela then
+        local ok, info = pcall(T.GetProfessionInfoBySkillLineID, p.linha)
+        if ok and type(info) == "table" and type(info.skillLevel) == "number"
+          and (info.professionName == p.nome or info.professionID == p.linha or ns.slugDe(info) == p.slug) then
+          if aplicarPericia(p.slug, info.skillLevel, tonumber(info.maxSkillLevel), false) then mudou = true end
+        end
+      end
+    end
+  end
+  local GP, GPI = rawget(_G, "GetProfessions"), rawget(_G, "GetProfessionInfo")
+  if type(GP) == "function" and type(GPI) == "function" then
+    local lista = { pcall(GP) }
+    if lista[1] then
+      for k = 2, 9 do
+        local idx = lista[k]
+        if type(idx) == "number" then
+          local r = { pcall(GPI, idx) }
+          if r[1] then
+            for _, p in ipairs(ns.PROFS) do
+              if p.slug ~= janela and (r[2] == p.nome or r[8] == p.linha) and type(r[4]) == "number" then
+                if aplicarPericia(p.slug, r[4], tonumber(r[5]), false) then mudou = true end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  return mudou
 end
 
 local agendado = false
@@ -137,12 +257,29 @@ local function agendarGravar()
   C_Timer.After(0.5, function()
     agendado = false
     gravarConhecidas()
+    if lerPericiaReserva() then ns.replanejar() end
   end)
 end
 
 ns.ao("TRADE_SKILL_SHOW", agendarGravar)
 ns.ao("TRADE_SKILL_LIST_UPDATE", agendarGravar)
 ns.ao("TRADE_SKILL_DATA_SOURCE_CHANGED", agendarGravar)
+ns.ao("NEW_RECIPE_LEARNED", agendarGravar)
+ns.ao("LEARNED_SPELL_IN_SKILL_LINE", agendarGravar)
+ns.ao("SKILL_LINES_CHANGED", agendarGravar)
+ns.ao("PLAYER_ENTERING_WORLD", agendarGravar)
+
+ns.ao("CHAT_MSG_SKILL", function(texto)
+  if type(texto) ~= "string" then return end
+  local ok, nome, nivel = pcall(string.match, texto, "Your skill in (.+) has increased to (%d+)")
+  if not ok or not nome then return end
+  for _, p in ipairs(ns.PROFS) do
+    if p.nome == nome and aplicarPericia(p.slug, tonumber(nivel), nil, true) then
+      ns.replanejar()
+      return
+    end
+  end
+end)
 
 -- reserva: a gravacao mais nova do GuiaForever para este personagem
 local function conhecidasDoGuia()
@@ -171,7 +308,129 @@ end
 
 -- Plano ----------------------------------------------------------------------------------------------
 
+function ns.modo()
+  local m = type(CompraForeverCharDB) == "table" and CompraForeverCharDB.modo
+  if type(m) == "table" and type(m.tipo) == "string" then return m end
+  return { tipo = "lucro" }
+end
+
+function ns.profDoModo()
+  local m = ns.modo()
+  if m.tipo == "rota" then return m.prof end
+  return "leatherworking"
+end
+
+local function rotasDados()
+  local d = rawget(_G, "CompraForeverDados")
+  return type(d) == "table" and type(d.rotas) == "table" and d.rotas or {}
+end
+
+function ns.modosDisponiveis()
+  local lista = { { tipo = "lucro" } }
+  local rotas = rotasDados()
+  local prof = type(CompraForeverCharDB) == "table" and type(CompraForeverCharDB.prof) == "table" and CompraForeverCharDB.prof or {}
+  local algum = next(prof) ~= nil
+  for _, p in ipairs(ns.PROFS) do
+    if type(rotas.profs) == "table" and rotas.profs[p.slug] and (not algum or prof[p.slug]) then
+      lista[#lista + 1] = { tipo = "rota", prof = p.slug, alvo = 150 }
+      lista[#lista + 1] = { tipo = "rota", prof = p.slug, alvo = 225 }
+    end
+  end
+  return lista
+end
+
+function ns.rotuloModo(m)
+  if type(m) ~= "table" or m.tipo ~= "rota" then return "Profit" end
+  local p = profPorSlug(m.prof)
+  return (p and p.curto or tostring(m.prof)) .. " " .. tostring(m.alvo or 150)
+end
+
+function ns.definirModo(m)
+  if type(m) ~= "table" or type(CompraForeverCharDB) ~= "table" then return end
+  if m.tipo == "rota" then
+    CompraForeverCharDB.modo = { tipo = "rota", prof = m.prof, alvo = m.alvo or 150 }
+  else
+    CompraForeverCharDB.modo = { tipo = "lucro" }
+  end
+  ns.replanejar()
+  if ns.atualizarPainel then ns.atualizarPainel() end
+end
+
+-- todos os itens que a rota da profissao cita (para estoque e correio)
+local idsRotaCache = setmetatable({}, { __mode = "k" })
+local function idsDaRota(rota)
+  local c = idsRotaCache[rota]
+  if c then return c end
+  local set = {}
+  for _, r in pairs(rota.receitas or {}) do
+    if r.produto then set[r.produto] = true end
+    if r.padrao then set[r.padrao] = true end
+    for _, rg in ipairs(r.reagentes or {}) do set[rg[1]] = true end
+    for _, f in ipairs(r.ferramentas or {}) do
+      for _, id in ipairs(f.itens or {}) do set[id] = true end
+    end
+    if type(r.acampamento) == "table" then
+      for _, id in ipairs(r.acampamento.itens or {}) do set[id] = true end
+    end
+  end
+  for _, t in ipairs(rota.trechos or {}) do
+    for id in pairs(t.fontes or {}) do set[id] = true end
+  end
+  c = {}
+  for id in pairs(set) do c[#c + 1] = id end
+  table.sort(c)
+  idsRotaCache[rota] = c
+  return c
+end
+
+function ns.entradaRota()
+  local m = ns.modo()
+  local slug = m.prof
+  local rotas = rotasDados()
+  local rota = type(rotas.profs) == "table" and rotas.profs[slug] or nil
+  local cdb = CompraForeverCharDB
+  local reg = type(cdb.prof) == "table" and cdb.prof[slug] or nil
+  if type(cdb.rota) ~= "table" then cdb.rota = {} end
+  if type(cdb.rota[slug]) ~= "table" then cdb.rota[slug] = {} end
+  local rr = cdb.rota[slug]
+  for _, k in ipairs({ "credito", "vendido", "craftado" }) do
+    if type(rr[k]) ~= "table" then rr[k] = {} end
+  end
+  rr.gasto = rr.gasto or 0
+  rr.inicio = rr.inicio or time()
+  local contagem = ns.estoqueBolsa or ns.estoque
+  local pend = ns.sessao and ns.sessao.correio or cdb.correio or {}
+  local bolsa, correio = {}, {}
+  if rota then
+    for _, id in ipairs(idsDaRota(rota)) do
+      bolsa[id] = contagem(id) or 0
+      correio[id] = pend[id] or 0
+    end
+  end
+  local nivel = nil
+  local UL = rawget(_G, "UnitLevel")
+  if type(UL) == "function" then
+    local ok, v = pcall(UL, "player")
+    if ok and type(v) == "number" then nivel = v end
+  end
+  local cfg = ns.config()
+  return {
+    prof = slug, rota = rota, itens = rotas.itens, alvo = m.alvo or 150, pericia = reg and reg.pericia, max = reg and reg.max,
+    nivel = nivel, conhecidas = reg and reg.ids, bolsa = bolsa, correio = correio,
+    dinheiro = ns.dinheiro(), espacos = ns.espacosLivres(), desconto = cfg.desconto, tolerancia = cfg.tolerancia,
+    margem = cfg.margem, escadas = ns.scan and ns.scan.escadas or {}, credito = rotas.credito ~= false,
+    credVenda = rr.credito, fonte = rotas.fonte, ultimoFull = CompraForeverDB.ultimoFull, agora = time(),
+  }
+end
+
 function ns.replanejar()
+  if ns.modo().tipo == "rota" then
+    local plano = nil
+    if ns.planejarRota then plano = ns.planejarRota(ns.entradaRota()) end
+    ns.plano = plano
+    if ns.atualizarPainel then ns.atualizarPainel() end
+    return plano
+  end
   local sc = ns.scan
   if not sc or not ns.planejar then
     ns.plano = nil
@@ -317,6 +576,66 @@ local function comandoVenda(sub, arg)
   dizer(piso == "off" and ("sell floor off for " .. id) or ("sell floor for " .. id .. " is " .. ns.moeda(piso)))
 end
 
+local function achaProf(txt)
+  txt = string.lower(txt or "")
+  for _, p in ipairs(ns.PROFS) do
+    if txt == p.slug or txt == string.lower(p.nome) or txt == string.lower(p.curto) then return p end
+  end
+  return nil
+end
+
+local function comandoModo(arg)
+  local a, b = string.match(strtrim(arg or ""), "^(%S*)%s*(%S*)$")
+  a = string.lower(a or "")
+  if a == "" then
+    dizer("mode " .. ns.rotuloModo(ns.modo()))
+    local t = {}
+    for _, m in ipairs(ns.modosDisponiveis()) do t[#t + 1] = ns.rotuloModo(m) end
+    dizer("available: " .. table.concat(t, ", "))
+    return
+  end
+  if a == "profit" or a == "lucro" then
+    ns.definirModo({ tipo = "lucro" })
+    dizer("mode Profit")
+    return
+  end
+  local p = achaProf(a)
+  if not p then
+    dizer("usage: /compra mode [profit | <profession> [150|225]]")
+    return
+  end
+  local alvo = 150
+  if b ~= "" then
+    alvo = tonumber(b)
+    if alvo ~= 150 and alvo ~= 225 then dizer("target must be 150 or 225") return end
+  end
+  local rotas = rotasDados()
+  if not (type(rotas.profs) == "table" and rotas.profs[p.slug]) then
+    dizer("no route for " .. p.nome .. ": ask for an estimate")
+    return
+  end
+  local visto = type(CompraForeverCharDB.prof) == "table" and CompraForeverCharDB.prof[p.slug]
+  if not visto then dizer(p.nome .. " not seen on this character: open it once") end
+  ns.definirModo({ tipo = "rota", prof = p.slug, alvo = alvo })
+  dizer("mode " .. ns.rotuloModo(ns.modo()))
+end
+
+local function comandoPassos()
+  local m = ns.modo()
+  if m.tipo ~= "rota" then dizer("steps: not in a route mode") return end
+  local pl = ns.plano
+  if not (type(pl) == "table" and pl.modo == 2 and type(pl.rota) == "table" and pl.rota.prof == m.prof) then
+    pl = ns.replanejar()
+  end
+  local passos = type(pl) == "table" and type(pl.rota) == "table" and pl.rota.passos
+  if type(passos) ~= "table" or #passos == 0 then dizer("no steps") return end
+  dizer(ns.rotuloModo(m) .. " steps")
+  for _, x in ipairs(passos) do
+    local est = x.estado == "feito" and "done" or (x.estado == "agora" and "now" or "next")
+    dizer(est .. " " .. tostring(x.nome) .. " " .. x.de .. "-" .. x.ate .. " (" .. (x.n or 0) .. ")")
+  end
+end
+
 local function comando(msg)
   msg = strtrim(msg or "")
   local sub, arg = string.match(msg, "^(%S+)%s*(.-)$")
@@ -343,8 +662,22 @@ local function comando(msg)
     cfg.desconto = floor(v)
     dizer("desconto set to " .. cfg.desconto .. "%")
     ns.replanejar()
+  elseif sub == "tolerance" or sub == "margin" then
+    local campo, lim = sub == "tolerance" and "tolerancia" or "margem", sub == "tolerance" and 100 or 50
+    if arg == "" then dizer(sub .. " is " .. (cfg[campo] or 0) .. "%") return end
+    local v = tonumber(arg)
+    if not v or v < 0 or v > lim then dizer(sub .. " must be 0-" .. lim) return end
+    cfg[campo] = floor(v)
+    dizer(sub .. " set to " .. cfg[campo] .. "%")
+    ns.replanejar()
+  elseif sub == "mode" then
+    comandoModo(arg)
+  elseif sub == "steps" then
+    comandoPassos()
   elseif sub == "sonda" then
-    if ns.sonda then ns.sonda() else dizer("probe not available") end
+    if string.lower(arg) == "prof" then
+      if ns.sondaProf then ns.sondaProf() else dizer("probe not available") end
+    elseif ns.sonda then ns.sonda() else dizer("probe not available") end
   elseif sub == "watch" or sub == "unwatch" then
     if not (ns.vigiaDB and ns.vigiaDB()) then dizer("watch not available") return end
     comandoVigia(sub, arg)
@@ -358,7 +691,7 @@ local function comando(msg)
     cfg.duracao = v
     dizer("dur " .. v)
   else
-    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | sonda | watch | unwatch | post | sell | duration]")
+    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | mode [profit|<prof> [150|225]] | tolerance [0-100] | margin [0-50] | steps | sonda [prof] | watch | unwatch | post | sell | duration]")
   end
 end
 

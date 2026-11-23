@@ -1,15 +1,20 @@
 ---
 frente: custo-legacy-profissoes
 status: ativa
-atualizado: 2026-11-23T16:52-03:00
+atualizado: 2026-11-23T19:35-03:00
 maquina: Avell
 temas: [jogos, analise-dados]
-proximo_passo: "Dono, à noite: Full no painel do CompraForever, esperar terminar, /reload e dizer 'atualiza'; agente roda node estimativas.mjs e confere a linha 'full scan do CompraForever de HH:MM'"
-decisoes_abertas: 2
+proximo_passo: "Dono, no jogo com o Ignatius: /reload, /compra sonda prof na janela de Engineering, e subir a Engineering até 150 pela modalidade de rota do CompraForever 0.3.0 (botão de modo 'Eng 150'); agente lê a sonda nas SavedVariables e corrige o que o teste mostrar"
+decisoes_abertas: 1
 commit: c4b553d
 sensivel: false
 ---
-> Frente: custo-legacy-profissoes · Atualizado: 23/11/2026 16:52 · Máquina: Avell
+> Frente: custo-legacy-profissoes · Atualizado: 23/11/2026 19:35 · Máquina: Avell
+>
+> Novo desde 16:52: o Full do CompraForever gravou e foi lido (18h00, 6.944 itens), e a frente ganhou o CompraForever
+> 0.3.0 com a modalidade de rota (compra, craft e venda pela rota da ferramenta, as seis profissões, 150 e 225). Leia
+> junto a seção 12 do `addons-proprios\CompraForever\CONTRATO.md` e a 10.10 do `ferramentas\pregao\CONTRATO.md`; o diário
+> de 23/11 (17h55) no `estado\estado.md` tem o caminho inteiro. O resto deste arquivo é a foto das 16:52.
 
 # Custo das profissões de ofício até o 150 e o 225 (Legacy points) e as estimativas
 
@@ -74,14 +79,16 @@ sensivel: false
    Leatherworking) só ensina até o 200 (visto pelo dono em 17/11/2026). Isso pesa na faixa do 200 ao 225: com
    `--treino-ate 200`, o Tailoring vai a −35g 70s e o Blacksmithing a −33g 20s (com a foto das 15h25). O dono confere
    no jogo.
-2. Rota de verdade para subir a Engineering e o Blacksmithing do Ignatius: a do roteiro da fonte (o Blacksmithing tem
-   wow-professions em `comum\fontes\profissoes\roteiros.md`; a Engineering não tem fonte ali) ou a rota da ferramenta,
-   como o dono fez com o Leatherworking do Hexumlite. O dono decide; o agente não escolhe roteiro de gameplay.
+2. Fechada em 23/11/2026 (noite): o dono escolheu a rota da ferramenta ("Rota da ferramenta"), que o CompraForever 0.3.0
+   segue na modalidade de rota.
 
 ## Próximos passos
 
-1. Dono, à noite: Full no painel do CompraForever (o servidor só deixa um a cada 15 min), esperar terminar,
-   `/reload` e dizer "atualiza".
+0. (Novo, 19:35) Teste no jogo do CompraForever 0.3.0 com o Ignatius: `/reload`; `/compra sonda prof` na janela de
+   Engineering; botão de modo até "Eng 150"; Scan, comprar, correio, martelo no vendedor, treinador, craft perto da
+   bigorna, venda. Engineering 1-150 pela conta das 19h31: 5g 28s de compra (era 10g 59s antes do crédito dos
+   intermediários). O Full das 18h00 vale até 00h00; depois, Full novo, `/reload` e "atualiza".
+1. Feito em 23/11/2026 18:00 (o `estimativas.mjs` leu o livro do Full).
 2. Agente: `node estimativas.mjs`. A saída deve ter `compraforever: full scan <hora> itens=<n>` e
    `full scan do CompraForever de HH:MM (... itens): vale no lugar da foto publica e do Auctionator`. Se não tiver,
    ler o bloco `["full"]` do `CompraForever.lua` na pasta SavedVariables e o `BugGrabber.lua`.
