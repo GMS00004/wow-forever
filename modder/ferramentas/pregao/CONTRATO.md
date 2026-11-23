@@ -661,7 +661,7 @@ IDs da tabela `SkillLine` do cliente. O formato é o da seção 3, com `esquema:
 | Campo | Regra |
 |---|---|
 | `receitas[].inicial` | `AcquireMethod` 1 da `SkillLineAbility`: vem com a profissão (aprende na perícia 1) |
-| fora | `AcquireMethod` 3 nunca se aprende (na Alchemy, as seis poções de cura que foram para o First Aid); conta `nunca` |
+| fora | `AcquireMethod` 3 nunca se aprende (na Alchemy, 9 receitas: as seis poções de cura que foram para o First Aid, a Potion of Poison Cleansing, a Purification Potion e a magia 6619, sem nome); conta `nunca` |
 | `produto: null`, `encantamento: true` | magia sem efeito 24 e com efeito 53 ou 54 (encanta um item); conta `encantamentos` |
 | `receitas[].ferramentas` | `SpellTotems`: `{ categoria, nome, itens }` por `RequiredTotemCategoryID_N` (vale todo item do `ItemSparse.TotemCategoryID` de mesmo tipo cuja máscara contém a pedida: a Runed Silver Rod serve onde se pede a Copper) e `{ categoria: null, itens: [id] }` por `Totem_N`; os itens entram em `itens` |
 | `receitas[].naowh` | `{ aprende, origem, custo, lados }` do Naowh (seção 10.2); sem `itemReceita` no cliente, o `recipe` do Naowh vira o `itemReceita` (conta `padraoDoNaowh`) |
