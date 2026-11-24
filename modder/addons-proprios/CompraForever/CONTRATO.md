@@ -541,6 +541,11 @@ carta a caminho); entradas com mais de 30 dias saem.
   correio de hoje. WATCH e SELL continuam acima quando têm itens.
 - O painel também aparece, só com as dicas, na caixa de correio (`MailFrame`) e no treinador (`ClassTrainerFrame`),
   no modo de rota. Sem ação possível onde o dono está, o botão de ação mostra o NEXT, desligado.
+- Âncora (correção de 2026-11-23, noite): o painel só se prende a uma janela que está na tela (`IsShown`), reavalia no
+  `OnHide` dessa janela (gancho por `HookScript`, um por janela) e de novo 0,1 s depois de cada evento de abrir e fechar.
+  Antes, a janela do treinador fechava, o estado de "aberta" ficava, e o painel ficava solto onde ela estava.
+- Scan sem nada para buscar (`"nothing"`): na rota, `Nothing to buy for the route` (tudo o que a rota pede está na bolsa
+  ou no correio); no lucro, `No known recipes: open Leatherworking`, como antes.
 - Ordem das dicas (ajuste de 2026-11-23, porque o treino de uma rota nova ocupava as 4 vagas e escondia o resto):
   `Scan at the AH` (sem preço), `SHORT <n> <nome> > <teto em moeda>: new estimate`, `BLOCKED <nome>: learn its recipe
   first`, o rank, as dicas do passo, `Newer Full: say atualiza`; depois o `TRAIN` das receitas que o trecho de compra
@@ -613,6 +618,7 @@ chama ação. Os resultados vão para `comum\referencia\` com a marca [local].
 | rota-24 | fonte da rota velha ou pública: aviso no painel |
 | rota-25 | `Dados.lua` real, Engineering 150: as linhas batem com os dados, tetos positivos, sem erro |
 | rota-26 | nenhuma busca no leilão sem tecla do dono (troca de modo, reload, 120 s de BAG_UPDATE) |
+| rota-27 | painel some quando a janela de âncora some sem o evento de fechar; Scan sem nada para buscar: texto da rota na rota, do lucro no lucro |
 
 - `node ferramentas\compra\testar-rota.mjs` (fengari, o `Planejador.lua` de verdade, como o `testar-planejador.mjs`):
   R1-R5 fórmula (119 do 1; 78 do 40; 0 e 7 do 59; 4 do 62; Copper Tube 10 e Practice Lock 5 exatos), R6 plano da

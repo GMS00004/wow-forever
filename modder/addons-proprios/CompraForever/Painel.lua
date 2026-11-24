@@ -384,14 +384,22 @@ local function mmss(seg)
   return string.format("%d:%02d", floor(seg / 60), seg % 60)
 end
 
+-- So vale janela na tela: o aviso de fechar pode faltar ou chegar antes do Hide, e o painel ancorado numa janela
+-- escondida ficava solto no meio da tela (visto pelo dono em 23/11/2026, depois de fechar o treinador).
+local function naTela(fr)
+  if not fr then return false end
+  if fr.IsShown then return fr:IsShown() and true or false end
+  return true
+end
+
 alvo = function()
   local c = ns.contexto()
-  if c.ah and AuctionHouseFrame then return AuctionHouseFrame end
-  if c.vend and MerchantFrame then return MerchantFrame end
-  if c.prof and _G.ProfessionsFrame then return _G.ProfessionsFrame end
+  if c.ah and naTela(AuctionHouseFrame) then return AuctionHouseFrame end
+  if c.vend and naTela(MerchantFrame) then return MerchantFrame end
+  if c.prof and naTela(_G.ProfessionsFrame) then return _G.ProfessionsFrame end
   if emRota() then
-    if c.mail and rawget(_G, "MailFrame") then return _G.MailFrame end
-    if c.trainer and rawget(_G, "ClassTrainerFrame") then return _G.ClassTrainerFrame end
+    if c.mail and naTela(rawget(_G, "MailFrame")) then return _G.MailFrame end
+    if c.trainer and naTela(rawget(_G, "ClassTrainerFrame")) then return _G.ClassTrainerFrame end
   end
   return nil
 end
@@ -480,15 +488,23 @@ end
 -- Prende o painel a direita da janela e o desenha acima dela. A janela de profissao do Forever tem uma coluna de abas
 -- na borda direita (LargeSideTabButtonTemplate, Camelot\Blizzard_ProfessionsFrame.xml) e a pagina de craft em
 -- frameLevel 100: sem o afastamento e o nivel, o painel ficava atras das abas e da janela.
+local reavaliar
+local comGancho = {}
+
 local function ancorar(a)
   f:ClearAllPoints()
   local dx = (a == _G.ProfessionsFrame) and 48 or 4
   f:SetPoint("TOPLEFT", a, "TOPRIGHT", dx, 0)
   f:SetFrameStrata(a:GetFrameStrata() or "MEDIUM")
   f:SetFrameLevel(min((a:GetFrameLevel() or 0) + 200, 9000))
+  -- quando a janela de ancora some, o painel reavalia na hora, com ou sem o evento de fechar
+  if not comGancho[a] and a.HookScript then
+    comGancho[a] = true
+    a:HookScript("OnHide", function() reavaliar() end)
+  end
 end
 
-local function reavaliar()
+reavaliar = function()
   local a = alvo()
   if a then
     ancorar(a)
@@ -521,17 +537,24 @@ end
 local MOTIVOS_SCAN = { closed = "Open the AH first", busy = "Scan running", nothing = "No known recipes: open Leatherworking",
                        cooldown = "Full scan on cooldown" }
 
+-- Na rota, "nothing" quer dizer que a rota nao pede nada do leilao agora (tudo na bolsa ou no correio), nao que faltam
+-- receitas: o texto do lucro confundiu o dono em 23/11/2026.
+local function motivoScan(motivo)
+  if motivo == "nothing" and emRota() then return "Nothing to buy for the route" end
+  return MOTIVOS_SCAN[motivo] or tostring(motivo)
+end
+
 btScan:SetScript("OnClick", function()
   msgPainel = nil
   local ok, motivo = ns.scanDirigido(function() ns.atualizarPainel() end)
-  if not ok then msgPainel = MOTIVOS_SCAN[motivo] or tostring(motivo) end
+  if not ok then msgPainel = motivoScan(motivo) end
   ns.atualizarPainel()
 end)
 
 btFull:SetScript("OnClick", function()
   msgPainel = nil
   local ok, motivo = ns.fullScan(function() ns.atualizarPainel() end)
-  if not ok then msgPainel = MOTIVOS_SCAN[motivo] or tostring(motivo) end
+  if not ok then msgPainel = motivoScan(motivo) end
   ns.atualizarPainel()
 end)
 
@@ -550,7 +573,10 @@ end)
 
 for _, ev in ipairs({ "AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "MERCHANT_SHOW", "MERCHANT_CLOSED", "TRADE_SKILL_CLOSE",
                          "MAIL_SHOW", "MAIL_CLOSED", "TRAINER_SHOW", "TRAINER_CLOSED" }) do
-  ns.ao(ev, reavaliar)
+  ns.ao(ev, function()
+    reavaliar()
+    C_Timer.After(0.1, reavaliar)   -- a janela da Blizzard pode abrir depois deste ouvinte, no mesmo evento
+  end)
 end
 ns.ao("TRADE_SKILL_SHOW", function()
   reavaliar()

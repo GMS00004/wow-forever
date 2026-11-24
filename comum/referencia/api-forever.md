@@ -151,6 +151,21 @@ estão na lista. Eventos na lista (`Events.lua`): `CHAT_MSG_SKILL`, `SKILL_LINES
 disso rodou no jogo: o `/compra sonda prof` (CompraForever 0.3.0) imprime e grava o que essas funções devolvem, e o
 resultado entra aqui com a marca `[local]`.
 
+`[local]` Sonda de 2026-11-23 21:14 (Ignatius, nível 10, janela de Engineering aberta, lida em `CompraForeverDB.sonda`):
+`GetProfessions()` devolveu os índices `7,8,5,nil,6` (Mining, Engineering, First Aid, sem pesca, Cooking), e
+`GetProfessionInfo(i)` devolve nome, perícia, máximo e skillLine (Engineering: `skill=1 max=75 line=202`).
+`C_TradeSkillUI.GetProfessionInfoBySkillLineID(202)` devolve a mesma perícia; para profissão que o personagem não tem,
+devolve a tabela com `skillLevel=0` e `maxSkillLevel=0`, não `nil`. `C_SkillInfo.GetNumSkillLines()` deu 26, e a leitura
+por id dá `nil` nas profissões que o personagem não tem. `GetBaseProfessionInfo` trouxe Engineering; `GetChildProfessionInfo`
+veio vazio (`professionID=0`), então no Forever não há expansão filha. A janela listou 275 receitas, 3 aprendidas;
+`GetCraftableCount` e `GetRecipeRequirements` (vazia para Rough Blasting Powder) responderam. Todas as funções da lista acima
+existem no cliente. No mesmo dia a rota levou a Engineering do 1 ao 150 no jogo.
+
+`[local]` Janela do treinador (2026-11-23): o filtro do treinador pode ficar mostrando só as receitas indisponíveis; aí a
+lista parece vazia de receitas para aprender, embora a janela de profissão as mostre em "Unlearned > Learnable now". O
+dono resolveu pelo Settings do treinador. A janela de profissão do Forever lista todas as receitas, aprendidas ou não, com
+a fonte (Trainer, Vendor, Drop) e o treinador mais perto.
+
 ### 3g.1 Postagem no leilao (2026-11-18)
 
 `[página]`: documentação gerada do espelho `Ketho/wow-ui-source-forever`, branch `forever`, arquivos
