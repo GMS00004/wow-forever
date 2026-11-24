@@ -137,6 +137,20 @@ Posições de NPC `[local]`: `NaowhForever\Shared\Game\Towns.lua` tem `ns.TownNP
 
 `[página]`: documentação gerada do espelho `Ketho/wow-ui-source-forever`, branch `forever`, commit "1.60.1 (70938)" de 2026-11-13, lida pelo `gh` em 2026-11-17 (`AuctionHouseDocumentation.lua`, `AuctionHouseEnumsDocumentation.lua`, `TradeSkillUIDocumentation.lua`, `ContainerDocumentation.lua`); o cliente instalado já está no 70959. `HasRestrictions = true` (função que exige clique de hardware): `StartCommoditiesPurchase`, `PlaceBid`, `CancelAuction`, `PostItem`/`PostCommodity` e as confirmações de postagem. Sem `HasRestrictions`: `ConfirmCommoditiesPurchase`, `SendSearchQuery`, `RequestMoreCommoditySearchResults`, `ReplicateItems`, `C_TradeSkillUI.CraftRecipe(recipeSpellID, numCasts)` e `C_Container.UseContainerItem`. `Enum.AuctionHouseSortOrder.Price = 0`. A janela de profissão é o `ProfessionsFrame` (há `Blizzard_Professions\Camelot\`). `BuyMerchantItem` não está na documentação gerada (função global antiga). Nada disso rodou no jogo; o `/compra sonda` do CompraForever confere commodity e tempo de busca.
 
+### 3g.0 Profissão para a modalidade de rota do CompraForever (2026-11-23)
+
+`[página]`: `TradeSkillUIDocumentation.lua` do mesmo espelho (`Ketho/wow-ui-source-forever`, branch `forever`), lido pelo
+`gh api` em 2026-11-23, e os nomes conferidos na lista local `ferramentas\guia\api-forever\GlobalAPI.lua` (build 70532).
+`C_TradeSkillUI.CraftEnchant(recipeSpellID, numCasts = 1, craftingReagents, itemTarget: ItemLocation, applyConcentration)`
+existe e, como o `CraftRecipe`, não tem `HasRestrictions` (`GlobalAPI.lua:4315`). `GetRecipeRequirements(recipeID)` devolve
+uma lista de `CraftingRecipeRequirement` (o CompraForever lê `name` e `met`; `:4381`). `GetProfessionInfoBySkillLineID
+(skillLineID)` devolve um `ProfessionInfo`. `IsNearProfessionSpellFocus(profession)` recebe o enum `Profession`, não o
+nome do objeto (`:4405`). `StopRecipeRepeat` (`:4445`), `GetCraftableCount(recipeSpellID)` e `GetRemainingRecasts()`
+estão na lista. Eventos na lista (`Events.lua`): `CHAT_MSG_SKILL`, `SKILL_LINES_CHANGED`, `NEW_RECIPE_LEARNED`,
+`LEARNED_SPELL_IN_SKILL_LINE`, `UPDATE_TRADESKILL_CAST_STOPPED`, `TRAINER_SHOW`, `MAIL_SHOW`, `MAIL_INBOX_UPDATE`. Nada
+disso rodou no jogo: o `/compra sonda prof` (CompraForever 0.3.0) imprime e grava o que essas funções devolvem, e o
+resultado entra aqui com a marca `[local]`.
+
 ### 3g.1 Postagem no leilao (2026-11-18)
 
 `[página]`: documentação gerada do espelho `Ketho/wow-ui-source-forever`, branch `forever`, arquivos
