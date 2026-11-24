@@ -163,7 +163,8 @@ existem no cliente. No mesmo dia a rota levou a Engineering do 1 ao 150 no jogo.
 
 `[local]` Janela do treinador (2026-11-23): o filtro do treinador pode ficar mostrando só as receitas indisponíveis; aí a
 lista parece vazia de receitas para aprender, embora a janela de profissão as mostre em "Unlearned > Learnable now". O
-dono resolveu pelo Settings do treinador. A janela de profissão do Forever lista todas as receitas, aprendidas ou não, com
+dono disse que o treinador "estava mostrando só as receitas unavailable" (onde se troca o filtro não foi visto). A
+janela de profissão do Forever lista todas as receitas, aprendidas ou não, com
 a fonte (Trainer, Vendor, Drop) e o treinador mais perto.
 
 ### 3g.1 Postagem no leilao (2026-11-18)
