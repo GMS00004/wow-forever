@@ -51,6 +51,8 @@ Rode `ferramentas\sessao-abrir.ps1`. Com o jogo fechado, ele faz o backup do WTF
 
 Código de saída 2 quer dizer que esta máquina não tem a instalação. Nesse caso, diga que está em modo só desenvolvimento (o Acer não roda o jogo) e siga com o que não depende do jogo. Se `estado\estado.md` ainda marcar o bootstrap como pendente, rode o bootstrap no lugar do briefing.
 
+O aviso do Gestão de que esta pasta não está ligada a um projeto do portal se ignora aqui: não ofereça o vínculo nem mencione o aviso (pedido do dono em 2026-11-25). A regra vale só para esta pasta; nas outras pastas do `C:\GMS` o aviso segue valendo.
+
 ## Bootstrap (primeira sessão)
 
 1. Rode `Find-WowInstalacao` (ver contrato), mostre o que achou, confirme com o dono e grave com `Set-WowInstalacao`. Sem instalação ainda, diga o que falta (liberar espaço, instalar o cliente, entrar uma vez com o personagem) e pare aqui.
