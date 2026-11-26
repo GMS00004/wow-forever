@@ -57,7 +57,7 @@ function Invoke-Checagem {
     } else {
         $contagem.falhas++
         Write-Host ('FALHA     {0,-24} {1,4}s  {2}' -f $Nome, $seg, $ultima)
-        foreach ($l in @($linhas | Where-Object { $_ -match 'FALHOU|ERRO|Error' } | Select-Object -First 8)) { Write-Host "          $l" }
+        foreach ($l in @($linhas | Where-Object { $_ -match '^FALHA|FALHOU|ERRO|Error' } | Select-Object -First 12)) { Write-Host "          $l" }
     }
 }
 
