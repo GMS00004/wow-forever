@@ -197,8 +197,8 @@ end
 local function infoCommodity(id, r)
   return {
     itemID = id, quantity = r.qtd, unitPrice = r.preco, auctionID = r.id, owners = donos(r),
-    totalNumberOfOwners = r.donos or 1, containsOwnerItem = r.proprio == true, containsAccountItem = false,
-    numOwnerItems = r.proprio and r.qtd or 0, timeLeftSeconds = r.tempo_s or 7200, timeLeft = 2,
+    totalNumberOfOwners = r.donos or 1, containsOwnerItem = r.proprio == true or (r.meus or 0) > 0,
+    containsAccountItem = false, numOwnerItems = r.proprio and r.qtd or (r.meus or 0),   -- meus: unidades do dono numa linha de varios timeLeftSeconds = r.tempo_s or 7200, timeLeft = 2,
   }
 end
 

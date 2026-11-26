@@ -123,7 +123,7 @@ end
 function ns.mensagem()
   local a = estado.aviso
   if a and a.scan == ns.scan then return a.texto end
-  return estado.msg or (ns.venda and ns.venda.msg)
+  return estado.msg or (ns.venda and ns.venda.msg) or (ns.caca and ns.caca.msg)
 end
 
 -- Registro do que foi comprado --------------------------------------------------------------------------
@@ -159,7 +159,7 @@ local function consumir(id, qtd, leilao)
   if b and b ~= a then consumirEm(b, qtd, leilao) end
 end
 
-local function compraFeita(id, qtd, leilao, vigia, valor)
+local function compraFeita(id, qtd, leilao, vigia, valor, caca)
   S.comprado[id] = (S.comprado[id] or 0) + qtd
   if vigia then S.vigiaComprado[id] = (S.vigiaComprado[id] or 0) + qtd end
   S.correio[id] = (S.correio[id] or 0) + qtd
@@ -168,11 +168,11 @@ local function compraFeita(id, qtd, leilao, vigia, valor)
   for _, r in ipairs(ns.plano and ns.plano.revenda or {}) do
     if r.id == id then S.revenda[id] = true end
   end
-  if not vigia then somarGasto(valor) end
+  if not vigia and not caca then somarGasto(valor) end
   consumir(id, qtd, leilao)
   estado.msg = nil
   if ns.vigiaAvaliar then ns.vigiaAvaliar() end
-  if vigia and not ns.scan then atualizar() else ns.replanejar() end
+  if (vigia or caca) and not ns.scan then atualizar() else ns.replanejar() end
 end
 
 -- o que o correio ja entregou deixa de contar como pendente
@@ -332,7 +332,7 @@ local function buscarItem(row)
 end
 
 local function iniciarCotacao(row)
-  local c = { id = row.id, nome = row.nome, qtd = row.qtd, custo = row.custo, fase = "cotando", row = row }
+  local c = { id = row.id, nome = row.nome, qtd = row.qtd, custo = row.custo, fase = "cotando", row = row, t0 = GetTime() }
   estado.cot = c
   estado.msg = nil
   C_Timer.After(20, function()
@@ -350,7 +350,26 @@ local function confirmar()
   if not c or c.fase ~= "confirmar" then return end
   c.fase = "comprando"
   estado.msg = nil
+  c.tConf = GetTime()
+  -- caca (secao 13.4): a fila do cliente esta livre com a compra pendente? Amostra a 0,5 s e a 1 s do aperto
+  if c.row and c.row.caca then
+    for _, dt in ipairs({ 0.5, 1 }) do
+      C_Timer.After(dt, function()
+        if estado.cot == c and c.fase == "comprando" then
+          c.livre = c.livre or {}
+          c.livre[#c.livre + 1] = { em = dt, livre = C_AuctionHouse.IsThrottledMessageSystemReady() == true }
+          atualizar()
+        end
+      end)
+    end
+  end
   C_AuctionHouse.ConfirmCommoditiesPurchase(c.id, c.qtd)
+end
+
+-- tempos da caca (secao 13.4): cotacao, compra (aperto de confirmar ate a resposta) e a fila durante a compra
+local function tempoCaca(c, res)
+  if not (c and c.row and c.row.caca and ns.cacaTempo) then return end
+  ns.cacaTempo({ cota = c.tCota, compra = c.tConf and (GetTime() - c.tConf) or nil, livre = c.livre, res = res })
 end
 
 -- buyout exato do leilao (o preco por unidade e arredondado para baixo; lance abaixo do buyout viraria lance, nao compra)
@@ -388,14 +407,26 @@ local function acaoLeilao()
   end
   if estado.lote then return { texto = "Buying " .. estado.lote.nome } end
   if estado.busca then return { texto = "Searching " .. estado.busca.nome } end
+  -- caca ligada (secao 13): o botao e dela; na busca dela, o texto e o dela e nao "Scanning..."
+  local ca = ns.cacaAcao and ns.cacaAcao()
+  if ca and ns.caca and ns.caca.buscando then
+    return { texto = ca.texto, executar = ca.reiniciar and function() ns.cacaReiniciar() end or nil }
+  end
   if ns.scanEstado and ns.scanEstado.ocupado then return { texto = "Scanning..." } end
   -- postagem em andamento (Venda.lua): uma funcao de acao por clique, o Confirm no clique seguinte
+  -- a postagem da isca e do botao dela (secao 13): nao toma o botao de acao
   local em = ns.venda and ns.venda.em
-  if em then
+  if em and not em.p.isca then
     if em.fase == "confirmar" then
       return { texto = "Confirm post " .. em.p.qtd .. " " .. em.p.nome, executar = ns.vendaConfirmar }
     end
     return { texto = "Posting " .. em.p.nome }
+  end
+  -- caca: busca, cota ou mostra o motivo; vem antes da vigia, da venda e do plano
+  if ca then
+    if ca.row then return { texto = ca.texto, executar = function() iniciarCotacao(ca.row) end } end
+    if ca.buscar then return { texto = ca.texto, executar = function() ns.cacaBuscar() end } end
+    return { texto = ca.texto }
   end
   -- preco da vigia abaixo do teto: vem antes do plano
   local vrow = ns.vigiaOportunidade and ns.vigiaOportunidade()
@@ -449,6 +480,7 @@ end
 -- mas ainda paga; nao vale largar a leva comprada pela metade por ela.
 local function limiteCotacao(custo, row)
   if row and row.vigia then return row.precoMax * row.qtd end   -- vigia: o teto por unidade, sem folga
+  if row and row.caca then return row.custo end   -- caca: nenhuma unidade acima do que a busca mostrou no alvo
   -- rota (secao 12.5): nunca acima do teto da rota (ja com a tolerancia) e no maximo 5% acima do planejado
   if row and row.teto and rotaPlano() then return min(row.qtd * row.teto, floor(custo * 1.05) + 1) end
   local lucro = ns.plano and ns.plano.totais and ns.plano.totais.lucro or 0
@@ -458,8 +490,16 @@ end
 ns.ao("COMMODITY_PRICE_UPDATED", function(unit, total)
   local c = estado.cot
   if not c or c.fase ~= "cotando" then return end
+  c.tCota = GetTime() - (c.t0 or GetTime())
   if total <= limiteCotacao(c.custo, c.row) then
     c.fase, c.total = "confirmar", total
+  elseif c.row and c.row.caca then
+    -- outro comprou antes: cancela e busca de novo (encadeado no clique de cotar)
+    tempoCaca(c, "moved")
+    C_AuctionHouse.CancelCommoditiesPurchase()
+    estado.cot = nil
+    estado.msg = nil
+    if ns.cacaPrecoMudou then ns.cacaPrecoMudou() end
   elseif c.row and c.row.vigia then
     -- acima do teto da vigia: so cancela; a escada guardada ficou velha e a proxima busca da vigia a refaz
     C_AuctionHouse.CancelCommoditiesPurchase()
@@ -485,8 +525,14 @@ ns.ao("COMMODITY_PRICE_UPDATED", function(unit, total)
   atualizar()
 end)
 
+-- a caca perde a escada quando a cotacao ou a compra falha: o proximo clique busca de novo
+local function cacaFalhou(c)
+  if c and c.row and c.row.caca and ns.cacaInvalidar then ns.cacaInvalidar() end
+end
+
 ns.ao("COMMODITY_PRICE_UNAVAILABLE", function()
   if not estado.cot then return end
+  cacaFalhou(estado.cot)
   estado.cot = nil
   estado.msg = "Quote unavailable: try again"
   atualizar()
@@ -496,12 +542,23 @@ ns.ao("COMMODITY_PURCHASE_SUCCEEDED", function()
   local c = estado.cot
   if not c or c.fase ~= "comprando" then return end
   estado.cot = nil
-  compraFeita(c.id, c.qtd, nil, c.row and c.row.vigia, c.total)
+  local caca = c.row and c.row.caca
+  tempoCaca(c, "ok")
+  if caca and ns.cacaComprou then ns.cacaComprou(c.qtd, c.total) end
+  compraFeita(c.id, c.qtd, nil, c.row and c.row.vigia, c.total, caca)
 end)
 
 ns.ao("COMMODITY_PURCHASE_FAILED", function()
-  if not estado.cot then return end
+  local c = estado.cot
+  if not c then return end
   estado.cot = nil
+  if c.row and c.row.caca and ns.cacaPerdeu then
+    tempoCaca(c, "lost")
+    estado.msg = nil
+    ns.cacaPerdeu()
+    atualizar()
+    return
+  end
   estado.msg = "Purchase failed: try again"
   atualizar()
 end)
@@ -517,7 +574,17 @@ end)
 ns.ao("AUCTION_HOUSE_SHOW_ERROR", function(codigo)
   local l = estado.lote
   if estado.cot then
+    local c = estado.cot
     estado.cot = nil
+    -- caca: o erro do leilao na cotacao ou na confirmacao (no jogo, "Internal auction error" quando outro compra
+    -- antes, visto pelo dono em 26/11/2026) conta como corrida perdida e busca de novo, como a compra recusada
+    if c.row and c.row.caca and ns.cacaPerdeu then
+      tempoCaca(c, "error")
+      estado.msg = nil
+      ns.cacaPerdeu()
+      atualizar()
+      return
+    end
   elseif l then
     estado.lote = nil
     local E = Enum and Enum.AuctionHouseError

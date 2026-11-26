@@ -1,4 +1,4 @@
-# CompraForever 0.3.0
+# CompraForever 0.4.0
 
 Desde a 0.3.0 há duas modalidades: Profit (lucro, o texto abaixo) e a de rota, para subir uma profissão (seção no fim).
 O botão `CompraForeverModo`, no alto do painel, troca entre as duas.
@@ -82,6 +82,29 @@ Posta no leilão o que está na bolsa, pelo botão grande ou por comando.
    again". Sem dinheiro para o depósito, mostra "Not enough money for deposit".
 8. O painel tem a seção SELL: pedidos, sugestões (marcadas com `(auto)`) e, depois, `[x] posted <qtd> <nome>` para o que
    já foi postado nesta sessão.
+
+## Caça de preço (HUNT), desde a 0.4.0
+
+Para materiais que oscilam em segundos (couro, tecido, minério): você escolhe o item e o preço máximo por unidade, e
+aperta o botão de ação sem parar. Cada aperto faz uma coisa só: busca o item, cota ou confirma a compra.
+
+1. Na AH: `/compra hunt [Thick Leather] 5s20c 10g` (shift-clique no item para colar o link, ou o id: `/compra hunt 4304 5s20c 10g`). O último valor é a trava de gasto da caça; sem ele, 5g.
+2. Uma vez só: `/compra key BUTTON4` liga o botão lateral do mouse ao botão de ação, só enquanto a AH está aberta (`BUTTON5`, `F9` ou outra tecla também servem). No painel da Logitech, deixe o botão como botão do mouse, sem macro.
+3. Aperte: "Hunt Thick Leather <= 5s 20c" busca; se aparecer pilha de 3 ou mais no seu preço, o botão vira "Buy 81 Thick Leather (4g 19s 20c) [HUNT]"; o aperto seguinte cota e o outro confirma. Depois da compra ele já busca de novo.
+4. `/compra hunt` mostra quanto comprou, a média e o gasto; `/compra hunt off` desliga e mostra o resumo.
+
+Regras: lote de 1 ou 2 unidades sozinho não dispara (é isca); quando uma pilha no seu preço dispara, a isca mais
+barata entra junto, porque o leilão vende sempre do mais barato para cima. Se outro comprar antes, a cotação sai mais
+cara, o addon cancela e busca de novo. Com a caça ligada, o painel e o botão são só dela. Trocar só o preço ou a trava
+(`/compra hunt 4304 5s30c`) mantém o gasto; item novo zera.
+
+### Isca (botão próprio)
+
+`/compra bait 4304 4s56c` liga a isca (1 unidade por aperto; até 20 com o número no fim) e `/compra baitkey E` liga
+uma tecla a ela, só com a AH aberta. O botão "Bait 1 Thick Leather @ 4s 56c" aparece acima do botão de ação; cada
+aperto posta uma vez (se o jogo pedir, o aperto seguinte confirma), e a caça continua no espaço. Cada isca paga o
+depósito. `/compra bait off` desliga. A quantidade é sempre a da isca: postar pela tela da Blizzard pode levar a pilha
+inteira.
 
 ## Comandos
 

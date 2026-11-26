@@ -66,6 +66,13 @@ btAcao:SetSize(LARG - 16, 28)
 btAcao:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 8, 8)
 btAcao:SetText("Nothing to do")
 
+-- botao da isca (secao 13): so aparece com a isca ligada, logo acima do botao de acao
+local btIsca = CreateFrame("Button", "CompraForeverIsca", f, "UIPanelButtonTemplate")
+btIsca:SetSize(LARG - 16, 22)
+btIsca:SetPoint("BOTTOMLEFT", btAcao, "TOPLEFT", 0, 4)
+btIsca:SetText("Bait")
+btIsca:Hide()
+
 -- Linhas do plano -------------------------------------------------------------------------------------------
 
 local function nomeMagia(magia)
@@ -236,6 +243,13 @@ end
 local alvo   -- definido mais abaixo
 
 local function montarLinhas()
+  -- caca ligada (secao 13): o painel mostra so ela
+  local h = ns.cacaLinhas and ns.cacaLinhas()
+  if h then
+    local li = ns.iscaLinha and ns.iscaLinha()
+    if li then h[#h + 1] = li end
+    return h
+  end
   local L = {}
   local plano, S = ns.plano, ns.sessao or {}
   if emRota() then
@@ -477,7 +491,15 @@ function ns.atualizarPainel()
   fsMensagem:ClearAllPoints()
   fsMensagem:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -yMsg)
   fsMensagem:SetText((ns.mensagem and ns.mensagem()) or msgPainel or "")
-  f:SetHeight(yMsg + 16 + 8 + 28 + 8)
+  local ia = ns.iscaAcao and ns.iscaAcao() or nil
+  if ia then
+    btIsca:SetText(ia.texto)
+    btIsca:SetEnabled(ia.executar ~= nil)
+    btIsca:Show()
+  else
+    btIsca:Hide()
+  end
+  f:SetHeight(yMsg + 16 + 8 + 28 + 8 + (ia and 26 or 0))
 
   local a = ns.proximaAcao and ns.proximaAcao() or nil
   local prox = (a == nil and emRota()) and textoProximo(ns.plano) or nil
@@ -568,6 +590,39 @@ btAcao:SetScript("OnClick", function()
   if a and a.executar then a.executar() end
   ns.atualizarPainel()
 end)
+
+btIsca:SetScript("OnClick", function()
+  local a = ns.iscaAcao and ns.iscaAcao()
+  if a and a.executar then a.executar() end
+  ns.atualizarPainel()
+end)
+
+-- Tecla do botao de acao (secao 13): so com a AH aberta, um aperto = um clique no botao (SetOverrideBindingClick).
+-- O jogo aceita os botoes laterais do mouse direto (BUTTON4, BUTTON5); nada de macro de varios cliques.
+local teclaLigada = nil
+function ns.aplicarTecla()
+  if InCombatLockdown() then return end
+  local db = rawget(_G, "CompraForeverDB")
+  local k = type(db) == "table" and db.tecla or nil
+  local ki = type(db) == "table" and db.teclaIsca or nil
+  -- depois de um /reload com a AH aberta o AUCTION_HOUSE_SHOW nao vem: confere a janela tambem
+  local ahf = rawget(_G, "AuctionHouseFrame")
+  local ah = (ns.contexto and ns.contexto().ah) or (ahf ~= nil and ahf.IsShown ~= nil and ahf:IsShown() == true)
+  if teclaLigada then
+    ClearOverrideBindings(f)
+    teclaLigada = nil
+  end
+  if k and ah then
+    SetOverrideBindingClick(f, true, k, "CompraForeverAcao")
+    teclaLigada = k
+  end
+  if ki and ki ~= k and ah then
+    SetOverrideBindingClick(f, true, ki, "CompraForeverIsca")
+    teclaLigada = teclaLigada or ki
+  end
+end
+ns.ao("AUCTION_HOUSE_SHOW", function() ns.aplicarTecla() end)
+ns.ao("AUCTION_HOUSE_CLOSED", function() ns.aplicarTecla() end)
 
 -- Eventos e relogio ------------------------------------------------------------------------------------------
 

@@ -576,6 +576,132 @@ local function comandoVenda(sub, arg)
   dizer(piso == "off" and ("sell floor off for " .. id) or ("sell floor for " .. id .. " is " .. ns.moeda(piso)))
 end
 
+-- /compra hunt (secao 13): <item> <alvo> [trava] liga ou ajusta; sem argumento mostra; off desliga com o resumo
+local function resumoCaca(c)
+  local media = c.qtd > 0 and ns.moeda(floor(c.gasto / c.qtd + 0.5)) or "-"
+  return c.nome .. " (" .. c.id .. ") <= " .. ns.moeda(c.alvo) .. ", bought " .. c.qtd .. " avg " .. media .. ", spent "
+    .. ns.moeda(c.gasto) .. " of " .. ns.moeda(c.trava)
+end
+
+local function comandoCaca(arg)
+  local a = strtrim(arg or "")
+  local baixo = string.lower(a)
+  if a == "" then
+    local c = ns.cacaDB()
+    if not c then dizer("hunt is off. usage: /compra hunt <item id or link> <price> [cap] | hunt off") return end
+    dizer("hunting " .. resumoCaca(c))
+    return
+  end
+  if baixo == "off" or baixo == "stop" then
+    local c = ns.cacaDesligar()
+    if not c then dizer("hunt is off") return end
+    dizer("hunt off: " .. resumoCaca(c))
+    if ns.atualizarPainel then ns.atualizarPainel() end
+    return
+  end
+  local id, nome, resto = lerItem(a)
+  local t, q = string.match(resto or "", "^(%S+)%s*(%S*)$")
+  local alvo = t and ns.lerValor(t)
+  local trava = nil
+  if q and q ~= "" then
+    trava = ns.lerValor(q)
+    if not trava or trava < 1 then alvo = nil end
+  end
+  if not id or not alvo or alvo < 1 then
+    dizer("usage: /compra hunt <item id or link> <price> [cap] | hunt off")
+    return
+  end
+  local c, mesmo = ns.cacaLigar(id, nome, alvo, trava)
+  local tecla = type(CompraForeverDB) == "table" and CompraForeverDB.tecla
+  dizer((mesmo and "hunt updated: " or "hunting ") .. c.nome .. " (" .. id .. ") <= " .. ns.moeda(c.alvo) .. ", cap "
+    .. ns.moeda(c.trava) .. ((trava == nil and not mesmo) and " (default)" or "") .. ". Click the action button"
+    .. (tecla and (" or press " .. tecla) or ""))
+  if ns.atualizarPainel then ns.atualizarPainel() end
+end
+
+-- /compra key <TECLA|off>: tecla que clica o botao de acao, so com a AH aberta
+local function comandoTecla(arg)
+  local a = strtrim(arg or "")
+  local db = CompraForeverDB
+  if a == "" then
+    dizer("key " .. (db.tecla or "none") .. " (only while the AH is open)")
+    return
+  end
+  if string.lower(a) == "off" then
+    db.tecla = nil
+    if ns.aplicarTecla then ns.aplicarTecla() end
+    dizer("key off")
+    return
+  end
+  if not string.match(a, "^[%w%-]+$") then
+    dizer("usage: /compra key <KEY like BUTTON4, F9 or CTRL-F> | key off")
+    return
+  end
+  if string.upper(a) == db.teclaIsca then dizer(string.upper(a) .. " is already the bait key") return end
+  db.tecla = string.upper(a)
+  if ns.aplicarTecla then ns.aplicarTecla() end
+  dizer("key " .. db.tecla .. " clicks the action button while the AH is open")
+end
+
+-- /compra bait <item> <preco> [qtd]: isca a preco fixo no botao proprio; sem argumento mostra; off desliga
+local function comandoIsca(arg)
+  local a = strtrim(arg or "")
+  local baixo = string.lower(a)
+  if a == "" then
+    local i = ns.iscaDB()
+    if not i then dizer("bait is off. usage: /compra bait <item id or link> <price> [qty] | bait off") return end
+    dizer("bait " .. i.qtd .. " " .. i.nome .. " (" .. i.id .. ") @ " .. ns.moeda(i.preco) .. ", posted " .. (i.postadas or 0))
+    return
+  end
+  if baixo == "off" or baixo == "stop" then
+    local i = ns.iscaDesligar()
+    if not i then dizer("bait is off") return end
+    dizer("bait off: " .. i.nome .. ", posted " .. (i.postadas or 0))
+    return
+  end
+  local id, nome, resto = lerItem(a)
+  local t, q = string.match(resto or "", "^(%S+)%s*(%S*)$")
+  local preco = t and ns.lerValor(t)
+  local qtd = nil
+  if q and q ~= "" then
+    qtd = tonumber(q)
+    if not qtd or qtd < 1 or qtd > 20 or qtd ~= floor(qtd) then preco = nil end
+  end
+  if not id or not preco or preco < 1 then
+    dizer("usage: /compra bait <item id or link> <price> [qty 1-20] | bait off")
+    return
+  end
+  local i = ns.iscaLigar(id, nome, preco, qtd)
+  local tecla = type(CompraForeverDB) == "table" and CompraForeverDB.teclaIsca
+  dizer("bait " .. i.qtd .. " " .. i.nome .. " (" .. id .. ") @ " .. ns.moeda(i.preco) .. ". Click the Bait button"
+    .. (tecla and (" or press " .. tecla) or ""))
+end
+
+-- /compra baitkey <TECLA|off>: tecla do botao da isca, so com a AH aberta (nao pode ser a do botao de acao)
+local function comandoTeclaIsca(arg)
+  local a = strtrim(arg or "")
+  local db = CompraForeverDB
+  if a == "" then
+    dizer("bait key " .. (db.teclaIsca or "none") .. " (only while the AH is open)")
+    return
+  end
+  if string.lower(a) == "off" then
+    db.teclaIsca = nil
+    if ns.aplicarTecla then ns.aplicarTecla() end
+    dizer("bait key off")
+    return
+  end
+  if not string.match(a, "^[%w%-]+$") then
+    dizer("usage: /compra baitkey <KEY like E, F9 or CTRL-B> | baitkey off")
+    return
+  end
+  local k = string.upper(a)
+  if k == db.tecla then dizer(k .. " is already the action key") return end
+  db.teclaIsca = k
+  if ns.aplicarTecla then ns.aplicarTecla() end
+  dizer("bait key " .. k .. " clicks the Bait button while the AH is open")
+end
+
 local function achaProf(txt)
   txt = string.lower(txt or "")
   for _, p in ipairs(ns.PROFS) do
@@ -684,6 +810,16 @@ local function comando(msg)
   elseif sub == "post" or sub == "sell" then
     if not (ns.vendaPedir and ns.vigiaDB and ns.vigiaDB()) then dizer("post not available") return end
     comandoVenda(sub, arg)
+  elseif sub == "hunt" then
+    if not ns.cacaLigar then dizer("hunt not available") return end
+    comandoCaca(arg)
+  elseif sub == "key" then
+    comandoTecla(arg)
+  elseif sub == "bait" then
+    if not ns.iscaLigar then dizer("bait not available") return end
+    comandoIsca(arg)
+  elseif sub == "baitkey" then
+    comandoTeclaIsca(arg)
   elseif sub == "duration" then
     if arg == "" then dizer("dur " .. (cfg.duracao or 3)) return end
     local v = tonumber(arg)
@@ -691,7 +827,7 @@ local function comando(msg)
     cfg.duracao = v
     dizer("dur " .. v)
   else
-    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | mode [profit|<prof> [150|225]] | tolerance [0-100] | margin [0-50] | steps | sonda [prof] | watch | unwatch | post | sell | duration]")
+    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | mode [profit|<prof> [150|225]] | tolerance [0-100] | margin [0-50] | steps | sonda [prof] | watch | unwatch | hunt | key | bait | baitkey | post | sell | duration]")
   end
 end
 

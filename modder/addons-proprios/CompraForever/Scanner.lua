@@ -6,6 +6,7 @@ local addon, ns = ...
 local floor, min = math.floor, math.min
 
 local TEMPO_ID = 6         -- s por id na busca dirigida
+local TEMPO_CACA = 3       -- s na busca da caca (uma pagina; o dono aperta de novo)
 local RECARGA = 900        -- s entre full scans
 local MAX_PAGINAS = 3
 local MAX_UNIDADES = 1000
@@ -146,8 +147,12 @@ local function lerResultado(S, cur, tipo, chave)
       local r = A.GetCommoditySearchResultInfo(cur.id, i)
       if r then
         soma = soma + (r.quantity or 0)
-        if not r.containsOwnerItem and (r.unitPrice or 0) > 0 and (r.quantity or 0) > 0 then
-          escada[#escada + 1] = { preco = r.unitPrice, qtd = r.quantity, leilao = r.auctionID, inteiro = false }
+        -- a linha junta vendedores no mesmo preco: compravel = total menos o que e do proprio dono (a conta da UI da
+        -- Blizzard, Blizzard_AuctionHouseUtil.lua do espelho do Forever); a isca do dono nao some com a linha inteira
+        local q = (r.quantity or 0) - (r.numOwnerItems or 0)
+        if not r.numOwnerItems and r.containsOwnerItem then q = 0 end
+        if (r.unitPrice or 0) > 0 and q > 0 then
+          escada[#escada + 1] = { preco = r.unitPrice, qtd = q, leilao = r.auctionID, inteiro = false }
         end
       end
     end
@@ -166,7 +171,7 @@ local function lerResultado(S, cur, tipo, chave)
   cur.escada = escada
   local cheio
   if tipo == "commodity" then cheio = A.HasFullCommoditySearchResults(cur.id) else cheio = A.HasFullItemSearchResults(chave) end
-  if not cheio and soma < MAX_UNIDADES and cur.paginas < MAX_PAGINAS then
+  if not cheio and not S.umaPagina and soma < MAX_UNIDADES and cur.paginas < MAX_PAGINAS then
     cur.paginas = cur.paginas + 1
     esperarPronto(S, function()
       if S.fim or S.atual ~= cur then return end
@@ -182,7 +187,7 @@ local function buscarId(S, id)
   S.atual = cur
   local ordem = Enum and Enum.AuctionHouseSortOrder and Enum.AuctionHouseSortOrder.Price or 0
   C_AuctionHouse.SendSearchQuery(C_AuctionHouse.MakeItemKey(id), { { sortOrder = ordem, reverseSort = false } }, false)
-  C_Timer.After(TEMPO_ID, function() terminarId(S, cur, true) end)
+  C_Timer.After(S.umaPagina and TEMPO_CACA or TEMPO_ID, function() terminarId(S, cur, true) end)
 end
 
 proximo = function(S)
@@ -234,11 +239,11 @@ ns.ao("COMMODITY_SEARCH_RESULTS_ADDED", aoResultadoCommodity)
 ns.ao("ITEM_SEARCH_RESULTS_UPDATED", aoResultadoItem)
 ns.ao("ITEM_SEARCH_RESULTS_ADDED", aoResultadoItem)
 
-local function iniciarBusca(tipo, ids, aoTerminar, sonda)
+local function iniciarBusca(tipo, ids, aoTerminar, sonda, umaPagina)
   if ativo then return false, "busy" end
   if not leilaoAberto() then return false, "closed" end
   local S = abrirSessao(tipo, aoTerminar)
-  S.ids, S.sonda = ids, sonda
+  S.ids, S.sonda, S.umaPagina = ids, sonda, umaPagina
   if sonda then S.tempos = {} end
   ns.scanEstado.total = #ids
   proximo(S)
@@ -256,6 +261,22 @@ end
 function ns.buscarVigia(ids, aoTerminar)
   if type(ids) ~= "table" or #ids == 0 then return false, "nothing" end
   local ok, motivo = iniciarBusca("vigia", ids, aoTerminar, false)
+  return ok, (not ok) and motivo or nil
+end
+
+-- busca da caca (secao 13): um id, so a primeira pagina (a ponta barata, ja ordenada por preco), mesmo fim da vigia
+-- descarta a busca da caca em andamento (o dono apertou de novo com ela parada); outras buscas ficam
+function ns.abortarBuscaCaca()
+  if ativo and ativo.umaPagina then
+    encerrar(ativo, nil, "aborted")
+    return true
+  end
+  return false
+end
+
+function ns.buscarCaca(id, aoTerminar)
+  if type(id) ~= "number" then return false, "nothing" end
+  local ok, motivo = iniciarBusca("vigia", { id }, aoTerminar, false, true)
   return ok, (not ok) and motivo or nil
 end
 

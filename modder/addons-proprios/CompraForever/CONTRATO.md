@@ -1,4 +1,4 @@
-# CompraForever: contrato (v0.3, 2026-11-23)
+# CompraForever: contrato (v0.4, 2026-11-26)
 
 Addon de um fluxo só: na AH, o dono clica Scan e um painel colado na AH mostra, com o dinheiro e o espaço de bolsa de
 agora, quanto comprar de cada material para craftar receitas conhecidas de Leatherworking e vender o produto no
@@ -631,3 +631,113 @@ Rodada de 2026-11-23 (noite), com o `Dados.lua` gerado pelo `estimativas.mjs` da
 `--cenarios rota` 28 cenários e `--cenarios compra` 17, 0 erros; `testar-rota.mjs` 20 casos (R20: 74 passos, 0
 divergências entre o Lua e o JS); `testar-planejador.mjs` 12; `checar-dados.mjs --exigir-full` ok; `checar-combate`
 só com o R9 já conhecido do `UseContainerItem`. Nada da modalidade de rota rodou no jogo ainda.
+
+## 13. Caça (0.4, 2026-11-26)
+
+Pedido do dono, na AH: um material de alta liquidez por vez, com o alvo dele por unidade; ele aperta o botão sem parar e
+cada aperto busca, cota ou confirma. Ressalva dele: lote de 1 ou 2 unidades é isca e não dispara compra. Sem arquivo
+novo no TOC (o `/reload` basta): o estado e as regras ficam em `Vigia.lua`, a ação em `Compra.lua`, a busca de uma
+página em `Scanner.lua`, os comandos em `Nucleo.lua` e a tecla e as linhas em `Painel.lua`.
+
+- SV: `CompraForeverCharDB.caca = { id, nome, alvo, trava, gasto, qtd, inicio, log = { { t, qtd, total } } }` (até
+  200 compras no registro); `CompraForeverDB.tecla` (nome de tecla do jogo, como `BUTTON4`). Em memória:
+  `ns.caca = { escada, em, buscando, msg }`, zerado a cada abertura da AH.
+- `/compra hunt <item> <alvo> [trava]` liga; no mesmo item só troca o alvo e a trava (o gasto, a quantidade e o
+  registro ficam); item novo zera tudo. Trava padrão 5g (`ns.CACA_TRAVA_PADRAO`). `/compra hunt` mostra;
+  `/compra hunt off` desliga e imprime o resumo (comprado, média, gasto).
+- Botão de ação com a caça ligada (`ns.cacaAcao()`, antes da vigia, da venda e do plano): busca em andamento ->
+  "Hunting <nome>..."; escada com até 10 s (`VALIDADE`) e plano -> "Buy <qtd> <nome> (<custo>) [HUNT]", clique =
+  `StartCommoditiesPurchase`; trava sem folga -> "Hunt cap reached (...)", sem clique; senão -> "Hunt <nome> <=
+  <alvo>", clique = busca só do item (`ns.buscarCaca`: sessão `vigia`, uma página, a ponta barata).
+- Quanto comprar (`ns.cacaPlano(escada, alvo, limite)`): do mais barato até o último degrau com `qtd >= 3`
+  (`MIN_LOTE`) e preço <= alvo. Degrau pequeno acima dele fica (isca); degrau pequeno abaixo entra, porque a compra de
+  commodity leva sempre do mais barato para cima. Só degrau pequeno no alvo -> motivo `bait`, nada dispara. Item que não
+  é commodity -> motivo `item`. Limite = menor entre a trava menos o gasto e o dinheiro menos a reserva.
+- Degrau: uma linha de `GetCommoditySearchResultInfo`. A estrutura traz `owners` e `totalNumberOfOwners`, então uma
+  linha pode juntar vendedores no mesmo preço (inferido dos nomes dos campos na documentação gerada do Forever; o print
+  do dono de 26/11 mostra o mesmo formato, um preço por linha).
+- Cotação: aceita só `total <= custo` da escada (nenhuma unidade acima do que a busca mostrou no alvo). Acima:
+  `CancelCommoditiesPurchase`, `ns.cacaPrecoMudou()` e busca de novo, encadeada no evento do clique de cotar.
+- Compra feita (`COMMODITY_PURCHASE_SUCCEEDED`): `ns.cacaComprou(qtd, total)` soma gasto e quantidade, registra e busca
+  de novo, encadeado no clique de confirmar; `compraFeita(..., caca = true)` não soma o gasto da rota. Cotação ou
+  compra que falha só apaga a escada (`ns.cacaInvalidar`): o próximo clique busca.
+- Nada busca sozinho: sem a caça não há busca, e com ela toda busca vem de um clique ou do evento que o clique
+  provocou (I9 da bancada sem exceção). Um clique = no máximo uma ação de leilão (I1), como no resto do addon.
+- Tecla: `/compra key <TECLA|off>`. `SetOverrideBindingClick(painel, true, tecla, "CompraForeverAcao")` só com a AH
+  aberta (`AUCTION_HOUSE_SHOW`), solta no `AUCTION_HOUSE_CLOSED`; nada em combate. Os botões laterais do mouse
+  (`BUTTON4`, `BUTTON5`) valem direto. Macro de vários cliques num botão do mouse fica fora (fórum oficial: um aperto,
+  uma ação; `..\..\..\comum\referencia\forever.md`).
+- Painel com a caça ligada: só as linhas dela (`ns.cacaLinhas()`): alvo e lote mínimo, comprado com a média e o gasto
+  contra a trava, e os 6 degraus mais baratos da última busca.
+- Bancada: `compra-17` (comandos, tecla só com a AH aberta, persistência no reload) e `compra-18` (o mercado do print do
+  dono: isca sozinha não dispara, pilha de 80 a 5s19c leva a isca de 4s junto, dois cliques, busca encadeada, cotação
+  acima cancela e busca, trava corta e para, escada velha volta a buscar). Duas mutações conferidas (lote mínimo 1 e
+  cotação com o dobro do custo): as duas quebram o `compra-18`.
+
+Rodada de 2026-11-26 (madrugada, jogo aberto): `--cenarios compra` 19 e `--cenarios rota` 29, 0 erros; `checar-lua` ok;
+`checar-combate` só com o R9 já conhecido; `testar-planejador.mjs` com o P12 em 1,2 s contra o limite de 1 s (teste de
+tempo; o `Planejador.lua` não mudou). Nada da caça rodou no jogo ainda.
+
+### 13.1 Isca e linha com anúncio do dono (0.4.0, mesma madrugada)
+
+- Linha de commodity com anúncio do dono: a quantidade que entra na escada é `quantity - numOwnerItems` (a mesma conta
+  da UI da Blizzard em `Blizzard_AuctionHouseUtil.lua` do espelho `Ketho/wow-ui-source-forever`, lida em 26/11/2026).
+  Antes a linha inteira saía da escada, e uma pilha de outro no mesmo preço da isca do dono ficava invisível. Vale para
+  o scan, a vigia e a caça.
+- Isca: `CompraForeverCharDB.isca = { id, nome, preco, qtd, postadas }`. `/compra bait <item> <preço> [qtd 1-20]`
+  (padrão 1), `/compra bait`, `/compra bait off`; `/compra baitkey <TECLA|off>` em `CompraForeverDB.teclaIsca`
+  (não pode ser a mesma do `/compra key`). Botão `CompraForeverIsca` acima do botão de ação, só com a isca ligada:
+  "Bait <qtd> <nome> @ <preço> (dep ...)" -> um `PostCommodity`/`PostItem` da primeira pilha da bolsa, no máximo a
+  quantidade da isca; com `AUCTION_HOUSE_POST_WARNING`, "Confirm bait ..." no aperto seguinte. A postagem da isca não
+  aparece no botão de ação (a caça segue). `postadas` soma na conclusão. Linha "BAIT ..." no painel da caça.
+- Por quê da quantidade fixa: em 26/11/2026 o dono postou sem querer 95 Thick Leather a 5s pela tela da Blizzard (a
+  quantidade ficou na pilha inteira; inferido, o addon não tinha regra de venda nem fila para a Thick Leather na SV).
+- Bancada: `compra-19` (o falso ganhou `meus` na linha do mercado: unidades do dono numa linha de vários). Rodada:
+  `compra` 20 e `rota` 29, 0 erros.
+
+### 13.2 Corrida perdida e contador (0.4.0, mesma madrugada)
+
+- No jogo, quando outro compra entre a cotação e a confirmação, o cliente mostra "Internal auction error" (visto pelo
+  dono em 26/11/2026, umas 10 vezes; chega como `AUCTION_HOUSE_SHOW_ERROR`, não como `COMMODITY_PURCHASE_FAILED`).
+  Na caça, os dois caminhos chamam `ns.cacaPerdeu()`: soma `ns.caca.perdidas`, apaga a escada e busca de novo,
+  encadeado no evento do clique de confirmar, para o aperto seguinte já cotar. Fora da caça, nada muda.
+- Painel da caça: "Searches N | lost M | last X s ago" (`ns.caca.buscas`, `perdidas`, `ultimaBusca`; zeram em item
+  novo). As mensagens "Price moved" e "Someone bought first" passam a ser gravadas depois da busca (a busca limpa a
+  mensagem ao começar).
+- Primeira compra pela caça no jogo: 11 Thick Leather por 49s 50c (4s 50c cada), dito pelo dono em 26/11/2026; o ciclo
+  busca, cotação, confirmação e busca seguinte rodou no cliente real.
+- Bancada: `compra-20` (recusa pela compra e pelo erro `DatabaseError` injetado; o aperto seguinte cota sem buscar).
+  Rodada: `compra` 21 e `rota` 29, 0 erros. A melhoria 13.2 ainda não rodou no jogo.
+
+### 13.3 Busca parada (0.4.0, mesma madrugada)
+
+- Queixa do dono: depois do "Internal auction error", o aperto seguinte perdia tempo. A busca encadeada ficava em
+  "Hunting..." até a resposta, e a busca dirigida esperava até 6 s (`TEMPO_ID`) antes de desistir.
+- Busca da caça (sessão `umaPagina`) desiste em 3 s (`TEMPO_CACA`). Com ela parada há mais de 2 s (`PARADA`, em
+  `Vigia.lua`), o botão vira "Hunting <nome>... (press to retry)" e o aperto chama `ns.cacaReiniciar()`:
+  `ns.abortarBuscaCaca()` (encerra só sessão `umaPagina`) e busca de novo. Busca não é ação: o I1 não muda.
+- `ns.caca.resposta`: segundos do aperto até a escada chegar (inclui a espera da fila do cliente); o painel mostra
+  "Searches N | lost M | resp R s | last X s ago". Os 2 s e os 3 s são palpites; afinar com o `resp` do jogo.
+- Bancada: `compra-21`; rodada `compra` 22 e `rota` 29, 0 erros. Ainda não rodou no jogo.
+
+### 13.4 Cronômetro da compra (0.4.0, mesma madrugada)
+
+- Pedido do dono: soltar o botão 1 s depois do confirmar, sem esperar a resposta da compra. Antes, medir: a fila do
+  cliente (`IsThrottledMessageSystemReady`) fica livre com a compra pendente? A cotação pode ser refeita com outra
+  pendente (o enum de erros tem `ItemHasQuote`)? E a resposta da compra não diz de qual compra é.
+- Cotação: `c.t0` no `StartCommoditiesPurchase`, `c.tCota` no `COMMODITY_PRICE_UPDATED`. Compra: `c.tConf` no
+  confirmar; com a caça, amostras da fila a 0,5 s e a 1 s se a compra ainda está pendente (`c.livre`).
+- `ns.cacaTempo({ cota, compra, livre, res })` com `res` = `ok`, `lost` (compra recusada), `error` (erro do leilão) ou
+  `moved` (cotação acima). Painel: "Quote X | buy Y | queue 0.5s free|busy 1s free|busy". SV:
+  `CompraForeverCharDB.caca.tempos` (últimos 100: `{ t, res, cota, compra, l05, l10 }`, tempos em ms).
+- Decisão depois dos números: com `compra` acima de 1 s e a fila livre (`l05`/`l10` verdadeiros), implementar o botão
+  solto com as três proteções (só busca enquanto a compra está pendente, ou cotação com fila de pendentes; a trava conta
+  a pendente como gasta; casamento das respostas por ordem). Com a fila presa, não há ganho.
+- Bancada: `compra-22` (servidor de 1,5 s); rodada `compra` 23 e `rota` 29, 0 erros. Ainda não rodou no jogo.
+- Primeira leitura no jogo (26/11/2026, SV das 02h55, n = 15 tentativas numa rodada de perdas seguidas): 10
+  `lost` (a recusa chegou como `COMMODITY_PURCHASE_FAILED`; nenhuma pelo caminho `error`, então o "Internal auction
+  error" vermelho é o texto do cliente para a compra recusada) e 5 `moved` (a cotação veio acima do que a busca
+  mostrou). Cotação: mediana 653 ms (532 a 803). Compra recusada: mediana 863 ms (730 a 1.006) do aperto de confirmar
+  até a resposta. Fila do cliente a 0,5 s com a compra pendente: ocupada nas 10; a 1 s, nenhuma amostra (a resposta veio
+  antes). Conclusão: a fila fica presa até o servidor responder, e ele responde em menos de 1 s; o botão solto 1 s
+  depois do confirmar não traria ganho. Cada tentativa custa uns 1,5 s de ida e volta (cotar e confirmar), mais a busca.

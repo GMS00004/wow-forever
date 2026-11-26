@@ -228,6 +228,10 @@ local function concluida()
   local p, S = em.p, ns.sessao
   W.em = nil
   S.postado[p.id] = (S.postado[p.id] or 0) + p.qtd
+  if p.isca then
+    local i = ns.iscaDB and ns.iscaDB()
+    if i and i.id == p.id then i.postadas = (i.postadas or 0) + p.qtd end
+  end
   local x = p.pedido
   if x then
     if x.qtd then x.qtd = x.qtd - p.qtd end
@@ -245,6 +249,61 @@ local function falhou()
   W.em = nil
   W.msg = "Post failed: try again"
   atualizar()
+end
+
+-- Isca (pedido do dono em 2026-11-26; CONTRATO secao 13): um botao proprio posta poucas unidades a preco fixo, um post
+-- por aperto, para os vendedores automaticos cobrirem por baixo com pilhas inteiras. O Confirm vem no aperto seguinte
+-- do mesmo botao. CompraForeverCharDB.isca = { id, nome, preco, qtd, postadas }
+
+function ns.iscaDB()
+  local db = rawget(_G, "CompraForeverCharDB")
+  local i = type(db) == "table" and db.isca
+  if type(i) == "table" and type(i.id) == "number" and type(i.preco) == "number" then return i end
+  return nil
+end
+
+function ns.iscaLigar(id, nome, preco, qtd)
+  if type(CompraForeverCharDB) ~= "table" then CompraForeverCharDB = {} end
+  local velha = ns.iscaDB()
+  local i = { id = id, nome = nome or (velha and velha.id == id and velha.nome) or ns.vigiaNome(id), preco = preco,
+              qtd = qtd or 1, postadas = (velha and velha.id == id and velha.postadas) or 0 }
+  CompraForeverCharDB.isca = i
+  atualizar()
+  return i
+end
+
+function ns.iscaDesligar()
+  local i = ns.iscaDB()
+  if type(CompraForeverCharDB) == "table" then CompraForeverCharDB.isca = nil end
+  if W.em and W.em.p.isca then W.em = nil end
+  atualizar()
+  return i
+end
+
+-- { texto, executar } para o botao da isca, ou nil sem isca
+function ns.iscaAcao()
+  local i = ns.iscaDB()
+  if not i then return nil end
+  local em = W.em
+  if em then
+    if em.p.isca and em.fase == "confirmar" then
+      return { texto = "Confirm bait " .. em.p.qtd .. " @ " .. ns.moeda(em.p.preco), executar = ns.vendaConfirmar }
+    end
+    return { texto = "Posting " .. em.p.nome .. "..." }
+  end
+  if not (ns.contexto and ns.contexto().ah) then return { texto = "Bait: open the AH" } end
+  local p = montar({ id = i.id, nome = i.nome, preco = i.preco, qtd = i.qtd }, nil)
+  if not p then return { texto = "Bait: no " .. i.nome .. " in bags" } end
+  p.isca = true
+  local dep = ns.vendaDeposito(p)
+  return { texto = "Bait " .. p.qtd .. " " .. i.nome .. " @ " .. ns.moeda(i.preco) .. (dep and (" (dep " .. ns.moeda(dep) .. ")") or ""),
+           executar = function() ns.vendaExecutar(p) end }
+end
+
+function ns.iscaLinha()
+  local i = ns.iscaDB()
+  if not i then return nil end
+  return "BAIT " .. i.qtd .. " " .. i.nome .. " @ " .. ns.moeda(i.preco) .. " | posted " .. (i.postadas or 0)
 end
 
 ns.ao("AUCTION_HOUSE_POST_WARNING", function()
