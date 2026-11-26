@@ -1,4 +1,24 @@
-# temporários dos testes do gerenciador de addons
-modder/ferramentas/testes/tmp/
-# zip baixado ou de backup nunca entra no repositório (os backups ficam em %LOCALAPPDATA%)
+# Este repositório saiu do repositório pessoal do Bruno (C:\GMS) em 2026-11-26.
+# As regras abaixo cobrem também o que antes vinha do .gitignore de lá.
+
+# Dependências do Node (rode "npm ci" em modder/ferramentas/guia)
+node_modules/
+
+# Dados baixados ou gerados por script nesta máquina (tabelas do cliente, fotos de preço do leilão)
+/modder/dados/
+
+# Temporários dos testes do gerenciador de addons
+/modder/ferramentas/testes/tmp/
+
+# Zip baixado ou de backup nunca entra (os backups ficam em %LOCALAPPDATA%\wow-agentes\backups)
 *.zip
+
+# Configuração local do Claude Code e segredos
+**/.claude/settings.local.json
+.env
+.env.*
+
+# Lixo do sistema
+Thumbs.db
+desktop.ini
+.DS_Store

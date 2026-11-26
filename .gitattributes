@@ -1,3 +1,14 @@
+# Texto sempre com fim de linha LF, no repositório e na cópia de trabalho, em qualquer sistema
+# (o Windows PowerShell 5.1, o Node e o jogo leem LF sem problema).
+* text=auto eol=lf
+
+# Binários
+*.png binary
+*.jpg binary
+*.pdf binary
+*.zip binary
+*.ttf binary
+
 # Fixtures de teste do gerenciador: bytes exatos, sem conversão de fim de linha
 # (o teste de Set-CVarWtf confere que o CRLF do Config.wtf é preservado).
 modder/ferramentas/testes/fixture/** -text
