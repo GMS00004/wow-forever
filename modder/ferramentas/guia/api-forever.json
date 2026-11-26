@@ -1,0 +1,227 @@
+{
+  "v": 1,
+  "sobre": "Listas e documentação da API do WoW Forever usadas pelo checar-combate.mjs, pelo rodar-central.mjs e pelo conferir-doc.mjs. O baixar-api-forever.mjs baixa estes arquivos nestes commits e confere o hash de cada um. Para subir de versão: troque o commit, rode com --atualizar-hashes e confira as checagens.",
+  "fontes": [
+    {
+      "repo": "Ketho/BlizzardInterfaceResources",
+      "commit": "d1ee569878094270c0ad8d8b00de0762158fd578",
+      "build": "1.60.1.70532",
+      "data": "2026-10-21",
+      "arquivos": [
+        {
+          "de": "Resources/AtlasInfo.lua",
+          "para": "AtlasInfo.lua",
+          "blob": "8fe7d6bb0ccc32635c83537bd2b9eb14f474a2d6"
+        },
+        {
+          "de": "Resources/CVars.lua",
+          "para": "CVars.lua",
+          "blob": "4f26af8035347c4d181601a63a2aa6ec3b5039ab"
+        },
+        {
+          "de": "Resources/Events.lua",
+          "para": "Events.lua",
+          "blob": "73a43791e663aec2da3fa4755b662be6769cf664"
+        },
+        {
+          "de": "Resources/FrameXML.lua",
+          "para": "FrameXML.lua",
+          "blob": "a389dfe4f4f56964a9593dc6763e38591d5fffc1"
+        },
+        {
+          "de": "Resources/Frames.lua",
+          "para": "Frames.lua",
+          "blob": "0155ca2101d36580929eb5c01077e7f47423dd68"
+        },
+        {
+          "de": "Resources/GlobalAPI.lua",
+          "para": "GlobalAPI.lua",
+          "blob": "54d7ce313a5d04cc4d72c155763fd290e0e3ac2c"
+        },
+        {
+          "de": "Resources/LuaEnum.lua",
+          "para": "LuaEnum.lua",
+          "blob": "d0d14a21d51a340eba7f22311b14f87280fa5e42"
+        },
+        {
+          "de": "Resources/Mixins.lua",
+          "para": "Mixins.lua",
+          "blob": "9a631ba6b99c0ca0f9761e4ef47d3515af488d11"
+        },
+        {
+          "de": "Resources/ScriptObjectAPI.lua",
+          "para": "ScriptObjectAPI.lua",
+          "blob": "73a8072b812d33fe90e430b5346e5c539de2bc99"
+        },
+        {
+          "de": "Resources/Templates.lua",
+          "para": "Templates.lua",
+          "blob": "ec477e01d4e3178efaad9d71da4df4a3832ab14e"
+        },
+        {
+          "de": "Resources/WidgetAPI.lua",
+          "para": "WidgetAPI.lua",
+          "blob": "4a147fbcfeb72b34dce0d29bf816c6ac5cd58f7a"
+        }
+      ]
+    },
+    {
+      "repo": "Ketho/wow-ui-source-forever",
+      "commit": "bebcb6bf309cf41b41bd74f8ca651e6a105b2676",
+      "build": "1.60.1.70938",
+      "data": "2026-11-13",
+      "arquivos": [
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/CVarDocumentation.lua",
+          "para": "doc/CVarDocumentation.lua",
+          "blob": "1469351e704fc57deb369ac6b6a0a152aaf389b1"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/CurveUtilDocumentation.lua",
+          "para": "doc/CurveUtilDocumentation.lua",
+          "blob": "e6ddae258fbcf69fd65bf0b0c0949bac263d97c7"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/DamageMeterConstantsDocumentation.lua",
+          "para": "doc/DamageMeterConstantsDocumentation.lua",
+          "blob": "8b2410fb13638d067843b986b0a4e45bcd4618a4"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/DamageMeterDocumentation.lua",
+          "para": "doc/DamageMeterDocumentation.lua",
+          "blob": "0dc002047efaf22300c2fe17bc80c892009ce7d2"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/FrameScriptDocumentation.lua",
+          "para": "doc/FrameScriptDocumentation.lua",
+          "blob": "37a45d72e916329c17f393de7e586a1516205440"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/LocalizationDocumentation.lua",
+          "para": "doc/LocalizationDocumentation.lua",
+          "blob": "322dc2114ca258a3878a0e2f034edbdbda0a3d24"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/LocalizationSharedDocumentation.lua",
+          "para": "doc/LocalizationSharedDocumentation.lua",
+          "blob": "5d85c90ef227e8a3d4d1f3cd82930e8ad7263f0f"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/RestrictedActionsConstantsDocumentation.lua",
+          "para": "doc/RestrictedActionsConstantsDocumentation.lua",
+          "blob": "020635e6da16d2f274daaed15e47c32e1ccfd007"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/RestrictedActionsDocumentation.lua",
+          "para": "doc/RestrictedActionsDocumentation.lua",
+          "blob": "5acf5efde9c50029f03f3367201ee848075badf7"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SecretAspectConstantsDocumentation.lua",
+          "para": "doc/SecretAspectConstantsDocumentation.lua",
+          "blob": "5f8710af628b4e3c61d5ab467ff89a05f98fe170"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SecretPredicateAPIDocumentation.lua",
+          "para": "doc/SecretPredicateAPIDocumentation.lua",
+          "blob": "53f3f79f0987f491cbdc88db52cfc65b41d91fd3"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SecretPredicatesDocumentation.lua",
+          "para": "doc/SecretPredicatesDocumentation.lua",
+          "blob": "e8ad1e553b7c50e8212652d1d43609fb0cde5e82"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleAnimAPIDocumentation.lua",
+          "para": "doc/SimpleAnimAPIDocumentation.lua",
+          "blob": "45c27f2366a8da7bab846aeef8b743a03483bc16"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleAnimAlphaAPIDocumentation.lua",
+          "para": "doc/SimpleAnimAlphaAPIDocumentation.lua",
+          "blob": "3dcd59b425cc8a0a33824bd1762fbd00577fd558"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleAnimGroupAPIDocumentation.lua",
+          "para": "doc/SimpleAnimGroupAPIDocumentation.lua",
+          "blob": "db2992f886ebd7621f81d584b0e5c6daf33a8c5f"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleFontStringAPIDocumentation.lua",
+          "para": "doc/SimpleFontStringAPIDocumentation.lua",
+          "blob": "97448b164fc7e86d17178c832134f3744b449af8"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleFrameAPIDocumentation.lua",
+          "para": "doc/SimpleFrameAPIDocumentation.lua",
+          "blob": "07debf919e8b4d43087306d2eccfb8e18e8f2c82"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleRegionAPIDocumentation.lua",
+          "para": "doc/SimpleRegionAPIDocumentation.lua",
+          "blob": "ca66eb6c9e70d9e30c8f92139c184442c368d136"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleScriptRegionAPIDocumentation.lua",
+          "para": "doc/SimpleScriptRegionAPIDocumentation.lua",
+          "blob": "e244d9eba05238cd1260a10ce34a14d07f7a6ae9"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleScriptRegionResizingAPIDocumentation.lua",
+          "para": "doc/SimpleScriptRegionResizingAPIDocumentation.lua",
+          "blob": "6425c8deefe565688f200fbff9d46c364a8f539b"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleStatusBarAPIDocumentation.lua",
+          "para": "doc/SimpleStatusBarAPIDocumentation.lua",
+          "blob": "99dd0b3ad25e5bdf33bfeb9d694652b6badfeb90"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/SimpleTextureBaseAPIDocumentation.lua",
+          "para": "doc/SimpleTextureBaseAPIDocumentation.lua",
+          "blob": "adc0caeaeba3c941e9c2d31c9fa644d102054edf"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/StringUtilDocumentation.lua",
+          "para": "doc/StringUtilDocumentation.lua",
+          "blob": "9fcbaf19e7d0632fc5a2e204563cbe48fe1ff258"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/ThreatDocumentation.lua",
+          "para": "doc/ThreatDocumentation.lua",
+          "blob": "093a64dd2bcf47cfd345c9884dfcc6c26353ca14"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/UITimerDocumentation.lua",
+          "para": "doc/UITimerDocumentation.lua",
+          "blob": "8aff5217b9b1e4c97cfad2489e669ce561f05123"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_APIDocumentationGenerated/UnitDocumentation.lua",
+          "para": "doc/UnitDocumentation.lua",
+          "blob": "620b28ad0cc57c13501a196a42c37b8398703a84"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_DamageMeter/Blizzard_DamageMeter.toc",
+          "para": "doc/Blizzard_DamageMeter/Blizzard_DamageMeter.toc",
+          "blob": "5840c16c9f7cc752ef799aa01865e557902a0df8"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_DamageMeter/DamageMeter.lua",
+          "para": "doc/Blizzard_DamageMeter/DamageMeter.lua",
+          "blob": "dbd39a7a39919003d7f4b23560a86a1547453a57"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_DamageMeter/DamageMeterEntry.lua",
+          "para": "doc/Blizzard_DamageMeter/DamageMeterEntry.lua",
+          "blob": "43560e42b73378043c53800da500a9a8858cbf2b"
+        },
+        {
+          "de": "Interface/AddOns/Blizzard_DamageMeter/DamageMeterSessionWindow.lua",
+          "para": "doc/Blizzard_DamageMeter/DamageMeterSessionWindow.lua",
+          "blob": "22ff4c51ac5e345fafe76c31b5ba5e1589809a12"
+        }
+      ]
+    }
+  ]
+}

@@ -1,16 +1,19 @@
-Listas da API do Forever usadas pelo checar-combate.mjs (funcoes, eventos, templates, CVars, enums).
-Fonte: GitHub Ketho/BlizzardInterfaceResources, branch "forever" (gerado do cliente; em 2026-11-06 o
-ultimo commit era o build 1.60.1.70532, de 2026-10-21; o cliente instalado e o 1.60.1.70840).
-Para baixar de novo (Git Bash, a partir desta pasta):
+Listas da API do Forever usadas pelo checar-combate.mjs, pelo rodar-central.mjs e pelo conferir-doc.mjs
+(funcoes, eventos, templates, CVars, enums e a documentacao gerada da Blizzard). Ficam em api-forever\, fora do git.
 
-mkdir -p api-forever && for f in GlobalAPI.lua FrameXML.lua Events.lua Templates.lua CVars.lua LuaEnum.lua WidgetAPI.lua ScriptObjectAPI.lua Mixins.lua Frames.lua AtlasInfo.lua; do gh api "repos/Ketho/BlizzardInterfaceResources/contents/Resources/$f?ref=forever" -H "Accept: application/vnd.github.raw" > "api-forever/$f"; done
+Para baixar, nas versoes fixadas em api-forever.json e com o hash de cada arquivo conferido (a partir desta pasta):
+
+    node baixar-api-forever.mjs
+
+Fontes:
+- GitHub Ketho/BlizzardInterfaceResources, branch "forever" (gerado do cliente). O api-forever.json fixa o
+  commit d1ee5698 (build 1.60.1.70532, de 2026-10-21), o que estava em uso quando os checadores foram calibrados;
+  em 2026-11-26 o branch ja estava no build 1.60.1.70938 (commit e230342a, de 2026-11-14).
+- GitHub Ketho/wow-ui-source-forever, branch "forever": documentacao gerada da Blizzard (assinaturas, retornos e
+  as marcas de valor secreto), commit bebcb6bf (build 1.60.1.70938, de 2026-11-13), em api-forever\doc\.
+
+Para subir de versao: troque o commit no api-forever.json, rode "node baixar-api-forever.mjs --atualizar-hashes"
+e rode as checagens (ferramentas\testar-tudo.ps1) antes de commitar.
 
 Achado de 2026-11-06 pela lista: no Forever nao existem IsPlayerSpell nem UnitCharacterPoints
 (use C_SpellBook.IsSpellKnown e C_Traits.GetTreeCurrencyInfo).
-
-Documentacao gerada da Blizzard (assinaturas, retornos e as marcas de valor secreto), usada pelo
-conferir-doc.mjs e para conferir assinatura sem rede. Fonte: GitHub Ketho/wow-ui-source-forever,
-branch "forever" (em 2026-11-16 o ultimo commit era o build 1.60.1.70938, de 2026-11-13). Fica em
-api-forever/doc/, fora do git. Para baixar de novo (Git Bash, a partir desta pasta):
-
-mkdir -p api-forever/doc/Blizzard_DamageMeter && for f in DamageMeterDocumentation DamageMeterConstantsDocumentation UnitDocumentation ThreatDocumentation SecretPredicatesDocumentation SecretPredicateAPIDocumentation SecretAspectConstantsDocumentation StringUtilDocumentation LocalizationDocumentation LocalizationSharedDocumentation RestrictedActionsDocumentation RestrictedActionsConstantsDocumentation CVarDocumentation CurveUtilDocumentation FrameScriptDocumentation UITimerDocumentation SimpleFontStringAPIDocumentation SimpleStatusBarAPIDocumentation SimpleRegionAPIDocumentation SimpleFrameAPIDocumentation SimpleScriptRegionAPIDocumentation SimpleScriptRegionResizingAPIDocumentation SimpleTextureBaseAPIDocumentation SimpleAnimGroupAPIDocumentation SimpleAnimAPIDocumentation SimpleAnimAlphaAPIDocumentation; do gh api -H "Accept: application/vnd.github.raw" "repos/Ketho/wow-ui-source-forever/contents/Interface/AddOns/Blizzard_APIDocumentationGenerated/$f.lua?ref=forever" > "api-forever/doc/$f.lua"; done; for f in DamageMeter.lua DamageMeterSessionWindow.lua DamageMeterEntry.lua Blizzard_DamageMeter.toc; do gh api -H "Accept: application/vnd.github.raw" "repos/Ketho/wow-ui-source-forever/contents/Interface/AddOns/Blizzard_DamageMeter/$f?ref=forever" > "api-forever/doc/Blizzard_DamageMeter/$f"; done

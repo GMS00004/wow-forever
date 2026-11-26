@@ -7,7 +7,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const DOC = join(dirname(fileURLToPath(import.meta.url)), 'api-forever', 'doc');
-const BAIXAR = 'baixe pelo comando em api-forever-baixar.txt';
+const BAIXAR = 'baixe com node baixar-api-forever.mjs (versoes em api-forever.json)';
 
 // tipo "funcao": bloco do Name = "X" ate o proximo Name de mesma indentacao (ou menor).
 // tipo "campo": linha do campo dentro do bloco da tabela (campo "tabela").

@@ -410,6 +410,8 @@ Cada addon tem um `.lua` de uma linha.
 - não usa rede e limpa o próprio `tmp` no fim (com `-Manter`, não limpa);
 - termina com a linha `OK <n> verificacoes` e `exit 0`, ou com uma linha `FALHOU: <descricao>` por falha e `exit 1`.
 
+**Comando único (1.2):** `testar-tudo.ps1 [-Rapido] [-So powershell|node]` roda as suítes `t-*.ps1` no Windows PowerShell 5.1 e, depois, os checadores, as bancadas e os testes em Node (a lista fica no próprio script). Uma linha por checagem: `OK`, `FALHA`, `PULADO` (falta a lista da API, que o `guia\baixar-api-forever.mjs` baixa nas versões de `guia\api-forever.json`, ou faltam os dados baixados do jogo em `modder\dados`) ou `CONHECIDO` (achado com issue aberta, que não reprova). Resumo `TESTES ok=<n> falhas=<n> pulados=<n> conhecidos=<n>`; código 0 sem falha, 1 com falha, 2 sem Node ou sem `npm ci`. É o mesmo comando do CI (`.github\workflows\testes.yml`).
+
 ## 12. Fora do escopo
 
 - Download automático pela API da CurseForge (pede chave). Revogada em 2026-11-05 a regra de o dono clicar: o agente baixa de fonte pública (Wago, GitHub) e só cai no clique do dono quando a CurseForge é a única fonte, porque ela recusa cliente automático.
