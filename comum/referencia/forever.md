@@ -109,6 +109,14 @@ Levantamento para o guia de habilidades de pet do GuiaForever (seção 10 do `AR
 | Quem ensina cada rank não está no cliente (a tabela CreatureSpellData não existe no `wowf`); só em dados coletados por jogadores: o repositório Jazzman1976/Forever-Hunter-Pets (MIT, sha `ff5eefb`, de 07/11) e a Petopia Forever (sem licença aberta). Nos 76 ranks que as duas cobrem, nível do pet e custo batem | [local] | `modder\ferramentas\guia\pets\professores.json` |
 | Addons prontos com ranks e professores: Hunter's Field Guide (Alezyzz, 0.7.0 de 07/11, Forever e Era, 639 feras), Hunter Pet Atlas (1.2.0 de 06/10, com pontos de treino e pinos no mapa), vanThos Pet Compendium (1.0.4 de 06/11) e Forever Bestiary (Pet Hunter) (0.7.0 de 20/10, sem atualização depois do lançamento) | [página] | páginas de cada um na CurseForge |
 
+## Casas de leilão por ruleset (lido em 2026-11-26)
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| Sem reinos: uma casa de leilão por região, ruleset e facção, mais a Blackwater (neutra) de cada ruleset. Rulesets na API: 1 PvP, 2 Normal, 3 Roleplay, 15 Roleplay PvP; o Hardcore vem depois do lançamento | [página] | conquestcapped (wow-forever-auction-house, 16/11); repositório `jofri99/forever-ah-flip`, `docs/forever-api.md` (medido em 14/11); news.blizzard.com/article/24302070 |
+| Números das casas, os mesmos nos EUA e na EU: Aliança 110, 111, 112, 119, 123; Horda 113, 114, 115, 120, 124; Blackwater 116, 117, 118, 121, 125; 112, 115 e 118 vazias, 122 não existe. O arquivo público `quest-murder-prices` traz `ruleset=1` em todas, então o campo não identifica o ruleset | [local] | `index.txt` e cabeçalhos de `us-*.txt` do release `current`, 26/11 |
+| Horda: 113 é PvP e 114 é Normal, medido na EU contra os dados do TSM (100% dos preços iguais); outro coletor publica "EU PvP Horde (house 113)". O resto segue a posição no bloco de três (PvP, Normal, vazia): Aliança 110 PvP e 111 Normal, Blackwater 116 PvP e 117 Normal. 119 a 121 e 123 a 125 são os dois Roleplay, sem saber qual é qual. Nos EUA a ordem é inferida pela mesma numeração, não medida; bate com a casa do dono (us-111, conferida contra a tela dele em 16/11) ser a Aliança Normal | [página] | `jofri99/forever-ah-flip` `docs/forever-api.md`; `prismicious/forever-auction-feed` README |
+
 ## Fontes
 
 - Warcraft Wiki, Patch 1.60.1: https://warcraft.wiki.gg/wiki/Patch_1.60.1
