@@ -698,7 +698,9 @@ tempo; o `Planejador.lua` não mudou). Nada da caça rodou no jogo ainda.
 ### 13.2 Corrida perdida e contador (0.4.0, mesma madrugada)
 
 - No jogo, quando outro compra entre a cotação e a confirmação, o cliente mostra "Internal auction error" (visto pelo
-  dono em 26/11/2026, umas 10 vezes; chega como `AUCTION_HOUSE_SHOW_ERROR`, não como `COMMODITY_PURCHASE_FAILED`).
+  dono em 26/11/2026, umas 10 vezes). Corrigido em 26/11/2026: a primeira versão desta linha dizia, por palpite, que ele
+  chegava como `AUCTION_HOUSE_SHOW_ERROR`; a medida da seção 13.4 mostrou 10 recusas pelo `COMMODITY_PURCHASE_FAILED`
+  e nenhuma pelo `AUCTION_HOUSE_SHOW_ERROR`.
   Na caça, os dois caminhos chamam `ns.cacaPerdeu()`: soma `ns.caca.perdidas`, apaga a escada e busca de novo,
   encadeado no evento do clique de confirmar, para o aperto seguinte já cotar. Fora da caça, nada muda.
 - Painel da caça: "Searches N | lost M | last X s ago" (`ns.caca.buscas`, `perdidas`, `ultimaBusca`; zeram em item
@@ -718,7 +720,7 @@ tempo; o `Planejador.lua` não mudou). Nada da caça rodou no jogo ainda.
   `ns.abortarBuscaCaca()` (encerra só sessão `umaPagina`) e busca de novo. Busca não é ação: o I1 não muda.
 - `ns.caca.resposta`: segundos do aperto até a escada chegar (inclui a espera da fila do cliente); o painel mostra
   "Searches N | lost M | resp R s | last X s ago". Os 2 s e os 3 s são palpites; afinar com o `resp` do jogo.
-- Bancada: `compra-21`; rodada `compra` 22 e `rota` 29, 0 erros. Ainda não rodou no jogo.
+- Bancada: `compra-21`; rodada `compra` 22 e `rota` 29, 0 erros. Rodou no jogo no fim de 26/11/2026: o dono achou "muito mais rápido e responsivo", com três recusas em cerca de 2 s (três cotações no intervalo em que antes cabia uma espera de até 6 s).
 
 ### 13.4 Cronômetro da compra (0.4.0, mesma madrugada)
 
