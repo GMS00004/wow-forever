@@ -96,9 +96,22 @@ export function acharProfissao(v) {
   return null;
 }
 
+// O instalacao.json do jogador ativo (jogadores\<apelido>\, o mesmo dos scripts de PowerShell; so leitura).
+export async function lerInstalacao() {
+  const j = jogadorAtivo();
+  if (!j) throw new Error('nenhum jogador ativo neste PC: crie a sua pasta com modder\\ferramentas\\jogador.ps1 -Novo <apelido> -Aplicar');
+  const arq = path.join(j.pasta, 'instalacao.json');
+  try {
+    return JSON.parse((await readFile(arq, 'utf8')).replace(/^﻿/, ''));
+  } catch (e) {
+    if (e.code === 'ENOENT') throw new Error(`instalacao nao configurada (${arq} nao existe): rode o bootstrap do wow-modder`);
+    throw e;
+  }
+}
+
 // Pasta Interface\AddOns do Forever, a partir do instalacao.json (so leitura).
 export async function pastaAddOns() {
-  const inst = JSON.parse(await readFile(path.resolve(RAIZ_MODDER, '..', 'comum', 'instalacao.json'), 'utf8'));
+  const inst = await lerInstalacao();
   return path.join(inst.raiz, inst.flavor || '_forever_', 'Interface', 'AddOns');
 }
 
@@ -148,8 +161,8 @@ export async function tabela(nome, colunas = []) {
 
 // Pasta SavedVariables da conta (o nome da pasta da conta nao e gravado em arquivo do projeto).
 export async function pastaSavedVariables() {
-  const inst = JSON.parse(await readFile(path.resolve(RAIZ_MODDER, '..', 'comum', 'instalacao.json'), 'utf8'));
-  const contas = path.join(inst.raiz, '_forever_', 'WTF', 'Account');
+  const inst = await lerInstalacao();
+  const contas = path.join(inst.raiz, inst.flavor || '_forever_', 'WTF', 'Account');
   const achadas = [];
   for (const d of await readdir(contas, { withFileTypes: true })) {
     if (d.isDirectory() && d.name !== 'SavedVariables') achadas.push(path.join(contas, d.name, 'SavedVariables'));
