@@ -325,6 +325,26 @@ local function rotasDados()
   return type(d) == "table" and type(d.rotas) == "table" and d.rotas or {}
 end
 
+-- Alvos da modalidade de rota (secao 12.3): 150 e 225 sempre; os de cima so quando a rota gerada chega la
+-- (o ate de algum trecho de rotas.profs[slug]), porque sem trecho o plano so diria "lacuna".
+local ALVOS = { 150, 225, 250 }
+local function alvosDe(slug)
+  local rotas = rotasDados()
+  local p = type(rotas.profs) == "table" and rotas.profs[slug]
+  local topo = 225
+  if type(p) == "table" and type(p.trechos) == "table" then
+    for _, t in ipairs(p.trechos) do
+      if type(t) == "table" and type(t.ate) == "number" and t.ate > topo then topo = t.ate end
+    end
+  end
+  local lista = {}
+  for _, a in ipairs(ALVOS) do
+    if a <= topo then lista[#lista + 1] = a end
+  end
+  return lista
+end
+ns.alvosDe = alvosDe
+
 function ns.modosDisponiveis()
   local lista = { { tipo = "lucro" } }
   local rotas = rotasDados()
@@ -332,8 +352,9 @@ function ns.modosDisponiveis()
   local algum = next(prof) ~= nil
   for _, p in ipairs(ns.PROFS) do
     if type(rotas.profs) == "table" and rotas.profs[p.slug] and (not algum or prof[p.slug]) then
-      lista[#lista + 1] = { tipo = "rota", prof = p.slug, alvo = 150 }
-      lista[#lista + 1] = { tipo = "rota", prof = p.slug, alvo = 225 }
+      for _, a in ipairs(alvosDe(p.slug)) do
+        lista[#lista + 1] = { tipo = "rota", prof = p.slug, alvo = a }
+      end
     end
   end
   return lista
@@ -727,13 +748,23 @@ local function comandoModo(arg)
   end
   local p = achaProf(a)
   if not p then
-    dizer("usage: /compra mode [profit | <profession> [150|225]]")
+    dizer("usage: /compra mode [profit | <profession> [150|225|250]]")
     return
   end
-  local alvo = 150
+  local alvos = alvosDe(p.slug)
+  local alvo = alvos[1]
   if b ~= "" then
     alvo = tonumber(b)
-    if alvo ~= 150 and alvo ~= 225 then dizer("target must be 150 or 225") return end
+    local ok = false
+    for _, a in ipairs(alvos) do
+      if a == alvo then ok = true end
+    end
+    if not ok then
+      local txt = tostring(alvos[#alvos])
+      if #alvos > 1 then txt = table.concat(alvos, ", ", 1, #alvos - 1) .. " or " .. txt end
+      dizer("target must be " .. txt)
+      return
+    end
   end
   local rotas = rotasDados()
   if not (type(rotas.profs) == "table" and rotas.profs[p.slug]) then
@@ -827,7 +858,7 @@ local function comando(msg)
     cfg.duracao = v
     dizer("dur " .. v)
   else
-    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | mode [profit|<prof> [150|225]] | tolerance [0-100] | margin [0-50] | steps | sonda [prof] | watch | unwatch | hunt | key | bait | baitkey | post | sell | duration]")
+    dizer("/compra [reserva <valor> | desconto <0-99> | lucro <valor> | grande <valor> | pequena <valor> | mode [profit|<prof> [150|225|250]] | tolerance [0-100] | margin [0-50] | steps | sonda [prof] | watch | unwatch | hunt | key | bait | baitkey | post | sell | duration]")
   end
 end
 

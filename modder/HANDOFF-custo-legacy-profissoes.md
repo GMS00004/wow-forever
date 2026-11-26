@@ -1,10 +1,10 @@
 ---
 frente: custo-legacy-profissoes
 status: ativa
-atualizado: 2026-11-24T00:30-03:00
+atualizado: 2026-11-26T12:55-03:00
 maquina: Avell
 temas: [jogos, analise-dados]
-proximo_passo: "Quando o dono avisar que o Hexumlite está perto do nível 35: Full novo e /reload; o agente liga o modo LW 250 no CompraForever (Nucleo.lua aceita alvo 250 em modosDisponiveis e no /compra mode) e regera a rota com estimativas.mjs --ate 250 --marcos 150,225, o que também volta os preços da Tigerseye ao normal; bancada, testar-rota e checar-dados antes de entregar. Caminho recomendado em dados\\pregao\\relatorios\\lw250-caminho-2026-11-23.md"
+proximo_passo: "Modo LW 250 feito em 26/11 (CompraForever 0.4.1, rota regerada ate o 250 com a foto publica das 11h26; Tigerseye normal). Falta o teste no jogo: /reload, /compra mode lw 250, alvos de compra no diario do estado.md de 26/11; depois ler a SV e gravar o observado"
 decisoes_abertas: 3
 commit: 990b5e2
 sensivel: false

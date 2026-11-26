@@ -166,18 +166,24 @@ function checarRotas(rot) {
   const ref = (id, onde) => { if (!temItem(id)) falha(`(i) ${onde} ${id} ausente em rotas.itens`); };
   let trechos = 0, passos = 0;
 
-  // (g) versao, as seis profissoes, dois trechos: 1 de 1 ate chegar a 150; 2 do fim do 1 ate 225.
+  // (g) versao, as seis profissoes, dois ou tres trechos: 1 de 1 ate chegar a 150; 2 do fim do 1 ate 225; o 3, se houver
+  // (--ate 250 --marcos 150,225), do fim do 2 ate o ate dele (AVISO se a rota parar antes).
   if (rot.versao !== 1) falha(`(g) rotas.versao = ${rot.versao}, esperado 1`);
   for (const slug of SLUGS) {
     const p = profs[slug];
     if (!p) { falha(`(g) rotas.profs.${slug} ausente`); continue; }
     const tr = p.trechos ?? [];
     trechos += tr.length;
-    if (tr.length !== 2) { falha(`(g) ${slug}: ${tr.length} trecho(s), esperado 2`); continue; }
-    const [t1, t2] = tr;
+    if (tr.length !== 2 && tr.length !== 3) { falha(`(g) ${slug}: ${tr.length} trecho(s), esperado 2 ou 3`); continue; }
+    const [t1, t2, t3] = tr;
     if (t1.de !== 1) falha(`(g) ${slug}: trecho 1 comeca em ${t1.de}, esperado 1`);
     if (t2.de !== t1.ate) falha(`(g) ${slug}: trecho 2 comeca em ${t2.de}, esperado ${t1.ate} (fim do trecho 1)`);
     if (t2.chegou !== 225) falha(`(g) ${slug}: trecho 2 chega ao ${t2.chegou}, esperado 225`);
+    if (t3) {
+      if (t3.de !== t2.ate) falha(`(g) ${slug}: trecho 3 comeca em ${t3.de}, esperado ${t2.ate} (fim do trecho 2)`);
+      if (!(t3.ate > t3.de)) falha(`(g) ${slug}: trecho 3 de ${t3.de} ate ${t3.ate}`);
+      else if (t3.chegou !== t3.ate) console.log(`AVISO ${slug}: trecho 3 chega ao ${t3.chegou}, alvo ${t3.ate}`);
+    }
 
     // (h) passos contiguos de de a chegou; cada magia de passo existe, amarela < cinza, pontos > 0.
     for (const [i, t] of tr.entries()) {

@@ -53,7 +53,8 @@ return {
     { clique = "CompraForeverScan" },
     { ate_ocioso = true },
     { chamar = function(b) checarPlanoDeLucro(b, "antes de ir a rota") end },
-    -- vai a rota e volta (tres cliques: Profit -> LW 150 -> LW 225 -> Profit; so a Leatherworking esta gravada)
+    -- vai a rota e volta (quatro cliques: Profit -> LW 150 -> LW 225 -> LW 250 -> Profit; so a Leatherworking esta
+    -- gravada, e a rota real dela chega ao 250 desde a 0.4.1)
     { chamar = function(b)
       local n = 0
       for _, nome in ipairs(ACOES) do n = n + b.contar(nome) end
@@ -65,6 +66,7 @@ return {
       b.igual(b.ns.plano.modo, 2, "plano de rota")
       b.igual(CompraForeverModo:GetText(), b.ns.rotuloModo(b.ns.modo()), "rotulo do modo")
     end },
+    { clique = "CompraForeverModo" },
     { clique = "CompraForeverModo" },
     { clique = "CompraForeverModo" },
     { chamar = function(b)

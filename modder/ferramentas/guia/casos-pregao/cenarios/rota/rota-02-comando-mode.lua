@@ -48,6 +48,13 @@ return {
       b.igual(dizer(b, "mode eng abc"), { "CompraForever: target must be 150 or 225" }, "alvo texto invalido")
       b.igual(b.ns.modo(), { tipo = "rota", prof = "engineering", alvo = 150 }, "o modo nao mudou")
     end },
+    -- alvo 250 (0.4.1): so quando a rota gerada chega la; a Engineering do fixture para no 150, a Leatherworking real vai ao 250
+    { chamar = function(b)
+      b.igual(b.ns.alvosDe("engineering"), { 150, 225 }, "Eng sem trecho acima do 225")
+      b.igual(b.ns.alvosDe("leatherworking"), { 150, 225, 250 }, "LW com o trecho 225-250")
+      b.igual(dizer(b, "mode eng 250"), { "CompraForever: target must be 150 or 225" }, "eng 250 sem rota")
+      b.igual(b.ns.modo(), { tipo = "rota", prof = "engineering", alvo = 150 }, "o modo nao mudou com o 250 da Eng")
+    end },
     -- sem rota nos dados
     { chamar = function(b)
       CompraForeverDados.rotas.profs.tailoring = nil
@@ -75,7 +82,7 @@ return {
     -- uso e profit
     { chamar = function(b)
       local f = dizer(b, "mode xyz")
-      b.igual(f, { "CompraForever: usage: /compra mode [profit | <profession> [150|225]]" }, "uso")
+      b.igual(f, { "CompraForever: usage: /compra mode [profit | <profession> [150|225|250]]" }, "uso")
       b.igual(dizer(b, "mode profit"), { "CompraForever: mode Profit" }, "mode profit")
       b.igual(b.ns.modo(), { tipo = "lucro" }, "modo de lucro")
       b.igual(CompraForeverCharDB.modo, { tipo = "lucro" }, "lucro gravado")

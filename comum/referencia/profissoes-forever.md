@@ -97,6 +97,15 @@ Fonte máxima de Leatherworking por decisão do dono (2026-11-13). Vídeo de 202
 | Padrões da rota: Gem-studded Leather Belt com Rikqiz (Booty Bay); Wicked Leather Gauntlets com Leonard Porter (Western Plaguelands); Heavy Scorpid Bracers e Helm com Zannok Hidepiercer (Silithus); Wicked Leather Bracers caem do Legashi Rogue (Azshara) | [página] | cartões 04:20 e 05:47 |
 | Cured Rugged Hide: o autor marca "conferir no treinador aos 225" e rende 2 por craft | [página] | cartão 05:23 |
 
+## Salt Shaker e o Leatherworking do 225 ao 250 (conferido em 2026-11-26)
+
+| Fato | Marca | Fonte |
+|---|---|---|
+| O Salt Shaker (item 15846) pede Leatherworking 250 para usar (perícia exigida 250 na linha 165) | [local] | tabela ItemSparse do cliente 1.60.1.71037, em `modder\dados\pregao\cache\` |
+| O Pattern: Chimeric Gloves (15729, perícia 240) é de vendedor: Blimo Gadgetspring, neutro, Azshara (mapa 1447) em 45.2, 90.8; preço de vendedor 1g 20s. Não estava no leilão na foto pública das 11h26 de 26/11. Se o estoque é limitado, a fonte não diz | [local] | Naowh Forever 1.4.11 (`NaowhForever_Professions\Data\RecipeData.lua`) e ItemSparse 1.60.1.71037 |
+| O Pattern: Tough Scorpid Leggings (8401, perícia 220) é de drop pelo Naowh; no leilão ficou entre 12s 84c e 13s 97c de mínimo diário de 16 a 25/11 | [local] | Naowh 1.4.11 e as fotos públicas us-111 (`tendencia.mjs --item 8401`) |
+| Preço de vendedor sem desconto: Silken Thread 5s, Heavy Silken Thread 20s, Rune Thread 50s; venda ao vendedor: Nightscape Pants 87s 08c, Tough Scorpid Leggings 1g 27s 04c, Chimeric Gloves 68s 67c | [local] | ItemSparse 1.60.1.71037 (BuyPrice e SellPrice) |
+
 ## Tanning Rack (conferido em 2026-11-17)
 
 | Fato | Marca | Fonte |

@@ -138,7 +138,7 @@ Vale com `/reload` (nenhum arquivo novo no TOC).
 ## Modalidade de rota (subir profissão)
 
 Desde a 0.3.0 há uma segunda modalidade. A de rota sobe uma profissão de ofício (Alchemy, Blacksmithing, Enchanting,
-Engineering, Leatherworking ou Tailoring) do nível atual até o 150 ou o 225, seguindo a rota da ferramenta. O botão
+Engineering, Leatherworking ou Tailoring) do nível atual até o 150, o 225 ou (desde a 0.4.1) o 250, seguindo a rota da ferramenta. O botão
 grande compra, crafta e vende como no lucro, mas o plano é a rota, não o lucro, e o painel diz sempre o próximo passo.
 
 Como escolher:
@@ -147,7 +147,8 @@ Como escolher:
 2. Clique no botão `CompraForeverModo`, no alto do painel, até aparecer, por exemplo, `Eng 150`. Clique esquerdo vai
    para o próximo modo; clique direito volta. `Profit` é a modalidade de lucro.
 3. Ou digite `/compra mode eng 150`. A profissão aceita o nome, a sigla (`alch`, `bs`, `ench`, `eng`, `lw`, `tail`) ou o
-   nome em inglês. O alvo é 150 ou 225; sem alvo, vale 150.
+   nome em inglês. O alvo é 150, 225 ou 250 (o 250 só aparece quando a rota gerada chega lá; pede o Artisan, nível 35);
+   sem alvo, vale 150. Exemplo: `/compra mode lw 250`.
 4. Se aparecer "not seen on this character: open it once", o modo fica escolhido mesmo assim. O painel então pede
    `NEXT: open <Prof> once`: abra a profissão.
 
@@ -209,7 +210,7 @@ Comandos da rota:
 |---|---|
 | `/compra mode` | mostra o modo atual e os disponíveis |
 | `/compra mode profit` | volta para a modalidade de lucro |
-| `/compra mode <prof> [150\|225]` | escolhe a rota de uma profissão, como `/compra mode eng 150` (alvo padrão 150) |
+| `/compra mode <prof> [150\|225\|250]` | escolhe a rota de uma profissão, como `/compra mode eng 150` ou `/compra mode lw 250` (alvo padrão 150) |
 | `/compra tolerance [0-100]` | folga sobre o teto da rota, em % (padrão 10) |
 | `/compra margin [0-50]` | quantidade a mais comprada, em % (padrão 0) |
 | `/compra steps` | imprime os passos da rota do modo atual, com feito, agora e próximo |

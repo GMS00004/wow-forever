@@ -378,8 +378,10 @@ do item na rota e ainda não vendeu: só isso pode ser vendido (12.5).
 - `ns.modo()` devolve `CompraForeverCharDB.modo` ou `{ tipo = "lucro" }`. `ns.definirModo(m)` grava, chama
   `ns.replanejar()` e `ns.atualizarPainel()`. `ns.profDoModo()`: `modo.prof` na rota, `"leatherworking"` no lucro.
 - `ns.modosDisponiveis()`: `{ tipo = "lucro" }` e, para cada profissão de `ns.PROFS` com `CompraForeverDados.rotas.profs[slug]`
-  e com `prof[slug]` gravado, `{ tipo = "rota", prof = slug, alvo = 150 }` e o mesmo com 225. Sem nenhum `prof` gravado,
-  entram as seis. `ns.rotuloModo(m)`: `"Profit"`, ou `curto .. " " .. alvo` (`"Eng 150"`).
+  e com `prof[slug]` gravado, um `{ tipo = "rota", prof = slug, alvo = a }` por alvo de `ns.alvosDe(slug)`. Sem nenhum
+  `prof` gravado, entram as seis. `ns.alvosDe(slug)` (0.4.1): os de `{ 150, 225, 250 }` até o maior `ate` dos trechos da
+  rota da profissão, nunca abaixo de 225 (150 e 225 sempre; o 250 só com o trecho 225-250, gerado por
+  `estimativas.mjs --ate 250 --marcos 150,225`). `ns.rotuloModo(m)`: `"Profit"`, ou `curto .. " " .. alvo` (`"Eng 150"`).
 - `ns.replanejar()` no modo de rota chama `ns.planejarRota(ns.entradaRota())` mesmo sem `ns.scan` (craft e venda
   funcionam logo depois de um `/reload`; sem scan, as linhas de leilão viram "Scan at the AH"); guarda em `ns.plano` e
   não grava `CompraForeverCharDB.plano`. No lucro, o de hoje.
@@ -390,9 +392,10 @@ do item na rota e ainda não vendeu: só isso pode ser vendido (12.5).
   margem = cfg.margem, escadas = ns.scan and ns.scan.escadas or {}, credito = rotas.credito ~= false,
   credVenda = CompraForeverCharDB.rota[slug].credito, fonte = rotas.fonte, ultimoFull = CompraForeverDB.ultimoFull,
   agora = time() }`. `ns.estoqueBolsa` é exportado pelo `Compra.lua` (a contagem só das bolsas).
-- Comandos (`/compra`): `mode` (imprime o modo e os disponíveis); `mode profit`; `mode <prof> [150|225]` com `<prof>`
-  sendo slug, nome ou curto, sem diferenciar maiúsculas (`eng`, `engineering`, `bs`...), alvo padrão 150; respostas
-  `target must be 150 or 225`, `no route for <Prof>: ask for an estimate`, `<Prof> not seen on this character: open it
+- Comandos (`/compra`): `mode` (imprime o modo e os disponíveis); `mode profit`; `mode <prof> [150|225|250]` com `<prof>`
+  sendo slug, nome ou curto, sem diferenciar maiúsculas (`eng`, `engineering`, `bs`...), alvo padrão 150 (o primeiro de
+  `ns.alvosDe`); respostas `target must be 150 or 225` (a lista de `ns.alvosDe` da profissão: `150, 225 or 250` com o
+  trecho 225-250), `no route for <Prof>: ask for an estimate`, `<Prof> not seen on this character: open it
   once` (aceita o modo assim mesmo); `tolerance [0-100]`; `margin [0-50]`; `steps` (imprime os passos da rota do modo
   com `done`, `now` e `next`); `sonda prof` (12.8). A linha de uso inclui os novos.
 
