@@ -4,7 +4,7 @@
 import { pathToFileURL } from 'node:url';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda, pastaSavedVariables, arqReceitas, acharProfissao, PROFISSOES } from './comum.mjs';
+import { ARQ_RECEITAS, ARQ_PRECOS, lerJson, moeda, pastaSavedVariables, arqReceitas, acharProfissao, PROFISSOES, faccao } from './comum.mjs';
 import { calcular, comDesconto, lerDesconto, DESCONTO_VENDEDOR, aprendeTxt } from './crafts.mjs';
 
 const JANELA_AUCTIONATOR = 21600; // segundos: a exportacao do Auctionator so vale ate 6 horas (como no crafts.mjs)
@@ -201,8 +201,10 @@ export function calcularRota(receitas, precos, opcoes) {
 // conhecida: o personagem ja sabe (opcoes.conhecidas, um Set de magias); treinador: receita sem item;
 // vendedor: o padrao esta na lista de itens de vendedor; leilao: anunciado agora (exportacao do
 // Auctionator com ate 6 horas e idade 0, ou a foto publica); fora: nenhum dos anteriores.
+// opcoes.lado ("A" ou "H") e a faccao dos vendedores que contam; sem ele, a do jogador (faccao() em comum.mjs).
 export function situacaoPadroes(receitas, precos, opcoes) {
   const { agora } = opcoes;
+  const lado = opcoes.lado || faccao().letra;
   const conhecidas = opcoes.conhecidas || new Set();
   const vendedor = new Set(precos.vendedor || []);
   const auc = precos.auctionator && agora - precos.auctionator.em <= JANELA_AUCTIONATOR ? precos.auctionator.itens : null;
@@ -228,9 +230,9 @@ export function situacaoPadroes(receitas, precos, opcoes) {
     const base = { id: ir.id, nome: ir.nome };
     const pub = precos.publico?.itens?.[chave(ir.id)];
     const a = auc?.[chave(ir.id)];
-    // Com o Naowh, padrao de vendedor so conta se algum vendedor dele e da Alianca ou neutro ("A" ou "AH").
-    const aliancaVende = !nw || !nw.lados || nw.lados.length === 0 || nw.lados.some((x) => x.includes('A'));
-    if (vendedor.has(ir.id) && ir.compra > 0 && aliancaVende) {
+    // Com o Naowh, padrao de vendedor so conta se algum vendedor dele e da faccao do jogador ou neutro ("A", "H" ou "AH").
+    const ladoVende = !nw || !nw.lados || nw.lados.length === 0 || nw.lados.some((x) => x.includes(lado));
+    if (vendedor.has(ir.id) && ir.compra > 0 && ladoVende) {
       mapa.set(r.magia, { ...base, situacao: 'vendedor', preco: ir.compra });
     } else if (a && a.idadeDias === 0) {
       mapa.set(r.magia, { ...base, situacao: 'leilao', preco: a.preco, listados: pub ? pub.unid : null });

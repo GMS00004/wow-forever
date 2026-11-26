@@ -121,7 +121,8 @@ Ele só lê preço pela API pública do Auctionator e grava na chave `ah` do ban
 em 2026-11-16 às 15h04 e exportou 6.876 preços, 6.654 deles com idade 0. Se um dia der erro,
 `/run for k in pairs(Auctionator.API.v1) do print(k) end` lista os nomes reais.
 
-A casa pública do dono é a `us-111`: em 2026-11-16, o percentil 25 e a mediana de Heavy Leather do arquivo das
+Desde 2026-11-26 a casa vem do jogador ativo (seção 11); os exemplos deste contrato usam a do Bruno.
+A casa pública do Bruno é a `us-111`: em 2026-11-16, o percentil 25 e a mediana de Heavy Leather do arquivo das
 14h17 (2s 11c e 2s 12c, com 7.115 unidades) batem com a tela do leilão dele (2s 11c e 2s 13c, com 7.229). A
 `us-110` foi escolhida primeiro por engano, comparando a tela com um arquivo duas horas mais velho. A
 exportação do Auctionator confirmou: dos 6.448 itens em comum, 86% diferem em até 5% do mínimo da `us-111`, com
@@ -866,3 +867,28 @@ quantidades a partir da perícia real. Mudanças no `legado.mjs`, todas com test
 
 O Full vale 6 horas (`comFullCompra`); depois disso a conta cai na foto pública, e agora isso fica escrito em
 `rotas.fonte`, que o painel do addon mostra.
+
+## 11. Casa de leilão e facção do jogador (2026-11-26)
+
+Até 2026-11-26 a casa era a constante `us-111` (a Aliança Normal do Bruno) e o filtro de padrão de vendedor só
+aceitava vendedor da Aliança. Agora as duas coisas saem do jogador, pelas funções de `comum.mjs`:
+
+| Função | Ordem de leitura | Sem nada |
+|---|---|---|
+| `casaPublica()` | `--casa <id>` na linha de comando, a variável `WOW_CASA`, o `casaLeilao` do `jogador.json` do jogador ativo | erro, dizendo onde pôr a casa |
+| `faccao()` | `--faccao <Horde\|Alliance>`, a variável `WOW_FACCAO`, o `faccao` do `jogador.json` | Aliança, com um aviso no stderr |
+| `jogadorAtivo()` | o `jogador-ativo.txt` da raiz do repositório (o mesmo dos scripts de PowerShell; `WOWAGENTE_REPO` nos testes) | `null` |
+
+- O mapa das casas por região, ruleset e facção está em `comum\referencia\forever.md` (seção "Casas de leilão
+  por ruleset"): a Horda PvP é a 113, e a Horda Normal, a 114.
+- `baixar-precos.mjs`, `coletar-foto.mjs` e `tendencia.mjs` usam `casaPublica()` nos nomes de arquivo
+  (`<casa>.txt`, `<casa>-sales.txt`, `<casa>-history.txt`, `<casa>-<snapshot>.txt.gz`); o `precos.json`
+  guarda a casa em `publico.casa`, e o relatório do `legado.mjs` escreve a casa de onde vieram os preços.
+- `situacaoPadroes` (em `rota.mjs`) conta o padrão de vendedor só com vendedor do lado do jogador ou neutro
+  (`opcoes.lado`, `"A"` ou `"H"`; sem ele, `faccao().letra`).
+- O scan do Auctionator e o Full do CompraForever (seções 4 e 10.9) vêm do jogo de quem roda, então são sempre da
+  facção dele. Para calcular a casa de outra facção (uma tabela para um amigo, por exemplo), o scan não serve; ainda
+  não há parâmetro que o pule (a sessão de 2026-11-26 usou uma cópia da ferramenta sem os scans), e isso está como
+  issue no repositório.
+- Os testes que usam dados de exemplo fixam `WOW_CASA=us-111` e `WOW_FACCAO=Alliance` no começo, para não
+  depender do jogador ativo de quem roda.

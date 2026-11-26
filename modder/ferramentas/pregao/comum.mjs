@@ -1,6 +1,7 @@
 // Funcoes comuns das ferramentas de precos e receitas do PregaoForever (fora do jogo).
 // Node 24, sem dependencias. Contrato em CONTRATO.md, nesta pasta.
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { readFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,13 +9,70 @@ import { fileURLToPath } from 'node:url';
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
 export const BUILD = '1.60.1.71037';
 export const RAIZ_MODDER = path.resolve(AQUI, '..', '..');
+export const RAIZ_REPO = path.resolve(RAIZ_MODDER, '..');
 export const DADOS = path.join(RAIZ_MODDER, 'dados', 'pregao');
 export const CACHE = path.join(DADOS, 'cache');
 export const PUBLICO = path.join(DADOS, 'publico');
 export const ARQ_RECEITAS = path.join(DADOS, 'receitas-lw.json');
 export const ARQ_PRECOS = path.join(DADOS, 'precos.json');
-export const CASA_PUBLICA = 'us-111';
 export const URL_PUBLICA = 'https://github.com/RuslanMunasipov/quest-murder-prices/releases/download/current';
+
+// ---------- jogador ativo, casa de leilao e faccao (CONTRATO.md desta pasta, secao 11) ----------
+
+// O mesmo jogador-ativo.txt que os scripts de PowerShell leem (raiz do repositorio, fora do git): a primeira
+// linha util e o apelido de uma pasta em jogadores\ ou um caminho completo. Devolve { apelido, pasta } ou null.
+export function jogadorAtivo() {
+  const raiz = process.env.WOWAGENTE_REPO || RAIZ_REPO;
+  const arq = path.join(raiz, 'jogador-ativo.txt');
+  if (!existsSync(arq)) return null;
+  const linha = readFileSync(arq, 'utf8').replace(/^﻿/, '').split(/\r?\n/)
+    .map((l) => l.trim()).find((l) => l && !l.startsWith('#'));
+  if (!linha) return null;
+  const pasta = path.isAbsolute(linha) ? linha : path.join(raiz, 'jogadores', linha);
+  return { apelido: path.basename(pasta), pasta };
+}
+
+// O jogador.json do jogador ativo, ou null.
+export function perfilJogador() {
+  const j = jogadorAtivo();
+  if (!j) return null;
+  const arq = path.join(j.pasta, 'jogador.json');
+  if (!existsSync(arq)) return null;
+  return JSON.parse(readFileSync(arq, 'utf8').replace(/^﻿/, ''));
+}
+
+function argumento(nome) {
+  const i = process.argv.indexOf(`--${nome}`);
+  return i >= 0 ? process.argv[i + 1] : undefined;
+}
+
+// Casa de leilao das ferramentas de preco (o arquivo publico <casa>.txt), nesta ordem: --casa <id> na linha de
+// comando, a variavel WOW_CASA ou o casaLeilao do jogador.json do jogador ativo. O mapa por faccao e tipo de
+// reino esta em comum\referencia\forever.md. Sem nenhum dos tres, erro com o que fazer.
+let casaLida = null;
+export function casaPublica() {
+  if (casaLida) return casaLida;
+  const v = argumento('casa') || process.env.WOW_CASA || perfilJogador()?.casaLeilao;
+  if (!v) throw new Error('casa de leilao nao definida: ponha o "casaLeilao" no jogador.json da sua pasta em jogadores\\, passe --casa us-NNN ou defina WOW_CASA (mapa das casas em comum\\referencia\\forever.md)');
+  if (!/^[a-z]{2}-\d+$/.test(v)) throw new Error(`casa de leilao invalida: ${v} (o formato e regiao-numero, como us-113)`);
+  casaLida = v;
+  return v;
+}
+
+// Faccao do jogador, para os padroes de vendedor (os lados "A", "H" e "AH" do Naowh), nesta ordem: --faccao, a
+// variavel WOW_FACCAO ou o faccao do jogador.json. Sem nenhum, Alianca, com um aviso no stderr.
+let faccaoLida = null;
+export function faccao() {
+  if (faccaoLida) return faccaoLida;
+  const v = String(argumento('faccao') || process.env.WOW_FACCAO || perfilJogador()?.faccao || '').trim().toLowerCase();
+  if (['horde', 'horda', 'h'].includes(v)) faccaoLida = { letra: 'H', nome: 'Horda' };
+  else if (['alliance', 'alianca', 'aliança', 'a'].includes(v)) faccaoLida = { letra: 'A', nome: 'Alianca' };
+  else {
+    console.error('aviso: faccao nao definida (jogador.json, --faccao ou WOW_FACCAO); usando Alianca');
+    faccaoLida = { letra: 'A', nome: 'Alianca' };
+  }
+  return faccaoLida;
+}
 
 // As seis profissoes de oficio que dao Legacy point, pelo ID da tabela SkillLine do cliente (CONTRATO.md, secao 10).
 export const PROFISSOES = {

@@ -3,7 +3,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ARQ_PRECOS, CASA_PUBLICA, lerJson } from '../comum.mjs';
+import { ARQ_PRECOS, casaPublica, lerJson } from '../comum.mjs';
 
 const aqui = path.dirname(fileURLToPath(import.meta.url));
 const erros = [];
@@ -25,7 +25,7 @@ if (typeof lerExportacao === 'function') {
 const p = await lerJson(ARQ_PRECOS);
 exige(p.esquema === 1, 'esquema');
 const pub = p.publico || {};
-exige(pub.casa === CASA_PUBLICA, `casa: ${pub.casa}`);
+exige(pub.casa === casaPublica(), `casa: ${pub.casa}`);
 const idadeFotoH = (Date.now() / 1000 - pub.foto) / 3600;
 exige(Number.isInteger(pub.foto) && idadeFotoH >= 0 && idadeFotoH < 6, `foto com ${idadeFotoH.toFixed(1)} h`);
 const itens = pub.itens || {};

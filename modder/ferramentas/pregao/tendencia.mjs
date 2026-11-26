@@ -9,7 +9,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import { pathToFileURL } from 'node:url';
-import { PUBLICO, ARQ_PRECOS, ARQ_RECEITAS, CASA_PUBLICA, lerJson, moeda, pastaSavedVariables, tabela } from './comum.mjs';
+import { PUBLICO, ARQ_PRECOS, ARQ_RECEITAS, casaPublica, lerJson, moeda, pastaSavedVariables, tabela } from './comum.mjs';
 import { lerCasa } from './baixar-precos.mjs';
 
 const TAXA = 0.95;          // o leilao cobra 5% sobre a venda: ganho = mediana de (med * 0.95 - min)
@@ -194,7 +194,7 @@ function vendasMedias(pub, id, janela) {
 }
 
 // ---------- fotos horarias (formato congelado do coletor) ----------
-// Le as fotos us-111-<snapshot>.txt.gz da pasta. Guarda so os itens pedidos (ids).
+// Le as fotos <casa>-<snapshot>.txt.gz da pasta (casa do jogador, casaPublica()). Guarda so os itens pedidos (ids).
 // Devolve { total, ilegiveis, lista: [{ snap, dia, hora, itens: Map<id, {min,p25,med,unid,lotes}>}] }, da mais antiga.
 async function lerFotos(pasta, ids) {
   let nomes;
@@ -202,7 +202,7 @@ async function lerFotos(pasta, ids) {
     if (e.code === 'ENOENT') nomes = [];
     else throw e;
   }
-  const re = new RegExp(`^${CASA_PUBLICA}-(\\d+)\\.txt\\.gz$`);
+  const re = new RegExp(`^${casaPublica()}-(\\d+)\\.txt\\.gz$`);
   const arqs = nomes
     .filter((n) => re.test(n))
     .map((n) => ({ arq: n, snap: Number(n.match(re)[1]) }))

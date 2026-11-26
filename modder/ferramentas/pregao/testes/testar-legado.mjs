@@ -5,6 +5,11 @@ import { calcular } from '../crafts.mjs';
 import { situacaoPadroes } from '../rota.mjs';
 import { lerTabelaLua, naowhDaProfissao, lerVendorReagents } from '../naowh.mjs';
 
+// Os casos usam dados de exemplo da casa us-111 (Alianca Normal): fixa a casa e a faccao para o resultado
+// nao depender do jogador ativo de quem roda (comum.mjs, casaPublica() e faccao()).
+process.env.WOW_CASA = 'us-111';
+process.env.WOW_FACCAO = 'Alliance';
+
 const erros = [];
 let campos = 0;
 const igual = (nome, real, esperado) => {

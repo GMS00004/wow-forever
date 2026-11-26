@@ -6,6 +6,11 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// Os casos usam dados de exemplo da casa us-111 (Alianca Normal): fixa a casa e a faccao para o resultado
+// nao depender do jogador ativo de quem roda (comum.mjs, casaPublica() e faccao()).
+process.env.WOW_CASA = 'us-111';
+process.env.WOW_FACCAO = 'Alliance';
+
 const aqui = path.dirname(fileURLToPath(import.meta.url));
 const mod = await import('../rota.mjs');
 const base = JSON.parse(await readFile(path.join(aqui, 'caso-base.json'), 'utf8'));

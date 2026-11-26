@@ -8,6 +8,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// Os casos usam dados de exemplo da casa us-111 (Alianca Normal): fixa a casa e a faccao para o resultado
+// nao depender do jogador ativo de quem roda (comum.mjs, casaPublica() e faccao()).
+process.env.WOW_CASA = 'us-111';
+process.env.WOW_FACCAO = 'Alliance';
+
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
 const TENDENCIA = path.resolve(AQUI, '..', 'tendencia.mjs');
 const HOJE = '2026-11-18';

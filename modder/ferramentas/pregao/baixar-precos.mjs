@@ -3,7 +3,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { PUBLICO, CASA_PUBLICA, ARQ_PRECOS, gravarJson, pastaSavedVariables, sha256, baixarTexto, lerKv } from './comum.mjs';
+import { PUBLICO, casaPublica, ARQ_PRECOS, gravarJson, pastaSavedVariables, sha256, baixarTexto, lerKv } from './comum.mjs';
 
 // Troca por espacos o conteudo de strings Lua que tem chaves e os comentarios "--".
 // O tamanho do texto nao muda, entao as posicoes continuam valendo. Assim as chaves contam certo.
@@ -109,8 +109,8 @@ async function lerCompraForever() {
 
 // Baixa o indice e os dois arquivos da casa; confere o SHA-256. Se nao bater, tenta uma vez de novo.
 async function baixarVerificado() {
-  const nomeCasa = `${CASA_PUBLICA}.txt`;
-  const nomeSales = `${CASA_PUBLICA}-sales.txt`;
+  const nomeCasa = `${casaPublica()}.txt`;
+  const nomeSales = `${casaPublica()}-sales.txt`;
   for (let tentativa = 1; tentativa <= 2; tentativa++) {
     const indice = await baixarTexto('index.txt');
     const linhas = indice.split(/\r?\n/).map(lerKv);
@@ -269,11 +269,11 @@ async function lerAuctionator() {
 
 // Baixa o historico diario (fora do index.txt, sem SHA-256) e le. Falha de download ou de validacao vira { erro }.
 async function baixarHistorico() {
-  const nome = `${CASA_PUBLICA}-history.txt`;
+  const nome = `${casaPublica()}-history.txt`;
   try {
     const texto = await baixarTexto(nome);
     await writeFile(path.join(PUBLICO, nome), texto);
-    return lerHistorico(texto, CASA_PUBLICA);
+    return lerHistorico(texto, casaPublica());
   } catch (e) {
     return { erro: String(e.message).replace(/[^\x20-\x7e]/g, '?') };
   }
@@ -323,8 +323,8 @@ async function principal() {
   const vendorsTexto = await baixarTexto('vendors.txt');
   await mkdir(PUBLICO, { recursive: true });
   await writeFile(path.join(PUBLICO, 'index.txt'), baixado.indice);
-  await writeFile(path.join(PUBLICO, `${CASA_PUBLICA}.txt`), baixado.casa);
-  await writeFile(path.join(PUBLICO, `${CASA_PUBLICA}-sales.txt`), baixado.sales);
+  await writeFile(path.join(PUBLICO, `${casaPublica()}.txt`), baixado.casa);
+  await writeFile(path.join(PUBLICO, `${casaPublica()}-sales.txt`), baixado.sales);
   await writeFile(path.join(PUBLICO, 'vendors.txt'), vendorsTexto);
 
   const casa = lerCasa(baixado.casa);
@@ -338,7 +338,7 @@ async function principal() {
     esquema: 1,
     geradoEm: new Date().toISOString(),
     publico: {
-      casa: CASA_PUBLICA,
+      casa: casaPublica(),
       foto: casa.foto,
       itens: casa.itens,
       saidas: vendas.saidas,

@@ -1,12 +1,13 @@
-// Guarda a foto horaria publica de precos do leilao (us-111) em --pasta, sem sobrescrever as anteriores.
-// Uso: node coletar-foto.mjs [--pasta <dir>] [--fonte <dir>]
-// --fonte le index.txt e us-111.txt desse diretorio (teste). Sem ele, baixa de URL_PUBLICA.
+// Guarda a foto horaria publica de precos do leilao (da casa do jogador, casaPublica() em comum.mjs) em --pasta,
+// sem sobrescrever as anteriores.
+// Uso: node coletar-foto.mjs [--pasta <dir>] [--fonte <dir>] [--casa us-NNN]
+// --fonte le index.txt e <casa>.txt desse diretorio (teste). Sem ele, baixa de URL_PUBLICA.
 // Saida: uma linha, igual a do coletor.log sem a data. Codigos: 0 novo/repetida, 1 erro, 2 sha256.
 import { readFile, writeFile, mkdir, appendFile, readdir } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { PUBLICO, URL_PUBLICA, CASA_PUBLICA, sha256, lerKv } from './comum.mjs';
+import { PUBLICO, URL_PUBLICA, casaPublica, sha256, lerKv } from './comum.mjs';
 
 const LIMITE_LOG = 2000;
 const ESPERA_SHA_MS = 20000;
@@ -61,16 +62,16 @@ async function registrar(pasta, tipo, detalhe) {
   return `${tipo} ${detalhe}`;
 }
 
-// Confere "#qmi 1" e devolve { snapshot, built, sha } da linha file=us-111.txt do index.
+// Confere "#qmi 1" e devolve { snapshot, built, sha } da linha file=<casa>.txt do index.
 function lerIndice(texto) {
   const linhas = texto.split(/\r?\n/);
   if (linhas[0].trim() !== '#qmi 1') throw new ErroColeta('index.txt sem #qmi 1');
   const kvs = linhas.map(lerKv);
   const built = kvs.find((kv) => kv.built !== undefined)?.built;
-  const casa = kvs.find((kv) => kv.file === `${CASA_PUBLICA}.txt`);
+  const casa = kvs.find((kv) => kv.file === `${casaPublica()}.txt`);
   if (!/^\d+$/.test(built ?? '')) throw new ErroColeta('index.txt sem built=');
   if (!casa || !/^\d+$/.test(casa.snapshot ?? '') || !/^[0-9a-f]{64}$/.test(casa.sha256 ?? '')) {
-    throw new ErroColeta(`index.txt sem linha valida de ${CASA_PUBLICA}.txt`);
+    throw new ErroColeta(`index.txt sem linha valida de ${casaPublica()}.txt`);
   }
   return { snapshot: casa.snapshot, built, sha: casa.sha256 };
 }
@@ -85,7 +86,7 @@ async function baixarBytes(nome) {
 // Devolve { snapshot, built, sha, casa (Buffer) } com o sha256 conferido.
 // Com --fonte: uma tentativa. Sem --fonte: se nao bater, espera 20 s e baixa de novo uma vez.
 async function obterFoto(fonte) {
-  const nome = `${CASA_PUBLICA}.txt`;
+  const nome = `${casaPublica()}.txt`;
   const tentativas = fonte ? 1 : 2;
   for (let t = 1; t <= tentativas; t++) {
     const indiceBuf = fonte ? await readFile(path.join(fonte, 'index.txt')) : await baixarBytes('index.txt');
@@ -111,7 +112,7 @@ async function principal(argv) {
   let codigo = 0;
   try {
     const foto = await obterFoto(opc.fonte);
-    const nomeGz = `us-111-${foto.snapshot}.txt.gz`;
+    const nomeGz = `${casaPublica()}-${foto.snapshot}.txt.gz`;
     const arqIndice = path.join(pasta, 'indice.txt');
     await mkdir(pasta, { recursive: true });
     const indiceAtual = await lerTextoOpcional(arqIndice);

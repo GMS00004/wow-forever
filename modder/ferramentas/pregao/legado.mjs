@@ -6,7 +6,7 @@
 import { pathToFileURL } from 'node:url';
 import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { ARQ_PRECOS, DADOS, lerJson, moeda, arqReceitas, acharProfissao, PROFISSOES } from './comum.mjs';
+import { ARQ_PRECOS, DADOS, lerJson, moeda, arqReceitas, acharProfissao, PROFISSOES, faccao } from './comum.mjs';
 import { calcular, comDesconto, lerDesconto, aprendeTxt } from './crafts.mjs';
 import { escolherRota } from './rota.mjs';
 import { carregarNaowh } from './naowh.mjs';
@@ -706,11 +706,11 @@ function avisosFixos(precos) {
     'Avisos:',
     '',
     '1. Chance de ponto pela formula do Classic (nao conferida no Forever); os crafts sao o numero esperado, nao garantido.',
-    '2. Preco do leilao: foto publica da casa us-111 (arquivo de terceiro, RuslanMunasipov/quest-murder-prices); o scan do Auctionator so entra se exportado ha menos de 6 horas.',
+    `2. Preco do leilao: foto publica da casa ${precos.publico?.casa ?? 'desconhecida'} (arquivo de terceiro, RuslanMunasipov/quest-murder-prices); o scan do Auctionator so entra se exportado ha menos de 6 horas.`,
     '3. Compra pelo livro de ofertas: os 5 lotes mais baratos da foto e, depois, a curva ate o p25 e a mediana; a foto muda de hora em hora.',
     '4. Leilao como teto: supoe vender tudo ao minimo de hoje menos 5%; o deposito se perde se nao vender, e item de equipamento nao tem numero de saidas.',
     '5. Pericia de aprender e custo de treino pelo Naowh Forever (tabela feita a mao pelo autor a partir da Wowhead Forever); Apprentice fora da conta (o Naowh nao traz o custo). O Journeyman pede nivel 10 do personagem, e o Expert (125 a 225) pede nivel 20.',
-    '6. Receita sem item e sem treinador no Naowh fica fora da rota. Reagente de vendedor so da lista do Naowh dos que o vendedor vende sem limite (linha, frasco, tinta, sal, fluxo, vareta, madeira); ferramenta e padrao pela lista publica (QuestieDB); padrao de vendedor so com vendedor da Alianca ou neutro no Naowh.',
+    `6. Receita sem item e sem treinador no Naowh fica fora da rota. Reagente de vendedor so da lista do Naowh dos que o vendedor vende sem limite (linha, frasco, tinta, sal, fluxo, vareta, madeira); ferramenta e padrao pela lista publica (QuestieDB); padrao de vendedor so com vendedor da ${faccao().nome} ou neutro no Naowh.`,
     '7. Nada coletado: barra de metal, couro e tecido vem do leilao; intermediario da propria profissao e fabricado quando sai mais barato, so por receita que vem com a profissao ou de treinador.',
     '8. Objeto de acampamento (Tanning Rack, Spinning Wheel, Fermenter, Anarchist\'s Workbench) pelo cliente (SpellCastingRequirements): um item do leilao por montagem; Anvil e Forge, as cidades tem. Quanto tempo um objeto montado dura nao esta no cliente.',
     `9. Fontes: foto publica de ${precos.publico?.foto ? dataHora(precos.publico.foto) : 'sem data'}; tabelas do cliente do build em uso pela ferramenta.`,
@@ -968,8 +968,8 @@ async function linhaDeComando(argv) {
   // Relatorio em Markdown.
   const quando = precos.publico?.foto ? dataHora(precos.publico.foto) : 'sem data';
   const fonteTxt = precos.fonteLeilao?.tipo === 'full'
-    ? `o full scan do CompraForever de ${quando} (${precos.fonteLeilao.n} itens; o que nao estava nele, pela foto publica us-111 de ${precos.publico.fotoPublica ? dataHora(precos.publico.fotoPublica) : 'sem data'})`
-    : `a foto publica do leilao us-111 de ${quando}${precos.auctionator && agora - precos.auctionator.em <= JANELA_AUCTIONATOR ? ` e o scan do Auctionator exportado em ${dataHora(precos.auctionator.em)}` : ''}`;
+    ? `o full scan do CompraForever de ${quando} (${precos.fonteLeilao.n} itens; o que nao estava nele, pela foto publica ${precos.publico?.casa ?? 'desconhecida'} de ${precos.publico.fotoPublica ? dataHora(precos.publico.fotoPublica) : 'sem data'})`
+    : `a foto publica do leilao ${precos.publico?.casa ?? 'desconhecida'} de ${quando}${precos.auctionator && agora - precos.auctionator.em <= JANELA_AUCTIONATOR ? ` e o scan do Auctionator exportado em ${dataHora(precos.auctionator.em)}` : ''}`;
   const L = [
     `# Custo do ${op.ate} nas profissoes de oficio (Legacy point)`,
     '',
