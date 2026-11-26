@@ -1,5 +1,5 @@
 -- Bruxo (Warlock) do amigo: build do Crix ("Demonology 1 to 60", sem respec), escolha do dono
--- em 2026-11-08 (ficha comum\personagens\amigo-warlock-demo.md). Tudo em portugues.
+-- em 2026-11-08 (ficha jogadores\bruno\personagens\amigo-warlock-demo.md). Tudo em portugues.
 -- Ao subir de nivel: janela com o talento do nivel, o treino no instrutor (nomes do proprio
 -- cliente, entao em portugues no jogo dele), as magias que o Crix pula e a missao do demonio.
 -- /kit bruxo mostra de novo. Macro "Marca" (Dor Lancinante com /petattack, do Crix) criada

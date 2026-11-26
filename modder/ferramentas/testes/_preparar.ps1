@@ -6,7 +6,7 @@ $script:TestesDir = $PSScriptRoot
 $script:AmbientesCriados = New-Object System.Collections.ArrayList
 
 function Clear-VariaveisWowAgente {
-    foreach ($n in @('WOWAGENTE_JOGO_ABERTO', 'WOWAGENTE_RESPOSTAS', 'WOWAGENTE_FALHAR_COPIA')) {
+    foreach ($n in @('WOWAGENTE_JOGO_ABERTO', 'WOWAGENTE_RESPOSTAS', 'WOWAGENTE_FALHAR_COPIA', 'WOWAGENTE_REPO')) {
         Remove-Item -LiteralPath "Env:\$n" -ErrorAction SilentlyContinue
     }
 }
@@ -17,6 +17,9 @@ function New-AmbienteTeste {
     $hex = [Guid]::NewGuid().ToString('N').Substring(0, 8)
     $base = Join-Path (Join-Path $script:TestesDir 'tmp') "$Nome-$hex"
     [void](New-Item -ItemType Directory -Path $base -Force)
+    # O repositório "visto" pelos scripts passa a ser a base do teste, sem jogador-ativo.txt:
+    # nenhum teste lê o jogador ativo da máquina em que roda (CONTRATO.md, seção 11).
+    $env:WOWAGENTE_REPO = $base
     Copy-Item -LiteralPath (Join-Path $script:TestesDir 'fixture\World of Warcraft') -Destination $base -Recurse
     $estado = Join-Path $base 'estado'
     $backups = Join-Path $base 'backups'

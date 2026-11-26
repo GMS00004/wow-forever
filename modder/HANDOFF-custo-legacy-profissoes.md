@@ -144,6 +144,6 @@ node ferramentas\guia\pregao\bancada-pregao.mjs --addon addons-proprios\CompraFo
 | Regras da conta | `ferramentas\pregao\CONTRATO.md`, seção 10 |
 | Caminho do Leatherworking do 225 ao 250 | `dados\pregao\relatorios\lw250-caminho-2026-11-23.md` |
 | APIs de profissão do Forever, com a sonda | `..\comum\referencia\api-forever.md`, seção 3g.0 |
-| Fichas | `..\comum\personagens\ignatius-stonejaw.md` e `hexumlite-bull.md`, seção Profissões |
+| Fichas | `..\jogadores\bruno\personagens\ignatius-stonejaw.md` e `hexumlite-bull.md`, seção Profissões |
 | Second brain | `Obsidian\GMS-SB\wiki`: a página da sessão de 23/11 (noite) e "CompraForever Route Modality — ..." |
 | Diário | `estado\estado.md`, entradas de 23 e 24/11 |

@@ -1,4 +1,4 @@
-﻿# Biblioteca comum do wow-modder (gerenciador de addons do WoW Forever). Contrato: CONTRATO.md (v1).
+﻿# Biblioteca comum do wow-modder (gerenciador de addons do WoW Forever). Contrato: CONTRATO.md (v1.2).
 # Uso: . (Join-Path $PSScriptRoot 'wow-comum.ps1')   -- so define funcoes e faz o Add-Type do zip.
 # Windows PowerShell 5.1. Salvar em UTF-8 com BOM.
 #
@@ -189,8 +189,39 @@ function Get-WowVersao {
     }
 }
 
+# ------------------------------------------------------------------ jogador ativo (contrato §3 e §7)
+# Raiz do repositório: <ferramentas>\..\.. (nos testes, $env:WOWAGENTE_REPO).
+function Get-RaizRepo {
+    if ($env:WOWAGENTE_REPO) { return [IO.Path]::GetFullPath($env:WOWAGENTE_REPO) }
+    return [IO.Path]::GetFullPath((Join-Path $script:WowFerramentas '..\..'))
+}
+
+# Jogador ativo deste PC: a primeira linha útil de <repo>\jogador-ativo.txt (fora do git), que é o apelido
+# de uma pasta em <repo>\jogadores\ ou um caminho completo. Devolve {Apelido; Pasta} ou $null.
+function Get-JogadorAtivo {
+    $arq = Join-Path (Get-RaizRepo) 'jogador-ativo.txt'
+    if (-not (Test-Path -LiteralPath $arq -PathType Leaf)) { return $null }
+    $linha = @([System.IO.File]::ReadAllLines($arq) | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith('#') }) | Select-Object -First 1
+    if (-not $linha) { return $null }
+    if ([IO.Path]::IsPathRooted($linha)) {
+        $pasta = [IO.Path]::GetFullPath($linha)
+        $apelido = Split-Path -Leaf $pasta
+    } else {
+        $apelido = $linha
+        $pasta = Join-Path (Join-Path (Get-RaizRepo) 'jogadores') $linha
+    }
+    return [pscustomobject]@{ Apelido = $apelido; Pasta = $pasta }
+}
+
+function Get-MensagemSemJogador {
+    'Nenhum jogador ativo neste PC: crie a sua pasta com ferramentas\jogador.ps1 -Novo <apelido> -Aplicar (ou ative uma que já existe com -Ativar <apelido>)'
+}
+
+# Padrão do -Instalacao: <pasta do jogador ativo>\instalacao.json, ou $null sem jogador ativo.
 function Get-InstalacaoPadrao {
-    [IO.Path]::GetFullPath((Join-Path $script:WowFerramentas '..\..\comum\instalacao.json'))
+    $j = Get-JogadorAtivo
+    if (-not $j) { return $null }
+    return (Join-Path $j.Pasta 'instalacao.json')
 }
 
 function ConvertTo-CaminhoNormal {
@@ -261,6 +292,7 @@ function Find-WowInstalacao {
 function Set-WowInstalacao {
     param([Parameter(Mandatory)][string]$Raiz, [Parameter(Mandatory)][string]$Flavor, [string]$Instalacao)
     if (-not $Instalacao) { $Instalacao = Get-InstalacaoPadrao }
+    if (-not $Instalacao) { Stop-Wow PREREQ (Get-MensagemSemJogador) }
     $obj = [ordered]@{
         v            = 1
         raiz         = $Raiz
@@ -273,12 +305,21 @@ function Set-WowInstalacao {
 
 function Get-WowContexto {
     param([string]$Raiz, [string]$Flavor, [string]$Instalacao, [string]$Estado, [string]$Backups)
-    if (-not $Instalacao) { $Instalacao = Get-InstalacaoPadrao }
-    if (-not $Estado) { $Estado = [IO.Path]::GetFullPath((Join-Path $script:WowFerramentas '..\estado')) }
+    # O que não veio por parâmetro sai da pasta do jogador ativo (jogadores\<apelido>\).
+    $jog = $null
+    if (-not $Instalacao -or -not $Estado) { $jog = Get-JogadorAtivo }
+    if (-not $Instalacao -and $jog) { $Instalacao = Join-Path $jog.Pasta 'instalacao.json' }
+    if (-not $Estado) {
+        if (-not $jog) { Stop-Wow PREREQ (Get-MensagemSemJogador) }
+        if (-not (Test-Path -LiteralPath $jog.Pasta -PathType Container)) {
+            Stop-Wow PREREQ "Pasta do jogador ativo inexistente: $($jog.Pasta) (confira o jogador-ativo.txt ou rode ferramentas\jogador.ps1)"
+        }
+        $Estado = Join-Path $jog.Pasta 'estado'
+    }
     if (-not $Backups) { $Backups = Join-Path $env:LOCALAPPDATA 'wow-agentes\backups' }
 
     if (-not $Raiz -or -not $Flavor) {
-        if (Test-Path -LiteralPath $Instalacao -PathType Leaf) {
+        if ($Instalacao -and (Test-Path -LiteralPath $Instalacao -PathType Leaf)) {
             $j = $null
             try { $j = Read-JsonUtf8 $Instalacao } catch { }
             if ($j) {

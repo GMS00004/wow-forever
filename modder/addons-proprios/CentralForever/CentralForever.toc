@@ -5,7 +5,7 @@
 ## Version: 0.1.0
 ## OptionalDeps: ElvUI
 ## SavedVariables: CentralForeverDB
-# A Interface tem de bater com a do cliente (estado\sessao.json, ultimaInterface).
+# A Interface tem de bater com a do cliente (jogadores\<apelido>\estado\sessao.json, ultimaInterface).
 Config.lua
 Nucleo.lua
 Segredo.lua

@@ -56,7 +56,7 @@ sensivel: false
    - O histórico mostrou que as Azure (no topo do lucro no leilão) têm mercado raso, de 1 a 6 listadas por dia, e preço caindo pela metade em quatro dias, e o NPC paga 0c por elas.
    - Só os Thick Armor Kit têm estimativa de venda (cerca de 256 e 376 por dia).
    - O Wild Leather Vest (aprende 200; laranja até 220, amarelo até 230) leva de 200 a 225 em cerca de 26 crafts (observado em 16/11/2026).
-9. **Decisão do dono gravada** (ver o banner) em `estado\estado.md`, `..\comum\jogador.md`, `..\comum\fontes\profissoes\roteiros.md`, `..\comum\fontes\profissoes\reptilio-leatherworking.md` e `..\comum\personagens\hexumlite-bull.md`.
+9. **Decisão do dono gravada** (ver o banner) em `estado\estado.md`, `..\jogadores\bruno\jogador.md`, `..\comum\fontes\profissoes\roteiros.md`, `..\comum\fontes\profissoes\reptilio-leatherworking.md` e `..\jogadores\bruno\personagens\hexumlite-bull.md`.
 10. **`rota.mjs`** (onda R1/R2 com subagentes Haiku; contrato na seção 6): sobe um ponto por vez e, em cada ponto, escolhe a receita de menor `(custo - vendaNpc) / chance`. Cada receita tem um teto de crafts de 25% do listado do reagente mais escasso. Uso: `--de`, `--ate`, `--sem`, `--so`, `--lua`. Testes: `testes\caso-rota.json` e `testar-rota.mjs`, com 4 casos e 112 campos, conferidos à mão e por uma referência (observado em 16/11/2026).
 11. **GuiaForever 1.3.2:** a rota da ferramenta entrou em `addons-proprios\GuiaForever\ProfissoesB.lua`, no lugar das faixas do ReptilioPlays. Ganhou as linhas extras "1-186 done" e "225-300 next route", e "Route patterns" virou "Pattern locations (reference)". Conferido: a sintaxe pelo `ferramentas\guia\checar-lua.mjs` e a leitura dos passos pela regra do J, com os totais da faixa Expert iguais aos da ferramenta (observado em 16/11/2026).
 12. **Rotas mais rígidas, só com venda ao NPC:** com receitas que devolvem 90%, 95% ou 100% do custo, nenhuma sai do 186, porque entre 186 e 200 não há receita que dê ponto com retorno de 90% ou mais (observado em 16/11/2026). A rota atual já é a de venda ao NPC. Substitutas de 200 a 205, se faltar o padrão da Skycaller's Mail Boots: Mender's Mail Boots (104%), Prowler's Leather Shoes (95%), Skycaller's Leather Shoes (95%) e Mender's Leather Shoes (90%) (observado em 16/11/2026).
@@ -139,8 +139,8 @@ Para trocar a rota no J, substitua em `addons-proprios\GuiaForever\ProfissoesB.l
 - **Sem commit, desta frente** (o que entra no commit do fechamento):
   - `modder\ferramentas\pregao\CONTRATO.md`, `baixar-precos.mjs`, `rota.mjs` (novo), `testes\checar-precos.mjs`, `testes\caso-rota.json` (novo) e `testes\testar-rota.mjs` (novo);
   - `modder\addons-proprios\GuiaForever\ProfissoesB.lua` e `GuiaForever.toc`;
-  - `modder\estado\estado.md`;
-  - `comum\jogador.md`, `comum\fontes\profissoes\roteiros.md`, `comum\fontes\profissoes\reptilio-leatherworking.md` e `comum\personagens\hexumlite-bull.md`;
+  - `jogadores\bruno\estado\estado.md`;
+  - `jogadores\bruno\jogador.md`, `comum\fontes\profissoes\roteiros.md`, `comum\fontes\profissoes\reptilio-leatherworking.md` e `jogadores\bruno\personagens\hexumlite-bull.md`;
   - este arquivo e o `modder\HANDOFFS.md`.
 
   As duas linhas novas de `C:\GMS\Claude Code Projects\skill-review\reviews\calibracao.jsonl` estão em outro repositório.

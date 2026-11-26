@@ -1,6 +1,6 @@
 # WoW: contexto comum dos agentes
 
-Esta pasta guarda a família de agentes de World of Warcraft do Bruno (o dono). Cada agente mora numa subpasta própria, que já abre com ele (o campo `"agent"` do `.claude\settings.json` da subpasta), e todos leem este arquivo e a pasta `comum\`.
+Este repositório guarda a família de agentes de World of Warcraft do Bruno e dos amigos que jogam com ele. Cada agente mora numa subpasta própria, que já abre com ele (o campo `"agent"` do `.claude\settings.json` da subpasta), e todos leem este arquivo, a pasta `comum\` (referências e biblioteca de guias, iguais para todos) e a pasta do jogador ativo, `jogadores\<apelido>\`, que o `jogador-ativo.txt` da raiz aponta. Nas regras, "o dono" é sempre o jogador ativo. Nada pode supor facção, reino ou classe: o Bruno joga Aliança, os amigos jogam Horda em reino PvP, de várias classes, e isso sai do perfil de cada um. O que o repositório é, para gente, está no `README.md`.
 
 ## Agentes
 
@@ -12,12 +12,13 @@ Uma finalidade nova ganha a sua subpasta, com `.claude\settings.json` e `.claude
 
 ## Regra de fronteira
 
-Cada agente fica na sua finalidade. Gameplay (builds, talentos e rotação, leveling e rota de quests, economia e profissões, táticas de dungeon e raide) vem das fontes que o dono escolheu, em `comum\fontes\`, e nenhum agente dá opinião própria de gameplay. Quando uma decisão depende de gameplay e não há fonte, pergunte ao dono qual fonte seguir.
+Cada agente fica na sua finalidade. Gameplay (builds, talentos e rotação, leveling e rota de quests, economia e profissões, táticas de dungeon e raide) vem das fontes que o dono escolheu (a biblioteca fica em `comum\fontes\`, e a escolha de cada um no `jogadores\<apelido>\jogador.md`), e nenhum agente dá opinião própria de gameplay. Quando uma decisão depende de gameplay e não há fonte, pergunte ao dono qual fonte seguir.
 
 ## O jogo
 
 - WoW Forever (o Classic+ da Blizzard), lançado em 2026-11-04 às 20h de Brasília. Fatos com fonte e data em `comum\referencia\forever.md`.
-- Só o notebook Avell roda o jogo. Os dados da instalação (pasta do jogo, pasta do Forever, versão e Interface) ficam em `comum\instalacao.json`, escritos pelos scripts do modder; as notas, em `comum\instalacao.md`.
+- Cada jogador roda o jogo no próprio PC. Os dados da instalação (pasta do jogo, pasta do Forever, versão e Interface) ficam em `jogadores\<apelido>\instalacao.json`, escritos pelos scripts do modder; as notas, no `instalacao.md` ao lado. Um PC sem o jogo (como o Acer do Bruno) trabalha em modo só desenvolvimento.
+- Os addons próprios foram feitos para os personagens do Bruno; o catálogo em `modder\addons-proprios\LEIA-ME.md` diz o que cada um já cobre por facção e classe.
 - A Interface (número da API dos addons) se lê do cliente instalado, nunca de memória: ela muda a cada patch, e um número escrito envelhece sem ninguém ver (PROC-07).
 
 ## Limites (fixos)
@@ -33,8 +34,9 @@ Fato exato sobre o Forever (versão, Interface, pasta, compatibilidade de addon,
 
 ## Backups e versionamento
 
-- Os backups ficam em `%LOCALAPPDATA%\wow-agentes\backups\`, fora do `C:\GMS`, que sincroniza entre os notebooks.
-- Esta pasta é versionada pelo repositório do `C:\GMS`. Commit só com o ok do dono.
+- Os backups ficam em `%LOCALAPPDATA%\wow-agentes\backups\`, fora do repositório.
+- Este repositório é o `GMS00004/wow-forever`, privado. O `main` só muda por PR, e quem faz o merge é o Bruno, que também commita direto nele (regras em `CONTRIBUTING.md`). Commit e push só com o ok do dono.
+- A pasta de um jogador só vai para o git quando é a do Bruno; a dos outros fica no PC de cada um (o `.gitignore` cuida disso).
 
 ## Como responder
 
@@ -42,7 +44,7 @@ Português brasileiro, em prosa densa com vírgulas e parênteses, sem bullet po
 
 ## Relatório de sessão (sempre)
 
-Pedido do dono em 2026-11-06: "me apresente tudo que você fez como um report, que deve ser apresentado sempre que trabalharmos no wow". Todo trabalho de qualquer agente desta pasta que mudou alguma coisa (addon, UI, macro, tecla, ferramenta, referência ou ficha) termina com este relatório na conversa, antes da pergunta de commit, mesmo que o dono não peça. Se a sessão foi só de conversa, sem mudança, basta uma linha dizendo isso. O relatório segue o estilo acima (títulos, tabelas e prosa curta, sem bullet points nem negrito) e tem estas partes, nesta ordem, omitindo a que ficar vazia:
+Pedido do Bruno em 2026-11-06, que vale para todo jogador: "me apresente tudo que você fez como um report, que deve ser apresentado sempre que trabalharmos no wow". Todo trabalho de qualquer agente desta pasta que mudou alguma coisa (addon, UI, macro, tecla, ferramenta, referência ou ficha) termina com este relatório na conversa, antes da pergunta de commit, mesmo que o dono não peça. Se a sessão foi só de conversa, sem mudança, basta uma linha dizendo isso. O relatório segue o estilo acima (títulos, tabelas e prosa curta, sem bullet points nem negrito) e tem estas partes, nesta ordem, omitindo a que ficar vazia:
 
 1. Resumo: duas ou três frases com o que ficou pronto e se algo já rodou no jogo.
 2. No jogo: tabela com o que mudou, como usar (tecla, comando ou aba), se já foi testado no jogo e como desfazer.
@@ -51,6 +53,6 @@ Pedido do dono em 2026-11-06: "me apresente tudo que você fez como um report, q
 5. Decisões: tabela com o que o dono decidiu na sessão e o que o agente decidiu por ele.
 6. Testar no próximo login: lista numerada, curta, na ordem em que o dono vai encontrar as coisas.
 7. Pendências: tabela com o que ficou aberto e quem espera (dono ou agente).
-8. Registro: o commit (sha) ou "sem commit", e onde ficou o diário (`estado\estado.md` do agente).
+8. Registro: o commit (sha) ou "sem commit", e onde ficou o diário (`jogadores\<apelido>\estado\estado.md`).
 
-Quando o dono disser que vai ler no celular, o relatório também vira um arquivo que o celular abre: com a ferramenta de artifact, um artifact; sem ela (a extensão do VS Code não tem), um PDF em `P:\Meu Drive\WoW Forever\Relatorios\<AAAA-MM-DD>-wow-relatorio.pdf`, gerado de um HTML pelo Edge sem tela (`msedge --headless=new --no-pdf-header-footer --print-to-pdf=...`), com página estreita (125 mm de largura) para caber na tela. O de 2026-11-06 é o modelo.
+Quando o dono disser que vai ler no celular, o relatório também vira um arquivo que o celular abre: com a ferramenta de artifact, um artifact; sem ela (a extensão do VS Code não tem), um PDF `<AAAA-MM-DD>-wow-relatorio.pdf` na pasta que o `jogador.md` indicar (a do Bruno é `P:\Meu Drive\WoW Forever\Relatorios\`), gerado de um HTML pelo Edge sem tela (`msedge --headless=new --no-pdf-header-footer --print-to-pdf=...`), com página estreita (125 mm de largura) para caber na tela. O de 2026-11-06 é o modelo.

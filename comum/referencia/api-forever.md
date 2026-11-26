@@ -31,7 +31,7 @@ Todos `[página]` (Forever Mastery, lido em 2026-11-03, em `forever.md`):
 
 ## 3a. ElvUI 16.01 por dentro (para configurar sem abrir o jogo)
 
-Tudo `[local]`, lido no código instalado em `Interface\AddOns\ElvUI` em 2026-11-05 e usado pelo addon próprio UIForever. Não foi testado no jogo ainda (ver a pendência em `modder\estado\estado.md`).
+Tudo `[local]`, lido no código instalado em `Interface\AddOns\ElvUI` em 2026-11-05 e usado pelo addon próprio UIForever. Não foi testado no jogo ainda (ver a pendência em `jogadores\bruno\estado\estado.md`).
 
 - **Ordem de carga:** o `E:OnInitialize` roda o `PrepDB` (que trabalha numa cópia), e o `E:InitDB` só roda dentro do `E:Initialize`, chamado pelo `OnEnable` no `PLAYER_LOGIN`. Por isso um addon que depende do ElvUI pode gravar direto no `ElvDB` cru no próprio `ADDON_LOADED`, e o ElvUI monta a tela já com esses valores.
 - **Perfil:** a chave é `E.mynameRealm` (ex.: `profileKeys["Hexumlite Bull"] = "Hexumlite Bull"`), e o AceDB usa `defaultProfile = true`. O `private.install_complete` (16.01 no Hexumlite) é o que faz o assistente de instalação não abrir; copiar o private de um personagem que já tem essa marca faz o personagem novo pular o assistente.

@@ -1,4 +1,4 @@
-﻿# Abertura de sessao (contrato §9.8): instalacao, jogo, backup do WTF, atualizacao dos aprovados e auditoria.
+﻿# Abertura de sessao (contrato §9.8): jogador ativo, instalacao, jogo, backup do WTF, atualizacao dos aprovados e auditoria.
 # Uso: sessao-abrir.ps1 mais -Raiz -Flavor -Instalacao -Estado -Backups (ver CONTRATO.md §3).
 param(
     [string]$Raiz,
@@ -43,6 +43,16 @@ function Get-MotivoCurto {
 }
 
 exit (Invoke-ScriptWow {
+    # 0. jogador ativo (so quando o estado ou a instalacao vem do padrao)
+    if (-not $Estado -or -not $Instalacao) {
+        $jog = Get-JogadorAtivo
+        if (-not $jog -and -not $Estado) {
+            Write-Linha 'JOGADOR ausente motivo=sem-jogador-ativo (crie com ferramentas\jogador.ps1 -Novo <apelido> -Aplicar)'
+            return 2
+        }
+        if ($jog) { Write-Linha "JOGADOR ativo=$($jog.Apelido) pasta=$($jog.Pasta)" }
+    }
+
     # 1. instalacao
     $ctx = $null
     try {

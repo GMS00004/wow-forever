@@ -1,6 +1,8 @@
 # Contrato das ferramentas do wow-modder
 
-Versão 1.1, 2026-11-03. **Congelado durante a construção (ondas 2 a 4): só a sessão principal altera.** Quem implementa segue este contrato à risca; onde ele não bastar, decida o mínimo e relate o desvio.
+Versão 1.2, 2026-11-26. Quem implementa segue este contrato à risca; onde ele não bastar, decida o mínimo e relate o desvio. As marcas T4 a T8 nas tabelas são as tarefas do plano de construção de 2026-11-03 em que cada peça nasceu.
+
+Mudanças da 1.2: os dados de cada jogador saíram de `comum\` e `modder\estado\` para `jogadores\<apelido>\`, e os padrões de `-Instalacao` e `-Estado` passaram a sair do jogador ativo (§3); entraram o `jogador.ps1` (§9.9), a suíte `t-jogador.ps1`, a variável de teste `WOWAGENTE_REPO` (§1.11) e o comando único de testes `testar-tudo.ps1` (§11).
 
 ## 0. Adendo da versão 1.1 (depois da T4; vale por cima do resto)
 
@@ -37,6 +39,7 @@ A biblioteca `wow-comum.ps1` já existe e passou em 256 verificações. Leia as 
     - `WOWAGENTE_JOGO_ABERTO`: `1` força "jogo aberto", `0` força "fechado"; ausente, a detecção é real.
     - `WOWAGENTE_RESPOSTAS`: pasta com respostas gravadas (§10.4); definida, nenhuma chamada de rede acontece.
     - `WOWAGENTE_FALHAR_COPIA`: nome de uma pasta de addon; `Install-Pastas` lança erro ao chegar nela (testa o rollback).
+    - `WOWAGENTE_REPO`: pasta que os scripts tratam como raiz do repositório (onde procuram `jogador-ativo.txt` e `jogadores\`). O `New-AmbienteTeste` aponta para a base do teste, então nenhum teste lê o jogador ativo da máquina.
 
 ## 2. Layout
 
@@ -55,16 +58,22 @@ modder\
     addon-fontes.ps1       consulta a fonte de um addon (só leitura)  T7
     addon-atualizar.ps1    atualiza os aprovados                      T7
     sessao-abrir.ps1       abertura de sessão                         T7
+    jogador.ps1            mostra, cria e troca o jogador ativo       1.2
+    testar-tudo.ps1        roda todas as suítes e checagens           1.2
     kit-amigo.ps1          monta o Kit-WoW-Forever.zip do amigo (só lê o jogo; grava no Drive)   2026-11-08
     kit\                   instalar.ps1 (vira o INSTALAR.bat), guia.html e o PDF, mensagem-whatsapp.txt
     testes\
       _assert.ps1  _preparar.ps1                                      T4
       fixture\  fontes-fixture\  respostas\                          T4
       t-comum.ps1 (T4)  t-instalar.ps1 (T5)  t-auditar.ps1 t-wtf.ps1 (T6) t-wtf-sv.ps1 (T4b)
-      t-devlink.ps1 (T8)  t-atualizar.ps1 t-sessao.ps1 (T7)
+      t-devlink.ps1 (T8)  t-atualizar.ps1 t-sessao.ps1 (T7)  t-jogador.ps1 (1.2)
       tmp\                 (gitignored) cópias de trabalho dos testes
-  estado\  addons\<slug>.json  registro.md  sessao.json
   addons-proprios\  _modelo\                                         T8
+jogadores\
+  _modelo\                 a pasta vazia de um jogador novo           1.2
+  <apelido>\               jogador.md  jogador.json  personagens\  instalacao.json
+                           estado\  addons\<slug>.json  registro.md  sessao.json  estado.md
+jogador-ativo.txt          (fora do git) qual pasta de jogadores\ este PC usa
 ```
 
 ## 3. Parâmetros comuns e caminhos
@@ -75,10 +84,12 @@ Todos os scripts aceitam:
 |---|---|
 | `-Raiz <dir>` | `raiz` de `-Instalacao` |
 | `-Flavor <nome>` | `flavor` de `-Instalacao` |
-| `-Instalacao <arquivo>` | `<ferramentas>\..\..\comum\instalacao.json` |
-| `-Estado <dir>` | `<ferramentas>\..\estado` |
+| `-Instalacao <arquivo>` | `<jogador>\instalacao.json` |
+| `-Estado <dir>` | `<jogador>\estado` |
 | `-Backups <dir>` | `$env:LOCALAPPDATA\wow-agentes\backups` |
 | `-Aplicar` (só nos que gravam) | ausente: só prévia |
+
+`<jogador>` é a pasta do jogador ativo: a primeira linha útil de `<repo>\jogador-ativo.txt` (fora do git; `<repo>` = `<ferramentas>\..\..`), que é o apelido de uma pasta em `<repo>\jogadores\` ou um caminho completo. `Get-JogadorAtivo` devolve `{Apelido; Pasta}` ou `$null`. Sem jogador ativo, quem precisa do padrão de `-Estado` (ou o `Set-WowInstalacao` sem `-Instalacao`) dá `PREREQ` "Nenhum jogador ativo neste PC: crie a sua pasta com ferramentas\jogador.ps1 -Novo <apelido> -Aplicar (...)"; com os dois parâmetros explícitos, nada depende do jogador.
 
 Os testes passam sempre `-Raiz`, `-Flavor`, `-Estado` e `-Backups` apontando para `testes\tmp\...`.
 
@@ -99,7 +110,7 @@ Pastas derivadas: `PastaFlavor = <Raiz>\<Flavor>`, `AddOns = <PastaFlavor>\Inter
 
 Toda linha que o agente lê começa com um prefixo em maiúsculas seguido de espaço, e os dados vão em `chave=valor` quando couber. O texto livre para gente vem depois, em linhas sem prefixo.
 
-`PREVIA` `PASTA` `OK` `RECUSA` `ERRO` `PREREQ` `FONTE` `ATUALIZAR` `ATUALIZADO` `FALHOU` `MANUAL` `INSTALACAO` `JOGO` `BACKUP` `AUDITORIA` `DESCONHECIDA` `FALTANDO` `ALTERADA` `INCOMPATIVEL` `DEPENDENCIA` `JUNCTION` `CVAR` `SV` `DEV`
+`PREVIA` `PASTA` `OK` `RECUSA` `ERRO` `PREREQ` `FONTE` `ATUALIZAR` `ATUALIZADO` `FALHOU` `MANUAL` `INSTALACAO` `JOGO` `BACKUP` `AUDITORIA` `DESCONHECIDA` `FALTANDO` `ALTERADA` `INCOMPATIVEL` `DEPENDENCIA` `JUNCTION` `CVAR` `SV` `DEV` `JOGADOR` `JOGADORES` `ARQUIVO` `CRIADO` `ATIVO` `NADA`
 
 ## 6. Manifesto (`estado\addons\<slug>.json`)
 
@@ -134,9 +145,13 @@ Toda linha que o agente lê começa com um prefixo em maiúsculas seguido de esp
 
 ## 7. Outros arquivos de estado
 
-- `estado\registro.md`: append-only, `- yyyy-MM-dd HH:mm | <acao> | <slug> | <detalhe>`. Ações: `instalar`, `atualizar`, `remover`, `backup-wtf`, `restaurar-wtf`, `cvar`, `sv`, `dev-link`, `dev-unlink`.
+Todos ficam na pasta do jogador (`<jogador>`, §3); `jogadores\_modelo\` traz a versão vazia de cada um.
+
+- `estado\registro.md`: append-only, `- yyyy-MM-dd HH:mm | <acao> | <slug> | <detalhe>`. Ações: `instalar`, `atualizar`, `remover`, `backup-wtf`, `restaurar-wtf`, `cvar`, `sv`, `dev-link`, `dev-unlink`, `jogador-novo`, `jogador-ativar`.
 - `estado\sessao.json`: `{ "v": 1, "ultimaInterface": 16001, "ultimaVersao": "1.60.1.12345", "ultimaAbertura": "<iso>" }`.
-- `comum\instalacao.json`: `{ "v": 1, "raiz": "C:\\...\\World of Warcraft", "flavor": "_forever_", "maquina": "<COMPUTERNAME>", "confirmadoEm": "<iso>" }`.
+- `instalacao.json`: `{ "v": 1, "raiz": "C:\\...\\World of Warcraft", "flavor": "_forever_", "maquina": "<COMPUTERNAME>", "confirmadoEm": "<iso>" }`.
+- `jogador.json`: `{ "v": 1, "faccao": "Horde|Alliance", "tipoReino": "PvP|Normal", "regiao": "US|EU", "casaLeilao": "us-113" }`, o que as ferramentas em Node leem do perfil (hoje, a casa de leilão das ferramentas de preço).
+- `<repo>\jogador-ativo.txt` (fora do git): linhas com `#` são comentário; a primeira linha útil é o apelido ou o caminho da pasta do jogador.
 
 ## 8. `wow-comum.ps1`: funções
 
@@ -305,6 +320,7 @@ Código 0 se nada falhou, 1 se algum `FALHOU`.
 
 ### 9.8 `sessao-abrir.ps1`
 
+0. Quando `-Estado` ou `-Instalacao` vêm do padrão: sem jogador ativo e sem `-Estado`, imprime `JOGADOR ausente motivo=sem-jogador-ativo` e sai com 2; com jogador ativo, imprime `JOGADOR ativo=<apelido> pasta=<p>`.
 1. Chama `Get-WowContexto`. Sem instalação: `INSTALACAO ausente` e `exit 2`.
 2. Chama `Get-WowVersao` e compara com o `sessao.json`. Imprime `INSTALACAO ok raiz=<r> flavor=<f> versao=<v> interface=<i> mudou=<sim|nao>`, com `anterior=<n>` quando mudou.
 3. Imprime `JOGO aberto` ou `JOGO fechado`.
@@ -316,6 +332,15 @@ Código 0 se nada falhou, 1 se algum `FALHOU`.
 5. Roda o `addons-auditar.ps1` como processo filho e repassa todas as linhas dele.
 6. Grava o `sessao.json`.
 7. Sai com 0 se não houve `FALHOU` e a auditoria deu 0; senão, com 1.
+
+### 9.9 `jogador.ps1 [-Novo <apelido> | -Ativar <apelido>] [-Aplicar]`
+
+Não toca na pasta do jogo nem exige o jogo fechado. O apelido vira minúsculas e precisa casar com `^[a-z0-9][a-z0-9-]{1,29}$` (senão, `RECUSA`).
+
+- Sem `-Novo` nem `-Ativar` (só leitura): `JOGADOR ativo=<a> pasta=<p>` ou `JOGADOR ausente`, e `JOGADORES disponiveis=<a,b>` (as pastas de `jogadores\` que não começam com `_`), ou `(nenhum)`.
+- `-Novo <a>`: `RECUSA` se `jogadores\<a>` já existe; `PREREQ` sem `jogadores\_modelo`. Uma linha `ARQUIVO jogadores\<a>\<rel>` por arquivo do modelo. Sem `-Aplicar`: `PREVIA criar=jogadores\<a> arquivos=<n> ativo=<a> antes=<b>`. Com `-Aplicar`: copia o modelo, grava o `jogador-ativo.txt`, registra `jogador-novo` no `registro.md` da pasta nova e imprime `CRIADO jogador=<a> pasta=<p> arquivos=<n>` e `ATIVO jogador=<a> antes=<b>`.
+- `-Ativar <a>`: `RECUSA` se a pasta não existe; `NADA jogador=<a> motivo=ja-ativo` se já é o ativo. Sem `-Aplicar`: `PREVIA ativo=<a> antes=<b>`. Com `-Aplicar`: grava o `jogador-ativo.txt`, registra `jogador-ativar` e imprime `ATIVO jogador=<a> antes=<b>`.
+- `-Novo` com `-Ativar`: `RECUSA`.
 
 ## 10. Fontes
 
@@ -374,7 +399,7 @@ Cada addon tem um `.lua` de uma linha.
 **Ajudantes (T4):**
 - `testes\_assert.ps1` define `Assert-Igual -Esperado -Obtido -Descricao`, `Assert-Verdade -Condicao -Descricao` e `Get-Resultado` (o total e as falhas).
 - `testes\_preparar.ps1` define:
-  - `New-AmbienteTeste -Nome`: copia a fixture para `testes\tmp\<nome>-<8 hex>\`, cria `estado\` e `backups\`, limpa as variáveis `WOWAGENTE_*` e devolve `{Base; Raiz; Flavor; Estado; Backups; ArgsComuns}`. `ArgsComuns` é o array `-Raiz`, `-Flavor`, `-Estado`, `-Backups`, pronto para splatting.
+  - `New-AmbienteTeste -Nome`: copia a fixture para `testes\tmp\<nome>-<8 hex>\`, cria `estado\` e `backups\`, limpa as variáveis `WOWAGENTE_*`, aponta `WOWAGENTE_REPO` para a base (sem jogador ativo) e devolve `{Base; Raiz; Flavor; Estado; Backups; ArgsComuns}`. `ArgsComuns` é o array `-Raiz`, `-Flavor`, `-Estado`, `-Backups`, pronto para splatting.
   - `New-ZipDeFixture -Ambiente -Addons <nomes de fontes-fixture> -Nome <zip>`: gera o zip com aquelas pastas em `<Base>\zips\` e devolve o caminho.
   - `Set-RespostasSimuladas -Ambiente -Arquivos <hashtable nome→conteúdo>`.
   - `Invoke-ScriptTeste -Script -Argumentos`: roda como processo filho conforme §1.10 e devolve `{Saida; Codigo}`.
@@ -391,4 +416,4 @@ Cada addon tem um `.lua` de uma linha.
 - Edição de SavedVariables por script: **liberada em 2026-11-05 pelo dono**, só com o jogo fechado e backup do WTF antes, pelo `wtf-sv.ps1` (§9.4). Nenhum outro script edita SavedVariables.
 - Escrita de `macros-cache.txt` e `bindings-cache.wtf` (depende da sincronização com o servidor; o agente decide caso a caso).
 - Agendamento no Windows.
-- Qualquer escrita fora de `Interface\AddOns`, `WTF`, `estado\`, `comum\instalacao.json`, dos backups e do temp.
+- Qualquer escrita fora de `Interface\AddOns`, `WTF`, da pasta do jogador (`estado\`, `instalacao.json`), do `jogador-ativo.txt` (só o `jogador.ps1`), dos backups e do temp.
