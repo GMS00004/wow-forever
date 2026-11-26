@@ -94,7 +94,7 @@ if ($So -ne 'powershell') {
         (New-Checagem 'lua-Modelo' $Guia @('checar-lua.mjs', "$A\_modelo\Modelo")),
         (New-Checagem 'dicas-GuiaForever' $Guia @('checar-dicas.mjs', "$A\GuiaForever\Dicas.lua")),
         (New-Checagem 'ajuda-GuiaForever' $Guia @('checar-ajuda.mjs', "$A\GuiaForever\Ajuda.lua")),
-        (New-Checagem 'combate-GuiaForever' $Guia @('checar-combate.mjs', "$A\GuiaForever", '--toc') 'api' 'R1 em GuiaForever.lua:331: CreateMacro por pcall, com a guarda de combate em quem chama (issue no GitHub)'),
+        (New-Checagem 'combate-GuiaForever' $Guia @('checar-combate.mjs', "$A\GuiaForever", '--toc') 'api' 'R1 em GuiaForever.lua:331: CreateMacro por pcall, com a guarda de combate em quem chama (issue #6)'),
         (New-Checagem 'combate-CentralForever' $Guia @('checar-combate.mjs', "$A\CentralForever", '--toc', '--perfil', 'central') 'api'),
         (New-Checagem 'combate-PregaoForever' $Guia @('checar-combate.mjs', "$A\PregaoForever", '--toc', '--prefixos', 'PregaoForever,SLASH_PREGAOFOREVER,BINDING_') 'api'),
         (New-Checagem 'casos-checar-lua' $Guia @('rodar-casos.mjs')),

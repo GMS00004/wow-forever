@@ -888,7 +888,7 @@ aceitava vendedor da Aliança. Agora as duas coisas saem do jogador, pelas funç
   (`opcoes.lado`, `"A"` ou `"H"`; sem ele, `faccao().letra`).
 - O scan do Auctionator e o Full do CompraForever (seções 4 e 10.9) vêm do jogo de quem roda, então são sempre da
   facção dele. Para calcular a casa de outra facção (uma tabela para um amigo, por exemplo), o scan não serve; ainda
-  não há parâmetro que o pule (a sessão de 2026-11-26 usou uma cópia da ferramenta sem os scans), e isso está como
-  issue no repositório.
+  não há parâmetro que o pule (a sessão de 2026-11-26 usou uma cópia da ferramenta sem os scans), e isso está na
+  issue #5 do repositório.
 - Os testes que usam dados de exemplo fixam `WOW_CASA=us-111` e `WOW_FACCAO=Alliance` no começo, para não
   depender do jogador ativo de quem roda.

@@ -21,8 +21,8 @@ O GuiaForever e o UIForever se ligam pelo nome das macros: o GuiaForever cria, o
 | Addon | Qualquer classe? | Horda? | O que falta para servir para você |
 |---|---|---|---|
 | `CentralForever` | sim | sim | só o papel: em `Config.lua`, `papelClasse` marca o paladino como tanque e o resto como dps; um warrior ou druida tanque entra ali |
-| `CompraForever` | sim | o código sim | o `Dados.lua` traz as rotas e os preços da casa do Bruno (`us-111`); para a sua casa, ele precisa ser gerado com as ferramentas de preço apontando para a sua casa, e esse fluxo por jogador ainda não existe (issue aberta) |
-| `GuiaForever` | o código lê a classe | o código lê a facção (treinadores e zonas por `UnitFactionGroup`) | o conteúdo cobre caçador e paladino da Aliança (talentos, magias, pets, macros, profissões e treinadores); outra classe ou a Horda pedem dados a partir dos seus guias, testados na bancada `rodar-janela.mjs`, que hoje só simula caçador e paladino da Aliança (issue aberta) |
+| `CompraForever` | sim | o código sim | o `Dados.lua` traz as rotas e os preços da casa do Bruno (`us-111`); para a sua casa, ele precisa ser gerado com as ferramentas de preço apontando para a sua casa, e esse fluxo por jogador ainda não existe ([issue #2](https://github.com/GMS00004/wow-forever/issues/2)) |
+| `GuiaForever` | o código lê a classe | o código lê a facção (treinadores e zonas por `UnitFactionGroup`) | o conteúdo cobre caçador e paladino da Aliança (talentos, magias, pets, macros, profissões e treinadores); outra classe ou a Horda pedem dados a partir dos seus guias, testados na bancada `rodar-janela.mjs`, que hoje só simula caçador e paladino da Aliança ([issue #1](https://github.com/GMS00004/wow-forever/issues/1)) |
 | `UIForever` | o layout sim | sim | as magias nas barras e a barra de recargas existem só para caçador e paladino; o layout do ElvUI é o gosto do Bruno |
 | `!KitAmigo` | não | não | é o kit de um amigo específico; serve de exemplo de kit para quem não usa o agente |
 

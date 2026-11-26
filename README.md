@@ -23,7 +23,7 @@ Serve para qualquer facção, reino e classe. Foi construído pelo Bruno (Alian�
 | Pacote base de addons (ElvUI, Questie, DBM, BugSack, Auctionator e outros) | sim | o agente propõe e instala com o seu ok ([lista](comum/referencia/pacote-base.md)) |
 | Ferramentas de preço e de custo de profissão (`modder/ferramentas/pregao`) | sim, com a casa de leilão da sua facção | o `casaLeilao` no seu `jogador.json` (Horda PvP é a 113) |
 | CentralForever: dano, DPS e threat da luta | sim | o papel por classe está no `Config.lua` (hoje só o paladino conta como tanque) |
-| CompraForever: leilão, compra e rota de profissão num clique por ação | o código sim; os dados vêm da casa e das rotas do Bruno | gerar os dados com a sua casa (há issue aberta) |
+| CompraForever: leilão, compra e rota de profissão num clique por ação | o código sim; os dados vêm da casa e das rotas do Bruno | gerar os dados com a sua casa ([issue #2](https://github.com/GMS00004/wow-forever/issues/2)) |
 | GuiaForever: talentos, pets, profissões e treinadores no jogo | o código lê classe e facção; o conteúdo cobre caçador e paladino da Aliança | o conteúdo da sua classe, a partir dos seus guias |
 | UIForever: layout do ElvUI, teclas e barras | o layout sim, se gostar do do Bruno; as magias nas barras só para caçador e paladino | o mesmo: dados da sua classe |
 
