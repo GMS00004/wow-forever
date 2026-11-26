@@ -1,0 +1,34 @@
+name: Erro em addon ou ferramenta
+description: Algo quebrou no jogo (erro de Lua, janela errada) ou num script
+labels: [erro]
+body:
+  - type: input
+    id: onde
+    attributes:
+      label: Onde
+      description: O addon (GuiaForever, CompraForever...) ou o script (addon-instalar.ps1, legado.mjs...)
+    validations:
+      required: true
+  - type: input
+    id: personagem
+    attributes:
+      label: Personagem
+      description: Raça, classe, facção e tipo de reino
+      placeholder: Orc Warrior, Horda, reino PvP
+  - type: textarea
+    id: erro
+    attributes:
+      label: O erro
+      description: O erro do BugSack inteiro (no jogo, ou o BugGrabber.lua do WTF) ou a saída inteira do script.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: O que você fez antes
+  - type: input
+    id: versao
+    attributes:
+      label: Versão do addon e Interface do cliente
+      placeholder: CompraForever 0.4.1, Interface 16001

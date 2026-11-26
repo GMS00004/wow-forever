@@ -1,0 +1,50 @@
+# Roda o mesmo comando que você roda em casa (modder\ferramentas\testar-tudo.ps1), num Windows limpo do GitHub:
+# as suítes de PowerShell no Windows PowerShell 5.1 e os checadores e bancadas em Node 24, com a lista da API do
+# Forever nas versões fixadas. As checagens que precisam de dados baixados do jogo saem como PULADO.
+name: testes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: testes-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    name: Windows PowerShell 5.1 e Node 24
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: modder/ferramentas/guia/package-lock.json
+
+      - name: Dependências do Node
+        working-directory: modder/ferramentas/guia
+        run: npm ci --no-audit --no-fund
+
+      - name: Lista da API do Forever (versões fixadas em api-forever.json)
+        working-directory: modder/ferramentas/guia
+        run: node baixar-api-forever.mjs
+
+      # O testar-tendencia.mjs baixa a tabela ItemSparse do wago.tools; o build está no comum.mjs das ferramentas
+      # de preço, então a chave muda quando ele muda.
+      - name: Cache das tabelas do cliente
+        uses: actions/cache@v6
+        with:
+          path: modder/dados/pregao/cache
+          key: tabelas-cliente-${{ hashFiles('modder/ferramentas/pregao/comum.mjs') }}
+
+      - name: Testes (o mesmo comando de casa)
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File modder\ferramentas\testar-tudo.ps1

@@ -1,0 +1,21 @@
+name: Ideia ou pedido
+description: Um addon, uma ferramenta, um guia ou um dado que faltou para a sua classe ou facção
+labels: [ideia]
+body:
+  - type: textarea
+    id: oque
+    attributes:
+      label: O que você quer
+    validations:
+      required: true
+  - type: input
+    id: paraquem
+    attributes:
+      label: Para quem
+      description: Classe, spec, facção, tipo de reino ou atividade (leveling, profissão, dungeon, PvP)
+      placeholder: Shaman Enhancement, Horda, PvP
+  - type: input
+    id: fonte
+    attributes:
+      label: Fonte
+      description: Se é gameplay (build, rota, macro), de qual guia vem. Os agentes não inventam gameplay.
