@@ -66,7 +66,7 @@ Sobre os 5 ouro: o projeto não promete enriquecimento. Dez por cento de margem 
 
 ### 3.1 Módulos, em ordem de carga
 
-Pasta `wow/modder/addons-proprios/PregaoForever/`. TOC: `## Interface: 16001`, `## Author: Bruno`, `## SavedVariables: PregaoForeverDB`, `## SavedVariablesPerCharacter: PregaoForeverCharDB`, `## OptionalDeps: Auctionator, Syndicator, Baganator, ElvUI` (base 4.8). Todo arquivo abre com `local _, ns = ...`; toda função de evento, timer ou clique roda em `xpcall` (base 4.8).
+Pasta `wow/modder/addons-proprios/PregaoForever/`. TOC: `## Interface: 16001`, `## Author: Guilherme`, `## SavedVariables: PregaoForeverDB`, `## SavedVariablesPerCharacter: PregaoForeverCharDB`, `## OptionalDeps: Auctionator, Syndicator, Baganator, ElvUI` (base 4.8). Todo arquivo abre com `local _, ns = ...`; toda função de evento, timer ou clique roda em `xpcall` (base 4.8).
 
 | # | Arquivo | Responsabilidade |
 |---|---|---|

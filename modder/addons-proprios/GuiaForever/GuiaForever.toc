@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: GuiaForever
 ## Notes: Your next steps on screen (Now panel), pet care with a smart feed key, guide marks at the pet trainer and talent tree, tooltips, and a guide window with search: talents, spells, pets, keys, professions and trainers.
-## Author: Bruno
+## Author: Guilherme
 ## Version: 1.5.1
 ## SavedVariables: GuiaForeverDB
 ## OptionalDeps: Questie, QuestieDB, TomTom, NaowhForever, NaowhForever_Training, RXPGuides

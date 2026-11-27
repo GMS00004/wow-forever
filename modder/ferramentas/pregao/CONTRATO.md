@@ -121,8 +121,8 @@ Ele só lê preço pela API pública do Auctionator e grava na chave `ah` do ban
 em 2026-11-16 às 15h04 e exportou 6.876 preços, 6.654 deles com idade 0. Se um dia der erro,
 `/run for k in pairs(Auctionator.API.v1) do print(k) end` lista os nomes reais.
 
-Desde 2026-11-26 a casa vem do jogador ativo (seção 11); os exemplos deste contrato usam a do Bruno.
-A casa pública do Bruno é a `us-111`: em 2026-11-16, o percentil 25 e a mediana de Heavy Leather do arquivo das
+Desde 2026-11-26 a casa vem do jogador ativo (seção 11); os exemplos deste contrato usam a do Guilherme.
+A casa pública do Guilherme é a `us-111`: em 2026-11-16, o percentil 25 e a mediana de Heavy Leather do arquivo das
 14h17 (2s 11c e 2s 12c, com 7.115 unidades) batem com a tela do leilão dele (2s 11c e 2s 13c, com 7.229). A
 `us-110` foi escolhida primeiro por engano, comparando a tela com um arquivo duas horas mais velho. A
 exportação do Auctionator confirmou: dos 6.448 itens em comum, 86% diferem em até 5% do mínimo da `us-111`, com
@@ -870,7 +870,7 @@ O Full vale 6 horas (`comFullCompra`); depois disso a conta cai na foto pública
 
 ## 11. Casa de leilão e facção do jogador (2026-11-26)
 
-Até 2026-11-26 a casa era a constante `us-111` (a Aliança Normal do Bruno) e o filtro de padrão de vendedor só
+Até 2026-11-26 a casa era a constante `us-111` (a Aliança Normal do Guilherme) e o filtro de padrão de vendedor só
 aceitava vendedor da Aliança. Agora as duas coisas saem do jogador, pelas funções de `comum.mjs`:
 
 | Função | Ordem de leitura | Sem nada |

@@ -74,7 +74,7 @@ Regra: o caminho quente nunca depende de um modelo de linguagem. O Claude é o a
 
 ### 3.2 Módulos do addon, na ordem de carga
 
-Convenções da base 4.8: Lua 5.1, ASCII, nomes em português, `local _, ns = ...`, globais só com prefixo `PregaoForever`, toda função de evento, timer ou clique dentro de `xpcall`. TOC: `## Interface: 16001`, `## Author: Bruno`, `## SavedVariables: PregaoForeverDB`, `## OptionalDeps: Auctionator, Syndicator, ElvUI`.
+Convenções da base 4.8: Lua 5.1, ASCII, nomes em português, `local _, ns = ...`, globais só com prefixo `PregaoForever`, toda função de evento, timer ou clique dentro de `xpcall`. TOC: `## Interface: 16001`, `## Author: Guilherme`, `## SavedVariables: PregaoForeverDB`, `## OptionalDeps: Auctionator, Syndicator, ElvUI`.
 
 | # | Arquivo | Responsabilidade |
 |---|---|---|

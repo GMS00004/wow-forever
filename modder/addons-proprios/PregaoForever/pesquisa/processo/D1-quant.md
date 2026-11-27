@@ -97,7 +97,7 @@ O addon mora em `wow/modder/addons-proprios/PregaoForever` (base 4.8), ligado ao
 
 ### 3.2 Módulos e ordem de carga
 
-TOC: `## Interface: 16001`, `## Author: Bruno`, `## SavedVariables: PregaoForeverDB`, `## SavedVariablesPerCharacter: PregaoForeverCharDB`, `## OptionalDeps: Auctionator, Syndicator, ElvUI` (base 4.8). A numeração da tabela é a ordem de carga.
+TOC: `## Interface: 16001`, `## Author: Guilherme`, `## SavedVariables: PregaoForeverDB`, `## SavedVariablesPerCharacter: PregaoForeverCharDB`, `## OptionalDeps: Auctionator, Syndicator, ElvUI` (base 4.8). A numeração da tabela é a ordem de carga.
 
 | # | Arquivo | Responsabilidade |
 |---|---|---|

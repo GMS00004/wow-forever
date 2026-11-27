@@ -11,7 +11,7 @@ Addon do kit do amigo do dono (criado em 2026-11-08). Não é ligado ao jogo do 
 
 ## Bruxo (1.1.0, 2026-11-08, `Bruxo.lua`)
 
-Só age se o personagem for Warlock. Segue a ordem do Crix, escolhida pelo dono (ficha `jogadores\bruno\personagens\amigo-warlock-demo.md`).
+Só age se o personagem for Warlock. Segue a ordem do Crix, escolhida pelo dono (ficha `jogadores\guilherme\personagens\amigo-warlock-demo.md`).
 
 1. `PLAYER_LEVEL_UP`: abre uma janela em português com o talento do nível, o nome em português da Wowhead do Forever (tabela `T`), a árvore e o rank. Ela traz também as magias do instrutor naquele nível, com nome do próprio cliente (`C_Spell.GetSpellName`) e custo somado, e as que o Crix pula (Drenar Mana, Pedra de Fogo, Pedra Mágica, Detectar Invisibilidade). Fecha com a missão do demônio novo e uma nota do Crix nos níveis 10, 18, 20, 26, 31 e 41. Nível sem nada a dizer não abre janela.
 2. `/kit bruxo` mostra o nível atual e os próximos três talentos.

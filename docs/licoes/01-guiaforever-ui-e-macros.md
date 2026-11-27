@@ -1,6 +1,6 @@
 # WoW Forever Addon Modding by the Agent — GuiaForever, UI Source & Macro Counter
 
-> Foto de 2026-11-26 de uma página do second brain do Bruno (criada em 2026-11-05, atualizada em 2026-11-16), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
+> Foto de 2026-11-26 de uma página do second brain do Guilherme (criada em 2026-11-05, atualizada em 2026-11-16), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
 
 The `wow-modder` agent (project `C:\GMS\Claude Code Projects\wow\modder`) builds its own addon, GuiaForever, for the owner's WoW Forever hunter. This page holds what a future session needs to know before touching it or reading the game's UI API. Everything is a photo of 2026-11-05 (GuiaForever sections: Avell, morning and afternoon; UIForever section: Acer, night), n=1 session each; neither addon had **run in the game** after the changes described. Later sections (2026-11-05 midday and 2026-11-06 afternoon, Avell) add the ElvDB-before-login design, fonts and the English guide; the 2026-11-06 night sections add GuiaForever 0.8.0 (Zone and Keys tabs), the installer's `-SoPastas`, Naowh Forever and the session-report rule; same limit, nothing ran in the game yet. The 2026-11-07 sections (Avell, night) add the official API list as a checker, GuiaForever 1.0 as a copilot and UIForever 0.6.0; the last section records the first proof that the addon ran in the game.
 

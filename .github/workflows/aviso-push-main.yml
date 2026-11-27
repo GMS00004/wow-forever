@@ -1,6 +1,6 @@
 # O plano Free da GitHub não trava o main de repositório privado. Este workflow é o alarme: quando alguém que não é
-# o Bruno muda o main sem ser ele (push direto, force push ou merge de PR feito por outra pessoa), abre uma issue
-# para o Bruno com o que mudou e o comando para voltar. O combinado está no CONTRIBUTING.md.
+# o Guilherme muda o main sem ser ele (push direto, force push ou merge de PR feito por outra pessoa), abre uma issue
+# para o Guilherme com o que mudou e o comando para voltar. O combinado está no CONTRIBUTING.md.
 name: aviso de push no main
 
 on:
@@ -38,7 +38,7 @@ jobs:
               '```',
               `git push --force-with-lease origin ${p.before}:main`,
               '```',
-              'O combinado (CONTRIBUTING.md): o main só muda por PR, e quem faz o merge é o Bruno.',
+              'O combinado (CONTRIBUTING.md): o main só muda por PR, e quem faz o merge é o Guilherme.',
             ].join('\n');
             await github.rest.issues.create({
               owner: context.repo.owner,

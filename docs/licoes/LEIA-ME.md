@@ -1,6 +1,6 @@
-# Lições do agente e do Bruno ao construir os addons e as ferramentas
+# Lições do agente e do Guilherme ao construir os addons e as ferramentas
 
-Estes arquivos reúnem o que o agente de IA e o Bruno aprenderam construindo os addons e as ferramentas do WoW Forever (GuiaForever, UIForever, CentralForever, PregaoForever, CompraForever e as calculadoras de custo fora do jogo). Foram copiados do second brain do Bruno em 2026-11-26, continuam em inglês, que é o idioma original, e não são atualizados aqui: quando o código e uma dessas páginas discordarem, vale o código. Cada página abre com uma nota dizendo de quando é e quando foi atualizada pela última vez.
+Estes arquivos reúnem o que o agente de IA e o Guilherme aprenderam construindo os addons e as ferramentas do WoW Forever (GuiaForever, UIForever, CentralForever, PregaoForever, CompraForever e as calculadoras de custo fora do jogo). Foram copiados do second brain do Guilherme em 2026-11-26, continuam em inglês, que é o idioma original, e não são atualizados aqui: quando o código e uma dessas páginas discordarem, vale o código. Cada página abre com uma nota dizendo de quando é e quando foi atualizada pela última vez.
 
 | Arquivo | Assunto |
 |---|---|

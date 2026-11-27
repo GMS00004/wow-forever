@@ -83,7 +83,7 @@ São o contrato do addon. Os checadores e a bancada conferem cada um (seção 8)
 
 ### 3.2 Módulos e ordem de carga
 
-Pasta `wow/modder/addons-proprios/PregaoForever`; TOC com `## Interface: 16001`, `## Author: Bruno`, `## SavedVariables: PregaoForeverDB` e dependências opcionais ElvUI, Auctionator, Syndicator e Baganator; convenções da base 4.8. Ordem de carga:
+Pasta `wow/modder/addons-proprios/PregaoForever`; TOC com `## Interface: 16001`, `## Author: Guilherme`, `## SavedVariables: PregaoForeverDB` e dependências opcionais ElvUI, Auctionator, Syndicator e Baganator; convenções da base 4.8. Ordem de carga:
 
 | # | Arquivo | Responsabilidade |
 |---|---|---|

@@ -67,7 +67,7 @@ Sustentam: um mercado enorme e em queda (base 6.1); preços de vendedor que a Bl
 
 ### 3.1 Módulos e ordem de carga
 
-Pasta `wow/modder/addons-proprios/PregaoForever`; TOC com `## Interface: 16001`, `## Author: Bruno`, `## SavedVariables: PregaoForeverDB` e `## OptionalDeps: Auctionator, Syndicator, Baganator, ElvUI` (base 4.8). Todos os arquivos, inclusive os das fases 2 e 3 como esqueleto vazio, entram no `.toc` na onda 1: arquivo novo ou `.toc` alterado pede reinício do jogo, `.lua` alterado só pede `/reload` (R4a §6).
+Pasta `wow/modder/addons-proprios/PregaoForever`; TOC com `## Interface: 16001`, `## Author: Guilherme`, `## SavedVariables: PregaoForeverDB` e `## OptionalDeps: Auctionator, Syndicator, Baganator, ElvUI` (base 4.8). Todos os arquivos, inclusive os das fases 2 e 3 como esqueleto vazio, entram no `.toc` na onda 1: arquivo novo ou `.toc` alterado pede reinício do jogo, `.lua` alterado só pede `/reload` (R4a §6).
 
 Ordem de carga; os arquivos 1 a 21 são da fase 1.
 

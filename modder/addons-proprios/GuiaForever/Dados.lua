@@ -114,7 +114,7 @@ GuiaForeverDados = {
     },
   },
 
-  -- Ignatius Stonejaw (Protection, tanque da dupla). Fonte: jogadores\bruno\personagens\ignatius-stonejaw.md,
+  -- Ignatius Stonejaw (Protection, tanque da dupla). Fonte: jogadores\guilherme\personagens\ignatius-stonejaw.md,
   -- secoes "Lei" e "As tres ordens, nivel a nivel" (2026-11-08), com as decisoes do dono da mesma
   -- noite: Prot no 22 (decisao 1) e Sanctified Judgement 3/3 (decisao 2). A decisao 3 (os 6 pontos
   -- livres de Prot ate o 52) e a 4 (53 a 60) estao abertas. Colunas: A = Perfect Gaming Weather,
@@ -286,7 +286,7 @@ GuiaForeverMacros = {
     },
   },
 
-  -- Ignatius Stonejaw. Fonte: jogadores\bruno\personagens\ignatius-stonejaw.md, secao "Macros" (2026-11-08):
+  -- Ignatius Stonejaw. Fonte: jogadores\guilherme\personagens\ignatius-stonejaw.md, secao "Macros" (2026-11-08):
   -- lei do Jurdi e do Deadmanfred (/startattack no Holy Strike e no Judgement, bolha que lanca e
   -- cancela; texto do Libram do Jurdi nas duas primeiras e na bolha); tecla so de ataque e
   -- /cancelaura na Blessing of Protection (Deadmanfred); mouseover (Jurdi). Botoes e teclas:
@@ -334,7 +334,7 @@ GuiaForeverGraficos = {
 
 -- Profissoes de cada personagem, por classe, para a aba Treinos (onde aprender
 -- antes de ter a profissao). Fonte: decisoes do dono em 2026-11-04
--- (jogadores\bruno\jogador.md): nos principais, Cooking e First Aid como secundarias.
+-- (jogadores\guilherme\jogador.md): nos principais, Cooking e First Aid como secundarias.
 GuiaForeverProfissoesPlanejadas = {
   HUNTER = { "Leatherworking", "Skinning", "Cooking", "First Aid" },  -- Hexumlite Bull
   SHAMAN = { "Herbalism", "Enchanting", "Cooking", "First Aid" },     -- Rurik Thunderfist

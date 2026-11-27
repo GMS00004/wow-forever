@@ -1,6 +1,6 @@
 # Leatherworking Crafts List Outside the Game — Auctionator Prices by Public API, Client Tables & the Hourly Public Price File
 
-> Foto de 2026-11-26 de uma página do second brain do Bruno (criada em 2026-11-16, atualizada em 2026-11-26), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
+> Foto de 2026-11-26 de uma página do second brain do Guilherme (criada em 2026-11-16, atualizada em 2026-11-26), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
 
 Node tools built on 2026-11-16 (Avell, wow-modder) that say which Leatherworking recipes pay, crossing vendor, skill and auction price, without any addon code in the game. Prices come from the owner's Auctionator scan (read through its public API) and from a public hourly price file; recipes and vendor prices come from client tables. Tools: `C:\GMS\Claude Code Projects\wow\modder\ferramentas\pregao\` (`CONTRATO.md`, `comum.mjs`, `gerar-receitas.mjs`, `baixar-precos.mjs`, `crafts.mjs`, `testes\`), commits `7a357d0` and `286e013` in `C:\GMS` on `main`, no push; generated data in `...\wow\modder\dados\pregao\`, outside git. Its in-game panel is a later step, not built. Everything below is `[product: WoW Forever]`, one client build (1.60.1, build 70938).
 

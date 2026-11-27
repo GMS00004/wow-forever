@@ -4,7 +4,7 @@
 
 Um agente de IA (o **wow-modder**, que roda no [Claude Code](https://claude.com/claude-code)) que cuida dos addons e da interface do WoW Forever por você: escolhe e instala o pacote de addons, mantém tudo atualizado, faz backup do WTF, configura ElvUI, macros, teclas e CVars a partir dos guias que você segue, e diagnostica erro de Lua. Em volta dele, as ferramentas que ele usa (scripts com prévia antes de gravar), addons próprios escritos com ele e testes que rodam fora do jogo.
 
-Serve para qualquer facção, reino e classe. Foi construído pelo Bruno (Aliança) desde o lançamento do Forever, em 2026-11-04, e aberto aos amigos (Horda, reino PvP, várias classes) em 2026-11-26.
+Serve para qualquer facção, reino e classe. Foi construído pelo Guilherme (Aliança) desde o lançamento do Forever, em 2026-11-04, e aberto aos amigos (Horda, reino PvP, várias classes) em 2026-11-26.
 
 | Quero... | Vá para |
 |---|---|
@@ -23,9 +23,9 @@ Serve para qualquer facção, reino e classe. Foi construído pelo Bruno (Alian�
 | Pacote base de addons (ElvUI, Questie, DBM, BugSack, Auctionator e outros) | sim | o agente propõe e instala com o seu ok ([lista](comum/referencia/pacote-base.md)) |
 | Ferramentas de preço e de custo de profissão (`modder/ferramentas/pregao`) | sim, com a casa de leilão da sua facção | o `casaLeilao` no seu `jogador.json` (Horda PvP é a 113) |
 | CentralForever: dano, DPS e threat da luta | sim | o papel por classe está no `Config.lua` (hoje só o paladino conta como tanque) |
-| CompraForever: leilão, compra e rota de profissão num clique por ação | o código sim; os dados vêm da casa e das rotas do Bruno | gerar os dados com a sua casa ([issue #2](https://github.com/GMS00004/wow-forever/issues/2)) |
+| CompraForever: leilão, compra e rota de profissão num clique por ação | o código sim; os dados vêm da casa e das rotas do Guilherme | gerar os dados com a sua casa ([issue #2](https://github.com/GMS00004/wow-forever/issues/2)) |
 | GuiaForever: talentos, pets, profissões e treinadores no jogo | o código lê classe e facção; o conteúdo cobre caçador e paladino da Aliança | o conteúdo da sua classe, a partir dos seus guias |
-| UIForever: layout do ElvUI, teclas e barras | o layout sim, se gostar do do Bruno; as magias nas barras só para caçador e paladino | o mesmo: dados da sua classe |
+| UIForever: layout do ElvUI, teclas e barras | o layout sim, se gostar do do Guilherme; as magias nas barras só para caçador e paladino | o mesmo: dados da sua classe |
 
 O que falta para Horda e outras classes está nas [issues](https://github.com/GMS00004/wow-forever/issues), e quem joga essas classes é quem melhor testa.
 
@@ -73,8 +73,8 @@ O agente não lembra de nada entre sessões: a memória dele é a sua pasta de j
 | [`modder/.claude/agents/wow-modder.md`](modder/.claude/agents/wow-modder.md) | o prompt do agente (o que ele faz, a memória, a abertura de sessão, o bootstrap, as regras de autonomia) |
 | [`modder/ferramentas/`](modder/ferramentas/LEIA-ME.md) | os scripts do gerenciador de addons (PowerShell), os checadores e bancadas dos addons e as ferramentas de preço (Node) |
 | [`modder/addons-proprios/`](modder/addons-proprios/LEIA-ME.md) | os addons escritos aqui, mais o modelo para um addon novo |
-| `modder/HANDOFF-*.md` | frentes de trabalho do Bruno em andamento (notas para retomar uma tarefa numa sessão nova) |
-| [`jogadores/`](jogadores/LEIA-ME.md) | uma pasta por jogador; a sua fica só no seu PC, a do Bruno vai no git como exemplo de pasta em uso |
+| `modder/HANDOFF-*.md` | frentes de trabalho do Guilherme em andamento (notas para retomar uma tarefa numa sessão nova) |
+| [`jogadores/`](jogadores/LEIA-ME.md) | uma pasta por jogador; a sua fica só no seu PC, a do Guilherme vai no git como exemplo de pasta em uso |
 | [`comum/referencia/`](comum/referencia/) | fatos do Forever com fonte e data, o pacote base, a API e as profissões |
 | [`comum/fontes/`](comum/fontes/LEIA-ME.md) | a biblioteca de guias de gameplay (builds, macros, leveling, profissões) que os jogadores seguem |
 | [`docs/`](docs/) | começo, arquitetura, glossário e lições |
@@ -102,7 +102,7 @@ São 10 suítes de PowerShell (604 verificações, com uma instalação falsa do
 
 ## Histórico
 
-Os commits de 2026-11-03 a 2026-11-26 vieram do repositório pessoal do Bruno (só a pasta do WoW, com o histórico dela). Os commits `wip(sync)` são fotos automáticas do sync entre os dois notebooks dele; daqui em diante essas fotos vão para um espelho privado e não entram no `main`.
+Os commits de 2026-11-03 a 2026-11-26 vieram do repositório pessoal do Guilherme (só a pasta do WoW, com o histórico dela). Os commits `wip(sync)` são fotos automáticas do sync entre os dois notebooks dele; daqui em diante essas fotos vão para um espelho privado e não entram no `main`.
 
 ## Créditos
 

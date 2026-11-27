@@ -25,7 +25,7 @@ Esses limites não têm data no arquivo. O limite 2 é o que mais pesa para leil
 
 > Gameplay (builds, talentos e rotação, leveling e rota de quests, economia e profissões, táticas de dungeon e raide) vem das fontes que o dono escolheu, em `comum\fontes\`, e nenhum agente dá opinião própria de gameplay. Quando uma decisão depende de gameplay e não há fonte, pergunte ao dono qual fonte seguir.
 
-`C:/GMS/Claude Code Projects/wow/modder/.claude/agents/wow-modder.md`, linha 16, repete a regra e cita "economia e profissões". Em `C:/GMS/Claude Code Projects/wow/comum/fontes/economia/` existe uma única fonte, `studen-ouro-leveling.md`, com "seguir" a decidir (`C:/GMS/Claude Code Projects/wow/jogadores/bruno/estado/estado.md`, linha 155, 2026-11-07) [local]. Portanto a estratégia de compra e venda não tem fonte aprovada.
+`C:/GMS/Claude Code Projects/wow/modder/.claude/agents/wow-modder.md`, linha 16, repete a regra e cita "economia e profissões". Em `C:/GMS/Claude Code Projects/wow/comum/fontes/economia/` existe uma única fonte, `studen-ouro-leveling.md`, com "seguir" a decidir (`C:/GMS/Claude Code Projects/wow/jogadores/guilherme/estado/estado.md`, linha 155, 2026-11-07) [local]. Portanto a estratégia de compra e venda não tem fonte aprovada.
 
 ### 1.3 Nada configurado dentro do jogo
 
@@ -194,7 +194,7 @@ Consequência para a operação remota [inferencia]: com o jogo aberto no Avell,
 |---|---|---|---|
 | `## Interface` | 16001 (`GuiaForever.toc`, linha 1) | 16001 (`UIForever.toc`, linha 1) | 16001 (`Modelo.toc`, linha 1) |
 | `## Title` | GuiaForever (linha 2) | UIForever (linha 2) | Modelo (linha 2) |
-| `## Author` | Bruno | Bruno | Bruno |
+| `## Author` | Guilherme | Guilherme | Guilherme |
 | `## Version` | 1.3.1 (linha 5) | 0.7.0 (linha 5) | 0.1.0 (linha 5) |
 | `## SavedVariables` | `GuiaForeverDB` (linha 6) | `UIForeverDB` (linha 7) | nenhuma |
 | `## SavedVariablesPerCharacter` | nenhuma | `UIForeverCharDB` (linha 8) | nenhuma |

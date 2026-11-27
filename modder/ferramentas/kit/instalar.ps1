@@ -1,4 +1,4 @@
-﻿# Instalador do Kit do WoW Forever (para o amigo do Bruno).
+﻿# Instalador do Kit do WoW Forever (para o amigo do Guilherme).
 # Fonte do INSTALAR.bat: o kit-amigo.ps1 cola este texto depois de um cabecalho de cmd,
 # e o cmd o executa pelo PowerShell (ver $CABECALHO no kit-amigo.ps1).
 # So escreve em <WoW>\_forever_\Interface\AddOns, com o jogo fechado, e antes move as pastas
@@ -138,7 +138,7 @@ try {
     }
     if (-not $forever) {
         [void](Avisar ("Sem a pasta do WoW Forever não dá para instalar.`n`n" +
-            "Instale o jogo pelo Battle.net, abra uma vez e rode o INSTALAR de novo. Se o jogo já estiver instalado, chame o Bruno.") 'Warning')
+            "Instale o jogo pelo Battle.net, abra uma vez e rode o INSTALAR de novo. Se o jogo já estiver instalado, chame o Guilherme.") 'Warning')
         exit 2
     }
     Write-Host "Jogo achado em: $forever"
@@ -168,7 +168,7 @@ try {
             try { Start-Process -FilePath $env:KITWOW_BAT -Verb RunAs; exit 0 }
             catch { [void](Avisar 'Sem a permissão não dá para instalar. Rode o INSTALAR de novo e clique em Sim.' 'Warning'); exit 2 }
         }
-        [void](Avisar "Não consegui gravar na pasta do jogo:`n$addons`n`nChame o Bruno." 'Error')
+        [void](Avisar "Não consegui gravar na pasta do jogo:`n$addons`n`nChame o Guilherme." 'Error')
         exit 3
     }
 
@@ -193,7 +193,7 @@ try {
     # 6. Confere
     $faltando = @($pastas | Where-Object { -not (Get-ChildItem -LiteralPath (Join-Path $addons $_) -Filter '*.toc' -File -ErrorAction SilentlyContinue) })
     if ($faltando.Count -gt 0) {
-        [void](Avisar ("Algo não ficou certo nestas pastas: " + ($faltando -join ', ') + "`n`nTire uma foto desta mensagem e mande para o Bruno.") 'Error')
+        [void](Avisar ("Algo não ficou certo nestas pastas: " + ($faltando -join ', ') + "`n`nTire uma foto desta mensagem e mande para o Guilherme.") 'Error')
         exit 3
     }
     $msg = "Pronto! O kit foi instalado ({0} pastas de addon).`n`nAgora abra o jogo pelo Battle.net. Quando você entrar com o personagem, vai aparecer uma janela de boas-vindas explicando tudo." -f $pastas.Count
@@ -203,7 +203,7 @@ try {
     [void](Avisar $msg)
     exit 0
 } catch {
-    [void](Avisar ("Deu um erro na instalação:`n`n" + $_.Exception.Message + "`n`nTire uma foto desta mensagem e mande para o Bruno.") 'Error')
+    [void](Avisar ("Deu um erro na instalação:`n`n" + $_.Exception.Message + "`n`nTire uma foto desta mensagem e mande para o Guilherme.") 'Error')
     exit 3
 } finally {
     if ($pacote -and $pacote.Temp -and (Test-Path -LiteralPath $pacote.Temp)) { Remove-Item -LiteralPath $pacote.Temp -Recurse -Force -ErrorAction SilentlyContinue }

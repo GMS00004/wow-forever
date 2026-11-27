@@ -1,6 +1,6 @@
 # WoW Forever Combat Hub (CentralForever) — Combat-Hidden Values, Damage Meter & Threat API, Confined Code & Simulator Bench
 
-> Foto de 2026-11-26 de uma página do second brain do Bruno (criada em 2026-11-16, atualizada em 2026-11-16), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
+> Foto de 2026-11-26 de uma página do second brain do Guilherme (criada em 2026-11-16, atualizada em 2026-11-16), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
 
 On 2026-11-16 (Avell, `wow-modder`) the owner asked for a combat hub in the bottom-right corner of the screen (total damage, DPS per fight, threat). The session mapped the API, planned with an adversarial review, ran 13 subagent tasks in four waves and wired the new addon, CentralForever 0.1.0, to the game with the game closed (UIForever 0.7.1 got two new lines in the same step). **Nothing ran in the game.** This page holds what a future session needs before touching combat numbers in the Forever client: which functions return values hidden in combat, what an addon can do with a hidden value, how the code that touches them was confined and checked, and the bench that proves it outside the game. The general addon history is in [WoW Forever Addon Modding by the Agent — GuiaForever, UI Source & Macro Counter](01-guiaforever-ui-e-macros.md).
 

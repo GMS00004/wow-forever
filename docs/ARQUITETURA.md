@@ -55,7 +55,7 @@ O agente não lembra de nada entre sessões. A memória é a pasta do jogador at
 | `instalacao.json` | só os scripts | onde o jogo está neste PC |
 | `jogador.md`, `jogador.json`, `personagens\` | o agente, com o jogador | perfil, casa de leilão, fichas |
 
-A pasta do Bruno vai no git, como exemplo de uma pasta em uso há semanas; a dos outros jogadores fica no PC de cada um, para os PRs levarem ferramenta e conteúdo, não estado de sessão. Os `HANDOFF-*.md` de `modder\` são notas de trabalho em andamento do Bruno, para retomar uma frente numa sessão nova.
+A pasta do Guilherme vai no git, como exemplo de uma pasta em uso há semanas; a dos outros jogadores fica no PC de cada um, para os PRs levarem ferramenta e conteúdo, não estado de sessão. Os `HANDOFF-*.md` de `modder\` são notas de trabalho em andamento do Guilherme, para retomar uma frente numa sessão nova.
 
 ## O gerenciador de addons (PowerShell)
 
@@ -102,7 +102,7 @@ O caminho é: `baixar-precos.mjs` grava o `precos.json`; `crafts.mjs`, `rota.mjs
 
 ## O CI
 
-`.github\workflows\testes.yml` roda o `testar-tudo.ps1` num Windows limpo em todo push no `main` e em todo PR. Dois workflows pequenos fazem o papel da trava que o plano Free da GitHub não dá em repositório privado: `aviso-push-main.yml` abre uma issue para o Bruno quando alguém que não é ele muda o `main`, e `pedir-revisao.yml` pede a revisão dele em todo PR de outra pessoa.
+`.github\workflows\testes.yml` roda o `testar-tudo.ps1` num Windows limpo em todo push no `main` e em todo PR. Dois workflows pequenos fazem o papel da trava que o plano Free da GitHub não dá em repositório privado: `aviso-push-main.yml` abre uma issue para o Guilherme quando alguém que não é ele muda o `main`, e `pedir-revisao.yml` pede a revisão dele em todo PR de outra pessoa.
 
 ## Por que assim
 

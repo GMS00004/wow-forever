@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: Kit do Amigo
 ## Notes: Leaves the friend's kit ready at the first login: Leatrix sells junk and repairs, auto loot on, welcome window in Portuguese (/kit); for the warlock, talent and trainer plan at each level (/kit bruxo) and the Marca macro.
-## Author: Bruno
+## Author: Guilherme
 ## Version: 1.1.0
 ## SavedVariables: KitAmigoDB
 ## SavedVariablesPerCharacter: KitAmigoCharDB

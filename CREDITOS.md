@@ -1,6 +1,6 @@
 # Créditos
 
-Este repositório se apoia no trabalho de muita gente. As notas em `comum/fontes/` são resumos nas palavras do Bruno, para uso pessoal deste grupo, com o link do original; o conteúdo, as builds e as rotas são dos criadores. Se um guia ajudou você, apoie quem fez.
+Este repositório se apoia no trabalho de muita gente. As notas em `comum/fontes/` são resumos nas palavras do Guilherme, para uso pessoal deste grupo, com o link do original; o conteúdo, as builds e as rotas são dos criadores. Se um guia ajudou você, apoie quem fez.
 
 ## Guias de gameplay (`comum/fontes/`)
 
@@ -43,4 +43,4 @@ Os addons do pacote base (ElvUI, Questie, Deadly Boss Mods, BugSack e BugGrabber
 
 ## Licença
 
-O repositório é privado e não tem licença aberta: o código é do Bruno, e o uso fica entre os colaboradores. Contribuição por PR entra nas mesmas condições.
+O repositório é privado e não tem licença aberta: o código é do Guilherme, e o uso fica entre os colaboradores. Contribuição por PR entra nas mesmas condições.

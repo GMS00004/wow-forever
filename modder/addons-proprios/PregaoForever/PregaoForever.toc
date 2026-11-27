@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: PregaoForever
 ## Notes: Auction terminal: ruler, queue and one key per action
-## Author: Bruno
+## Author: Guilherme
 ## Version: 0.1.0
 ## SavedVariables: PregaoForeverDB
 ## SavedVariablesPerCharacter: PregaoForeverCharDB

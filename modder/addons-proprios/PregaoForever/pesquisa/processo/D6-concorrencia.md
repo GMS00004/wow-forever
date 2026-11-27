@@ -72,7 +72,7 @@ Nome proposto: **NichoForever** (comando `/nicho`). PregaoForever serve; proponh
 
 ### 3.1 Módulos e ordem de carga
 
-Lua 5.1, ASCII, `local _, ns = ...`, globais só `NichoForever*`, `SLASH_NICHOFOREVER*` e `BINDING_*`, toda função de evento, timer ou clique em `xpcall` (base 4.8). TOC: `## Interface: 16001`, `## Author: Bruno`, `## SavedVariables: NichoForeverDB`, `## OptionalDeps: Auctionator, Syndicator, ElvUI`.
+Lua 5.1, ASCII, `local _, ns = ...`, globais só `NichoForever*`, `SLASH_NICHOFOREVER*` e `BINDING_*`, toda função de evento, timer ou clique em `xpcall` (base 4.8). TOC: `## Interface: 16001`, `## Author: Guilherme`, `## SavedVariables: NichoForeverDB`, `## OptionalDeps: Auctionator, Syndicator, ElvUI`.
 
 | # | Arquivo | Responsabilidade |
 |---|---|---|

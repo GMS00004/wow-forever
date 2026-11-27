@@ -1,6 +1,6 @@
 # WoW Forever Legacy Point Cost of Six Professions — Naowh Recipe Table, Greedy Route Corrections & Easy Estimate Refresh
 
-> Foto de 2026-11-26 de uma página do second brain do Bruno (criada em 2026-11-23, atualizada em 2026-11-26), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
+> Foto de 2026-11-26 de uma página do second brain do Guilherme (criada em 2026-11-23, atualizada em 2026-11-26), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
 
 How the out-of-game tool (`C:\GMS\Claude Code Projects\wow\modder\ferramentas\pregao\`, `legado.mjs` and `estimativas.mjs`) estimates the cost of the Legacy points of the six crafting professions (Alchemy, Blacksmithing, Enchanting, Engineering, Leatherworking, Tailoring) up to skill 225, buying everything. Build 1.60.1.71037, prices of 2026-11-23. Client tables for these professions are in the Leatherworking page (sections 4 and 5), not repeated here.
 

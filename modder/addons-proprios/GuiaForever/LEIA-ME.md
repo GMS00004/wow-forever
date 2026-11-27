@@ -18,7 +18,7 @@ Arquivos novos: `RotaCrafts.lua` (dados gerados por `rota.mjs --addon`; nunca ed
 
 ## O que mudou na 1.3
 
-Pedido do dono, 2026-11-08, noite: integrar o guia do paladino Ignatius Stonejaw (Human, Protection, tanque da dupla com um warlock) como o do Hexumlite. A única fonte de gameplay é a ficha `..\..\..\jogadores\bruno\personagens\ignatius-stonejaw.md`, com as decisões do dono da mesma noite (Prot no 22, Sanctified Judgement; os 6 pontos livres de Prot e o 53 a 60 abertos). Contrato na seção 12 do `ARQUITETURA.md`. Nada muda para o Hexumlite, o Rurik e o Fingolfin: todo caminho novo só liga com os campos novos nos dados da classe (o banco de prova do caçador saiu idêntico ao de antes).
+Pedido do dono, 2026-11-08, noite: integrar o guia do paladino Ignatius Stonejaw (Human, Protection, tanque da dupla com um warlock) como o do Hexumlite. A única fonte de gameplay é a ficha `..\..\..\jogadores\guilherme\personagens\ignatius-stonejaw.md`, com as decisões do dono da mesma noite (Prot no 22, Sanctified Judgement; os 6 pontos livres de Prot e o 53 a 60 abertos). Contrato na seção 12 do `ARQUITETURA.md`. Nada muda para o Hexumlite, o Rurik e o Fingolfin: todo caminho novo só liga com os campos novos nos dados da classe (o banco de prova do caçador saiu idêntico ao de antes).
 
 | Peça | O que faz |
 |---|---|
@@ -77,7 +77,7 @@ Desde a 0.7.0, todo o texto do jogo está em inglês. Os subcomandos do `/guia` 
 
 ## Regra do conteúdo
 
-Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\..\comum\fontes\` ou de uma ficha em `..\..\..\jogadores\bruno\personagens\`. A fonte fica no campo `fonte` e a origem (arquivo e linha) num comentário. Onde as fontes divergem, o dono escolhe, e as escolhas estão na tabela "Decisões do dono" da ficha de cada personagem. Fonte anterior a 03/11 entra marcada "(beta)", e decisão do próprio dono entra com a fonte "you". Lacuna fica como "sem fonte" no jogo. O estado (dieta do pet, pontos de treino, magias conhecidas, perícia) vem do jogo.
+Nada de gameplay sai da cabeça do agente. Cada dica vem de uma fonte em `..\..\..\comum\fontes\` ou de uma ficha em `..\..\..\jogadores\guilherme\personagens\`. A fonte fica no campo `fonte` e a origem (arquivo e linha) num comentário. Onde as fontes divergem, o dono escolhe, e as escolhas estão na tabela "Decisões do dono" da ficha de cada personagem. Fonte anterior a 03/11 entra marcada "(beta)", e decisão do próprio dono entra com a fonte "you". Lacuna fica como "sem fonte" no jogo. O estado (dieta do pet, pontos de treino, magias conhecidas, perícia) vem do jogo.
 
 ## Arquivos (na ordem do `.toc`)
 

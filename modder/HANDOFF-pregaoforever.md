@@ -12,7 +12,7 @@ sensivel: false
 
 > Frente: pregaoforever · Atualizado: 16/11/2026 18:10 · Máquina: Avell
 
-> **O que é esta frente.** O PregaoForever é o addon de casa de leilões do Bruno (o dono) para o WoW Forever, feito pelo agente wow-modder. Em 16/11/2026 saíram o design (manhã) e, à tarde, as ondas 0, 1 e 2: o addon 0.1.0 existe, está ligado ao jogo e roda em **modo leitura** (a régua mede, a fila ainda não existe, nenhuma função de ação no código). A frente segue na onda 2 no jogo (sondas e sessões de linha de base), que decide a DD12 (construir a mão ou não).
+> **O que é esta frente.** O PregaoForever é o addon de casa de leilões do Guilherme (o dono) para o WoW Forever, feito pelo agente wow-modder. Em 16/11/2026 saíram o design (manhã) e, à tarde, as ondas 0, 1 e 2: o addon 0.1.0 existe, está ligado ao jogo e roda em **modo leitura** (a régua mede, a fila ainda não existe, nenhuma função de ação no código). A frente segue na onda 2 no jogo (sondas e sessões de linha de base), que decide a DD12 (construir a mão ou não).
 >
 > **Leia isto mais três arquivos e você retoma do zero:** `C:\GMS\Claude Code Projects\wow\CLAUDE.md` (limites fixos e formato do relatório de sessão), `addons-proprios\PregaoForever\ARQUITETURA.md` (contrato congelado das ondas 1 e 2, com a seção "Mudanças do contrato" no fim) e `addons-proprios\PregaoForever\pesquisa\sonda\onda2-2026-11-16.md` (o que já foi medido no jogo). O `DESIGN.md` (44 mil palavras) só por faixa: `Grep -n "^## \|^### "` e leia a seção que a tarefa pede; a onda 3 está na seção 17.
 >

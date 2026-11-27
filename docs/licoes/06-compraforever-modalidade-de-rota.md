@@ -1,6 +1,6 @@
 # CompraForever Route Modality — Route Computed Outside the Game, Quantities Redone In-Game & a Lua-vs-JS Parity Test
 
-> Foto de 2026-11-26 de uma página do second brain do Bruno (criada em 2026-11-23, atualizada em 2026-11-23), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
+> Foto de 2026-11-26 de uma página do second brain do Guilherme (criada em 2026-11-23, atualizada em 2026-11-23), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
 
 Design record of the "route modality" of the CompraForever addon (0.3.0, `C:\GMS\Claude Code Projects\wow\modder\addons-proprios\CompraForever\`): taking the six crafting professions up to skill 150 or 225 along the route computed by the out-of-game tool, with the purchases made "ultra simple" (owner's request, literal: "Eu quero que essas compras sejam ultra simples igual foi no leatherworking também"). Scope of the whole page: `[product: wow-modder]` unless a section says otherwise. **Status (updated 2026-11-23, night):** the modality ran in the game for the first time the same night, on the paladin Ignatius, Engineering 1 to 150 (section 7; commit `990b5e2`, no push). Until then nothing of it had run in the game (commit `66d5aef`).
 

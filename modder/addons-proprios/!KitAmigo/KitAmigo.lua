@@ -22,7 +22,7 @@ if type(LeaPlusDB) ~= "table" then
   for chave, valor in pairs(SEMENTE_LEATRIX) do LeaPlusDB[chave] = valor end
 end
 
-local COR = "|cff33ff99Kit do Bruno:|r "
+local COR = "|cff33ff99Kit do Guilherme:|r "
 
 local LINHAS = {
   "Bem-vindo ao WoW Forever!",

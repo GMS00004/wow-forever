@@ -1,4 +1,4 @@
-﻿# Monta o Kit do WoW Forever para o amigo do Bruno: copia da pasta AddOns desta maquina as pastas
+﻿# Monta o Kit do WoW Forever para o amigo do Guilherme: copia da pasta AddOns desta maquina as pastas
 # escolhidas (ja filtradas para o Forever e auditadas), soma o addon proprio !KitAmigo, embute o
 # instalador (kit\instalar.ps1) num INSTALAR.bat de arquivo unico e grava Kit-WoW-Forever.zip no Drive.
 # Mesmo nome de arquivo a cada geracao: o link compartilhado do Drive continua valendo.

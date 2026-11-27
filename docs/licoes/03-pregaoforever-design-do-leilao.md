@@ -1,6 +1,6 @@
 # PregaoForever Auction Addon Design — Forever Auction Facts, a Design Gate & a Third-Party AGENTS.md Notice
 
-> Foto de 2026-11-26 de uma página do second brain do Bruno (criada em 2026-11-16, atualizada em 2026-11-16), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
+> Foto de 2026-11-26 de uma página do second brain do Guilherme (criada em 2026-11-16, atualizada em 2026-11-16), em inglês. Não é atualizada aqui: quando o código e esta página discordarem, vale o código.
 
 PregaoForever is the owner's planned auction-house addon for WoW Forever, designed in one session on 2026-11-16 (no code, nothing run in the game). This page keeps three things that outlive the project state: how a design document was checked mechanically before being called done, a notice found in three installed third-party addons and what the agent did about it, and the auction facts read from the Forever client. The design's own state (what waits for the owner) is perishable and lives in `hot.md` and `log.md`.
 

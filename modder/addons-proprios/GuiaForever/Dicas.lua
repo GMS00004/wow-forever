@@ -1,5 +1,5 @@
 -- Dicas do GuiaForever por nivel: so dados, sem logica.
--- Fontes e decisoes do dono em 2026-11-05 (fichas em jogadores\bruno\personagens\).
+-- Fontes e decisoes do dono em 2026-11-05 (fichas em jogadores\guilherme\personagens\).
 GuiaForeverDicas = {
   HUNTER = {
     personagem = "Hexumlite Bull",
@@ -151,7 +151,7 @@ GuiaForeverDicas = {
       { texto = "Ghost Wolf on long stretches without mobs; with mobs on the way, kill them as you go.", fonte = "DoubleZug" },  -- origem: doublezug-shaman.md:80
     },
   },
-  -- Ignatius Stonejaw (Protection, tanque da dupla). Fontes: jogadores\bruno\personagens\ignatius-stonejaw.md
+  -- Ignatius Stonejaw (Protection, tanque da dupla). Fontes: jogadores\guilherme\personagens\ignatius-stonejaw.md
   -- (linhas em "origem"); a ficha so cita fonte por nivel na tabela "O que chega", entao cada
   -- linha leva a fonte que a propria ficha ou o arquivo da fonte dao. "Naowh" so vale para o nivel.
   PALADIN = {

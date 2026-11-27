@@ -1,4 +1,4 @@
-# Este repositório saiu do repositório pessoal do Bruno (C:\GMS) em 2026-11-26.
+# Este repositório saiu do repositório pessoal do Guilherme (C:\GMS) em 2026-11-26.
 # As regras abaixo cobrem também o que antes vinha do .gitignore de lá.
 
 # Dependências do Node (rode "npm ci" em modder/ferramentas/guia)
@@ -23,11 +23,11 @@ Thumbs.db
 desktop.ini
 .DS_Store
 
-# Pasta de cada jogador: só o modelo e a do Bruno vão para o git; a sua fica no seu PC
+# Pasta de cada jogador: só o modelo e a do Guilherme vão para o git; a sua fica no seu PC
 /jogadores/*
 !/jogadores/LEIA-ME.md
 !/jogadores/_modelo/
-!/jogadores/bruno/
+!/jogadores/guilherme/
 
 # Qual pasta de jogadores\ este PC usa (criado por modder\ferramentas\jogador.ps1)
 /jogador-ativo.txt

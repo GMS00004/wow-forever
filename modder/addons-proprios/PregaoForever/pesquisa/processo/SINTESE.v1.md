@@ -47,7 +47,7 @@ O `ARQUITETURA.md` do addon abre com estas regras, no formato dos outros addons 
 | 15 | Tempo por relógio (`GetTime`, `GetServerTime`), nunca por contagem de quadros; trabalho pesado em fatias de 2 ms (base 3.3, 3.8; R9 11.1). |
 | 16 | Binding e ação só fora de combate e sem restrição de addon ativa (base 3.4, 2.16). |
 | 17 | Dinheiro em cobre inteiro. Depósito sempre lido de `CalculateItemDeposit` ou `CalculateCommodityDeposit`; preço de vendedor sempre lido de `C_Item.GetItemInfo` na hora (base 1.4, 3.2, 6.3). |
-| 18 | Todos os `.lua` na raiz do addon e no `.toc` desde a onda 1: o `checar-lua.mjs` só lê o primeiro nível (R4a 3) e arquivo novo pede reinício do jogo (R4a 6). TOC com `## Interface: 16001`, `## Author: Bruno`, `## SavedVariables: PregaoForeverDB` (base 4.8). |
+| 18 | Todos os `.lua` na raiz do addon e no `.toc` desde a onda 1: o `checar-lua.mjs` só lê o primeiro nível (R4a 3) e arquivo novo pede reinício do jogo (R4a 6). TOC com `## Interface: 16001`, `## Author: Guilherme`, `## SavedVariables: PregaoForeverDB` (base 4.8). |
 | 19 | Nem o addon nem a mesa escrevem na pasta do jogo. A ligação é a junction do `dev-link.ps1`, feita uma vez com o jogo fechado; depois, editar na pasta de desenvolvimento e dar `/reload` (base 4.4, 4.9, 4.11). |
 | 20 | Nome de jogador nunca é gravado. |
 

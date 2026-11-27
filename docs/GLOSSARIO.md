@@ -32,4 +32,4 @@ Os termos que aparecem no repositório, em ordem alfabética.
 | TOC | o arquivo `.toc` de cada addon: nome, versão, Interface e a lista de arquivos que o jogo carrega |
 | Valor secreto | dado de combate que o cliente do Forever esconde dos addons durante a luta (dano, threat em porcentagem): dá para mandar para a tela, não para comparar nem fazer conta; contornar isso é proibido aqui |
 | WTF | a pasta de configuração do cliente (`Config.wtf`, contas, personagens, SavedVariables); o backup dela vai para `%LOCALAPPDATA%\wow-agentes\backups\` |
-| `wip(sync)` | commit automático do sync entre os dois notebooks do Bruno, que aparece no histórico até 2026-11-26 |
+| `wip(sync)` | commit automático do sync entre os dois notebooks do Guilherme, que aparece no histórico até 2026-11-26 |

@@ -5,7 +5,7 @@ Cada jogador tem uma pasta aqui com tudo o que é só dele: a ficha, os personag
 | Pasta | O que é | Vai para o git? |
 |---|---|---|
 | `_modelo\` | o molde vazio de onde sai a pasta de um jogador novo | sim |
-| `bruno\` | a pasta do Bruno, com o estado real dele desde 2026-11-03 (serve de exemplo de uma pasta em uso) | sim |
+| `guilherme\` | a pasta do Guilherme, com o estado real dele desde 2026-11-03 (serve de exemplo de uma pasta em uso) | sim |
 | `<seu apelido>\` | a sua, criada pelo `jogador.ps1` | não: fica só no seu PC |
 
 ## Criar a sua

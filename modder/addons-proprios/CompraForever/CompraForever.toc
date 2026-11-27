@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: CompraForever
 ## Notes: Scan the AH, buy, craft and vendor for profit
-## Author: Bruno
+## Author: Guilherme
 ## Version: 0.4.1
 ## SavedVariables: CompraForeverDB
 ## SavedVariablesPerCharacter: CompraForeverCharDB

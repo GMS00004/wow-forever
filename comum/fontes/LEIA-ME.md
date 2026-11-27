@@ -2,7 +2,7 @@
 
 Aqui entram os guias que os jogadores deste repositório seguem: builds, macros, rotas de leveling, profissões, economia, raide, PvP e perfis de UI. A biblioteca é de todos; cada jogador diz no próprio `jogadores\<apelido>\jogador.md` quais fontes valem para ele. Os agentes de WoW configuram e respondem a partir destas fontes e não dão opinião própria de gameplay.
 
-As que estão aqui hoje foram trazidas pelo Bruno para os personagens dele (Aliança: caçador, paladino, xamã, druida e o bruxo de um amigo). Guia de outra classe, de Horda ou de PvP é bem-vindo: entra por PR, no formato abaixo.
+As que estão aqui hoje foram trazidas pelo Guilherme para os personagens dele (Aliança: caçador, paladino, xamã, druida e o bruxo de um amigo). Guia de outra classe, de Horda ou de PvP é bem-vindo: entra por PR, no formato abaixo.
 
 ## Como alimentar
 
