@@ -5,7 +5,6 @@ Cada jogador tem uma pasta aqui com tudo o que é só dele: a ficha, os personag
 | Pasta | O que é | Vai para o git? |
 |---|---|---|
 | `_modelo\` | o molde vazio de onde sai a pasta de um jogador novo | sim |
-| `guilherme\` | a pasta do Guilherme, com o estado real dele desde 2026-11-03 (serve de exemplo de uma pasta em uso) | sim |
 | `<seu apelido>\` | a sua, criada pelo `jogador.ps1` | não: fica só no seu PC |
 
 ## Criar a sua
@@ -33,4 +32,4 @@ Para trocar de jogador no mesmo PC: `jogador.ps1 -Ativar <apelido> -Aplicar`. Se
 | `estado\addons\<slug>.json` | só os scripts | o manifesto de cada addon instalado (fonte, versão, pastas e aprovação) |
 | `estado\sessao.json` | só os scripts | a última Interface vista e a última abertura de sessão |
 
-A sua pasta fica fora do git de propósito: assim os PRs levam ferramenta e conteúdo, não o estado de sessão de cada um. Se quiser guardar a sua em outro lugar (uma pasta sincronizada, por exemplo), ponha o caminho completo dela no `jogador-ativo.txt` em vez do apelido.
+A sua pasta fica fora do git de propósito: o repositório é público, e assim os PRs levam ferramenta e conteúdo, não o estado de sessão de cada um. Se quiser guardar a sua em outro lugar (uma pasta sincronizada ou um repositório privado seu, por exemplo), ponha o caminho completo dela no `jogador-ativo.txt` em vez do apelido. É o que o Guilherme faz: a pasta dele mora no repositório privado dele.

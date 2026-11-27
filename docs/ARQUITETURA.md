@@ -55,7 +55,7 @@ O agente não lembra de nada entre sessões. A memória é a pasta do jogador at
 | `instalacao.json` | só os scripts | onde o jogo está neste PC |
 | `jogador.md`, `jogador.json`, `personagens\` | o agente, com o jogador | perfil, casa de leilão, fichas |
 
-A pasta do Guilherme vai no git, como exemplo de uma pasta em uso há semanas; a dos outros jogadores fica no PC de cada um, para os PRs levarem ferramenta e conteúdo, não estado de sessão. Os `HANDOFF-*.md` de `modder\` são notas de trabalho em andamento do Guilherme, para retomar uma frente numa sessão nova.
+Nenhuma pasta de jogador vai para este repositório, que é público: cada um guarda a sua onde quiser (a do Guilherme fica no repositório privado dele, apontada pelo caminho completo no `jogador-ativo.txt`), e os PRs levam ferramenta e conteúdo, não estado de sessão. Os `HANDOFF-*.md` de `modder\` são notas de trabalho em andamento do Guilherme, para retomar uma frente numa sessão nova.
 
 ## O gerenciador de addons (PowerShell)
 
@@ -102,7 +102,7 @@ O caminho é: `baixar-precos.mjs` grava o `precos.json`; `crafts.mjs`, `rota.mjs
 
 ## O CI
 
-`.github\workflows\testes.yml` roda o `testar-tudo.ps1` num Windows limpo em todo push no `main` e em todo PR. Dois workflows pequenos fazem o papel da trava que o plano Free da GitHub não dá em repositório privado: `aviso-push-main.yml` abre uma issue para o Guilherme quando alguém que não é ele muda o `main`, e `pedir-revisao.yml` pede a revisão dele em todo PR de outra pessoa.
+`.github\workflows\testes.yml` roda o `testar-tudo.ps1` num Windows limpo em todo push no `main` e em todo PR. O `main` é protegido por uma regra do repositório: só muda por PR com a aprovação do dono do código (o `.github\CODEOWNERS` aponta o Guilherme, e o GitHub pede a revisão dele sozinho), sem force push e sem apagar o branch; o administrador passa por cima quando precisa.
 
 ## Por que assim
 

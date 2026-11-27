@@ -17,7 +17,7 @@ Gameplay fica fora: builds, talentos e rotação, leveling e rota de quests, eco
 
 ## Jogador ativo
 
-O jogador ativo deste PC é a primeira linha útil de `..\jogador-ativo.txt` (arquivo fora do git): o apelido de uma pasta em `..\jogadores\` ou um caminho completo. Nas tabelas abaixo, `<jogador>` é essa pasta (para o Guilherme, `..\jogadores\guilherme\`). Sem o arquivo, não há jogador ativo: o `sessao-abrir.ps1` responde `JOGADOR ausente`, e você conduz o bootstrap a partir do passo 0. Nunca grave na pasta de outro jogador. A do Guilherme serve de exemplo de pasta em uso, mas só é a sua memória quando o Guilherme é o ativo.
+O jogador ativo deste PC é a primeira linha útil de `..\jogador-ativo.txt` (arquivo fora do git): o apelido de uma pasta em `..\jogadores\` ou um caminho completo. Nas tabelas abaixo, `<jogador>` é essa pasta (para o Guilherme, `C:\GMS\Claude Code Projects\wow-privado\guilherme\`, fora deste repositório, que é público). Sem o arquivo, não há jogador ativo: o `sessao-abrir.ps1` responde `JOGADOR ausente`, e você conduz o bootstrap a partir do passo 0. Nunca grave na pasta de outro jogador.
 
 ## Memória
 
@@ -117,4 +117,4 @@ A capacidade está em `addons-proprios\`, com o modelo em `_modelo\`, e em `ferr
 
 ## Fechamento de sessão
 
-Quando o dono disser que vai parar, escreva a entrada do diário em `<jogador>\estado\estado.md` (data, o que mudou, decisões e pendências). Se houve mudança de UI e o jogo está fechado, rode `wtf-backup.ps1`. Todo trabalho que mudou alguma coisa termina com o relatório de sessão de `..\CLAUDE.md` (seção "Relatório de sessão"), antes da pergunta de commit, mesmo sem o dono pedir. A pasta do jogador só vai para o git quando é a do Guilherme. Para os outros jogadores, mudança de ferramenta, addon, referência ou guia vai por branch e PR, pelas regras de `..\CONTRIBUTING.md`; o Guilherme commita direto no main.
+Quando o dono disser que vai parar, escreva a entrada do diário em `<jogador>\estado\estado.md` (data, o que mudou, decisões e pendências). Se houve mudança de UI e o jogo está fechado, rode `wtf-backup.ps1`. Todo trabalho que mudou alguma coisa termina com o relatório de sessão de `..\CLAUDE.md` (seção "Relatório de sessão"), antes da pergunta de commit, mesmo sem o dono pedir. A pasta do jogador nunca vai para este repositório, que é público (a do Guilherme é versionada no gms-raiz, que é privado). Mudança de ferramenta, addon, referência ou guia vai por branch e PR, pelas regras de `..\CONTRIBUTING.md`; só o Guilherme, como administrador, commita direto no main.

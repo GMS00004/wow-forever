@@ -1,6 +1,6 @@
 # Como contribuir
 
-O repositório é do Guilherme, e você tem permissão de escrita. O combinado é simples: o `main` só muda por pull request, e quem faz o merge é o Guilherme. O plano Free da GitHub não trava o `main` em repositório privado, então isso vale pela palavra de cada um; se alguém mudar o `main` direto, um workflow abre uma issue para o Guilherme com o comando para voltar.
+O repositório é do Guilherme e é público; quem foi convidado tem permissão de escrita. O `main` é protegido pelo GitHub: só muda por pull request aprovado pelo Guilherme (ele é o dono de tudo no `.github/CODEOWNERS`), e ninguém empurra direto, reescreve ou apaga o `main`. Quem não foi convidado também pode mandar PR, a partir de um fork.
 
 ## O fluxo
 
@@ -8,10 +8,10 @@ O repositório é do Guilherme, e você tem permissão de escrita. O combinado �
 2. Crie uma branch com o seu nome e o assunto: `git checkout -b seunome/warrior-no-guiaforever`.
 3. Faça a mudança e rode os testes: `powershell -NoProfile -ExecutionPolicy Bypass -File modder\ferramentas\testar-tudo.ps1`.
 4. Commit e push da branch: `git push -u origin seunome/warrior-no-guiaforever`.
-5. Abra o PR para o `main`. O CI roda os testes e a revisão do Guilherme é pedida sozinha.
-6. Ajuste o que a revisão pedir na mesma branch; o Guilherme faz o merge (em geral, squash).
+5. Abra o PR para o `main`. O CI roda os testes, e a revisão do Guilherme é pedida sozinha (CODEOWNERS).
+6. Ajuste o que a revisão pedir na mesma branch; com a aprovação do Guilherme e o CI verde, o merge sai (em geral, squash).
 
-Não force push no `main` nem na branch de outra pessoa. Na sua branch, à vontade.
+Não force push na branch de outra pessoa. Na sua branch, à vontade.
 
 ## O que não vai no PR
 

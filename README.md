@@ -74,7 +74,7 @@ O agente não lembra de nada entre sessões: a memória dele é a sua pasta de j
 | [`modder/ferramentas/`](modder/ferramentas/LEIA-ME.md) | os scripts do gerenciador de addons (PowerShell), os checadores e bancadas dos addons e as ferramentas de preço (Node) |
 | [`modder/addons-proprios/`](modder/addons-proprios/LEIA-ME.md) | os addons escritos aqui, mais o modelo para um addon novo |
 | `modder/HANDOFF-*.md` | frentes de trabalho do Guilherme em andamento (notas para retomar uma tarefa numa sessão nova) |
-| [`jogadores/`](jogadores/LEIA-ME.md) | uma pasta por jogador; a sua fica só no seu PC, a do Guilherme vai no git como exemplo de pasta em uso |
+| [`jogadores/`](jogadores/LEIA-ME.md) | o modelo da pasta de jogador; a sua (personagens, instalação e a memória do agente) fica só no seu PC, fora do git |
 | [`comum/referencia/`](comum/referencia/) | fatos do Forever com fonte e data, o pacote base, a API e as profissões |
 | [`comum/fontes/`](comum/fontes/LEIA-ME.md) | a biblioteca de guias de gameplay (builds, macros, leveling, profissões) que os jogadores seguem |
 | [`docs/`](docs/) | começo, arquitetura, glossário e lições |
@@ -102,8 +102,8 @@ São 10 suítes de PowerShell (604 verificações, com uma instalação falsa do
 
 ## Histórico
 
-Os commits de 2026-11-03 a 2026-11-26 vieram do repositório pessoal do Guilherme (só a pasta do WoW, com o histórico dela). Os commits `wip(sync)` são fotos automáticas do sync entre os dois notebooks dele; daqui em diante essas fotos vão para um espelho privado e não entram no `main`.
+Os commits de 2026-11-03 a 2026-11-26 vieram do repositório pessoal do Guilherme: só a pasta do WoW, com o histórico dela, sem os dados pessoais dele (diário do agente, fichas e instalação), que seguem num repositório privado. Os commits `wip(sync)` são fotos automáticas do sync entre os dois notebooks dele; daqui em diante essas fotos vão para um espelho privado e não entram no `main`.
 
 ## Créditos
 
-Os guias, builds e dados usados aqui são dos criadores e projetos listados em [CREDITOS.md](CREDITOS.md). O repositório é privado e não tem licença aberta: o uso fica entre os colaboradores.
+Os guias, builds e dados usados aqui são dos criadores e projetos listados em [CREDITOS.md](CREDITOS.md). O repositório é público e não tem licença aberta: ler, aprender e mandar PR pode; reaproveitar o código em outro projeto pede a autorização do Guilherme.

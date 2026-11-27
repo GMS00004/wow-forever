@@ -61,7 +61,7 @@ modder\
     jogador.ps1            mostra, cria e troca o jogador ativo       1.2
     testar-tudo.ps1        roda todas as suítes e checagens           1.2
     kit-amigo.ps1          monta o Kit-WoW-Forever.zip do amigo (só lê o jogo; grava no Drive)   2026-11-08
-    kit\                   instalar.ps1 (vira o INSTALAR.bat), guia.html e o PDF, mensagem-whatsapp.txt
+    kit\                   instalar.ps1 (vira o INSTALAR.bat), guia.html e o PDF; mensagem-whatsapp.txt opcional, fora do git
     testes\
       _assert.ps1  _preparar.ps1                                      T4
       fixture\  fontes-fixture\  respostas\                          T4

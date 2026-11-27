@@ -23,11 +23,10 @@ Thumbs.db
 desktop.ini
 .DS_Store
 
-# Pasta de cada jogador: só o modelo e a do Guilherme vão para o git; a sua fica no seu PC
+# Pasta de cada jogador: só o modelo vai para o git; a de cada um (inclusive a do Guilherme) fica fora
 /jogadores/*
 !/jogadores/LEIA-ME.md
 !/jogadores/_modelo/
-!/jogadores/guilherme/
 
 # Qual pasta de jogadores\ este PC usa (criado por modder\ferramentas\jogador.ps1)
 /jogador-ativo.txt

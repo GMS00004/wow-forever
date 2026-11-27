@@ -1,6 +1,6 @@
 # WoW: contexto comum dos agentes
 
-Este repositório guarda a família de agentes de World of Warcraft do Guilherme e dos amigos que jogam com ele. Cada agente mora numa subpasta própria, que já abre com ele (o campo `"agent"` do `.claude\settings.json` da subpasta), e todos leem este arquivo, a pasta `comum\` (referências e biblioteca de guias, iguais para todos) e a pasta do jogador ativo, `jogadores\<apelido>\`, que o `jogador-ativo.txt` da raiz aponta. Nas regras, "o dono" é sempre o jogador ativo. Nada pode supor facção, reino ou classe: o Guilherme joga Aliança, os amigos jogam Horda em reino PvP, de várias classes, e isso sai do perfil de cada um. O que o repositório é, para gente, está no `README.md`.
+Este repositório guarda a família de agentes de World of Warcraft do Guilherme e dos amigos que jogam com ele. Cada agente mora numa subpasta própria, que já abre com ele (o campo `"agent"` do `.claude\settings.json` da subpasta), e todos leem este arquivo, a pasta `comum\` (referências e biblioteca de guias, iguais para todos) e a pasta do jogador ativo, que o `jogador-ativo.txt` da raiz aponta (`jogadores\<apelido>\` ou um caminho completo fora do repositório). Nas regras, "o dono" é sempre o jogador ativo. Nada pode supor facção, reino ou classe: o Guilherme joga Aliança, os amigos jogam Horda em reino PvP, de várias classes, e isso sai do perfil de cada um. O que o repositório é, para gente, está no `README.md`.
 
 ## Agentes
 
@@ -35,8 +35,8 @@ Fato exato sobre o Forever (versão, Interface, pasta, compatibilidade de addon,
 ## Backups e versionamento
 
 - Os backups ficam em `%LOCALAPPDATA%\wow-agentes\backups\`, fora do repositório.
-- Este repositório é o `GMS00004/wow-forever`, privado. O `main` só muda por PR, e quem faz o merge é o Guilherme, que também commita direto nele (regras em `CONTRIBUTING.md`). Commit e push só com o ok do dono.
-- A pasta de um jogador só vai para o git quando é a do Guilherme; a dos outros fica no PC de cada um (o `.gitignore` cuida disso).
+- Este repositório é o `GMS00004/wow-forever`, público. O `main` é protegido: só muda por PR com a aprovação do Guilherme (CODEOWNERS), sem force push; o Guilherme, como administrador, também commita direto nele (regras em `CONTRIBUTING.md`). Commit e push só com o ok do dono.
+- Nenhuma pasta de jogador vai para este repositório (o `.gitignore` cuida disso). A do Guilherme mora em `C:\GMS\Claude Code Projects\wow-privado\guilherme`, versionada no gms-raiz, que é privado; o `jogador-ativo.txt` dele aponta para lá pelo caminho completo.
 
 ## Como responder
 
